@@ -1,0 +1,19 @@
+{
+  "name": "OurAtlas",
+  "description": "Our monitoring",
+  "main": "",
+  "authors": [
+    "Maxislav <lmaxim@mail.ru>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "OurAtlas"
+  ],
+  "moduleType": [
+    "node"
+  ],
+  "homepage": "",
+  "devDependencies": {
+    "angular2-build": "~2.0.0-alpha.34"
+  }
+}
