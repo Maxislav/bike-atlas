@@ -9,6 +9,7 @@ declare var L: any;
 @Component({
     selector: '.my-map',
     templateUrl: 'app/template/map.html'
+
 })
 export class MyMap{
 
@@ -27,7 +28,7 @@ export class MyMap{
     }
 
     private  initMap(){
-        var map = L.map('map').setView([51.505, -0.09], 13);
+        var map = L.map('map').setView([51.505, 30.0], 13);
         this.map = map;
         this.L = L;
 
@@ -40,9 +41,9 @@ export class MyMap{
         }).addTo(map);
 
         L.Icon.Default.imagePath = 'lib/leaflet/images';
-        L.marker([51.5, -0.09]).addTo(map)
+        L.marker([51.505, 30.0]).addTo(map)
             .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-        L.circle([51.508, -0.11], 500, {
+        L.circle([51.505, 30.0], 500, {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5

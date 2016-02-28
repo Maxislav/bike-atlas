@@ -30,7 +30,7 @@ System.register(['angular2/core', '../app/screen.size', '../lib/leaflet/leaflet.
                     this.initMap();
                 }
                 MyMap.prototype.initMap = function () {
-                    var map = L.map('map').setView([51.505, -0.09], 13);
+                    var map = L.map('map').setView([51.505, 30.0], 13);
                     this.map = map;
                     this.L = L;
                     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
@@ -41,9 +41,9 @@ System.register(['angular2/core', '../app/screen.size', '../lib/leaflet/leaflet.
                         id: 'mapbox.streets'
                     }).addTo(map);
                     L.Icon.Default.imagePath = 'lib/leaflet/images';
-                    L.marker([51.5, -0.09]).addTo(map)
+                    L.marker([51.505, 30.0]).addTo(map)
                         .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-                    L.circle([51.508, -0.11], 500, {
+                    L.circle([51.505, 30.0], 500, {
                         color: 'red',
                         fillColor: '#f03',
                         fillOpacity: 0.5

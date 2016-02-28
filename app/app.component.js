@@ -25,9 +25,20 @@ System.register(['angular2/core', './mymap'], function(exports_1) {
                 }
                 AppComponent = __decorate([
                     core_1.Component({
-                        selector: 'my-app',
+                        selector: 'my-app'
+                    }),
+                    core_1.View({
                         templateUrl: 'app/template/index.html',
-                        directives: [mymap_1.MyMap]
+                        directives: [mymap_1.MyMap],
+                        styles: ['.root-head , .my-map{\
+    width:100%;\
+      position: absolute;\
+      left: 0;\
+      top: 0;\
+      z-index: 1;\
+    }\
+    .my-map{z-index: 0;}\
+  ']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], AppComponent);
