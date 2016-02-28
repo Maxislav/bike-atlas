@@ -1,6 +1,4 @@
-System.register(['angular2/core', '../lib/leaflet/leaflet.js'], function(exports_1, context_1) {
-    "use strict";
-    var __moduleName = context_1 && context_1.id;
+System.register(['angular2/core', '../app/screen.size', '../lib/leaflet/leaflet.js'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,17 +8,24 @@ System.register(['angular2/core', '../lib/leaflet/leaflet.js'], function(exports
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
+    var core_1, screen_size_1;
     var MyMap;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
+            function (screen_size_1_1) {
+                screen_size_1 = screen_size_1_1;
+            },
             function (_1) {}],
         execute: function() {
             MyMap = (function () {
-                function MyMap() {
+                function MyMap(myElement, renderer) {
+                    this.renderer = renderer;
+                    this.width = new screen_size_1.ScreenSize().width + 'px';
+                    this.height = new screen_size_1.ScreenSize().height + 'px';
+                    renderer.setElementStyle(myElement, 'height', this.height);
                     var map = L.map('map').setView([51.505, -0.09], 13);
                     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
                         maxZoom: 18,
@@ -56,10 +61,10 @@ System.register(['angular2/core', '../lib/leaflet/leaflet.js'], function(exports
                         selector: '.my-map',
                         templateUrl: 'app/template/map.html'
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer])
                 ], MyMap);
                 return MyMap;
-            }());
+            })();
             exports_1("MyMap", MyMap);
         }
     }

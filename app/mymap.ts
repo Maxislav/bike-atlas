@@ -1,7 +1,8 @@
 /**
  * Created by maxim on 2/27/16.
  */
-import {Component} from 'angular2/core';
+import {Component, ElementRef, Renderer} from 'angular2/core';
+import {ScreenSize} from '../app/screen.size';
 import '../lib/leaflet/leaflet.js';
 declare var L: any;
 
@@ -10,7 +11,16 @@ declare var L: any;
     templateUrl: 'app/template/map.html'
 })
 export class MyMap{
-    constructor() {
+    //public width: number = 0;
+    public height: string;
+    public width: string;
+
+    constructor(myElement: ElementRef, public renderer: Renderer) {
+
+        this.width = new ScreenSize().width+'px';
+        this.height = new ScreenSize().height+ 'px';
+        renderer.setElementStyle(myElement,'height', this.height);
+
         var map = L.map('map').setView([51.505, -0.09], 13);
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
