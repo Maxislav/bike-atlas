@@ -23,10 +23,16 @@ System.register(['angular2/core', '../app/screen.size', '../lib/leaflet/leaflet.
             MyMap = (function () {
                 function MyMap(myElement, renderer) {
                     this.renderer = renderer;
-                    this.width = new screen_size_1.ScreenSize().width + 'px';
-                    this.height = new screen_size_1.ScreenSize().height + 'px';
-                    renderer.setElementStyle(myElement, 'height', this.height);
+                    this.screenSize = new screen_size_1.ScreenSize();
+                    this.width = this.screenSize.width + 'px';
+                    this.height = this.screenSize.height + 'px';
+                    this.setSizeElement(myElement, renderer);
+                    this.initMap();
+                }
+                MyMap.prototype.initMap = function () {
                     var map = L.map('map').setView([51.505, -0.09], 13);
+                    this.map = map;
+                    this.L = L;
                     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
                         maxZoom: 18,
                         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
@@ -55,7 +61,16 @@ System.register(['angular2/core', '../app/screen.size', '../lib/leaflet/leaflet.
                             .openOn(map);
                     }
                     map.on('click', onMapClick);
-                }
+                };
+                MyMap.prototype.setSizeElement = function (myElement, renderer) {
+                    renderer.setElementStyle(myElement, 'height', this.height);
+                };
+                MyMap.prototype.getMap = function () {
+                    return this.map;
+                };
+                MyMap.prototype.getL = function () {
+                    return this.L;
+                };
                 MyMap = __decorate([
                     core_1.Component({
                         selector: '.my-map',

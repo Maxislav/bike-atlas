@@ -11,17 +11,25 @@ declare var L: any;
     templateUrl: 'app/template/map.html'
 })
 export class MyMap{
-    //public width: number = 0;
-    public height: string;
-    public width: string;
+
+    private height: string;
+    private width: string;
+    private screenSize: ScreenSize;
+    public map: any;
+    public L: any;
 
     constructor(myElement: ElementRef, public renderer: Renderer) {
+        this.screenSize = new ScreenSize();
+        this.width = this.screenSize.width+'px';
+        this.height = this.screenSize.height+ 'px';
+        this.setSizeElement(myElement, renderer);
+        this.initMap();
+    }
 
-        this.width = new ScreenSize().width+'px';
-        this.height = new ScreenSize().height+ 'px';
-        renderer.setElementStyle(myElement,'height', this.height);
-
+    private  initMap(){
         var map = L.map('map').setView([51.505, -0.09], 13);
+        this.map = map;
+        this.L = L;
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
             maxZoom: 18,
@@ -32,7 +40,7 @@ export class MyMap{
         }).addTo(map);
 
         L.Icon.Default.imagePath = 'lib/leaflet/images';
-       L.marker([51.5, -0.09]).addTo(map)
+        L.marker([51.5, -0.09]).addTo(map)
             .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
         L.circle([51.508, -0.11], 500, {
             color: 'red',
@@ -54,8 +62,18 @@ export class MyMap{
                 .setContent("You clicked the map at " + e.latlng.toString())
                 .openOn(map);
         }
-
         map.on('click', onMapClick);
-
     }
+
+    private setSizeElement(myElement: ElementRef , renderer: Renderer  ){
+        renderer.setElementStyle(myElement,'height', this.height);
+    }
+
+    public getMap(){
+        return this.map;
+    }
+    public getL(){
+        return this.L;
+    }
+
 }
