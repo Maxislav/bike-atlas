@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../app/screen.size', './footer.help', '../lib/leaflet/leaflet.js'], function(exports_1) {
+System.register(['angular2/core', '../app/screen.size', './services/service.lat.lng', '../lib/leaflet/leaflet.js'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', '../app/screen.size', './footer.help', '../lib
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, screen_size_1, footer_help_1;
+    var core_1, screen_size_1, service_lat_lng_1;
     var MyMap;
     return {
         setters:[
@@ -18,28 +18,31 @@ System.register(['angular2/core', '../app/screen.size', './footer.help', '../lib
             function (screen_size_1_1) {
                 screen_size_1 = screen_size_1_1;
             },
-            function (footer_help_1_1) {
-                footer_help_1 = footer_help_1_1;
+            function (service_lat_lng_1_1) {
+                service_lat_lng_1 = service_lat_lng_1_1;
             },
             function (_1) {}],
         execute: function() {
             MyMap = (function () {
-                function MyMap(myElement, renderer) {
+                function MyMap(myElement, renderer, latLngService) {
                     this.renderer = renderer;
+                    this.latLngService = latLngService;
                     this.startLatLng = [50.45, 30.47];
                     this.tilesDomain = 'http://a.tiles.wmflabs.org/osm-no-labels/{z}/{x}/{y}.png';
                     this.startZoom = 10;
+                    this.scope = this;
                     this.screenSize = new screen_size_1.ScreenSize();
                     this.width = this.screenSize.width + 'px';
                     this.height = this.screenSize.height + 'px';
                     this.setSizeElement(myElement, renderer);
-                    this.initMap();
+                    this.initMap(latLngService);
                 }
-                MyMap.prototype.initMap = function () {
+                MyMap.prototype.initMap = function (latLngService) {
                     var startLatLng = this.startLatLng;
                     var map = L.map('map').setView(startLatLng, this.startZoom);
                     this.map = map;
                     this.L = L;
+                    var scope = this;
                     L.tileLayer(this.tilesDomain, {
                         maxZoom: 18,
                         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
@@ -68,8 +71,7 @@ System.register(['angular2/core', '../app/screen.size', './footer.help', '../lib
                             .openOn(map);
                     }
                     map.on('mousemove', function (e) {
-                        footer_help_1.FooterHelp.lat = 8932;
-                        footer_help_1.FooterHelp.lng = e.latlng.lng;
+                        latLngService.lat = e.latlng.lng;
                     });
                 };
                 MyMap.prototype.setSizeElement = function (myElement, renderer) {
@@ -86,7 +88,7 @@ System.register(['angular2/core', '../app/screen.size', './footer.help', '../lib
                         selector: '.my-map',
                         templateUrl: 'app/template/map.html'
                     }), 
-                    __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer])
+                    __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer, service_lat_lng_1.LatLngService])
                 ], MyMap);
                 return MyMap;
             })();

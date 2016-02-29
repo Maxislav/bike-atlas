@@ -1,9 +1,12 @@
 /**
  * Created by maxim on 2/27/16.
  */
-import {Component, ElementRef, Renderer} from 'angular2/core';
+import {Component, ElementRef, Renderer ,Inject} from 'angular2/core';
 import {ScreenSize} from '../app/screen.size';
-import {FooterHelp} from './footer.help'
+import {FooterHelp} from './footer.help';
+import {LatLngService} from './services/service.lat.lng';
+
+
 import '../lib/leaflet/leaflet.js';
 declare var L: any;
 
@@ -21,21 +24,26 @@ export class MyMap{
     public startLatLng: Array<number> = [50.45, 30.47];
     public tilesDomain: string = 'http://a.tiles.wmflabs.org/osm-no-labels/{z}/{x}/{y}.png';
     public startZoom: number =  10;
+    public footerHelp: FooterHelp;
+    private scope = this;
 
 
-    constructor(myElement: ElementRef, public renderer: Renderer) {
+    constructor(myElement: ElementRef, public renderer: Renderer, public latLngService: LatLngService) {
         this.screenSize = new ScreenSize();
         this.width = this.screenSize.width+'px';
         this.height = this.screenSize.height+ 'px';
+
+
         this.setSizeElement(myElement, renderer);
-        this.initMap();
+        this.initMap(latLngService);
     }
 
-    private  initMap(){
+    private  initMap(latLngService: LatLngService){
         var startLatLng = this.startLatLng;
         var map = L.map('map').setView(startLatLng, this.startZoom);
         this.map = map;
         this.L = L;
+        var scope = this;
 
         L.tileLayer(this.tilesDomain, {
             maxZoom: 18,
@@ -69,11 +77,14 @@ export class MyMap{
                 .setContent("You clicked the map at " + e.latlng.toString())
                 .openOn(map);
         }
+
         map.on('mousemove', function(e){
-            FooterHelp.lat = 8932;
-            FooterHelp.lng = e.latlng.lng;
+            latLngService.lat = e.latlng.lng ;
         });
+
     }
+
+
 
     private setSizeElement(myElement: ElementRef , renderer: Renderer  ){
         renderer.setElementStyle(myElement,'height', this.height);
