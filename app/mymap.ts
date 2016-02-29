@@ -79,7 +79,8 @@ export class MyMap{
         }
 
         map.on('mousemove', function(e){
-            latLngService.lat = e.latlng.lng ;
+            latLngService.lat = e.latlng.lat ;
+            latLngService.lng = e.latlng.lng ;
         });
 
     }

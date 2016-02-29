@@ -71,7 +71,8 @@ System.register(['angular2/core', '../app/screen.size', './services/service.lat.
                             .openOn(map);
                     }
                     map.on('mousemove', function (e) {
-                        latLngService.lat = e.latlng.lng;
+                        latLngService.lat = e.latlng.lat;
+                        latLngService.lng = e.latlng.lng;
                     });
                 };
                 MyMap.prototype.setSizeElement = function (myElement, renderer) {
