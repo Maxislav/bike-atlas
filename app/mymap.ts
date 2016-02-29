@@ -3,13 +3,13 @@
  */
 import {Component, ElementRef, Renderer} from 'angular2/core';
 import {ScreenSize} from '../app/screen.size';
+import {FooterHelp} from './footer.help'
 import '../lib/leaflet/leaflet.js';
 declare var L: any;
 
 @Component({
     selector: '.my-map',
     templateUrl: 'app/template/map.html'
-
 })
 export class MyMap{
 
@@ -18,6 +18,10 @@ export class MyMap{
     private screenSize: ScreenSize;
     public map: any;
     public L: any;
+    public startLatLng: Array<number> = [50.45, 30.47];
+    public tilesDomain: string = 'http://a.tiles.wmflabs.org/osm-no-labels/{z}/{x}/{y}.png';
+    public startZoom: number =  10;
+
 
     constructor(myElement: ElementRef, public renderer: Renderer) {
         this.screenSize = new ScreenSize();
@@ -28,11 +32,12 @@ export class MyMap{
     }
 
     private  initMap(){
-        var map = L.map('map').setView([51.505, 30.0], 13);
+        var startLatLng = this.startLatLng;
+        var map = L.map('map').setView(startLatLng, this.startZoom);
         this.map = map;
         this.L = L;
 
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
+        L.tileLayer(this.tilesDomain, {
             maxZoom: 18,
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
             '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -41,9 +46,9 @@ export class MyMap{
         }).addTo(map);
 
         L.Icon.Default.imagePath = 'lib/leaflet/images';
-        L.marker([51.505, 30.0]).addTo(map)
+        L.marker(startLatLng).addTo(map)
             .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-        L.circle([51.505, 30.0], 500, {
+        L.circle(startLatLng, 500, {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5
@@ -58,12 +63,16 @@ export class MyMap{
         var popup = L.popup();
 
         function onMapClick(e) {
+
             popup
                 .setLatLng(e.latlng)
                 .setContent("You clicked the map at " + e.latlng.toString())
                 .openOn(map);
         }
-        map.on('click', onMapClick);
+        map.on('mousemove', function(e){
+            FooterHelp.lat = 8932;
+            FooterHelp.lng = e.latlng.lng;
+        });
     }
 
     private setSizeElement(myElement: ElementRef , renderer: Renderer  ){

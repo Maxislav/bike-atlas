@@ -14,7 +14,5 @@ export class ScreenSize{
         this.width = x;
         this.height = y;
     }
-
-
 }
 

@@ -14,6 +14,7 @@
   ],
   "homepage": "",
   "devDependencies": {
-    "angular2-build": "~2.0.0-alpha.34"
+    "angular2-build": "~2.0.0-alpha.34",
+    "traceur-runtime": "~0.0.102"
   }
 }

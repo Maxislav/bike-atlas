@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../app/screen.size', '../lib/leaflet/leaflet.js'], function(exports_1) {
+System.register(['angular2/core', '../app/screen.size', './footer.help', '../lib/leaflet/leaflet.js'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', '../app/screen.size', '../lib/leaflet/leaflet.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, screen_size_1;
+    var core_1, screen_size_1, footer_help_1;
     var MyMap;
     return {
         setters:[
@@ -18,11 +18,17 @@ System.register(['angular2/core', '../app/screen.size', '../lib/leaflet/leaflet.
             function (screen_size_1_1) {
                 screen_size_1 = screen_size_1_1;
             },
+            function (footer_help_1_1) {
+                footer_help_1 = footer_help_1_1;
+            },
             function (_1) {}],
         execute: function() {
             MyMap = (function () {
                 function MyMap(myElement, renderer) {
                     this.renderer = renderer;
+                    this.startLatLng = [50.45, 30.47];
+                    this.tilesDomain = 'http://a.tiles.wmflabs.org/osm-no-labels/{z}/{x}/{y}.png';
+                    this.startZoom = 10;
                     this.screenSize = new screen_size_1.ScreenSize();
                     this.width = this.screenSize.width + 'px';
                     this.height = this.screenSize.height + 'px';
@@ -30,10 +36,11 @@ System.register(['angular2/core', '../app/screen.size', '../lib/leaflet/leaflet.
                     this.initMap();
                 }
                 MyMap.prototype.initMap = function () {
-                    var map = L.map('map').setView([51.505, 30.0], 13);
+                    var startLatLng = this.startLatLng;
+                    var map = L.map('map').setView(startLatLng, this.startZoom);
                     this.map = map;
                     this.L = L;
-                    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
+                    L.tileLayer(this.tilesDomain, {
                         maxZoom: 18,
                         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
                             '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -41,9 +48,9 @@ System.register(['angular2/core', '../app/screen.size', '../lib/leaflet/leaflet.
                         id: 'mapbox.streets'
                     }).addTo(map);
                     L.Icon.Default.imagePath = 'lib/leaflet/images';
-                    L.marker([51.505, 30.0]).addTo(map)
+                    L.marker(startLatLng).addTo(map)
                         .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-                    L.circle([51.505, 30.0], 500, {
+                    L.circle(startLatLng, 500, {
                         color: 'red',
                         fillColor: '#f03',
                         fillOpacity: 0.5
@@ -60,7 +67,10 @@ System.register(['angular2/core', '../app/screen.size', '../lib/leaflet/leaflet.
                             .setContent("You clicked the map at " + e.latlng.toString())
                             .openOn(map);
                     }
-                    map.on('click', onMapClick);
+                    map.on('mousemove', function (e) {
+                        footer_help_1.FooterHelp.lat = 8932;
+                        footer_help_1.FooterHelp.lng = e.latlng.lng;
+                    });
                 };
                 MyMap.prototype.setSizeElement = function (myElement, renderer) {
                     renderer.setElementStyle(myElement, 'height', this.height);

@@ -1,12 +1,13 @@
 import {Component, View} from 'angular2/core';
 import {MyMap} from './mymap'
+import {FooterHelp} from './footer.help'
 
 @Component({
     selector: 'my-app'
 })
 @View({
     templateUrl: 'app/template/index.html',
-    directives: [MyMap],
+    directives: [MyMap,FooterHelp],
     styles: ['.root-head , .my-map{\
     width:100%;\
       position: absolute;\
