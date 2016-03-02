@@ -13,6 +13,7 @@ export  class FooterHelp{
     public latLng: LatLngService;
     constructor(latLngService: LatLngService){
         this.latLng = latLngService;
+
     }
 
 

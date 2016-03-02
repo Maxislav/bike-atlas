@@ -1,10 +1,11 @@
 /**
  * Created by maxim on 2/27/16.
  */
-import {Component, ElementRef, Renderer ,Inject} from 'angular2/core';
+import {Component, ElementRef, Renderer ,Inject, OnChanges} from 'angular2/core';
 import {ScreenSize} from '../app/screen.size';
 import {FooterHelp} from './footer.help';
 import {LatLngService} from './services/service.lat.lng';
+import {MapEvents} from '../app/map.events';
 
 
 import '../lib/leaflet/leaflet.js';
@@ -12,9 +13,13 @@ declare var L: any;
 
 @Component({
     selector: '.my-map',
-    templateUrl: 'app/template/map.html'
+    templateUrl: 'app/template/map.html',
 })
-export class MyMap{
+export class MyMap implements OnChanges{
+    ngOnChanges(changes:{}):any {
+        console.log(changes)
+        return undefined;
+    }
 
     private height: string;
     private width: string;
@@ -42,6 +47,8 @@ export class MyMap{
         var startLatLng = this.startLatLng;
         var map = L.map('map').setView(startLatLng, this.startZoom);
         this.map = map;
+        new MapEvents();
+
         this.L = L;
         var scope = this;
 
@@ -81,6 +88,7 @@ export class MyMap{
         map.on('mousemove', function(e){
             latLngService.lat = e.latlng.lat.toFixed(6) ;
             latLngService.lng = e.latlng.lng.toFixed(6) ;
+
         });
 
     }

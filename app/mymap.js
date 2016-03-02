@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../app/screen.size', './services/service.lat.lng', '../lib/leaflet/leaflet.js'], function(exports_1) {
+System.register(['angular2/core', '../app/screen.size', './services/service.lat.lng', '../app/map.events', '../lib/leaflet/leaflet.js'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', '../app/screen.size', './services/service.lat.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, screen_size_1, service_lat_lng_1;
+    var core_1, screen_size_1, service_lat_lng_1, map_events_1;
     var MyMap;
     return {
         setters:[
@@ -20,6 +20,9 @@ System.register(['angular2/core', '../app/screen.size', './services/service.lat.
             },
             function (service_lat_lng_1_1) {
                 service_lat_lng_1 = service_lat_lng_1_1;
+            },
+            function (map_events_1_1) {
+                map_events_1 = map_events_1_1;
             },
             function (_1) {}],
         execute: function() {
@@ -37,10 +40,15 @@ System.register(['angular2/core', '../app/screen.size', './services/service.lat.
                     this.setSizeElement(myElement, renderer);
                     this.initMap(latLngService);
                 }
+                MyMap.prototype.ngOnChanges = function (changes) {
+                    console.log(changes);
+                    return undefined;
+                };
                 MyMap.prototype.initMap = function (latLngService) {
                     var startLatLng = this.startLatLng;
                     var map = L.map('map').setView(startLatLng, this.startZoom);
                     this.map = map;
+                    new map_events_1.MapEvents();
                     this.L = L;
                     var scope = this;
                     L.tileLayer(this.tilesDomain, {
@@ -87,7 +95,7 @@ System.register(['angular2/core', '../app/screen.size', './services/service.lat.
                 MyMap = __decorate([
                     core_1.Component({
                         selector: '.my-map',
-                        templateUrl: 'app/template/map.html'
+                        templateUrl: 'app/template/map.html',
                     }), 
                     __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer, service_lat_lng_1.LatLngService])
                 ], MyMap);
