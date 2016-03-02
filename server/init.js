@@ -6,7 +6,7 @@ var url = require('url');
 var httpServer = require('http-server');
 
 
-console.log('dsd');
+console.log('Start');
 
 /*var server = http.createServer(function(request, response) {
 	//console.log(request.url)
@@ -44,16 +44,19 @@ var http = require("http"),
 	url = require("url"),
 	path = require("path"),
 	fs = require("fs"),
-	port = process.argv[2] || 8888;
+	//port = process.argv[2] || 8888;
+	port = 8080;
 
-http.createServer(function(request, response) {
+
+var server = new http.Server();
+server.on('request' , function(request, response) {
 	var uri = url.parse(request.url).pathname;
 	var filename = path.join(process.cwd(), uri);
 
 	if(uri == '/'){
 		filename = 'index.html';
 	}
-
+	console.log(filename);
 	if(/^\/data.+/.test(filename)){
 		console.log(filename)
 	}
@@ -63,9 +66,6 @@ http.createServer(function(request, response) {
 		'.css':  "text/css",
 		'.js':   "text/javascript"
 	};
-
-
-
 	fs.exists(filename, function(exists) {
 		if(!exists) {
 			response.writeHead(404, {"Content-Type": "text/plain"});
@@ -92,8 +92,6 @@ http.createServer(function(request, response) {
 			response.end();
 		});
 	});
-}).listen(8080);
-
-
-
-console.log("Static file server running at\n  => http://localhost:" + port + "/\nCTRL + C to shutdown");
+});
+server.listen(port);
+console.log("Static file server running at  => http://localhost:" + port + "/\nCTRL + C to shutdown");
