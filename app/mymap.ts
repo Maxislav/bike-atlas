@@ -4,7 +4,6 @@
 import {Component, ElementRef, Renderer ,Inject, OnChanges} from 'angular2/core';
 import {ScreenSize} from '../app/screen.size';
 import {FooterHelp} from './footer.help';
-import {LatLngService} from './services/service.lat.lng';
 import {MymapEvents} from './services/service.map.events';
 
 
