@@ -5,7 +5,6 @@ import {Component, ElementRef, Renderer ,Inject, OnChanges} from 'angular2/core'
 import {ScreenSize} from '../app/screen.size';
 import {FooterHelp} from './footer.help';
 import {LatLngService} from './services/service.lat.lng';
-import {MapEvents} from '../app/map.events';
 
 
 import '../lib/leaflet/leaflet.js';
@@ -15,11 +14,7 @@ declare var L: any;
     selector: '.my-map',
     templateUrl: 'app/template/map.html',
 })
-export class MyMap implements OnChanges{
-    ngOnChanges(changes:{}):any {
-        console.log(changes)
-        return undefined;
-    }
+export class MyMap{
 
     private height: string;
     private width: string;
@@ -47,7 +42,7 @@ export class MyMap implements OnChanges{
         var startLatLng = this.startLatLng;
         var map = L.map('map').setView(startLatLng, this.startZoom);
         this.map = map;
-        new MapEvents();
+
 
         this.L = L;
         var scope = this;

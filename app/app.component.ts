@@ -8,16 +8,7 @@ import {LatLngService} from "./services/service.lat.lng";
 })
 @View({
     templateUrl: 'app/template/index.html',
-    directives: [MyMap,FooterHelp],
-    styles: ['.root-head , .my-map{\
-    width:100%;\
-      position: absolute;\
-      left: 0;\
-      top: 0;\
-      z-index: 1;\
-    }\
-    .my-map{z-index: 0;}\
-  ']
+    directives: [MyMap,FooterHelp]
 })
 
 export class AppComponent {

@@ -32,16 +32,7 @@ System.register(['angular2/core', './mymap', './footer.help'], function(exports_
                     }),
                     core_1.View({
                         templateUrl: 'app/template/index.html',
-                        directives: [mymap_1.MyMap, footer_help_1.FooterHelp],
-                        styles: ['.root-head , .my-map{\
-    width:100%;\
-      position: absolute;\
-      left: 0;\
-      top: 0;\
-      z-index: 1;\
-    }\
-    .my-map{z-index: 0;}\
-  ']
+                        directives: [mymap_1.MyMap, footer_help_1.FooterHelp]
                     }), 
                     __metadata('design:paramtypes', [])
                 ], AppComponent);
