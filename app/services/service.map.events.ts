@@ -8,7 +8,7 @@ export class MymapEvents{
     public mouseLng: number;
     public mapLat: number;
     public mapLng: number;
-    public map;
+    private map;
 
 
     init(map){
