@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../app/screen.size', './services/service.lat.lng', '../lib/leaflet/leaflet.js'], function(exports_1) {
+System.register(['angular2/core', '../app/screen.size', './services/service.map.events', '../lib/leaflet/leaflet.js'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', '../app/screen.size', './services/service.lat.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, screen_size_1, service_lat_lng_1;
+    var core_1, screen_size_1, service_map_events_1;
     var MyMap;
     return {
         setters:[
@@ -18,15 +18,14 @@ System.register(['angular2/core', '../app/screen.size', './services/service.lat.
             function (screen_size_1_1) {
                 screen_size_1 = screen_size_1_1;
             },
-            function (service_lat_lng_1_1) {
-                service_lat_lng_1 = service_lat_lng_1_1;
+            function (service_map_events_1_1) {
+                service_map_events_1 = service_map_events_1_1;
             },
             function (_1) {}],
         execute: function() {
             MyMap = (function () {
-                function MyMap(myElement, renderer, latLngService) {
+                function MyMap(myElement, renderer, mymapEvents) {
                     this.renderer = renderer;
-                    this.latLngService = latLngService;
                     this.startLatLng = [50.45, 30.47];
                     this.tilesDomain = 'http://a.tiles.wmflabs.org/osm-no-labels/{z}/{x}/{y}.png';
                     this.startZoom = 10;
@@ -35,9 +34,10 @@ System.register(['angular2/core', '../app/screen.size', './services/service.lat.
                     this.width = this.screenSize.width + 'px';
                     this.height = this.screenSize.height + 'px';
                     this.setSizeElement(myElement, renderer);
-                    this.initMap(latLngService);
+                    this.initMap();
+                    mymapEvents.init(this.map);
                 }
-                MyMap.prototype.initMap = function (latLngService) {
+                MyMap.prototype.initMap = function () {
                     var startLatLng = this.startLatLng;
                     var map = L.map('map').setView(startLatLng, this.startZoom);
                     this.map = map;
@@ -70,10 +70,11 @@ System.register(['angular2/core', '../app/screen.size', './services/service.lat.
                             .setContent("You clicked the map at " + e.latlng.toString())
                             .openOn(map);
                     }
-                    map.on('mousemove', function (e) {
-                        latLngService.lat = e.latlng.lat.toFixed(6);
-                        latLngService.lng = e.latlng.lng.toFixed(6);
-                    });
+                    /*map.on('mousemove', function(e){
+                        latLngService.lat = e.latlng.lat.toFixed(6) ;
+                        latLngService.lng = e.latlng.lng.toFixed(6) ;
+            
+                    });*/
                 };
                 MyMap.prototype.setSizeElement = function (myElement, renderer) {
                     renderer.setElementStyle(myElement, 'height', this.height);
@@ -89,7 +90,7 @@ System.register(['angular2/core', '../app/screen.size', './services/service.lat.
                         selector: '.my-map',
                         templateUrl: 'app/template/map.html',
                     }), 
-                    __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer, service_lat_lng_1.LatLngService])
+                    __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer, service_map_events_1.MymapEvents])
                 ], MyMap);
                 return MyMap;
             })();

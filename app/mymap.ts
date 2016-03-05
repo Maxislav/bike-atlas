@@ -5,6 +5,7 @@ import {Component, ElementRef, Renderer ,Inject, OnChanges} from 'angular2/core'
 import {ScreenSize} from '../app/screen.size';
 import {FooterHelp} from './footer.help';
 import {LatLngService} from './services/service.lat.lng';
+import {MymapEvents} from './services/service.map.events';
 
 
 import '../lib/leaflet/leaflet.js';
@@ -14,6 +15,7 @@ declare var L: any;
     selector: '.my-map',
     templateUrl: 'app/template/map.html',
 })
+
 export class MyMap{
 
     private height: string;
@@ -28,17 +30,17 @@ export class MyMap{
     private scope = this;
 
 
-    constructor(myElement: ElementRef, public renderer: Renderer, public latLngService: LatLngService) {
+
+    constructor(myElement: ElementRef, public renderer: Renderer, mymapEvents : MymapEvents) {
         this.screenSize = new ScreenSize();
         this.width = this.screenSize.width+'px';
         this.height = this.screenSize.height+ 'px';
-
-
         this.setSizeElement(myElement, renderer);
-        this.initMap(latLngService);
+        this.initMap();
+        mymapEvents.init(this.map);
     }
 
-    private  initMap(latLngService: LatLngService){
+    private  initMap(){
         var startLatLng = this.startLatLng;
         var map = L.map('map').setView(startLatLng, this.startZoom);
         this.map = map;
@@ -80,11 +82,11 @@ export class MyMap{
                 .openOn(map);
         }
 
-        map.on('mousemove', function(e){
+        /*map.on('mousemove', function(e){
             latLngService.lat = e.latlng.lat.toFixed(6) ;
             latLngService.lng = e.latlng.lng.toFixed(6) ;
 
-        });
+        });*/
 
     }
 

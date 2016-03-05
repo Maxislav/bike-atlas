@@ -2,7 +2,7 @@
  * Created by mars on 2/29/16.
  */
 import {Component} from 'angular2/core';
-import {LatLngService} from './services/service.lat.lng';
+import {MymapEvents} from "./services/service.map.events";
 
 @Component({
     selector: '.footer-menu',
@@ -10,12 +10,9 @@ import {LatLngService} from './services/service.lat.lng';
 })
 
 export  class FooterHelp{
-    public latLng: LatLngService;
-    constructor(latLngService: LatLngService){
-        this.latLng = latLngService;
-
+    public mymapEvents: MymapEvents;
+    constructor(mymapEvents: MymapEvents){
+        this.mymapEvents = mymapEvents;
     }
-
-
 
 }
