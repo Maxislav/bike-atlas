@@ -1,7 +1,15 @@
 <div class="main-menu" [ngClass]="{show:show}">
-    <button class="menu" (click)="clicked()">
-        <i class="material-icons">menu</i>
-    </button>
+    <div class="table">
+        <div class="table-cell">
+            <button class="menu" (click)="clicked()">
+                <i class="material-icons">menu</i>
+            </button>
+        </div>
+        <div class="table-cell padding-8 vertical-middle bold">
+            {{userName}}
+        </div>
+    </div>
+
     <template [ngIf]="show">
         <div class="menu-list">
             <div class="row border-bottom">

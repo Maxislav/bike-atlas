@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../app/screen.size', './services/service.map.events', '../lib/leaflet/leaflet.js'], function(exports_1) {
+System.register(['angular2/core', '../app/screen.size', './services/service.map.events', "angular2-local-storage/local_storage", '../lib/leaflet/leaflet.js'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', '../app/screen.size', './services/service.map.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, screen_size_1, service_map_events_1;
+    var core_1, screen_size_1, service_map_events_1, local_storage_1;
     var MyMap;
     return {
         setters:[
@@ -21,6 +21,9 @@ System.register(['angular2/core', '../app/screen.size', './services/service.map.
             function (service_map_events_1_1) {
                 service_map_events_1 = service_map_events_1_1;
             },
+            function (local_storage_1_1) {
+                local_storage_1 = local_storage_1_1;
+            },
             function (_1) {}],
         execute: function() {
             MyMap = (function () {
@@ -30,6 +33,7 @@ System.register(['angular2/core', '../app/screen.size', './services/service.map.
                     this.tilesDomain = 'http://a.tiles.wmflabs.org/osm-no-labels/{z}/{x}/{y}.png';
                     this.startZoom = 10;
                     this.scope = this;
+                    this.localStorage = new local_storage_1.LocalStorage();
                     this.screenSize = new screen_size_1.ScreenSize();
                     this.width = this.screenSize.width + 'px';
                     this.height = this.screenSize.height + 'px';
@@ -38,6 +42,11 @@ System.register(['angular2/core', '../app/screen.size', './services/service.map.
                     mymapEvents.init(this.map);
                 }
                 MyMap.prototype.initMap = function () {
+                    this.startLatLng = [
+                        parseFloat(this.localStorage.get('mapLat')) || this.startLatLng[0],
+                        parseFloat(this.localStorage.get('mapLng')) || this.startLatLng[1]
+                    ];
+                    this.startZoom = parseFloat(this.localStorage.get('mapZoom')) || this.startZoom;
                     var startLatLng = this.startLatLng;
                     var map = L.map('map').setView(startLatLng, this.startZoom);
                     this.map = map;
@@ -51,13 +60,13 @@ System.register(['angular2/core', '../app/screen.size', './services/service.map.
                         id: 'mapbox.streets'
                     }).addTo(map);
                     L.Icon.Default.imagePath = 'lib/leaflet/images';
-                    L.marker(startLatLng).addTo(map)
-                        .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-                    L.circle(startLatLng, 500, {
-                        color: 'red',
-                        fillColor: '#f03',
-                        fillOpacity: 0.5
-                    }).addTo(map).bindPopup("I am a circle.");
+                    /* L.marker(startLatLng).addTo(map)
+                         .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+                     L.circle(startLatLng, 500, {
+                         color: 'red',
+                         fillColor: '#f03',
+                         fillOpacity: 0.5
+                     }).addTo(map).bindPopup("I am a circle.");*/
                     L.polygon([
                         [51.509, -0.08],
                         [51.503, -0.06],

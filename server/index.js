@@ -70,15 +70,16 @@ function sendFileSave( filePath, res, timeLong ) {
 	}
 
 	if ( ~filePath.indexOf( '\0' ) ) {
-		res.status = 400;
+		res.statusCode = 400;
 		res.end( 'Bad request' );
 		return;
 	}
 	filePath = path.join( process.cwd(), filePath );
 	fs.stat( filePath, function ( err, status ) {
 		if ( err || !status.isFile() ) {
-			res.status = '404';
-			res.end( 'File not found' );
+			res.statusCode = 404;
+			res.end( 'File not found1' );
+			console.log(('File not found ' +filePath).red);
 			return;
 		}
 		var file = new fs.ReadStream( filePath )

@@ -31,11 +31,11 @@ System.register(['angular2/core', './mymap', './footer.help', './menu'], functio
                 }
                 AppComponent = __decorate([
                     core_1.Component({
-                        selector: 'my-app'
+                        selector: 'my-app',
                     }),
                     core_1.View({
                         templateUrl: 'app/template/index.html',
-                        directives: [mymap_1.MyMap, footer_help_1.FooterHelp, menu_1.Menu]
+                        directives: [mymap_1.MyMap, footer_help_1.FooterHelp, menu_1.Menu],
                     }), 
                     __metadata('design:paramtypes', [])
                 ], AppComponent);

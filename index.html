@@ -21,13 +21,23 @@
     <!-- 2. Настройте SystemJS -->
     <script>
         System.config({
+            "paths": {
+                "angular2-local-storage\/*": "node_modules/angular2-local-storage/*.js"
+            },
             packages: {
+
                 app: {
+
                     format: 'register',
+                    defaultExtension: 'js'
+                },
+                'angular2-local-storage':{
                     defaultExtension: 'js'
                 }
             }
+
         });
+
         System.import('app/boot')
                 .then(null, console.error.bind(console));
     </script>

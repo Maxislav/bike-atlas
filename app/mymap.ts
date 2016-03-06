@@ -5,9 +5,14 @@ import {Component, ElementRef, Renderer ,Inject, OnChanges} from 'angular2/core'
 import {ScreenSize} from '../app/screen.size';
 import {FooterHelp} from './footer.help';
 import {MymapEvents} from './services/service.map.events';
+import {LocalStorage} from "angular2-local-storage/local_storage";
+
 
 
 import '../lib/leaflet/leaflet.js';
+
+
+
 declare var L: any;
 
 @Component({
@@ -16,6 +21,7 @@ declare var L: any;
 })
 
 export class MyMap{
+
 
     private height: string;
     private width: string;
@@ -27,10 +33,11 @@ export class MyMap{
     public startZoom: number =  10;
     public footerHelp: FooterHelp;
     private scope = this;
-
-
+    private startLatLngLocalStorage: Array<number>
+    localStorage: LocalStorage;
 
     constructor(myElement: ElementRef, public renderer: Renderer, mymapEvents : MymapEvents) {
+        this.localStorage = new LocalStorage();
         this.screenSize = new ScreenSize();
         this.width = this.screenSize.width+'px';
         this.height = this.screenSize.height+ 'px';
@@ -40,11 +47,15 @@ export class MyMap{
     }
 
     private  initMap(){
-        var startLatLng = this.startLatLng;
+
+        this.startLatLng = [
+            parseFloat(this.localStorage.get('mapLat')) || this.startLatLng[0],
+            parseFloat(this.localStorage.get('mapLng')) || this.startLatLng[1]
+        ];
+        this.startZoom =  parseFloat(this.localStorage.get('mapZoom')) ||  this.startZoom;
+        var startLatLng =  this.startLatLng;
         var map = L.map('map').setView(startLatLng, this.startZoom);
         this.map = map;
-
-
         this.L = L;
         var scope = this;
 
@@ -57,13 +68,13 @@ export class MyMap{
         }).addTo(map);
 
         L.Icon.Default.imagePath = 'lib/leaflet/images';
-        L.marker(startLatLng).addTo(map)
+       /* L.marker(startLatLng).addTo(map)
             .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
         L.circle(startLatLng, 500, {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5
-        }).addTo(map).bindPopup("I am a circle.");
+        }).addTo(map).bindPopup("I am a circle.");*/
 
         L.polygon([
             [51.509, -0.08],
