@@ -1,4 +1,4 @@
-
+@color-button: rgba(255, 255, 255, 0.42);;
 
 .table{
   display: table;
@@ -24,4 +24,19 @@
 }
 .bold{
   font-weight: bold;
+}
+button{
+  padding: 5px 8px;
+  background: @color-button;
+  border: none;
+  outline: none;
+ // box-shadow: 0 0 2px gray;
+  &:hover{
+    box-shadow: 0 0 2px gray;
+    background: white;
+  }
+
+}
+.width-100{
+  width: 100%;
 }

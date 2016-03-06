@@ -46,9 +46,9 @@ button.menu{
   width: 40px;
   height: 40px;
   outline: none;
-  background: rgba(255, 255, 255, 0.42);
+
   &:hover{
-    background: white;
+    background: @color-button;
   }
   &:active{
     box-shadow: inset 0 0 40px gray;
@@ -75,11 +75,16 @@ button.menu{
     background: linear-gradient(to right,  rgba(255,255,255,1) 0%,rgba(255,255,255,0.2) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#33ffffff',GradientType=1 ); /* IE6-9 */
 
-
+    position: relative;
 
   }
   .menu-list{
     min-width: 300px;
+    //position: relative;
+    .register-block{
+      position: absolute;
+      bottom: 0;
+    }
   }
 }
 
