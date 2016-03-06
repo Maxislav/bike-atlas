@@ -93,6 +93,9 @@ function sendFile( file, filename, res, timeLong ) {
 	var headers = {};
 
 	var contentType = mime.lookup( filename );
+    if(contentType == 'text/html'){
+        contentType+="; charset=UTF-8";
+    }
 	if ( contentType ) headers["Content-Type"] = contentType;
 	res.writeHead( 200, headers );
 	file.pipe( res );
