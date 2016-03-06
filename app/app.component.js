@@ -1,4 +1,4 @@
-System.register(['angular2/core', './mymap', './footer.help'], function(exports_1) {
+System.register(['angular2/core', './mymap', './footer.help', './menu'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', './mymap', './footer.help'], function(exports_
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, mymap_1, footer_help_1;
+    var core_1, mymap_1, footer_help_1, menu_1;
     var AppComponent;
     return {
         setters:[
@@ -20,6 +20,9 @@ System.register(['angular2/core', './mymap', './footer.help'], function(exports_
             },
             function (footer_help_1_1) {
                 footer_help_1 = footer_help_1_1;
+            },
+            function (menu_1_1) {
+                menu_1 = menu_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
@@ -32,7 +35,7 @@ System.register(['angular2/core', './mymap', './footer.help'], function(exports_
                     }),
                     core_1.View({
                         templateUrl: 'app/template/index.html',
-                        directives: [mymap_1.MyMap, footer_help_1.FooterHelp]
+                        directives: [mymap_1.MyMap, footer_help_1.FooterHelp, menu_1.Menu]
                     }), 
                     __metadata('design:paramtypes', [])
                 ], AppComponent);
