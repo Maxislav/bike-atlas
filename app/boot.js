@@ -1,5 +1,5 @@
-System.register(['angular2/platform/browser', './app.component', "./services/service.map.events"], function(exports_1) {
-    var browser_1, app_component_1, service_map_events_1;
+System.register(['angular2/platform/browser', './app.component', "./services/service.map.events", "./services/service.menu"], function(exports_1) {
+    var browser_1, app_component_1, service_map_events_1, service_menu_1;
     var appPromise;
     return {
         setters:[
@@ -11,9 +11,12 @@ System.register(['angular2/platform/browser', './app.component', "./services/ser
             },
             function (service_map_events_1_1) {
                 service_map_events_1 = service_map_events_1_1;
+            },
+            function (service_menu_1_1) {
+                service_menu_1 = service_menu_1_1;
             }],
         execute: function() {
-            appPromise = browser_1.bootstrap(app_component_1.AppComponent, [service_map_events_1.MymapEvents]);
+            appPromise = browser_1.bootstrap(app_component_1.AppComponent, [service_map_events_1.MymapEvents, service_menu_1.ServiceMenu]);
         }
     }
 });

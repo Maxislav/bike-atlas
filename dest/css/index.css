@@ -88,9 +88,11 @@ button.menu:active {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 1;
+  z-index: 2;
 }
-.main-menu.show {
+.menu-list {
+  position: fixed;
+  z-index: 1;
   background: white;
   height: 100%;
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0+100;White+to+Transparent */
@@ -104,12 +106,11 @@ button.menu:active {
   /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#33ffffff', GradientType=1);
   /* IE6-9 */
-  position: relative;
 }
-.main-menu .menu-list {
+.menu-list > div {
   min-width: 300px;
 }
-.main-menu .menu-list .register-block {
+.menu-list .register-block {
   position: absolute;
   bottom: 0;
 }

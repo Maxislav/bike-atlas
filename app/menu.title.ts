@@ -1,14 +1,16 @@
 import {Component} from 'angular2/core';
+import {ServiceMenu} from './services/service.menu';
 
 @Component({
     selector: '.root-head',
     templateUrl: 'app/template/menu.html',
 })
 export class Menu {
-    show:boolean = false;
     userName:string;
+    serviceMenu: ServiceMenu;
 
-    constructor() {
+    constructor(serviceMenu: ServiceMenu) {
+        this.serviceMenu = serviceMenu;
         setTimeout(this.setName.bind(this), 1000)
     }
 
@@ -17,6 +19,6 @@ export class Menu {
     }
 
     clicked() {
-        this.show = !this.show;
+        this.serviceMenu.show = !this.serviceMenu.show;
     }
 }
