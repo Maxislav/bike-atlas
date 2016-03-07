@@ -8,8 +8,7 @@ import {Menu} from './menu';
 })
 @View({
     templateUrl: 'app/template/index.html',
-    directives: [MyMap,FooterHelp, Menu],
-
+    directives: [MyMap, FooterHelp, Menu],
 })
 
 export class AppComponent {
