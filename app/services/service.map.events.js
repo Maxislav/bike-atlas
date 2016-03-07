@@ -1,4 +1,4 @@
-System.register(['angular2/core', "angular2-local-storage/local_storage"], function(exports_1) {
+System.register(['angular2/core', "angular2-local-storage/local_storage", "./service.menu"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', "angular2-local-storage/local_storage"], funct
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, local_storage_1;
+    var core_1, local_storage_1, service_menu_1;
     var MymapEvents;
     return {
         setters:[
@@ -17,10 +17,14 @@ System.register(['angular2/core', "angular2-local-storage/local_storage"], funct
             },
             function (local_storage_1_1) {
                 local_storage_1 = local_storage_1_1;
+            },
+            function (service_menu_1_1) {
+                service_menu_1 = service_menu_1_1;
             }],
         execute: function() {
             MymapEvents = (function () {
-                function MymapEvents() {
+                function MymapEvents(serviceMenu) {
+                    this.serviceMenu = serviceMenu;
                     this.localStorage = new local_storage_1.LocalStorage();
                 }
                 MymapEvents.prototype.init = function (map) {
@@ -42,10 +46,14 @@ System.register(['angular2/core', "angular2-local-storage/local_storage"], funct
                         this.localStorage.set('mapZoom', this.mapZoom);
                     }
                     map.on('zoomend', setZoomToStarage.bind(this));
+                    function hideMenu() {
+                        this.serviceMenu.show = false;
+                    }
+                    map.on('click', hideMenu.bind(this));
                 };
                 MymapEvents = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [service_menu_1.ServiceMenu])
                 ], MymapEvents);
                 return MymapEvents;
             })();

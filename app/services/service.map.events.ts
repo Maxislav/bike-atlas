@@ -1,7 +1,7 @@
 import {Injectable} from 'angular2/core';
 import {MyMap} from "../mymap";
-//import {LocalStorage} from "../local_storage";
 import {LocalStorage} from "angular2-local-storage/local_storage";
+import {ServiceMenu} from "./service.menu";
 
 @Injectable()
 export class MymapEvents{
@@ -10,12 +10,13 @@ export class MymapEvents{
     public mapLat: number;
     public mapLng: number;
     public mapZoom: number;
+    serviceMenu: ServiceMenu;
     private map;
     localStorage : LocalStorage;
-    constructor(){
+    constructor( serviceMenu: ServiceMenu){
+        this.serviceMenu = serviceMenu;
         this.localStorage = new LocalStorage();
     }
-
 
     init(map){
 
@@ -42,7 +43,12 @@ export class MymapEvents{
             this.localStorage.set( 'mapZoom', this.mapZoom) ;
         }
 
-        map.on('zoomend', setZoomToStarage.bind(this))
+        map.on('zoomend', setZoomToStarage.bind(this));
+
+        function hideMenu(){
+            this.serviceMenu.show = false;
+        }
+        map.on('click', hideMenu.bind(this))
 
     }
 
