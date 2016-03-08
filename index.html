@@ -6,10 +6,12 @@
 
     <!-- 1. Загрузите библиотеки -->
     <!--<script src="bower_components/traceur-runtime/traceur-runtime.min.js"></script>-->
-    <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
-    <script src="node_modules/systemjs/dist/system.src.js"></script>
-    <script src="node_modules/rxjs/bundles/Rx.js"></script>
-    <script src="node_modules/angular2/bundles/angular2.min.js"></script>
+    <script src="lib/a2/angular2-polyfills.min.js"></script>
+    <!--<script src="node_modules/systemjs/dist/system.src.js"></script>-->
+    <script src="lib/systemjs/system.js"></script>
+    <script src="lib/rxjs/Rx.min.js"></script>
+    <!--<script src="node_modules/angular2/bundles/angular2.min.js"></script>-->
+    <script src="lib/a2/angular2.min.js"></script>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -22,7 +24,7 @@
     <script>
         System.config({
             "paths": {
-                "angular2-local-storage\/*": "node_modules/angular2-local-storage/*"
+                "local-storage": "local-storage.js"
             },
             packages: {
 
@@ -31,7 +33,7 @@
                     format: 'register',
                     defaultExtension: 'js'
                 },
-                'angular2-local-storage':{
+                'lib':{
                     defaultExtension: 'js'
                 }
             }

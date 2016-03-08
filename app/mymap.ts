@@ -5,7 +5,7 @@ import {Component, ElementRef, Renderer ,Inject, OnChanges} from 'angular2/core'
 import {ScreenSize} from '../app/screen.size';
 import {FooterHelp} from './footer.help';
 import {MymapEvents} from './services/service.map.events';
-import {LocalStorage} from "angular2-local-storage/local_storage";
+import {LocalStorage} from "../lib/a2/local_storage";
 
 
 

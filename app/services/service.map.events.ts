@@ -1,6 +1,7 @@
 import {Injectable} from 'angular2/core';
 import {MyMap} from "../mymap";
-import {LocalStorage} from "angular2-local-storage/local_storage";
+//import {LocalStorage} from "angular2-local-storage/local_storage";
+import {LocalStorage} from "../../lib/a2/local_storage";
 import {ServiceMenu} from "./service.menu";
 
 @Injectable()
