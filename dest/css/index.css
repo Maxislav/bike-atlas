@@ -1,0 +1,163 @@
+* {
+  margin: 0;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+}
+.table {
+  display: table;
+}
+.table-cell {
+  display: table-cell;
+}
+.inline-block {
+  display: inline-block;
+}
+.width-100 {
+  width: 100%;
+}
+.row {
+  margin-left: -8px;
+}
+.row > div {
+  margin: 5px;
+}
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+input {
+  padding: 5px;
+  border: none;
+  border-bottom: 1px solid darkgray;
+  outline: none;
+}
+.border-bottom {
+  border-bottom: 1px solid darkgray;
+}
+.padding-8 {
+  padding: 8px;
+}
+.vertical-middle {
+  vertical-align: middle;
+}
+.bold {
+  font-weight: bold;
+}
+button {
+  padding: 5px 8px;
+  background: rgba(255, 255, 255, 0.42);
+  border: none;
+  outline: none;
+}
+button:hover {
+  box-shadow: 0 0 2px gray;
+  background: white;
+}
+.button-container {
+  text-align: right;
+}
+.button-container > div {
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px 8px;
+}
+.button {
+  color: #4b4b4b;
+}
+.button.primary {
+  color: #00b52c;
+}
+.button:active {
+  color: white;
+  background-color: rgba(177, 198, 208, 0.55);
+}
+.my-map {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+.my-map {
+  z-index: 0;
+}
+.leaflet-control-container .leaflet-top.leaflet-left {
+  right: 0;
+  left: inherit;
+}
+.leaflet-control-container .leaflet-top.leaflet-left > .leaflet-control-zoom.leaflet-bar.leaflet-control {
+  margin: 10px;
+}
+.footer-menu {
+  position: absolute;
+  bottom: 0;
+}
+.help-coordinate .lat-lng-cell {
+  font-size: 12px;
+  min-width: 100px;
+  color: #232429;
+  text-shadow: 0 0 2px #dbf2fc;
+}
+.help-coordinate .lat-lng-cell:first-child {
+  min-width: 50px;
+}
+button.menu {
+  padding: 0;
+  border: none;
+  width: 40px;
+  height: 40px;
+  outline: none;
+  border-radius: 50%;
+}
+button.menu:hover {
+  background: rgba(255, 255, 255, 0.42);
+}
+button.menu:active {
+  box-shadow: inset 0 0 40px gray;
+  color: gray;
+}
+.root-head {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+.menu-list {
+  position: fixed;
+  z-index: 1;
+  background: white;
+  height: 100%;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0+100;White+to+Transparent */
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0.11+100 */
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0.2+100 */
+  background: -moz-linear-gradient(left, #ffffff 0%, rgba(255, 255, 255, 0.2) 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, #ffffff 0%, rgba(255, 255, 255, 0.2) 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, #ffffff 0%, rgba(255, 255, 255, 0.2) 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#33ffffff', GradientType=1);
+  /* IE6-9 */
+}
+.menu-list > div {
+  min-width: 300px;
+}
+.menu-list .register-block {
+  position: absolute;
+  bottom: 0;
+  background: white;
+}
+.enter-regist {
+  position: fixed;
+  width: 300px;
+  left: 50%;
+  margin-left: -150px;
+  z-index: 2;
+  background: white;
+}
+.row:after,
+.row:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
