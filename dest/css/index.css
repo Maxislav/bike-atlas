@@ -11,8 +11,25 @@
 .inline-block {
   display: inline-block;
 }
+.width-100 {
+  width: 100%;
+}
 .row {
-  padding: 8px;
+  margin-left: -8px;
+}
+.row > div {
+  margin: 5px;
+}
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+input {
+  padding: 5px;
+  border: none;
+  border-bottom: 1px solid darkgray;
+  outline: none;
 }
 .border-bottom {
   border-bottom: 1px solid darkgray;
@@ -36,8 +53,23 @@ button:hover {
   box-shadow: 0 0 2px gray;
   background: white;
 }
-.width-100 {
-  width: 100%;
+.button-container {
+  text-align: right;
+}
+.button-container > div {
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px 8px;
+}
+.button {
+  color: gray;
+}
+.button.primary {
+  color: #00b52c;
+}
+.button:active {
+  color: white;
+  background-color: rgba(177, 198, 208, 0.55);
 }
 .my-map {
   width: 100%;
@@ -113,4 +145,19 @@ button.menu:active {
 .menu-list .register-block {
   position: absolute;
   bottom: 0;
+  background: white;
+}
+.enter-regist {
+  position: fixed;
+  width: 300px;
+  left: 50%;
+  margin-left: -150px;
+  z-index: 2;
+  background: white;
+}
+.row:after,
+.row:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }

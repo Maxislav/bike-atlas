@@ -19,6 +19,7 @@ System.register(['angular2/core'], function(exports_1) {
             ServiceMenu = (function () {
                 function ServiceMenu() {
                     this.show = false;
+                    this.enterRegistShow = false;
                 }
                 ServiceMenu = __decorate([
                     core_1.Injectable(), 

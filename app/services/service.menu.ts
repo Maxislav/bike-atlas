@@ -5,4 +5,5 @@ import {Injectable} from 'angular2/core';
 @Injectable()
 export class ServiceMenu{
     public show: boolean = false;
+    public enterRegistShow: boolean = false;
 }

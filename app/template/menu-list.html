@@ -1,9 +1,16 @@
 <template [ngIf]="serviceMenu.show">
     <div class="dd">
-        <div class="register-block">
-            <button>
-                Регистрация
-            </button>
+        <div class="register-block width-100">
+            <div class="button-container ">
+                <div class="button" (click)="onRegist()">
+                    Регистрация
+                </div>
+                <div class="button primary">
+                    Вход
+                </div>
+            </div>
+
+
 
         </div>
     </div>

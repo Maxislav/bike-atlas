@@ -1,4 +1,7 @@
-@color-button: rgba(255, 255, 255, 0.42);;
+@color-button: rgba(255, 255, 255, 0.42);
+@color-button-primary: rgb(0, 181, 44);
+@color-button-press: rgba(177, 198, 208, 0.55);
+
 
 .table{
   display: table;
@@ -9,9 +12,26 @@
 .inline-block{
   display: inline-block;
 }
+.width-100{
+  width: 100%;
+}
 .row{
-  padding: 8px;
+  margin-left: -8px;
 
+  &>div{
+    margin: 5px;
+  }
+}
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+input{
+  padding: 5px;
+  border: none;
+  border-bottom: 1px solid darkgray;
+  outline: none;
 }
 .border-bottom{
   border-bottom: 1px solid darkgray;
@@ -37,6 +57,23 @@ button{
   }
 
 }
-.width-100{
-  width: 100%;
+
+.button-container{
+  text-align: right;
+  &>div{
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 8px;
+  }
+}
+.button{
+  color: gray;
+
+  &.primary{
+    color: @color-button-primary;
+  }
+  &:active{
+    color: white;
+    background-color: @color-button-press;
+  }
 }
