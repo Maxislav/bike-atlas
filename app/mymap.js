@@ -30,7 +30,8 @@ System.register(['angular2/core', '../app/screen.size', './services/service.map.
                 function MyMap(myElement, renderer, mymapEvents) {
                     this.renderer = renderer;
                     this.startLatLng = [50.45, 30.47];
-                    this.tilesDomain = 'http://a.tiles.wmflabs.org/osm-no-labels/{z}/{x}/{y}.png';
+                    // public tilesDomain: string = 'http://a.tiles.wmflabs.org/osm-no-labels/{z}/{x}/{y}.png';
+                    this.tilesDomain = 'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png';
                     this.startZoom = 10;
                     this.scope = this;
                     this.localStorage = new local_storage_1.LocalStorage();
@@ -59,6 +60,8 @@ System.register(['angular2/core', '../app/screen.size', './services/service.map.
                             'Imagery © <a href="http://mapbox.com">Mapbox</a>',
                         id: 'mapbox.streets'
                     }).addTo(map);
+                    var reliefLayer = L.tileLayer('http://hills.gpsies.com/{z}/{x}/{y}.png');
+                    map.addLayer(reliefLayer);
                     L.Icon.Default.imagePath = 'lib/leaflet/images';
                     /* L.marker(startLatLng).addTo(map)
                          .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();

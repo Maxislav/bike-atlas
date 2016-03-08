@@ -29,7 +29,8 @@ export class MyMap{
     public map: any;
     public L: any;
     public startLatLng: Array<number> = [50.45, 30.47];
-    public tilesDomain: string = 'http://a.tiles.wmflabs.org/osm-no-labels/{z}/{x}/{y}.png';
+   // public tilesDomain: string = 'http://a.tiles.wmflabs.org/osm-no-labels/{z}/{x}/{y}.png';
+    public tilesDomain: string = 'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png';
     public startZoom: number =  10;
     public footerHelp: FooterHelp;
     private scope = this;
@@ -66,6 +67,10 @@ export class MyMap{
             'Imagery © <a href="http://mapbox.com">Mapbox</a>',
             id: 'mapbox.streets'
         }).addTo(map);
+        var reliefLayer = L.tileLayer( 'http://hills.gpsies.com/{z}/{x}/{y}.png'
+
+        );
+        map.addLayer(reliefLayer);
 
         L.Icon.Default.imagePath = 'lib/leaflet/images';
        /* L.marker(startLatLng).addTo(map)
