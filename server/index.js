@@ -4,11 +4,12 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 
-var http = require( "http" ),
+var express = require("express");
+	http = require( "http" ),
 	url = require( "url" ),
 	path = require( "path" ),
 	fs = require( "fs" ),
-	port = 8080, //default 80
+	port = 3000, //default 80
 	https = require( 'https' ),
 	mime = require( 'mime' ),
 	colors = require( 'colors' );
@@ -21,8 +22,21 @@ var proxi = {
 	}
 };
 
+var app  = express();
+app.set('port', port);
 
-var server = new http.Server();
+http.createServer(app).listen(app.get('port'), function(){
+	console.log('ololo')
+});
+
+app.use(function(req, res, next){
+	_use(req, res)
+});
+
+
+
+
+//var server = new http.Server();
 var timer = timerFoo();
 
 function timerFoo(){
@@ -31,7 +45,7 @@ function timerFoo(){
 	},1000 )
 };
 
-server.on( 'request', function ( request, response ) {
+function _use ( request, response ) {
 	clearTimeout(timer);
 	timer = timerFoo();
 
@@ -49,7 +63,11 @@ server.on( 'request', function ( request, response ) {
 	}
 	var t0 = new Date().getTime();
 	sendFileSave( url.parse( request.url ).pathname, response, t0 );
-} );
+}
+
+
+
+//server.on( 'request',  );
 
 function checkAccess( req ) {
 	return url.parse( req.url, true ).query.secret != 'o_O';
@@ -152,5 +170,5 @@ function proxiServ( request, response, timeLong ) {
 }
 
 
-server.listen( port );
+//server.listen( port );
 console.log( 'Server start on port: ' + port );
