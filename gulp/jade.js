@@ -8,43 +8,18 @@ var jade = require('gulp-jade'),
     plumber = require('gulp-plumber-notifier');
 
 module.exports = function (gulp) {
-    gulp.task('templates', function () {
+    gulp.task('jade', function () {
         var LOCALS = {};
         var
-            a = gulp.src('./src/index.jade')
+            a = gulp.src('./src/**/*.jade')
                 .pipe(plumber())
                 .pipe(jade({
                     locals: LOCALS,
                     pretty: true
                 }))
-                .pipe(gulp.dest('./'))
-                .pipe(livereload()),
-
-            b = gulp.src('./src/**/*.jade')
-                .pipe(plumber())
-                .pipe(jade({
-                    locals: LOCALS,
-                    pretty: true
-                }))
-                .pipe(gulp.dest('./dist/'))
+                .pipe(gulp.dest('./dist'))
                 .pipe(livereload());
 
-        /* b = gulp.src('./src/module/leaflet/template-jade/!**!/!*.jade')
-         .pipe(jade({
-         locals: LOCALS,
-         pretty: true
-         }))
-         .pipe(gulp.dest('./src/module/leaflet/template/'))
-         .pipe( livereload()),
-
-         c =  gulp.src('./src/app/template-jade/!**!/!*.jade')
-         .pipe(jade({
-         locals: LOCALS,
-         pretty: true
-         }))
-         .pipe(gulp.dest('./src/app/template/'))
-         .pipe( livereload());*/
-
-        return merge(a, b);
+        return merge(a);
     });
 };
