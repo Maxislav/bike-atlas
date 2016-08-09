@@ -33,8 +33,13 @@
   },
   "devDependencies": {
     "concurrently": "^2.0.0",
+    "gulp-jade": "^1.1.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-plumber-notifier": "0.0.3",
+    "gulp-sync": "^0.1.4",
     "lite-server": "^2.2.0",
+    "merge-stream": "^1.0.0",
     "typescript": "^1.8.10",
-    "typings":"^1.0.4"
+    "typings": "^1.0.4"
   }
 }
