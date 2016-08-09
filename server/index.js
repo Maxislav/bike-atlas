@@ -13,7 +13,7 @@ var express = require("express" ),
 	https = require( 'https' ),
 	mime = require( 'mime' ),
 	colors = require( 'colors' );
-var config = JSON.parse(fs.readFileSync('./server.config.json', "utf8" ).toString());
+var config = JSON.parse(fs.readFileSync('./server/server.config.json', "utf8" ).toString());
 port = config.port;
 var app  = express();
 app.set('port', port);
