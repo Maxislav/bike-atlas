@@ -1,5 +1,5 @@
 import {UIRouter} from "ui-router-ng2";
-import {INITIAL_STATES} from "../app.states";
+import {INITIAL_STATES} from "./app.states";
 import {Injectable, Injector} from "@angular/core";
 
 /**

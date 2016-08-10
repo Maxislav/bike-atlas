@@ -1,3 +1,21 @@
-//
-   Created by maxislav on 10.08.16.
-
+doctype html
+html(lang='en')
+    head
+        title Вело атлас
+        base(href="/")
+        // 1. Загрузите библиотеки
+        //-script src="node_modules/es6-shim/es6-shim.min.js"
+        script(src='node_modules/core-js/client/shim.min.js')
+        script(src='node_modules/zone.js/dist/zone.js')
+        script(src='node_modules/reflect-metadata/Reflect.js')
+        script(src='node_modules/systemjs/dist/system.src.js')
+        script(src='systemjs.config.js')
+        script.
+            System.import('app').catch(function(err){ console.error(err); });
+        style.
+            * {
+                margin: 0;
+                padding: 0;
+            }
+    body
+        ui-view Loading...

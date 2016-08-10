@@ -6,3 +6,4 @@ typings
 *.map
 dist/
 src/**/*.js
+!src/**/*.config.js

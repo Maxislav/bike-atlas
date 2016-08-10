@@ -27,11 +27,18 @@ gulp.task('less', function () {
  */
 require('./gulp/jade')(gulp);
 
+/**
+ * watch
+ */
+require('./gulp/watch')(gulp);
+
+/*
 
 gulp.task('watch', function() {
 	livereload.listen();
-	gulp.watch('app/less/*.less', ['less']);
+	gulp.watch('app/less/!*.less', ['less']);
 });
+*/
 
 
 gulp.task('default', gulpSync(devSyncTask));
