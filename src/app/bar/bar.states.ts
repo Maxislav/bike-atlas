@@ -25,7 +25,7 @@ export let BAR_STATES: Ng2StateDeclaration[] = [
         resolve: [
           // Inject 'http' and fetch all the bar data
           { token: 'barList', deps: [Http], resolveFn: (http: Http) =>
-            http.get('/data/barData.json').map(res => res.json()).toPromise() }
+            http.get('src/app/data/barData.json').map(res => res.json()).toPromise() }
         ]
     },
 
