@@ -8,3 +8,4 @@ dist/
 src/**/*.js
 !src/**/*.config.js
 maptoken.json
+user-pass.json
