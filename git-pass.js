@@ -22,7 +22,7 @@ function toZip() {
 }
 function toCommit() {
   return new Promise((resolve, reject)=>{
-    exec("git add && git commit -m \"commit new zip pass\"", {timeout:1000}, (error, stdout, stderr) => {
+    exec("git add . && git commit -m \"commit new zip pass\"", {timeout:1000}, (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
         reject(error);
