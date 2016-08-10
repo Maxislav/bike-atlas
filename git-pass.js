@@ -2,14 +2,11 @@
  * Created by maxislav on 10.08.16.
  */
 const exec = require('child_process').exec;
-var fs = require('fs');
+const fs = require('fs');
+
 getPass()
   .then(toZip)
   .then(toCommit);
-
-//toZip()
-  //.then(toCommit);
-
 
 function getPass() {
   return new Promise((resolve, reject)=>{
