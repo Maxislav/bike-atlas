@@ -8,5 +8,5 @@ div(style="padding:25px")
     h4
         label name:
         div {{hero.name}}
-        input(value ="{{hero.name}}", placeholder='name')
+        input([(ngModel)]="hero.name", placeholder='name')
 

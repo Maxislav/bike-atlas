@@ -6,6 +6,7 @@ typings
 *.map
 dist/
 src/**/*.js
+src/**/*.html
 !src/**/*.config.js
 maptoken.json
 user-pass.json
