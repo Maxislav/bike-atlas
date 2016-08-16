@@ -1,4 +1,12 @@
 //
    Created by maxislav on 16.08.16.
-h1 {{title}}
-h2 {{hero}}
+div(style="padding:25px")
+    h1 {{title}}
+    h4
+        label id
+        div {{hero.id}}
+    h4
+        label name:
+        div {{hero.name}}
+        input(value ="{{hero.name}}", placeholder='name')
+
