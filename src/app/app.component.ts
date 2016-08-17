@@ -9,12 +9,22 @@ import { Component } from '@angular/core';
 export class AppComponent {
     title = 'Tour of Heroes';
 
-    selectedHero: Hero;
-    
-    hero: Hero = {
-        id: 1,
-        name : 'Ololo'
+
+    herosss: Hero = {
+        id: 0,
+        name: ''
     };
+
+    heroes:  Hero[] = HEROES;
+    selectedHero: Hero;
+
+
+    constructor(){
+        this.selectedHero = this.herosss;
+    }
+
+    onSelect(hero: Hero) { this.selectedHero = hero; }
+
 }
 
 class Hero{

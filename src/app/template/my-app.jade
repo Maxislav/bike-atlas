@@ -3,10 +3,14 @@
 div(style="padding:25px")
     h1 {{title}}
     h4
-        label id
-        div {{hero.id}}
+        label id {{selectedHero.id}}
+        div
     h4
-        label name:
-        div {{hero.name}}
-        input([(ngModel)]="hero.name", placeholder='name')
-
+        label name: {{selectedHero.name}}
+        div
+            input([(ngModel)]="selectedHero.name", placeholder='name')
+    h1
+    ul
+        li(*ngFor="let hero of heroes", (click)="onSelect(hero)")
+            span {{hero.id}}
+            span {{hero.name}}
