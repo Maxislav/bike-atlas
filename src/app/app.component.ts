@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import {Hero, HEROES} from './hero'
+import {Hero} from './hero';
+
+import {HeroService} from './hero.service';
 
 @Component({
     selector: 'my-app',
-    templateUrl: 'src/app/template/my-app.html'
+    templateUrl: 'src/app/template/my-app.html',
+    providers: [HeroService]
 })
 
 
@@ -16,11 +19,13 @@ export class AppComponent {
         name: ''
     };
 
-    heroes:  Hero[] = HEROES;
+    heroes:  Hero[]; //= HEROES;
     selectedHero: Hero;
 
-    constructor(){
+    constructor(private heroService: HeroService){
         this.selectedHero = this.herosss;
+        //heroService.getHeroes().then(heroes => this.heroes = heroes);
+        heroService.getHeroesSlowly().then(heroes => this.heroes = heroes);
     }
 
     onSelect(hero: Hero) { this.selectedHero = hero; }
