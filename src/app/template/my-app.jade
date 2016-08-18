@@ -10,6 +10,8 @@ div(style="padding:25px")
         div
             input([(ngModel)]="selectedHero.name", placeholder='name')
     h1
+    h4
+        my-hero-detail([hero]="selectedHero")
     ul
         li(*ngFor="let hero of heroes", (click)="onSelect(hero)")
             span {{hero.id}}
