@@ -12,6 +12,8 @@ div(style="padding:25px")
     h1
     h4
         my-hero-detail([hero]="selectedHero")
+    my-hero-list
+
     ul
         li(*ngFor="let hero of heroes", (click)="onSelect(hero)")
             span {{hero.id}}
