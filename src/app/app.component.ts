@@ -5,8 +5,14 @@ import {HeroService} from './hero.service';
 
 @Component({
     selector: 'my-app',
-    templateUrl: 'src/app/template/my-app.html',
-    providers: [HeroService]
+    //templateUrl: 'src/app/template/my-app.html',
+    template: '' +
+    '<nav>' +
+    '<a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>' +
+    '<a routerLink="#/heroes" routerLinkActive="active">Heroes</a>    ' +
+    '</nav>' +
+    '<router-outlet></router-outlet> ',
+   // providers: [HeroService]
 })
 
 
@@ -14,20 +20,10 @@ export class AppComponent {
     title = 'Tour of Heroes';
 
 
-    herosss: Hero = {
-        id: 0,
-        name: ''
-    };
+    constructor(){
 
-    heroes:  Hero[]; //= HEROES;
-    selectedHero: Hero;
-
-    constructor(private heroService: HeroService){
-        this.selectedHero = this.herosss;
-        //heroService.getHeroes().then(heroes => this.heroes = heroes);
-        heroService.getHeroesSlowly().then(heroes => this.heroes = heroes);
     }
 
-    onSelect(hero: Hero) { this.selectedHero = hero; }
+
 
 }

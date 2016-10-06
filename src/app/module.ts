@@ -7,19 +7,22 @@ import {FormsModule}   from '@angular/forms';
 
 import {AppComponent}  from './app.component';
 import {HeroDetailComponent}  from './my-hero-detail.component';
+import {routing} from './app.routing';
+import {HeroesComponent} from "./heroes.component";
 
 @NgModule({
     imports: [
         BrowserModule,
-        FormsModule
+        FormsModule,
+        routing
     ],
     declarations: [
         AppComponent,
-        HeroDetailComponent
+        //HeroDetailComponent,
+        HeroesComponent
     ],
     bootstrap: [
         AppComponent
     ]
 })
-export class AppModule {
-}
+export class AppModule {}
