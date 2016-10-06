@@ -125,7 +125,12 @@ function sendFileSave( filePath, res, timeLong ) {
 		res.end( 'Bad request' );
 		return;
 	}
+	if(!/\./.test(filePath)){
+		filePath = 'index.html';
+	}
+
 	filePath = path.join( process.cwd(), filePath );
+
 	fs.stat( filePath, function ( err, status ) {
 		if ( err || !status.isFile() ) {
 			res.statusCode = 404;
