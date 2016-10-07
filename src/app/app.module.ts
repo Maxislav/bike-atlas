@@ -10,6 +10,7 @@ import {HeroDetailComponent}  from './my-hero-detail.component';
 import {routing} from './app.routing';
 import {HeroesComponent} from "./heroes.component";
 import {DashboardComponent} from "./dasboard.component";
+import {TransactionResolver} from "./transaction.resolve";
 
 @NgModule({
     imports: [
@@ -19,12 +20,13 @@ import {DashboardComponent} from "./dasboard.component";
     ],
     declarations: [
         AppComponent,
-        //HeroDetailComponent,
+        HeroDetailComponent,
         HeroesComponent,
         DashboardComponent
     ],
     bootstrap: [
         AppComponent
-    ]
+    ],
+    providers: [TransactionResolver]
 })
 export class AppModule {}

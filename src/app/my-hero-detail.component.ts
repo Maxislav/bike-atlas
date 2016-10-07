@@ -12,4 +12,11 @@ import { Hero } from './hero'
 export class HeroDetailComponent {
     @Input()
     hero: Hero;
+
+    constructor(){
+        this.hero = {
+            id: 0,
+            name: 'Olol'
+        }
+    }
 }
