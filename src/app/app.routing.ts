@@ -4,6 +4,7 @@
 import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {HeroesComponent} from './heroes.component';
+import {DashboardComponent} from "./dasboard.component";
 
 const  appRouters: Routes = [
     {
@@ -14,6 +15,10 @@ const  appRouters: Routes = [
     {
         path: 'heroes',
         component: HeroesComponent
+    },
+    {
+        path: 'dashboard',
+        component: DashboardComponent
     }
 ];
 

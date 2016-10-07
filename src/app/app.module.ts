@@ -9,6 +9,7 @@ import {AppComponent}  from './app.component';
 import {HeroDetailComponent}  from './my-hero-detail.component';
 import {routing} from './app.routing';
 import {HeroesComponent} from "./heroes.component";
+import {DashboardComponent} from "./dasboard.component";
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import {HeroesComponent} from "./heroes.component";
     declarations: [
         AppComponent,
         //HeroDetailComponent,
-        HeroesComponent
+        HeroesComponent,
+        DashboardComponent
     ],
     bootstrap: [
         AppComponent
