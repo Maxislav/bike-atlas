@@ -11,6 +11,8 @@ import {routing} from './app.routing';
 import {HeroesComponent} from "./heroes.component";
 import {DashboardComponent} from "./dasboard.component";
 import {TransactionResolver} from "./transaction.resolve";
+import {AuthComponent} from "./auth.component";
+import {HighlightDirective} from "./leaflet-map.component";
 
 @NgModule({
     imports: [
@@ -19,6 +21,8 @@ import {TransactionResolver} from "./transaction.resolve";
         routing
     ],
     declarations: [
+        HighlightDirective,
+        AuthComponent,
         AppComponent,
         HeroDetailComponent,
         HeroesComponent,
@@ -27,6 +31,6 @@ import {TransactionResolver} from "./transaction.resolve";
     bootstrap: [
         AppComponent
     ],
-    providers: [TransactionResolver]
+    providers: [TransactionResolver, HighlightDirective]
 })
 export class AppModule {}

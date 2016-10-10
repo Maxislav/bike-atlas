@@ -3,6 +3,7 @@ import {Hero} from './hero';
 
 import {HeroService} from './hero.service';
 
+
 @Component({
     moduleId: module.id,
     selector: 'my-app',
@@ -13,6 +14,7 @@ import {HeroService} from './hero.service';
     '<a routerLink="/heroes" routerLinkActive="active">Heroes</a>    ' +
     '</nav>'+
     '<router-outlet></router-outlet>',
+    styleUrls: [ '../../lib/leaflet/leaflet.css' ]
 })
 
 

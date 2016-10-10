@@ -9,12 +9,18 @@ import {HeroDetailComponent} from "./my-hero-detail.component";
 //import {Hero} from "./hero";
 //import {HEROES, Hero} from "./hero";
 import {TransactionResolver} from "./transaction.resolve";
+import {AuthComponent} from "./auth.component";
 
 const  appRouters: Routes = [
     {
         path: '',
         redirectTo: 'heroes',
         pathMatch: 'full'
+    },
+    {
+        path: 'auth',
+        component: AuthComponent
+        
     },
     {
         path: 'heroes',
