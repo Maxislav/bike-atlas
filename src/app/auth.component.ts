@@ -7,7 +7,11 @@ import { ElementRef } from '@angular/core';
 
 
 @Component({
-    template: '<leaflet-map> Ololo</leaflet-map>',
+    template: '<leaflet-map> map loading...</leaflet-map>',
+    //styleUrls: ['src/app/css/leaflet-map.component.css'],
+    styles: ['{width: 100%}']
+
+
 })
 
 export class AuthComponent{

@@ -10,6 +10,7 @@ module.exports = function (gulp) {
     livereload.listen();
     gulp.watch('./src/**/*.jade', ['jade']);
     gulp.watch('*.jade', ['jade']);
+    gulp.watch('./src/**/*.less', ['less']);
   });
   
 };

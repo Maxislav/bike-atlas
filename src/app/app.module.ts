@@ -12,7 +12,7 @@ import {HeroesComponent} from "./heroes.component";
 import {DashboardComponent} from "./dasboard.component";
 import {TransactionResolver} from "./transaction.resolve";
 import {AuthComponent} from "./auth.component";
-import {HighlightDirective} from "./leaflet-map.component";
+import {LeafletMapDirective} from "./directive/leaflet-map.directive";
 
 @NgModule({
     imports: [
@@ -21,7 +21,7 @@ import {HighlightDirective} from "./leaflet-map.component";
         routing
     ],
     declarations: [
-        HighlightDirective,
+        LeafletMapDirective,
         AuthComponent,
         AppComponent,
         HeroDetailComponent,
@@ -31,6 +31,6 @@ import {HighlightDirective} from "./leaflet-map.component";
     bootstrap: [
         AppComponent
     ],
-    providers: [TransactionResolver, HighlightDirective]
+    providers: [TransactionResolver]
 })
 export class AppModule {}
