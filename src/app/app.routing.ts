@@ -14,12 +14,21 @@ import {AuthComponent} from "./auth.component";
 const  appRouters: Routes = [
     {
         path: '',
-        redirectTo: 'heroes',
+        redirectTo: 'auth',
         pathMatch: 'full'
     },
     {
         path: 'auth',
-        component: AuthComponent
+        component: AuthComponent,
+        pathMatch: 'full',
+        children:[
+            {
+                path:''
+            },
+            {
+                path:'map'
+            }
+        ]
         
     },
     {

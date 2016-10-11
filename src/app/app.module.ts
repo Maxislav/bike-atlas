@@ -21,7 +21,7 @@ import {LeafletMapDirective} from "./directive/leaflet-map.directive";
         routing
     ],
     declarations: [
-        LeafletMapDirective,
+        //LeafletMapDirective,
         AuthComponent,
         AppComponent,
         HeroDetailComponent,
