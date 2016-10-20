@@ -11,7 +11,29 @@
     <script src="node_modules/reflect-metadata/Reflect.js"></script>
     <script src="node_modules/systemjs/dist/system.js"></script>
     <script src="systemjs.config.js"></script>
-    <script>System.import('app').catch(function(err){ console.error(err); });</script>
+    <script id="shader-fs" type="x-shader/x-fragment">
+      precision mediump float;
+      void main(void) {
+      gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+      }
+    </script>
+    <script id="shader-vs" type="x-shader/x-vertex">
+      attribute vec3 aVertexPosition;
+      uniform mat4 uMVMatrix;
+      uniform mat4 uPMatrix;
+      void main(void) {
+      gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+      }
+      
+      
+      
+    </script>
+    <script>
+      System.import('app').catch(function(err){ console.error(err); });
+      
+      
+      
+    </script>
     <style>
       * {
           margin: 0;
