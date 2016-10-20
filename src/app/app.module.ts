@@ -13,6 +13,7 @@ import {DashboardComponent} from "./dasboard.component";
 import {TransactionResolver} from "./transaction.resolve";
 import {AuthComponent} from "./auth.component";
 import {MapComponent} from "./map.component";
+import {InfoPositionComponent} from "./info-position-component";
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import {MapComponent} from "./map.component";
     ],
     declarations: [
         //LeafletMapDirective,
+        InfoPositionComponent,
         MapComponent,
         AuthComponent,
         AppComponent,

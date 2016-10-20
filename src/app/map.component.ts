@@ -1,24 +1,29 @@
-import { Component } from '@angular/core';
+import { Component , Input} from '@angular/core';
 import {Mercator} from './mercator.service'
 import {LeafletMapDirective} from "./directive/leaflet-map.directive";
 import {HeroService} from "./hero.service";
+import {MapService} from "./map.service";
+import {InfoPositionComponent} from "./info-position-component";
 
 @Component({
-    //selector: 'my-heroesw',
-    //templateUrl: 'src/app/template/my-app.html'
-    template: '<leaflet-map> map loading...</leaflet-map>',
-    styleUrls: ['src/app/css/auth.component.css'],
+    
+    template: '<info-position>' +
+    '</info-position>' +
+    '<leaflet-map> map loading...</leaflet-map>',
+    styleUrls: ['src/app/css/leaflet-map.component.css'],
     directives: [LeafletMapDirective],
     providers: [HeroService]
 })
-export class MapComponent{
-    private mercator: Mercator;
-    private dy: number;
-    constructor(mercator: Mercator){
-        this.mercator = mercator;
+export class MapComponent {
 
-        this.mercator.getYpixel(50, 1);
+
+    constructor(mercator: Mercator, mapService: MapService){
+
     }
-    
-    
+
+
+
+
+
+
 }
