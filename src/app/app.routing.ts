@@ -10,23 +10,29 @@ import {HeroDetailComponent} from "./my-hero-detail.component";
 //import {HEROES, Hero} from "./hero";
 import {TransactionResolver} from "./transaction.resolve";
 import {AuthComponent} from "./auth.component";
+import {MapComponent} from "./map.component";
 
 const  appRouters: Routes = [
     {
         path: '',
-        redirectTo: 'auth',
+        redirectTo: 'auth/map',
         pathMatch: 'full'
     },
     {
         path: 'auth',
         component: AuthComponent,
-        pathMatch: 'full',
         children:[
             {
                 path:''
             },
             {
-                path:'map'
+                path:'map',
+                component: MapComponent,
+                children: [
+                    {
+                        path: ''
+                    }
+                ]
             }
         ]
         
@@ -43,7 +49,7 @@ const  appRouters: Routes = [
                 path:''
             },
             {
-                path:':id',
+                path:'k',
                 component: HeroDetailComponent,
                 resolve:  {
                     transactions :TransactionResolver

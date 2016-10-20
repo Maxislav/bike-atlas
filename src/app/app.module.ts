@@ -12,7 +12,7 @@ import {HeroesComponent} from "./heroes.component";
 import {DashboardComponent} from "./dasboard.component";
 import {TransactionResolver} from "./transaction.resolve";
 import {AuthComponent} from "./auth.component";
-import {LeafletMapDirective} from "./directive/leaflet-map.directive";
+import {MapComponent} from "./map.component";
 
 @NgModule({
     imports: [
@@ -22,6 +22,7 @@ import {LeafletMapDirective} from "./directive/leaflet-map.directive";
     ],
     declarations: [
         //LeafletMapDirective,
+        MapComponent,
         AuthComponent,
         AppComponent,
         HeroDetailComponent,

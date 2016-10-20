@@ -11,5 +11,7 @@ import {HeroService} from "./hero.service";
     //providers: [HeroService]
 })
 export class HeroesComponent{
-
+        constructor(){
+            console.log('ololo')
+        }
 }

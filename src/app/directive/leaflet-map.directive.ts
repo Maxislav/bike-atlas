@@ -17,8 +17,8 @@ export class LeafletMapDirective {
     map: any;
     constructor(el: ElementRef, renderer: Renderer) {
         console.log(el.nativeElement.offsetHeight);
-        //debugger
 
+        
         setTimeout( () => {
             console.log(L.map);
             this.map = L.map(el.nativeElement).setView([51.505, -0.09], 13);
