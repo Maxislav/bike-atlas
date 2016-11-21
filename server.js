@@ -2,6 +2,7 @@
  * Created by maxislav on 20.10.16.
  */
 let express = require('express');
+const port = 8080;
 
 let app = express();
 
@@ -13,4 +14,4 @@ app.get('/*', function(req, res) {
 
 
 
-app.listen(3000,()=>console.log('started at 3000'));
+app.listen(port,()=>console.log('started at '+port));

@@ -11,11 +11,10 @@ export class MapService {
     public lat: number;
     public lng: number;
     public zoom: number;
-    
-    foo: Function;
+    public foo: Function;
     setMap(map: any){
         this.map = map;
-        this.zoom = map.getZoom();
+        /*this.zoom = map.getZoom();
 
         map.on('mousemove', (e)=>{
             this.lat = e.latlng.lat;
@@ -25,7 +24,7 @@ export class MapService {
         map.on("zoom", (e)=>{
             this.zoom = map.getZoom();
             this.foo && this.foo(this.lat, this.lng, this.zoom)
-        })
+        })*/
 
     }
     registerChanges(foo: Function){
