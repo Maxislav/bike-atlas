@@ -24,6 +24,7 @@ import {MenuComponent} from "./component/menu.component";
     ],
     declarations: [
         //LeafletMapDirective,
+        DashboardComponent,
         InfoPositionComponent,
         MapComponent,
         AuthComponent,
@@ -35,6 +36,6 @@ import {MenuComponent} from "./component/menu.component";
     bootstrap: [
         AppComponent
     ],
-    providers: [TransactionResolver]
+    providers: [TransactionResolver, MenuComponent]
 })
 export class AppModule {}

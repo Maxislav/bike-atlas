@@ -1,18 +1,18 @@
 import { Component , Input} from '@angular/core';
 import {Mercator} from './mercator.service'
-import {LeafletMapDirective} from "./directive/leaflet-map.directive";
 import {HeroService} from "./hero.service";
 import {MapService} from "./map.service";
 import {InfoPositionComponent} from "./info-position-component";
+import {MapboxGlDirective} from "./directive/mapbox-gl.directive";
 
 @Component({
-    
+    moduleId: module.id,
     template: [
         '<info-position>',
         '</info-position>',
-        '<leaflet-map> map loading...</leaflet-map>'].join('') ,
-    styleUrls: ['src/app/css/leaflet-map.component.css'],
-    directives: [LeafletMapDirective],
+        '<mapbox-gl> map loading...</mapbox-gl>'].join('') ,
+    styleUrls: ['css/map.component.css'],
+    directives: [MapboxGlDirective],
     providers: [HeroService]
 })
 export class MapComponent {

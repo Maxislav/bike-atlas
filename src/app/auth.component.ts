@@ -13,8 +13,12 @@ import {MenuComponent} from "./component/menu.component";
 
 
 @Component({
+    moduleId: module.id,
     templateUrl:'template/auth.component.html',
-    providers: [Mercator, MapService, InfoPositionComponent, PositionSize,MenuComponent]
+    providers: [Mercator, MapService, InfoPositionComponent, PositionSize, MenuComponent],
+    styleUrls: [
+        'css/auth.component.css',
+    ]
 })
 
 export class AuthComponent{
