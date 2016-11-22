@@ -8,6 +8,9 @@ let app = express();
 
 app.use(express.static(__dirname));
 
+app.get('/template*', function(req, res) {
+  res.sendFile(__dirname + '/src/app'+ req.url)
+});
 app.get('/*', function(req, res) {
   res.sendFile(__dirname + '/index.html')
 });

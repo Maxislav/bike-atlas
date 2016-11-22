@@ -14,6 +14,7 @@ import {TransactionResolver} from "./transaction.resolve";
 import {AuthComponent} from "./auth.component";
 import {MapComponent} from "./map.component";
 import {InfoPositionComponent} from "./info-position-component";
+import {MenuComponent} from "./component/menu.component";
 
 @NgModule({
     imports: [
@@ -29,7 +30,7 @@ import {InfoPositionComponent} from "./info-position-component";
         AppComponent,
         HeroDetailComponent,
         HeroesComponent,
-        DashboardComponent
+        MenuComponent
     ],
     bootstrap: [
         AppComponent

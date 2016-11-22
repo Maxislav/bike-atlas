@@ -2,7 +2,10 @@
   "name": "angular2-quickstart",
   "version": "1.0.0",
   "scripts": {
-    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "_start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "start": "concurrently \"npm run gulpDev\" \"npm run server\"  ",
+    "server": "node server.js",
+    "gulpDev": "gulp",
     "lite": "lite-server",
     "postinstall": "typings install",
     "tsc": "tsc",
@@ -37,4 +40,5 @@
     "typescript": "^1.8.10",
     "typings": "^1.0.4"
   }
+
 }

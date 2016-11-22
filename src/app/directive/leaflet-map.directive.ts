@@ -6,6 +6,7 @@ import {Component, AfterViewInit} from '@angular/core';
 import { Directive, ElementRef, Input, Renderer } from '@angular/core';
 import any = jasmine.any;
 import {MapService} from "../map.service";
+import {PositionSize} from "../service/position-size.service";
 
 declare var L: any;
 declare var gl:any;
@@ -81,7 +82,7 @@ export class LeafletMapDirective implements AfterViewInit {
 
 
 
-    constructor(el: ElementRef, renderer: Renderer, mapService: MapService) {
+    constructor(el: ElementRef, renderer: Renderer, mapService: MapService, positionSiz: PositionSize) {
         this.el = el;
         this.renderer = renderer;
         this.mapService = mapService;

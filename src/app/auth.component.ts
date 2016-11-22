@@ -6,13 +6,15 @@ import { ElementRef } from '@angular/core';
 import {LeafletMapDirective} from "./directive/leaflet-map.directive";
 import {Mercator} from "./mercator.service";
 import {MapService} from "./map.service";
+import {PositionSize} from "./service/position-size.service";
 import {InfoPositionComponent} from "./info-position-component";
+import {MenuComponent} from "./component/menu.component";
 
 
 
 @Component({
-    template:  '<router-outlet></router-outlet>',
-    providers: [Mercator, MapService, InfoPositionComponent]
+    templateUrl:'template/auth.component.html',
+    providers: [Mercator, MapService, InfoPositionComponent, PositionSize,MenuComponent]
 })
 
 export class AuthComponent{

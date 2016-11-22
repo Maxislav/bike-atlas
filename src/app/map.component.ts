@@ -7,9 +7,10 @@ import {InfoPositionComponent} from "./info-position-component";
 
 @Component({
     
-    template: '<info-position>' +
-    '</info-position>' +
-    '<leaflet-map> map loading...</leaflet-map>',
+    template: [
+        '<info-position>',
+        '</info-position>',
+        '<leaflet-map> map loading...</leaflet-map>'].join('') ,
     styleUrls: ['src/app/css/leaflet-map.component.css'],
     directives: [LeafletMapDirective],
     providers: [HeroService]
