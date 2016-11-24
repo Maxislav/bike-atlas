@@ -18,6 +18,8 @@ export class MapService {
     public latMap: number;
     public zoom: number;
     public foo: Function;
+    public pitch: number;
+    public bearing: number;
     //private ref: ApplicationRef
 
 
@@ -33,6 +35,9 @@ export class MapService {
         this.map = map;
 
         map.on('load', ()=>{
+            this.pitch = map.getPitch().toFixed(0);
+            this.bearing = map.getBearing().toFixed(1)
+            this.zoom = map.getZoom().toFixed(1);
             let LngLat = map.getCenter();
             this.lngMap = LngLat.lng.toFixed(4);
             this.latMap = LngLat.lat.toFixed(4);
@@ -45,7 +50,10 @@ export class MapService {
         });
 
         map.on('move', (e)=>{
-
+            //console.log()
+            this.pitch = map.getPitch().toFixed(0);
+            this.bearing = map.getBearing().toFixed(1)
+            this.zoom = map.getZoom().toFixed(1);
             let LngLat = map.getCenter();
             this.lngMap = LngLat.lng.toFixed(4);
             this.latMap = LngLat.lat.toFixed(4);

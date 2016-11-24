@@ -3,12 +3,14 @@
  */
 import { Component } from '@angular/core';
 import { ElementRef } from '@angular/core';
-import {LeafletMapDirective} from "./directive/leaflet-map.directive";
 import {Mercator} from "./service/mercator.service";
 import {MapService} from "./service/map.service";
 import {PositionSize} from "./service/position-size.service";
 import {InfoPositionComponent} from "./component/info-position/info-position-component";
 import {MenuComponent} from "./component/menu/menu.component";
+//noinspection TypeScriptCheckImport
+import * as io from "socket/socket.io.js";
+
 
 
 
@@ -22,7 +24,14 @@ import {MenuComponent} from "./component/menu/menu.component";
 })
 
 export class AuthComponent{
+
+    socket: any;
     constructor(el: ElementRef){
+        //console.log(io)
+       this.socket = io("http://localhost:8081");
+        this.socket.on('news',(d)=>{
+          console.log(d,'klkltt')
+        })
        // console.log(el)
     }
 }
