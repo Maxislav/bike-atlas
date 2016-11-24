@@ -11,9 +11,6 @@ import {MenuComponent} from "./component/menu/menu.component";
 //noinspection TypeScriptCheckImport
 import * as io from "socket/socket.io.js";
 
-
-
-
 @Component({
     moduleId: module.id,
     templateUrl:'template/auth.component.html',
@@ -30,7 +27,7 @@ export class AuthComponent{
         //console.log(io)
        this.socket = io("http://localhost:8081");
         this.socket.on('news',(d)=>{
-          console.log(d,'klkltt')
+          console.log(d,'klklttewefewfwe')
         })
        // console.log(el)
     }
