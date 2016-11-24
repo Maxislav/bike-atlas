@@ -8,10 +8,22 @@ let app = express();
 
 app.use(express.static(__dirname));
 
-app.get('/template*', function(req, res) {
-  res.sendFile(__dirname + '/src/app'+ req.url)
+app.get('*.html', function(req, res) {
+  console.log(req.url)
+  res.sendFile(__dirname +'/src/app/' +req.url)
+});
+app.get('*.css', function(req, res) {
+  console.log(req.url)
+  res.sendFile(__dirname +'/src/app/' +req.url)
+});
+
+
+app.get('/*template*', function(req, res) {
+  console.log(req.url)
+  res.sendFile(__dirname + req.url)
 });
 app.get('/*', function(req, res) {
+  console.log(req.url)
   res.sendFile(__dirname + '/index.html')
 });
 

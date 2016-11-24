@@ -13,8 +13,8 @@ import {DashboardComponent} from "./dasboard.component";
 import {TransactionResolver} from "./transaction.resolve";
 import {AuthComponent} from "./auth.component";
 import {MapComponent} from "./map.component";
-import {InfoPositionComponent} from "./info-position-component";
-import {MenuComponent} from "./component/menu.component";
+import {InfoPositionComponent} from "./component/info-position/info-position-component";
+import {MenuComponent} from "./component/menu/menu.component";
 
 @NgModule({
     imports: [

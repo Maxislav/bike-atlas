@@ -4,11 +4,11 @@
 import { Component } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import {LeafletMapDirective} from "./directive/leaflet-map.directive";
-import {Mercator} from "./mercator.service";
-import {MapService} from "./map.service";
+import {Mercator} from "./service/mercator.service";
+import {MapService} from "./service/map.service";
 import {PositionSize} from "./service/position-size.service";
-import {InfoPositionComponent} from "./info-position-component";
-import {MenuComponent} from "./component/menu.component";
+import {InfoPositionComponent} from "./component/info-position/info-position-component";
+import {MenuComponent} from "./component/menu/menu.component";
 
 
 

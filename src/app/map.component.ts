@@ -1,8 +1,8 @@
 import { Component , Input} from '@angular/core';
-import {Mercator} from './mercator.service'
+import {Mercator} from './service/mercator.service'
 import {HeroService} from "./hero.service";
-import {MapService} from "./map.service";
-import {InfoPositionComponent} from "./info-position-component";
+import {MapService} from "./service/map.service";
+import {InfoPositionComponent} from "./component/info-position/info-position-component";
 import {MapboxGlDirective} from "./directive/mapbox-gl.directive";
 
 @Component({

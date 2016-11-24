@@ -5,8 +5,8 @@ import { Component } from '@angular/core';
 @Component({
     moduleId: module.id,
     selector: 'menu',
-    templateUrl: '../template/menu.component.html',
-    styleUrls: ['../css/menu.component.css']
+    templateUrl: './menu.component.html',
+    styleUrls: ['./menu.component.css']
 })
 
 export class MenuComponent{

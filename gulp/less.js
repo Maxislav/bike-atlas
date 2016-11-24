@@ -8,11 +8,11 @@ var path = require('path');
 module.exports = function (gulp) {
 
   gulp.task('less', function () {
-    return gulp.src('src/app/less/**/*.less')
+    return gulp.src('src/app/**/*.less')
       .pipe(less({
         paths: [ path.join(__dirname, 'less', 'includes') ]
       }))
-      .pipe(gulp.dest('src/app/css'))
+      .pipe(gulp.dest('src/app/'))
       .pipe(livereload());
   });
   
