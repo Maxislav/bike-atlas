@@ -3,8 +3,10 @@
  */
 import { Component } from '@angular/core';
 @Component({
+    moduleId: module.id,
     selector: 'menu',
-    template: '<div>Карта</div>',
+    templateUrl: '../template/menu.component.html',
+    styleUrls: ['../css/menu.component.css']
 })
 
 export class MenuComponent{

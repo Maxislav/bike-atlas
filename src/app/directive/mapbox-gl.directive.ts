@@ -69,6 +69,8 @@ export class MapboxGlDirective implements AfterViewInit {
             maxWidth: 80
         }));
 
+        this.mapService.setMap(this.map);
+
         /*console.log(L.map);
          this.map = L.map(el.nativeElement).setView([50.5, 30.5], 8);
          L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -85,9 +87,9 @@ export class MapboxGlDirective implements AfterViewInit {
         this.mapService = mapService;
 
         renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'rgba(200,200,200, 1)');
-        renderer.setElementStyle(el.nativeElement, 'color', 'white');
-        renderer.setElementStyle(el.nativeElement, 'width', '512px');
-        renderer.setElementStyle(el.nativeElement, 'height', '512px');
+        //renderer.setElementStyle(el.nativeElement, 'color', 'white');
+       // renderer.setElementStyle(el.nativeElement, 'width', '100%');
+        //renderer.setElementStyle(el.nativeElement, 'height', '100%');
 
 
 

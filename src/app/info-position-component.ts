@@ -12,6 +12,12 @@ import {Mercator} from "./mercator.service";
     selector:'info-position',
     template:'<div>lat: {{mapService.lat}}</div>' +
     '<div>Pixel: {{pixelY}}</div>',
+    styles:[`:host{
+        position: absolute;
+        z-index: 2;
+        bottom:0;
+        left:0;
+    }`]
 })
 export class InfoPositionComponent{
     private mercator: Mercator;
