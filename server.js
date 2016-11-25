@@ -10,25 +10,30 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 server.listen(8081);
 
+app.use((req, res, next)=>{
+  console.log(req.url)
+  next()
+})
 
 app.use(express.static(__dirname));
 
+
 app.get('*.html', function(req, res) {
-  console.log(req.url)
+ // console.log(req.url)
   res.sendFile(__dirname +'/src/app/' +req.url)
 });
 app.get('*.css', function(req, res) {
-  console.log(req.url)
+  //console.log(req.url)
   res.sendFile(__dirname +'/src/app/' +req.url)
 });
 
 
 app.get('/*template*', function(req, res) {
-  console.log(req.url)
+  //console.log(req.url)
   res.sendFile(__dirname + req.url)
 });
 app.get('/*', function(req, res) {
-  console.log(req.url)
+  //console.log(req.url)
   res.sendFile(__dirname + '/index.html')
 });
 

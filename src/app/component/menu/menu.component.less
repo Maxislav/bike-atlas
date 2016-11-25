@@ -9,13 +9,20 @@
 }
 table {
   height: 100%;
+  width: 100%;
   td{
     height: 100%;
     padding: 0 15px;
     cursor: pointer;
     transition: background-color .1s;
-    &:hover{
-      background-color: @menu-hover;
+    &.button{
+      text-align: center;
+      &:hover{
+        background-color: @menu-hover;
+      }
+      &.enter{
+        width: 60px;
+      }
     }
   }
 }

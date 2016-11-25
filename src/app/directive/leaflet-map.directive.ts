@@ -8,6 +8,8 @@ import any = jasmine.any;
 import {MapService} from "../service/map.service";
 import {PositionSize} from "../service/position-size.service";
 
+
+
 declare var L: any;
 declare var gl:any;
 declare var mapboxgl:any;
@@ -83,6 +85,8 @@ export class LeafletMapDirective implements AfterViewInit {
 
 
     constructor(el: ElementRef, renderer: Renderer, mapService: MapService, positionSiz: PositionSize) {
+        
+        
         this.el = el;
         this.renderer = renderer;
         this.mapService = mapService;
