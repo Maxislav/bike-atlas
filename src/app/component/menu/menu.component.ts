@@ -3,24 +3,11 @@
  */
 import { Component, Injectable } from '@angular/core';
 import {MenuMainComponent} from './menu-main/menu-main.component'
+import any = jasmine.any;
+import {MenuService} from "./menu.service";
 
+declare var document: any;
 
-
-@Injectable()
-export class MenuService{
-
-    private _menuOpen: boolean;
-
-    constructor(){
-        this._menuOpen = false
-    }
-    get menuOpen():boolean {
-        return this._menuOpen;
-    }
-    set menuOpen(value:boolean) {
-        this._menuOpen = value;
-    }
-}
 
 
 @Component({
@@ -30,7 +17,6 @@ export class MenuService{
     styleUrls: ['./menu.component.css'],
     providers: [MenuMainComponent, MenuService]
 })
-
 export class MenuComponent{
 
     public menuOpen: boolean;
@@ -39,7 +25,22 @@ export class MenuComponent{
         //this.menuOpen = ms.menuOpen
     }
     onOpen(){
+        var click =  onclick.bind(this)
         this.ms.menuOpen = !this.ms.menuOpen;
+        if(this.ms.menuOpen ){
+
+            setTimeout(()=>{
+                document.body.addEventListener('click',click)
+            },100)
+        }else{
+            document.body.removeEventListener('click', click)
+        }
+
+        function onclick(e){
+            document.body.removeEventListener('click', click)
+            this.ms.menuOpen = false
+        }
+
     }
 
     //menuOpen: this.ms.menuOpe

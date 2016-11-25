@@ -27,7 +27,7 @@ export class AuthComponent{
         //console.log(io)
        this.socket = io("http://localhost:8081");
         this.socket.on('news',(d)=>{
-          console.log(d,'klklttewefewfwe')
+          //console.log(d,'klklttewefewfwe')
         })
        // console.log(el)
     }
