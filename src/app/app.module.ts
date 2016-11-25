@@ -16,6 +16,7 @@ import {MapComponent} from "./map.component";
 import {InfoPositionComponent} from "./component/info-position/info-position-component";
 import {MenuComponent} from "./component/menu/menu.component";
 import {LocalStorage} from "./service/local-storage.service";
+import {MenuMainComponent} from "./component/menu/menu-main/menu-main.component";
 
 @NgModule({
     imports: [
@@ -32,7 +33,8 @@ import {LocalStorage} from "./service/local-storage.service";
         AppComponent,
         HeroDetailComponent,
         HeroesComponent,
-        MenuComponent
+        MenuComponent,
+        MenuMainComponent
     ],
     bootstrap: [
         AppComponent

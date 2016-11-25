@@ -1,6 +1,6 @@
 table
     tr
-        td Карта
+        td.button.menu( (click)="onOpen()"   ) Меню
+        td
         td.button.enter Войти
-
-
+menu-main(*ngIf="ms.menuOpen")

@@ -65,7 +65,14 @@ export class MapService {
 
         map.on('moveend', ()=>{
             let LngLat = map.getCenter();
-            this.ls.mapCenter = LngLat ;
+
+            let opt = {
+                lng:  LngLat.lng,
+                lat:  LngLat.lat,
+                zoom: map.getZoom()
+            };
+
+            this.ls.mapCenter = opt ;
         })
 
     }

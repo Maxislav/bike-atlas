@@ -13,34 +13,17 @@ html(lang='en')
         script(src='node_modules/reflect-metadata/Reflect.js')
         script(src='node_modules/systemjs/dist/system.js')
         script(src='systemjs.config.js')
-
-
-        script#shader-fs(type='x-shader/x-fragment').
-            precision mediump float;
-            void main(void) {
-            gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-            }
-        script#shader-vs(type='x-shader/x-vertex').
-            attribute vec3 aVertexPosition;
-            uniform mat4 uMVMatrix;
-            uniform mat4 uPMatrix;
-            void main(void) {
-            gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-            }
-
-
-
         script.
             System.import('app').catch(function(err){ console.error(err); });
-
-
-
         style.
             * {
                 margin: 0;
                 padding: 0;
                 font-family: Geneva, Arial, Helvetica, sans-serif;
 
+            }
+            li{
+                list-style-type: none;
             }
             table{
                 border-spacing: 0;

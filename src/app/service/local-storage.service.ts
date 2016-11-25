@@ -9,13 +9,15 @@ export class LocalStorage{
 
     private _mapCenter: {
         lng: number,
-        lat:number
+        lat:number,
+        zoom: number
     };
 
     constructor(){
         this._mapCenter = {
             lng: null,
-            lat: null
+            lat: null,
+            zoom: null
         };
         var strMapCenter =  JSON.stringify(this._mapCenter);
         if(!localStorage.getItem('mapCenter')){
@@ -26,11 +28,11 @@ export class LocalStorage{
 
     }
 
-    get mapCenter():{lng:number; lat:number} {
+    get mapCenter():{lng:number; lat:number; zoom:number} {
         return this._mapCenter;
     }
 
-    set mapCenter(value:{lng:number; lat:number}) {
+    set mapCenter(value:{lng:number; lat:number; zoom:number}) {
         localStorage.setItem('mapCenter', JSON.stringify(value));
         this._mapCenter = value;
     }

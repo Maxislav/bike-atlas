@@ -39,7 +39,7 @@ export class MapboxGlDirective implements AfterViewInit {
         this.map = new mapboxgl.Map({
             container: el.nativeElement,
             center:[localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
-            zoom: 8,
+            zoom: localStorageCenter.zoom || 8,
             _style: 'mapbox://styles/mapbox/streets-v9',
             style: {
                 "version": 8,
