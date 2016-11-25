@@ -4,6 +4,7 @@ import { Directive, ElementRef, Input, Renderer } from '@angular/core';
 import any = jasmine.any;
 import {MapService} from "../service/map.service";
 import {PositionSize} from "../service/position-size.service";
+import { LocalStorage } from '../service/local-storage.service';
 import * as mapboxgl from "../../../lib/mapbox-gl/mapbox-gl.js";
 
 declare var L: any;
@@ -24,15 +25,20 @@ export class MapboxGlDirective implements AfterViewInit {
     el:ElementRef;
     nativeElement:any;
     map: any;
+    private center: number[];
     private mapService;
 
+
     ngAfterViewInit():void {
+
+        var localStorageCenter = this.ls.mapCenter;
+
         let el = this.el;
         el.nativeElement.innerHTML = '';
         mapboxgl.accessToken = "pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA";
         this.map = new mapboxgl.Map({
             container: el.nativeElement,
-            center:[30.5, 50.5],
+            center:[localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
             zoom: 8,
             _style: 'mapbox://styles/mapbox/streets-v9',
             style: {
@@ -72,17 +78,12 @@ export class MapboxGlDirective implements AfterViewInit {
 
         this.mapService.setMap(this.map);
 
-        /*console.log(L.map);
-         this.map = L.map(el.nativeElement).setView([50.5, 30.5], 8);
-         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-         }).addTo(this.map);*/
-        //this.mapService.setMap(this.map);
     };
 
 
 
-    constructor(el: ElementRef, renderer: Renderer, mapService: MapService, positionSiz: PositionSize) {
+    constructor(el: ElementRef, renderer: Renderer, mapService: MapService, positionSiz: PositionSize, private ls: LocalStorage) {
+        this.center = [30.5, 50.5];
 
         this.el = el;
         this.renderer = renderer;

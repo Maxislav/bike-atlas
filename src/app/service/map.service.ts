@@ -3,6 +3,7 @@
  */
 import { Injectable, ApplicationRef } from '@angular/core';
 import { SimpleChanges, OnChanges } from '@angular/core';
+import { LocalStorage } from '../service/local-storage.service';
 
 
 @Injectable()
@@ -20,13 +21,15 @@ export class MapService {
     public foo: Function;
     public pitch: number;
     public bearing: number;
+   // public ls: LocalStorage
     //private ref: ApplicationRef
 
 
-    constructor(private ref: ApplicationRef){
+    constructor(private ref: ApplicationRef, private ls: LocalStorage){
             this.events = {
                 load: []
             }
+
        // this.ref = ref;
         //this.emitter = new EventEmitter()
     }
@@ -59,17 +62,11 @@ export class MapService {
             this.latMap = LngLat.lat.toFixed(4);
 
         });
-        /*this.zoom = map.getZoom();
 
-        map.on('mousemove', (e)=>{
-            this.lat = e.latlng.lat;
-            this.lng = e.latlng.lng;
-            this.foo && this.foo(this.lat, this.lng, this.zoom)
-        });
-        map.on("zoom", (e)=>{
-            this.zoom = map.getZoom();
-            this.foo && this.foo(this.lat, this.lng, this.zoom)
-        })*/
+        map.on('moveend', ()=>{
+            let LngLat = map.getCenter();
+            this.ls.mapCenter = LngLat ;
+        })
 
     }
 

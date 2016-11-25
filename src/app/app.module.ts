@@ -15,6 +15,7 @@ import {AuthComponent} from "./auth.component";
 import {MapComponent} from "./map.component";
 import {InfoPositionComponent} from "./component/info-position/info-position-component";
 import {MenuComponent} from "./component/menu/menu.component";
+import {LocalStorage} from "./service/local-storage.service";
 
 @NgModule({
     imports: [
@@ -36,6 +37,7 @@ import {MenuComponent} from "./component/menu/menu.component";
     bootstrap: [
         AppComponent
     ],
-    providers: [TransactionResolver, MenuComponent]
+    providers: [TransactionResolver, MenuComponent, LocalStorage
+    ]
 })
 export class AppModule {}
