@@ -17,9 +17,6 @@ app.use((req, res, next)=>{
   if(/^\/src/.test(req.url)){
     kSrc++;
   }
-  
-  
-  
   timeout && clearTimeout(timeout);
   
   timeout = setTimeout(()=>{
@@ -28,15 +25,12 @@ app.use((req, res, next)=>{
     kSrc = 0;
   }, 1000);
   k++;
-  
-  
-  //console.log(req.url);
   next()
 });
 
 app.get("*.js", function (req, res, next) {
   
-  console.log("*.js ->",__dirname, req.url)
+  //console.log("*.js ->",__dirname, req.url)
   next()
 });
 
@@ -54,7 +48,7 @@ app.get("*", function (req, res, next) {
 
 
 app.get('/node_modules*', function(req, res) {
-  //console.log(req.url)
+  console.log("node_modules -> ", req.url)
   if(/^\/node_m/.test(req.url)){
     res.sendFile(__dirname +req.url)
   }else{
