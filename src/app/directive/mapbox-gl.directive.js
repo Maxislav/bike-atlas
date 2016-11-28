@@ -92,4 +92,3 @@ var MapboxGlDirective = (function () {
     return MapboxGlDirective;
 }());
 exports.MapboxGlDirective = MapboxGlDirective;
-//# sourceMappingURL=mapbox-gl.directive.js.map

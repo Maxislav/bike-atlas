@@ -48,4 +48,3 @@ var MenuComponent = (function () {
     return MenuComponent;
 }());
 exports.MenuComponent = MenuComponent;
-//# sourceMappingURL=menu.component.js.map

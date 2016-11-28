@@ -76,4 +76,3 @@ var MapService = (function () {
     return MapService;
 }());
 exports.MapService = MapService;
-//# sourceMappingURL=map.service.js.map

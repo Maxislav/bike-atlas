@@ -32,4 +32,3 @@ var MapComponent = (function () {
     return MapComponent;
 }());
 exports.MapComponent = MapComponent;
-//# sourceMappingURL=map.component.js.map
