@@ -2,7 +2,7 @@
  * Created by maxislav on 22.11.16.
  */
 import { Component, Injectable } from '@angular/core';
-import {MenuMainComponent} from './menu-main/menu-main.component'
+import {MenuTrackComponent} from './menu-track/menu-track.component'
 import any = jasmine.any;
 import {MenuService} from "./menu.service";
 
@@ -15,7 +15,7 @@ declare var document: any;
     selector: 'menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.css'],
-    providers: [MenuMainComponent, MenuService]
+    providers: [MenuTrackComponent, MenuService]
 })
 export class MenuComponent{
 

@@ -9,11 +9,30 @@ let app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 server.listen(8081);
-
+let timeout; 
+let k = 0;
+let kSrc = 0;
 app.use((req, res, next)=>{
-  console.log(req.url)
+  
+  if(/^\/src/.test(req.url)){
+    kSrc++;
+  }
+  
+  
+  
+  timeout && clearTimeout(timeout);
+  
+  timeout = setTimeout(()=>{
+    console.info('Scripts ->', kSrc, k );
+    k=0;
+    kSrc = 0;
+  }, 1000);
+  k++;
+  
+  
+  console.log(req.url);
   next()
-})
+});
 
 app.use(express.static(__dirname));
 

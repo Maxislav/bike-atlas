@@ -16,7 +16,7 @@ import {MapComponent} from "./map.component";
 import {InfoPositionComponent} from "./component/info-position/info-position-component";
 import {MenuComponent} from "./component/menu/menu.component";
 import {LocalStorage} from "./service/local-storage.service";
-import {MenuMainComponent} from "./component/menu/menu-main/menu-main.component";
+import {MenuTrackComponent} from "./component/menu/menu-track/menu-track.component";
 
 @NgModule({
     imports: [
@@ -34,7 +34,7 @@ import {MenuMainComponent} from "./component/menu/menu-main/menu-main.component"
         HeroDetailComponent,
         HeroesComponent,
         MenuComponent,
-        MenuMainComponent
+        MenuTrackComponent
     ],
     bootstrap: [
         AppComponent

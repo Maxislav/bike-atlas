@@ -19,14 +19,14 @@ const MENU: Item[] = [
 
 @Component({
     moduleId: module.id,
-    selector: 'menu-main',
+    selector: 'menu-track',
     template: `<ul>
             <li *ngFor="let item of menu" (click)="onSelect(item, $event)">{{item.text}}</li>
         </ul>`,
-    styleUrls: ['./menu-main.css'],
+    styleUrls: ['./menu-track.css'],
    // providers: [MenuService]
 })
-export class MenuMainComponent{
+export class MenuTrackComponent{
     menu = MENU;
     constructor(private ms: MenuService){
 
