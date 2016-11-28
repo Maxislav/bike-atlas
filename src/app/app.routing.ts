@@ -4,8 +4,8 @@
 import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {HeroesComponent} from './heroes.component';
-import {DashboardComponent} from "./dasboard.component";
-import {HeroDetailComponent} from "./my-hero-detail.component";
+//import {DashboardComponent} from "./dasboard.component";
+//import {HeroDetailComponent} from "./my-hero-detail.component";
 //import {Hero} from "./hero";
 //import {HEROES, Hero} from "./hero";
 import {TransactionResolver} from "./transaction.resolve";
@@ -41,7 +41,7 @@ const  appRouters: Routes = [
         path: 'heroes',
         component: HeroesComponent
     },
-    {
+    /*{
         path: 'dashboard',
         component: DashboardComponent,
         children: [
@@ -59,7 +59,7 @@ const  appRouters: Routes = [
 
         ]
 
-    }
+    }*/
 ];
 
 

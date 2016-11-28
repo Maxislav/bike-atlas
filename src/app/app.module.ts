@@ -9,7 +9,7 @@ import {AppComponent}  from './app.component';
 import {HeroDetailComponent}  from './my-hero-detail.component';
 import {routing} from './app.routing';
 import {HeroesComponent} from "./heroes.component";
-import {DashboardComponent} from "./dasboard.component";
+//import {DashboardComponent} from "./dasboard.component";
 import {TransactionResolver} from "./transaction.resolve";
 import {AuthComponent} from "./auth.component";
 import {MapComponent} from "./map.component";
@@ -26,7 +26,7 @@ import {MenuTrackComponent} from "./component/menu/menu-track/menu-track.compone
     ],
     declarations: [
         //LeafletMapDirective,
-        DashboardComponent,
+        //DashboardComponent,
         InfoPositionComponent,
         MapComponent,
         AuthComponent,
