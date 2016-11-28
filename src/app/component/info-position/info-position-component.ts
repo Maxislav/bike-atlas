@@ -4,15 +4,14 @@
 
 import { Component, ApplicationRef} from '@angular/core';
 import {MapService} from "../../service/map.service";
-
 import {Mercator} from "../../service/mercator.service";
 
 
 @Component({
     selector:'info-position',
     //template:'<div>lat: {{mapService.lat}}</div>' + '<div>Pixel: {{pixelY}}</div>',
-    templateUrl:'./component/info-position/info-position-component.html',
-    styleUrls:['./component/info-position/info-position.css']
+    templateUrl:'app/component/info-position/info-position-component.html',
+    styleUrls:['app/component/info-position/info-position.css']
 })
 export class InfoPositionComponent{
     private mercator: Mercator;

@@ -34,21 +34,37 @@ app.use((req, res, next)=>{
   next()
 });
 
-app.use(express.static(__dirname));
+app.get("*", function (req, res, next) {
+  let reqUrl = ''  ;
+  if(req.url.match(/^\/app/)){
+    reqUrl+='/src/'+req.url
+  }else{
+    reqUrl+=req.url
+  }
+  req.url = reqUrl;
+  next()
+  
+});
 
 
 app.get('*.html', function(req, res) {
- // console.log(req.url)
-  res.sendFile(__dirname +'/src/app/' +req.url)
+  res.sendFile(__dirname +req.url)
 });
 app.get('*.css', function(req, res) {
   //console.log(req.url)
-  res.sendFile(__dirname +'/src/app/' +req.url)
+  res.sendFile(__dirname +req.url)
 });
-app.get('*.js', function(req, res) {
+app.get('/node_modules*', function(req, res) {
   //console.log(req.url)
-  res.sendFile(__dirname +'/src/app/' +req.url)
+  if(/^\/node_m/.test(req.url)){
+    res.sendFile(__dirname +req.url)
+  }else{
+    res.sendFile(__dirname +'/src/app/' +req.url)  
+  }
+  
 });
+
+app.use(express.static(__dirname));
 
 
 app.get('/*template*', function(req, res) {
