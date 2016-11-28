@@ -1,6 +1,5 @@
 {
-  "port": 4000,
-  "html5mode": true,
+  "port": 8080,
   "proxies": [
     {
       "source": "^\/data.+",
