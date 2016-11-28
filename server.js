@@ -36,7 +36,7 @@ app.use((req, res, next)=>{
 
 app.get("*.js", function (req, res, next) {
   
-  console.log("*.js ->",req.url)
+  console.log("*.js ->",__dirname, req.url)
   next()
 });
 
