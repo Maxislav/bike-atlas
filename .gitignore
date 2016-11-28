@@ -145,4 +145,5 @@ node_modules/*
 !/node_modules/rxjs/observable/forkJoin.js.map
 !/node_modules/rxjs/observable/ForkJoinObservable.js.map
 !/node_modules/socket.io/*
+!/node_modules/socket.io-client/*
 
