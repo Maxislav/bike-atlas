@@ -5,7 +5,6 @@ bower_components
 typings
 *.map
 dist/
-src/**/*.js
 src/**/*.html
 !src/**/*.config.js
 maptoken.json
