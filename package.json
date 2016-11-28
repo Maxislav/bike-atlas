@@ -8,7 +8,7 @@
     "gulpDev": "node_modules/.bin/gulp",
     "lite": "lite-server",
     "postinstall": "typings install",
-    "tsc": "tsc",
+    "tsc": "node_modules/.bin/tsc",
     "tsc:w": "tsc -w",
     "typings": "typings"
   },
