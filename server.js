@@ -12,17 +12,36 @@ server.listen(8081);
 let timeout; 
 let k = 0;
 let kSrc = 0;
+let kCss = 0;
+let kMyJs = 0;
+let kNM = 0;
 app.use((req, res, next)=>{
   
-  if(/^\/src/.test(req.url)){
-    kSrc++;
+  
+  if(/\.css$/.test(req.url)){
+    console.log('css  ', req.url)
+    kCss++;
+  }
+
+  if(/^\/src.+\.js$/.test(req.url)){
+    console.log('src  ', req.url)
+    kMyJs++;
+  }
+  
+  if(/node_modules/.test(req.url)){
+    console.log('node', req.url)
+    kNM++;
   }
   timeout && clearTimeout(timeout);
   
   timeout = setTimeout(()=>{
-    console.info('Scripts ->', kSrc, k );
+    console.info('Scripts src ->', kMyJs );
+    console.info('Scripts node_module ->', kNM );
+    console.info('Styles css ->', kCss );
     k=0;
-    kSrc = 0;
+    kMyJs = 0;
+    kNM = 0;
+    kCss = 0;
   }, 1000);
   k++;
   next()
@@ -48,7 +67,7 @@ app.get("*", function (req, res, next) {
 
 
 app.get('/node_modules*', function(req, res) {
-  console.log("node_modules -> ", req.url)
+  //console.log("node_modules -> ", req.url)
   if(/^\/node_m/.test(req.url)){
     res.sendFile(__dirname +req.url)
   }else{
