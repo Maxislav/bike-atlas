@@ -13,7 +13,7 @@ var express = require("express" ),
 	https = require( 'https' ),
 	mime = require( 'mime' ),
 	colors = require( 'colors' );
-var config = JSON.parse(fs.readFileSync('./server.config.json', "utf8" ).toString());
+var config = JSON.parse(fs.readFileSync('./server/server.config.json', "utf8" ).toString());
 port = config.port;
 var app  = express();
 app.set('port', port);
@@ -125,7 +125,12 @@ function sendFileSave( filePath, res, timeLong ) {
 		res.end( 'Bad request' );
 		return;
 	}
+	if(!/\./.test(filePath)){
+		filePath = 'index.html';
+	}
+
 	filePath = path.join( process.cwd(), filePath );
+
 	fs.stat( filePath, function ( err, status ) {
 		if ( err || !status.isFile() ) {
 			res.statusCode = 404;

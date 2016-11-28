@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea
+node_modules
+bower_components
+typings
+*.map
+dist/
+src/**/*.js
+src/**/*.html
+!src/**/*.config.js
+maptoken.json
+user-pass.json
