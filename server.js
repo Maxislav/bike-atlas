@@ -30,7 +30,13 @@ app.use((req, res, next)=>{
   k++;
   
   
-  console.log(req.url);
+  //console.log(req.url);
+  next()
+});
+
+app.get("*.js", function (req, res, next) {
+  
+  console.log("*.js ->",req.url)
   next()
 });
 
@@ -47,13 +53,6 @@ app.get("*", function (req, res, next) {
 });
 
 
-app.get('*.html', function(req, res) {
-  res.sendFile(__dirname +req.url)
-});
-app.get('*.css', function(req, res) {
-  //console.log(req.url)
-  res.sendFile(__dirname +req.url)
-});
 app.get('/node_modules*', function(req, res) {
   //console.log(req.url)
   if(/^\/node_m/.test(req.url)){
