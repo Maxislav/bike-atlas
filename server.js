@@ -45,6 +45,10 @@ app.get('*.css', function(req, res) {
   //console.log(req.url)
   res.sendFile(__dirname +'/src/app/' +req.url)
 });
+app.get('*.js', function(req, res) {
+  //console.log(req.url)
+  res.sendFile(__dirname +'/src/app/' +req.url)
+});
 
 
 app.get('/*template*', function(req, res) {
