@@ -6,6 +6,7 @@
   // map tells the System loader where to look for things
   var map = {
     'app':                        'src/app', // 'dist',
+    '@lib':                        'lib', // 'dist',
     '@angular':                   'node_modules/@angular',
     'socket':                     'node_modules/socket.io-client/dist',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',

@@ -17,7 +17,7 @@ var core_1 = require('@angular/core');
 var map_service_1 = require("../service/map.service");
 var position_size_service_1 = require("../service/position-size.service");
 var local_storage_service_1 = require('../service/local-storage.service');
-var mapboxgl = require("../../../lib/mapbox-gl/mapbox-gl.js");
+var mapboxgl = require("@lib/mapbox-gl/mapbox-gl.js");
 var MyEl = (function (_super) {
     __extends(MyEl, _super);
     function MyEl(id) {

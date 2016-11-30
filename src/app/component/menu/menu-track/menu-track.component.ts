@@ -1,5 +1,5 @@
 import { Component, Injectable } from '@angular/core';
-import {MenuService} from "../menu.service";
+import {MenuService} from "app/service/menu.service";
 
 class Item {
     text: string;
@@ -32,7 +32,30 @@ export class MenuTrackComponent{
 
     }
     onSelect(item, $event){
-       //console.log(item);
-       this.ms.menuOpen = false
+
+        const click =  onclick.bind(this);
+
+        switch (item.value){
+            case 'load':
+                this.ms.menuLoadOpen = true;
+                setTimeout(()=>{
+                    document.body.addEventListener('click',click)
+                },100);
+                break;
+            default:
+                return null
+        }
+
+
+       this.ms.menuOpen = false;
+
+      function onclick(e){
+          if(e.target.tagName!='INPUT'){
+              document.body.removeEventListener('click',click);
+              this.ms.menuLoadOpen = false
+          }
+
+      }
+
     }
 }

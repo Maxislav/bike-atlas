@@ -13,7 +13,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var menu_track_component_1 = require('./menu-track/menu-track.component');
-var menu_service_1 = require("./menu.service");
+var menu_service_1 = require("app/service/menu.service");
+var load_1 = require("./menu-track/load/load");
 var MenuComponent = (function () {
     function MenuComponent(ms) {
         this.ms = ms;
@@ -41,10 +42,11 @@ var MenuComponent = (function () {
             selector: 'menu',
             templateUrl: './menu.component.html',
             styleUrls: ['./menu.component.css'],
-            providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService]
+            providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService, load_1.LoadTrack]
         }), 
-        __metadata('design:paramtypes', [menu_service_1.MenuService])
+        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object])
     ], MenuComponent);
     return MenuComponent;
+    var _a;
 }());
 exports.MenuComponent = MenuComponent;

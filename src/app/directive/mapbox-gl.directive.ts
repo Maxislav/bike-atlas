@@ -5,7 +5,7 @@ import any = jasmine.any;
 import {MapService} from "../service/map.service";
 import {PositionSize} from "../service/position-size.service";
 import { LocalStorage } from '../service/local-storage.service';
-import * as mapboxgl from "../../../lib/mapbox-gl/mapbox-gl.js";
+import * as mapboxgl from "@lib/mapbox-gl/mapbox-gl.js";
 
 declare var L: any;
 declare var gl:any;

@@ -26,6 +26,7 @@ var info_position_component_1 = require("./component/info-position/info-position
 var menu_component_1 = require("./component/menu/menu.component");
 var local_storage_service_1 = require("./service/local-storage.service");
 var menu_track_component_1 = require("./component/menu/menu-track/menu-track.component");
+var load_1 = require("./component/menu/menu-track/load/load");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -46,7 +47,8 @@ var AppModule = (function () {
                 my_hero_detail_component_1.HeroDetailComponent,
                 heroes_component_1.HeroesComponent,
                 menu_component_1.MenuComponent,
-                menu_track_component_1.MenuTrackComponent
+                menu_track_component_1.MenuTrackComponent,
+                load_1.LoadTrack
             ],
             bootstrap: [
                 app_component_1.AppComponent

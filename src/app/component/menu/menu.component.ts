@@ -1,10 +1,13 @@
 /**
  * Created by maxislav on 22.11.16.
  */
-import { Component, Injectable } from '@angular/core';
+import { Component} from '@angular/core';
+
 import {MenuTrackComponent} from './menu-track/menu-track.component'
+
 import any = jasmine.any;
-import {MenuService} from "./menu.service";
+import {MenuService} from "app/service/menu.service";
+import {LoadTrack} from "./menu-track/load/load";
 
 declare var document: any;
 
@@ -15,7 +18,7 @@ declare var document: any;
     selector: 'menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.css'],
-    providers: [MenuTrackComponent, MenuService]
+    providers: [MenuTrackComponent, MenuService, LoadTrack ]
 })
 export class MenuComponent{
 
@@ -25,10 +28,11 @@ export class MenuComponent{
         //this.menuOpen = ms.menuOpen
     }
     onOpen(){
-        var click =  onclick.bind(this)
+        var click =  onclick.bind(this);
+        
+        
         this.ms.menuOpen = !this.ms.menuOpen;
         if(this.ms.menuOpen ){
-
             setTimeout(()=>{
                 document.body.addEventListener('click',click)
             },100)
@@ -37,7 +41,7 @@ export class MenuComponent{
         }
 
         function onclick(e){
-            document.body.removeEventListener('click', click)
+            document.body.removeEventListener('click', click);
             this.ms.menuOpen = false
         }
 
