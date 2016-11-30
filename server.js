@@ -8,6 +8,8 @@ const port = 8080;
 let app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+const ss = require('socket.io-stream');
+
 server.listen(8081);
 let timeout; 
 let k = 0;
@@ -98,7 +100,17 @@ io.on('connection', function (socket) {
   socket.on('my other event', function (data) {
     console.log(data);
   });
-})
+
+  ss(socket).on('file', function(stream) {
+    let data = [];
+    stream.on('data', (d)=>{
+      data.push(d);
+    });
+    stream.on('end', (e, d)=>{
+      socket.emit('file', Buffer.concat(data));
+    });
+  });
+});
 
 
 

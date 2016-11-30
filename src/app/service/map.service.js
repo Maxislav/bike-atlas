@@ -13,17 +13,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var local_storage_service_1 = require('../service/local-storage.service');
+var socket_oi_service_1 = require("./socket.oi.service");
 var MapService = (function () {
     // public ls: LocalStorage
     //private ref: ApplicationRef
-    function MapService(ref, ls) {
+    function MapService(ref, ls, io) {
         this.ref = ref;
         this.ls = ls;
+        this.io = io;
         this.events = {
             load: []
         };
-        // this.ref = ref;
-        //this.emitter = new EventEmitter()
+        var socket = io.socket;
+        socket.on('file', function (d) {
+            var track = [];
+            var xml = String.fromCharCode.apply(null, new Uint8Array(d));
+            var parser = new DOMParser();
+            var xmlDoc = parser.parseFromString(xml, "text/xml");
+            var forEach = Array.prototype.forEach;
+            forEach.call(xmlDoc.getElementsByTagName('trkpt'), function (item) {
+                console.log(item.getAttribute('lat'), item.getAttribute('lon'));
+                track.push({
+                    lng: item.getAttribute('lon'),
+                    lat: item.getAttribute('lat')
+                });
+            });
+        });
     }
     MapService.prototype.setMap = function (map) {
         var _this = this;
@@ -69,9 +84,11 @@ var MapService = (function () {
     MapService.prototype.registerChanges = function (foo) {
         this.foo = foo;
     };
+    MapService.prototype.onTrack = function (arr) {
+    };
     MapService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [core_1.ApplicationRef, local_storage_service_1.LocalStorage])
+        __metadata('design:paramtypes', [core_1.ApplicationRef, local_storage_service_1.LocalStorage, socket_oi_service_1.Io])
     ], MapService);
     return MapService;
 }());

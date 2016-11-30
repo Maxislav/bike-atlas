@@ -9,7 +9,7 @@ import {PositionSize} from "./service/position-size.service";
 import {InfoPositionComponent} from "./component/info-position/info-position-component";
 import {MenuComponent} from "./component/menu/menu.component";
 //noinspection TypeScriptCheckImport
-import * as io from "socket/socket.io.js";
+
 
 @Component({
     moduleId: module.id,
@@ -25,10 +25,7 @@ export class AuthComponent{
     socket: any;
     constructor(el: ElementRef){
         //console.log(io)
-       this.socket = io("http://localhost:8081");
-        this.socket.on('news',(d)=>{
-          //console.log(d,'klklttewefewfwe')
-        })
+      
        // console.log(el)
     }
 }

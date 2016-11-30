@@ -19,14 +19,9 @@ var position_size_service_1 = require("./service/position-size.service");
 var info_position_component_1 = require("./component/info-position/info-position-component");
 var menu_component_1 = require("./component/menu/menu.component");
 //noinspection TypeScriptCheckImport
-var io = require("socket/socket.io.js");
 var AuthComponent = (function () {
     function AuthComponent(el) {
         //console.log(io)
-        this.socket = io("http://localhost:8081");
-        this.socket.on('news', function (d) {
-            //console.log(d,'klklttewefewfwe')
-        });
         // console.log(el)
     }
     AuthComponent = __decorate([

@@ -2,4 +2,4 @@ form(id="file-form" enctype="multipart/form-data" action="php/upload.php" method
     input(type="hidden" name="afile" value="30000")
     input(name="afile" id="file-select" type="file" style="display: none")
     button( (click)="onSelect($event)" ) Выбрать файл
-    button(type="submit" id="upload-button" value="Send File") Отправить
+    button(type="submit", id="upload-button", value="Send File", (click)="onSubmit($event)") Отправить

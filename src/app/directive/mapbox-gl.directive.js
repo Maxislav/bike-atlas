@@ -14,6 +14,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+//import any = jasmine.any;
 var map_service_1 = require("../service/map.service");
 var position_size_service_1 = require("../service/position-size.service");
 var local_storage_service_1 = require('../service/local-storage.service');
