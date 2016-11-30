@@ -19,17 +19,17 @@ app.use((req, res, next)=>{
   
   
   if(/\.css$/.test(req.url)){
-    console.log('css  ', req.url)
+   // console.log('css  ', req.url)
     kCss++;
   }
 
   if(/^\/src.+\.js$/.test(req.url)){
-    console.log('src  ', req.url)
+    console.log('js  ', req.url)
     kMyJs++;
   }
   
   if(/node_modules/.test(req.url)){
-    console.log('node', req.url)
+   // console.log('node', req.url)
     kNM++;
   }
   timeout && clearTimeout(timeout);
@@ -49,7 +49,7 @@ app.use((req, res, next)=>{
 
 app.get("*.js", function (req, res, next) {
   
-  //console.log("*.js ->",__dirname, req.url)
+ // console.log("*.js ->",__dirname, req.url)
   next()
 });
 
