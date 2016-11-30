@@ -15,44 +15,6 @@ let kSrc = 0;
 let kCss = 0;
 let kMyJs = 0;
 let kNM = 0;
-app.use((req, res, next)=>{
-
-  if(/\..{1,4}$/.test(req.url)){
-    if(/\.css$/.test(req.url)){
-      // console.log('css  ', req.url)
-      kCss++;
-    }
-
-    if(/^\/src.+\.js$/.test(req.url)){
-      console.log('js  ', req.url)
-      kMyJs++;
-    }
-
-    if(/node_modules/.test(req.url)){
-      // console.log('node', req.url)
-      kNM++;
-    }
-    timeout && clearTimeout(timeout);
-
-    timeout = setTimeout(()=>{
-      console.info('Scripts src ->', kMyJs );
-      console.info('Scripts node_module ->', kNM );
-      console.info('Styles css ->', kCss );
-      k=0;
-      kMyJs = 0;
-      kNM = 0;
-      kCss = 0;
-    }, 1000);
-    k++;
-    next()
-  }else{
-    res.sendFile(__dirname + '/index.html')  
-  }
-  
-  
-  
-  
-});
 
 
 app.get("*", function (req, res, next) {
@@ -64,8 +26,49 @@ app.get("*", function (req, res, next) {
   }
   req.url = reqUrl;
   next()
+});
+
+app.use((req, res, next)=>{
+
+  if(/\..{1,4}$/.test(req.url)){
+    if(/\.css$/.test(req.url)){
+      res.sendFile(__dirname +req.url)
+       console.log('css  ', req.url)
+      kCss++;
+    }else  if(/^\/src.+\.js$/.test(req.url)){
+      res.sendFile(__dirname +req.url)
+     // console.log('js  ', req.url)
+      kMyJs++;
+    }else  if(/node_modules/.test(req.url)){
+      res.sendFile(__dirname +req.url)
+      // console.log('node', req.url)
+      kNM++;
+    }
+    else{
+      next()
+    }
+    timeout && clearTimeout(timeout);
+    timeout = setTimeout(()=>{
+      console.info('Scripts src ->', kMyJs );
+      console.info('Scripts node_module ->', kNM );
+      console.info('Styles css ->', kCss );
+      k=0;
+      kMyJs = 0;
+      kNM = 0;
+      kCss = 0;
+    }, 1000);
+    k++;
+   
+  }else{
+    res.sendFile(__dirname + '/index.html')  
+  }
+  
+  
+  
   
 });
+
+
 
 
 app.get('/node_modules*', function(req, res) {
