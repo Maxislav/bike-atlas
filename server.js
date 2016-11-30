@@ -16,35 +16,42 @@ let kCss = 0;
 let kMyJs = 0;
 let kNM = 0;
 app.use((req, res, next)=>{
-  
-  
-  if(/\.css$/.test(req.url)){
-   // console.log('css  ', req.url)
-    kCss++;
-  }
 
-  if(/^\/src.+\.js$/.test(req.url)){
-    console.log('js  ', req.url)
-    kMyJs++;
+  if(/\..{1,4}$/.test(req.url)){
+    if(/\.css$/.test(req.url)){
+      // console.log('css  ', req.url)
+      kCss++;
+    }
+
+    if(/^\/src.+\.js$/.test(req.url)){
+      console.log('js  ', req.url)
+      kMyJs++;
+    }
+
+    if(/node_modules/.test(req.url)){
+      // console.log('node', req.url)
+      kNM++;
+    }
+    timeout && clearTimeout(timeout);
+
+    timeout = setTimeout(()=>{
+      console.info('Scripts src ->', kMyJs );
+      console.info('Scripts node_module ->', kNM );
+      console.info('Styles css ->', kCss );
+      k=0;
+      kMyJs = 0;
+      kNM = 0;
+      kCss = 0;
+    }, 1000);
+    k++;
+    next()
+  }else{
+    res.sendFile(__dirname + '/index.html')  
   }
   
-  if(/node_modules/.test(req.url)){
-   // console.log('node', req.url)
-    kNM++;
-  }
-  timeout && clearTimeout(timeout);
   
-  timeout = setTimeout(()=>{
-    console.info('Scripts src ->', kMyJs );
-    console.info('Scripts node_module ->', kNM );
-    console.info('Styles css ->', kCss );
-    k=0;
-    kMyJs = 0;
-    kNM = 0;
-    kCss = 0;
-  }, 1000);
-  k++;
-  next()
+  
+  
 });
 
 app.get("*.js", function (req, res, next) {
@@ -83,10 +90,12 @@ app.get('/*template*', function(req, res) {
   //console.log(req.url)
   res.sendFile(__dirname + req.url)
 });
-app.get('/*', function(req, res) {
+/*
+app.get('/!*', function(req, res) {
   //console.log(req.url)
   res.sendFile(__dirname + '/index.html')
 });
+*/
 
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
