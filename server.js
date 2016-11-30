@@ -54,11 +54,6 @@ app.use((req, res, next)=>{
   
 });
 
-app.get("*.js", function (req, res, next) {
-  
- // console.log("*.js ->",__dirname, req.url)
-  next()
-});
 
 app.get("*", function (req, res, next) {
   let reqUrl = ''  ;
@@ -83,19 +78,17 @@ app.get('/node_modules*', function(req, res) {
   
 });
 
-app.use(express.static(__dirname));
+//app.use(express.static(__dirname));
 
 
 app.get('/*template*', function(req, res) {
   //console.log(req.url)
   res.sendFile(__dirname + req.url)
 });
-/*
-app.get('/!*', function(req, res) {
+app.get('*', function(req, res) {
   //console.log(req.url)
-  res.sendFile(__dirname + '/index.html')
+  res.sendFile(__dirname + req.url)
 });
-*/
 
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
