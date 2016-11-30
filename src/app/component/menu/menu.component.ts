@@ -8,6 +8,8 @@ import {MenuTrackComponent} from './menu-track/menu-track.component'
 import any = jasmine.any;
 import {MenuService} from "app/service/menu.service";
 import {LoadTrack} from "./menu-track/load/load";
+import {Track} from "../../service/track";
+//import {Track} from "./track";
 
 declare var document: any;
 
@@ -18,7 +20,7 @@ declare var document: any;
     selector: 'menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.css'],
-    providers: [MenuTrackComponent, MenuService, LoadTrack ]
+    providers: [MenuTrackComponent, MenuService, LoadTrack , Track]
 })
 export class MenuComponent{
 

@@ -14,13 +14,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var local_storage_service_1 = require('../service/local-storage.service');
 var socket_oi_service_1 = require("./socket.oi.service");
+var track_1 = require("./track");
 var MapService = (function () {
     // public ls: LocalStorage
     //private ref: ApplicationRef
-    function MapService(ref, ls, io) {
+    function MapService(ref, ls, io, trackService) {
         this.ref = ref;
         this.ls = ls;
         this.io = io;
+        this.trackService = trackService;
         this.events = {
             load: []
         };
@@ -32,17 +34,19 @@ var MapService = (function () {
             var xmlDoc = parser.parseFromString(xml, "text/xml");
             var forEach = Array.prototype.forEach;
             forEach.call(xmlDoc.getElementsByTagName('trkpt'), function (item) {
-                console.log(item.getAttribute('lat'), item.getAttribute('lon'));
+                //console.log(item.getAttribute('lat'), item.getAttribute('lon'))
                 track.push({
                     lng: item.getAttribute('lon'),
                     lat: item.getAttribute('lat')
                 });
             });
+            trackService.showTrack(track);
         });
     }
     MapService.prototype.setMap = function (map) {
         var _this = this;
         this.map = map;
+        this.trackService.setMap(map);
         map.on('load', function () {
             _this.pitch = map.getPitch().toFixed(0);
             _this.bearing = map.getBearing().toFixed(1);
@@ -88,7 +92,7 @@ var MapService = (function () {
     };
     MapService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [core_1.ApplicationRef, local_storage_service_1.LocalStorage, socket_oi_service_1.Io])
+        __metadata('design:paramtypes', [core_1.ApplicationRef, local_storage_service_1.LocalStorage, socket_oi_service_1.Io, track_1.Track])
     ], MapService);
     return MapService;
 }());

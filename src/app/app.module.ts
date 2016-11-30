@@ -19,6 +19,7 @@ import {LocalStorage} from "./service/local-storage.service";
 import {MenuTrackComponent} from "./component/menu/menu-track/menu-track.component";
 import {LoadTrack} from "./component/menu/menu-track/load/load";
 import {Io} from "./service/socket.oi.service";
+import {Track} from "./service/track";
 
 @NgModule({
     imports: [
@@ -38,11 +39,11 @@ import {Io} from "./service/socket.oi.service";
         MenuComponent,
         MenuTrackComponent,
         LoadTrack
+
     ],
     bootstrap: [
         AppComponent
     ],
-    providers: [TransactionResolver, MenuComponent, LocalStorage, Io
-    ]
+    providers: [TransactionResolver, MenuComponent, LocalStorage, Io, Track]
 })
 export class AppModule {}

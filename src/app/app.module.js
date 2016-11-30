@@ -28,6 +28,7 @@ var local_storage_service_1 = require("./service/local-storage.service");
 var menu_track_component_1 = require("./component/menu/menu-track/menu-track.component");
 var load_1 = require("./component/menu/menu-track/load/load");
 var socket_oi_service_1 = require("./service/socket.oi.service");
+var track_1 = require("./service/track");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -54,8 +55,7 @@ var AppModule = (function () {
             bootstrap: [
                 app_component_1.AppComponent
             ],
-            providers: [transaction_resolve_1.TransactionResolver, menu_component_1.MenuComponent, local_storage_service_1.LocalStorage, socket_oi_service_1.Io
-            ]
+            providers: [transaction_resolve_1.TransactionResolver, menu_component_1.MenuComponent, local_storage_service_1.LocalStorage, socket_oi_service_1.Io, track_1.Track]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);
