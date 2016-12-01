@@ -21,20 +21,48 @@ var TrackList = (function () {
     TrackList.prototype.onGo = function (tr) {
         var map = this.track.map;
         var i = 0;
-        flyTo(tr.coordinates[0]);
-        map.setPitch(60);
+        // map.setPitch(60);
+        //map.rotateTo(tr.piints[i].bearing,{} )
+        flyTo(tr.coordinates[i]);
+        /* map.easeTo({
+             center: tr.coordinates[0],
+             pitch: 60,
+             bearing: tr.points[i].bearing,
+             easing: function (t) {
+                 console.log(t)
+                 return t;
+             }
+         })
+ */
+        //flyTo(tr.coordinates[0])
         function flyTo(center) {
-            map.flyTo({
-                center: center,
-                speed: 0.2,
-                curve: 1
+            map.easeTo({
+                center: tr.coordinates[i],
+                pitch: 60,
+                zoom: 16,
+                duration: 100,
+                animate: true,
+                //bearing: tr.points[i].bearing,
+                easing: function (t) {
+                    //console.log(t)
+                    if (t == 1) {
+                        setTimeout(function () {
+                            map.rotateTo(tr.points[i].bearing, { duration: 20, easing: function (t) {
+                                    if (t == 1 && i < tr.points.length - 1) {
+                                        setTimeout(function () {
+                                            i++;
+                                            flyTo(tr.coordinates[i]);
+                                        }, 1);
+                                    }
+                                    return t;
+                                } });
+                        }, 1);
+                    }
+                    return t;
+                }
             });
+            //tr.points[i].bearing && map.setBearing(tr.points[i].bearing)
             if (i < tr.coordinates.length) {
-                setTimeout(function () {
-                    i++;
-                    flyTo(tr.coordinates[i]);
-                    tr.points[i].bearing && map.setBearing(tr.points[i].bearing);
-                }, 300);
             }
         }
     };
