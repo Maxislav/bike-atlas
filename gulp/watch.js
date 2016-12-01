@@ -7,7 +7,7 @@ const livereload = require('gulp-livereload');
 module.exports = function (gulp) {
 
   gulp.task('watch', function() {
-    livereload.listen();
+    //livereload.listen();
     gulp.watch('./src/**/*.jade', ['jade']);
     gulp.watch('*.jade', ['jade']);
     gulp.watch('./src/**/*.less', ['less']);

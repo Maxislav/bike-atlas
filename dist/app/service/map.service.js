@@ -41,9 +41,10 @@ var MapService = (function () {
                 });
             });
             var at = trackService.showTrack(track);
-            setTimeout(function () {
-                at.hide();
-            }, 1000);
+            /*  setTimeout(()=>{
+                  at.hide()
+              }, 1000)
+  */
         });
     }
     MapService.prototype.setMap = function (map) {

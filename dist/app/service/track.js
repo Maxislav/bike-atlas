@@ -22,6 +22,8 @@ var Track = (function () {
     function Track() {
         this._trackList = [];
         this.layerIds = [];
+        this._trackList = [];
+        console.log('constructror');
     }
     Track.prototype.setMap = function (map) {
         this.map = map;
@@ -30,6 +32,8 @@ var Track = (function () {
         var $this = this;
         var coordinates = [];
         var trackList = this.trackList;
+        var color = this._getColor();
+        console.log(color);
         data.forEach(function (item) {
             coordinates.push([item.lng, item.lat]);
         });
@@ -54,7 +58,7 @@ var Track = (function () {
                 "line-cap": "round"
             },
             "paint": {
-                "line-color": "#FF058A",
+                "line-color": color,
                 "line-width": 8,
                 "line-opacity": 0.5
             }
@@ -74,6 +78,7 @@ var Track = (function () {
             coordinates: coordinates
         };
         trackList.push(tr);
+        console.log(this._trackList);
         return tr;
     };
     Track.prototype.getRandom = function (min, max, int) {
@@ -87,6 +92,21 @@ var Track = (function () {
         else {
             return rand;
         }
+    };
+    Track.prototype._getColor = function () {
+        var _this = this;
+        var I = parseInt;
+        var c = ['0', '0', '0'];
+        c.forEach(function (r, i) {
+            r = I(_this.getRandom(100, 255, true)).toString(16);
+            if (r.length < 2) {
+                c[i] = '0' + r;
+            }
+            else {
+                c[i] = r;
+            }
+        });
+        return '#' + c.join('');
     };
     Object.defineProperty(Track.prototype, "map", {
         get: function () {

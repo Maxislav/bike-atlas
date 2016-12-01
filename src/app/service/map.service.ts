@@ -51,10 +51,10 @@ export class MapService {
 
             let at = trackService.showTrack(track)
 
-            setTimeout(()=>{
+          /*  setTimeout(()=>{
                 at.hide()
             }, 1000)
-
+*/
             
             
         });

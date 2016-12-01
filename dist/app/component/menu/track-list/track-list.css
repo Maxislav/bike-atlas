@@ -1,0 +1,13 @@
+:host {
+  position: absolute;
+  top: calc(100% + 100px);
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 2;
+  padding: 8px;
+  min-width: 200px;
+}
+.del {
+  cursor: pointer;
+  display: block;
+  float: right;
+}

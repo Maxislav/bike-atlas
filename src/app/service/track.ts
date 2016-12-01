@@ -16,6 +16,7 @@ class _Tracks {
 export class Track {
 
 
+
     layerIds:Array<number>;
 
     private _trackList: Array<_Tracks> = [];
@@ -23,6 +24,8 @@ export class Track {
 
     constructor() {
         this.layerIds = [];
+        this._trackList = [];
+        console.log('constructror')
 
     }
 
@@ -34,7 +37,13 @@ export class Track {
 
         const $this = this;
         const coordinates = [];
-        const trackList =  this.trackList;
+        const trackList = this.trackList;
+
+        const color = this._getColor()
+        console.log(color);
+
+
+
         data.forEach(item=> {
             coordinates.push([item.lng, item.lat])
         });
@@ -62,7 +71,7 @@ export class Track {
                 "line-cap": "round"
             },
             "paint": {
-                "line-color": "#FF058A",
+                "line-color": color,
                 "line-width": 8,
                 "line-opacity": 0.5
             }
@@ -86,6 +95,7 @@ export class Track {
 
 
         trackList.push(tr);
+        console.log(this._trackList)
 
         return tr
     }
@@ -104,8 +114,22 @@ export class Track {
         }
 
     }
+    _getColor(){
+        const I = parseInt;
+        let c = ['0','0','0'];
+
+        c.forEach( (r, i) => {
+            r = I(this.getRandom(100,255,true)).toString(16);
+            if(r.length<2){
+                c[i]='0'+r
+            }else{
+                c[i]= r
+            }
+        });
 
 
+        return '#' + c.join('')
+    }
 
     set map(value:any) {
         //console.log(value)
@@ -114,6 +138,7 @@ export class Track {
     get map():any {
         return this._map;
     }
+
     get trackList():Array<_Tracks> {
         return this._trackList;
     }
@@ -121,7 +146,5 @@ export class Track {
     set trackList(value:Array<_Tracks>) {
         this._trackList = value;
     }
-
-
 
 }

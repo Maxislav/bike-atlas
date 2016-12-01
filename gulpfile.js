@@ -9,7 +9,7 @@ var  livereload = require('gulp-livereload');
 const devSyncTask = [
 	'less',
 	'jade',
-//	'watch'
+	'watch'
 ];
 
 const gulpSync = require('gulp-sync')(gulp).sync;

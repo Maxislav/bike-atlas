@@ -20,6 +20,7 @@ import {MenuTrackComponent} from "./component/menu/menu-track/menu-track.compone
 import {LoadTrack} from "./component/menu/menu-track/load/load";
 import {Io} from "./service/socket.oi.service";
 import {Track} from "./service/track";
+import {TrackList} from "./component/menu/track-list/track-list.component";
 
 @NgModule({
     imports: [
@@ -38,7 +39,8 @@ import {Track} from "./service/track";
         HeroesComponent,
         MenuComponent,
         MenuTrackComponent,
-        LoadTrack
+        LoadTrack,
+        TrackList
 
     ],
     bootstrap: [
