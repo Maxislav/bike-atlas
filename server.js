@@ -109,6 +109,7 @@ io.on('connection', function (socket) {
       data.push(d);
     });
     stream.on('end', (e, d)=>{
+      console.log("file send")
       socket.emit('file', Buffer.concat(data));
     });
   });
