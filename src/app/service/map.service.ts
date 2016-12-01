@@ -49,7 +49,14 @@ export class MapService {
                 })
             })
 
-            trackService.showTrack(track)
+            let at = trackService.showTrack(track)
+
+            setTimeout(()=>{
+                at.hide()
+                setTimeout(()=>{
+                    at.show()
+                },1000)
+            }, 2000)
             
             
             

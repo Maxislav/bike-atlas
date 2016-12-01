@@ -21,7 +21,7 @@ var Track = (function () {
             return this._map;
         },
         set: function (value) {
-            console.log(value);
+            //console.log(value)
             this._map = value;
         },
         enumerable: true,
@@ -31,7 +31,8 @@ var Track = (function () {
         this.map = map;
     };
     Track.prototype.showTrack = function (data) {
-        console.log(this);
+        // console.log(this);
+        var $this = this;
         var coordinates = [];
         data.forEach(function (item) {
             coordinates.push([item.lng, item.lat]);
@@ -62,16 +63,22 @@ var Track = (function () {
                 "line-opacity": 0.5
             }
         });
-        //debugger
-        return function () {
+        return {
+            hide: function () {
+                $this.map.removeLayer(layerId);
+                $this.map.removeSource(layerId);
+            },
+            show: function () {
+                return $this.showTrack(data);
+            }
         };
     };
     Track.prototype.getRandom = function (min, max, int) {
         var rand = min + Math.random() * (max - min);
         if (int) {
-            rand = Math.round(rand);
+            rand = Math.round(rand) + '';
         }
-        if (-1 < this.layerIds.indexOf(rand + '')) {
+        if (-1 < this.layerIds.indexOf(rand)) {
             return this.getRandom(min, max, int);
         }
         else {
@@ -85,3 +92,4 @@ var Track = (function () {
     return Track;
 }());
 exports.Track = Track;
+//# sourceMappingURL=track.js.map

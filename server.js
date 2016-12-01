@@ -1,11 +1,15 @@
 /**
  * Created by maxislav on 20.10.16.
  */
-let express = require('express');
+const livereload = require('express-livereload');
+const express = require('express');
 
 const port = 8080;
 
 let app = express();
+livereload(app, {
+  watchDir: __dirname + '/dist'
+});
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 const ss = require('socket.io-stream');

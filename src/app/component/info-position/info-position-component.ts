@@ -6,7 +6,6 @@ import { Component, ApplicationRef} from '@angular/core';
 import {MapService} from "../../service/map.service";
 import {Mercator} from "../../service/mercator.service";
 
-
 @Component({
     selector:'info-position',
     //template:'<div>lat: {{mapService.lat}}</div>' + '<div>Pixel: {{pixelY}}</div>',

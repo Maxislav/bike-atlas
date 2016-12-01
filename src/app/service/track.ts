@@ -18,7 +18,7 @@ export class Track {
     }
 
     set map(value:any) {
-        console.log(value)
+        //console.log(value)
         this._map = value;
     }
 
@@ -31,7 +31,9 @@ export class Track {
 
     showTrack(data:Array<{lng:number, lat:number}>) {
 
-        console.log(this);
+       // console.log(this);
+
+        const $this = this;
         const coordinates = [];
         data.forEach(item=> {
             coordinates.push([item.lng, item.lat])
@@ -66,11 +68,14 @@ export class Track {
             }
         });
 
-        //debugger
-
-
-        return function () {
-
+        return {
+            hide: function () {
+                $this.map.removeLayer(layerId);
+                $this.map.removeSource(layerId);
+            },
+            show: function () {
+                return $this.showTrack(data)
+            }
         }
 
 
@@ -79,9 +84,9 @@ export class Track {
     getRandom(min, max, int) {
         var rand = min + Math.random() * (max - min);
         if (int) {
-            rand = Math.round(rand)
+            rand = Math.round(rand)+''
         }
-        if (-1<this.layerIds.indexOf(rand+'')) {
+        if (-1<this.layerIds.indexOf(rand)) {
             return this.getRandom(min, max, int)
         } else {
             return rand;

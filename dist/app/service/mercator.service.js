@@ -38,3 +38,4 @@ var Mercator = (function () {
     return Mercator;
 }());
 exports.Mercator = Mercator;
+//# sourceMappingURL=mercator.service.js.map

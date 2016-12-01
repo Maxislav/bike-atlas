@@ -40,3 +40,4 @@ var InfoPositionComponent = (function () {
     return InfoPositionComponent;
 }());
 exports.InfoPositionComponent = InfoPositionComponent;
+//# sourceMappingURL=info-position-component.js.map

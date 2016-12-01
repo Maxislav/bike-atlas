@@ -26,3 +26,4 @@ var TransactionResolver = (function () {
     return TransactionResolver;
 }());
 exports.TransactionResolver = TransactionResolver;
+//# sourceMappingURL=transaction.resolve.js.map
