@@ -7,6 +7,7 @@
   var map = {
     'app':                        'dist/app', // 'dist',
     '@lib':                        'lib', // 'dist',
+    '@ramda':                      'node_modules/ramda/dist', // 'dist',
     '@angular':                   'node_modules/@angular',
     'socket':                     'node_modules/socket.io-client/dist',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',

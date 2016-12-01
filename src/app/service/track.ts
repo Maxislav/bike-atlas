@@ -3,43 +3,43 @@
  */
 
 import {Injectable} from '@angular/core';
+import * as R from '@ramda/ramda.min.js';
+
+class _Tracks {
+    id: string;
+    show: Function;
+    hide: Function;
+    coordinates: Array<Array<number>>
+}
 
 @Injectable()
 export class Track {
-    get map():any {
-        return this._map;
-    }
 
 
     layerIds:Array<number>;
 
-    constructor() {
-        this.layerIds = []
-    }
-
-    set map(value:any) {
-        //console.log(value)
-        this._map = value;
-    }
-
+    private _trackList: Array<_Tracks> = [];
     private _map:any;
+
+    constructor() {
+        this.layerIds = [];
+
+    }
 
     setMap(map:any) {
         this.map = map
     }
 
-
     showTrack(data:Array<{lng:number, lat:number}>) {
-
-       // console.log(this);
 
         const $this = this;
         const coordinates = [];
+        const trackList =  this.trackList;
         data.forEach(item=> {
             coordinates.push([item.lng, item.lat])
         });
 
-        let layerId:any = this.getRandom(0, 5000000, false)+'';
+        let layerId:string = this.getRandom(0, 5000000, false)+'';
 
         this.map.addSource(layerId, {
             "type": "geojson",
@@ -68,18 +68,29 @@ export class Track {
             }
         });
 
-        return {
+        let tr: _Tracks = {
             hide: function () {
                 $this.map.removeLayer(layerId);
                 $this.map.removeSource(layerId);
+                let index = R.findIndex(R.propEq('id', layerId))(trackList);
+                trackList.splice(index, 1);
+                console.log('delete track index', index)
             },
             show: function () {
                 return $this.showTrack(data)
-            }
-        }
+            },
+            id: layerId,
+            coordinates: coordinates
+        };
 
 
+
+        trackList.push(tr);
+
+        return tr
     }
+
+   
 
     getRandom(min, max, int) {
         var rand = min + Math.random() * (max - min);
@@ -93,6 +104,24 @@ export class Track {
         }
 
     }
+
+
+
+    set map(value:any) {
+        //console.log(value)
+        this._map = value;
+    }
+    get map():any {
+        return this._map;
+    }
+    get trackList():Array<_Tracks> {
+        return this._trackList;
+    }
+
+    set trackList(value:Array<_Tracks>) {
+        this._trackList = value;
+    }
+
 
 
 }

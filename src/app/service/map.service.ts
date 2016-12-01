@@ -53,11 +53,8 @@ export class MapService {
 
             setTimeout(()=>{
                 at.hide()
-                setTimeout(()=>{
-                    at.show()
-                },1000)
-            }, 2000)
-            
+            }, 1000)
+
             
             
         });

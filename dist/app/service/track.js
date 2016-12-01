@@ -12,28 +12,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var R = require('@ramda/ramda.min.js');
+var _Tracks = (function () {
+    function _Tracks() {
+    }
+    return _Tracks;
+}());
 var Track = (function () {
     function Track() {
+        this._trackList = [];
         this.layerIds = [];
     }
-    Object.defineProperty(Track.prototype, "map", {
-        get: function () {
-            return this._map;
-        },
-        set: function (value) {
-            //console.log(value)
-            this._map = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Track.prototype.setMap = function (map) {
         this.map = map;
     };
     Track.prototype.showTrack = function (data) {
-        // console.log(this);
         var $this = this;
         var coordinates = [];
+        var trackList = this.trackList;
         data.forEach(function (item) {
             coordinates.push([item.lng, item.lat]);
         });
@@ -63,15 +59,22 @@ var Track = (function () {
                 "line-opacity": 0.5
             }
         });
-        return {
+        var tr = {
             hide: function () {
                 $this.map.removeLayer(layerId);
                 $this.map.removeSource(layerId);
+                var index = R.findIndex(R.propEq('id', layerId))(trackList);
+                trackList.splice(index, 1);
+                console.log('delete track index', index);
             },
             show: function () {
                 return $this.showTrack(data);
-            }
+            },
+            id: layerId,
+            coordinates: coordinates
         };
+        trackList.push(tr);
+        return tr;
     };
     Track.prototype.getRandom = function (min, max, int) {
         var rand = min + Math.random() * (max - min);
@@ -85,6 +88,27 @@ var Track = (function () {
             return rand;
         }
     };
+    Object.defineProperty(Track.prototype, "map", {
+        get: function () {
+            return this._map;
+        },
+        set: function (value) {
+            //console.log(value)
+            this._map = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Track.prototype, "trackList", {
+        get: function () {
+            return this._trackList;
+        },
+        set: function (value) {
+            this._trackList = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Track = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [])

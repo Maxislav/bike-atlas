@@ -43,10 +43,7 @@ var MapService = (function () {
             var at = trackService.showTrack(track);
             setTimeout(function () {
                 at.hide();
-                setTimeout(function () {
-                    at.show();
-                }, 1000);
-            }, 2000);
+            }, 1000);
         });
     }
     MapService.prototype.setMap = function (map) {
