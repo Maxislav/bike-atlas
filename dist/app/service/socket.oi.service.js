@@ -12,7 +12,7 @@ var core_1 = require("@angular/core");
 var io = require("socket/socket.io.js");
 var Io = (function () {
     function Io() {
-        this._socket = io("http://localhost:8081");
+        this._socket = io("http://" + window.location.hostname + ":8081");
         this._socket.on('news', function (d) {
             //console.log(d,'klklttewefewfwe')
         });

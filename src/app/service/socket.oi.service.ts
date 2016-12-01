@@ -12,7 +12,7 @@ export class Io{
     private _socket: any;
 
     constructor(){
-        this._socket = io("http://localhost:8081");
+        this._socket = io("http://"+window.location.hostname+":8081");
         this._socket.on('news',(d)=>{
             //console.log(d,'klklttewefewfwe')
         });
