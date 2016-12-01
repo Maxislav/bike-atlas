@@ -5,7 +5,7 @@
 (function(global) {
   // map tells the System loader where to look for things
   var map = {
-    'app':                        'src/app', // 'dist',
+    'app':                        'dist/app', // 'dist',
     '@lib':                        'lib', // 'dist',
     '@angular':                   'node_modules/@angular',
     'socket':                     'node_modules/socket.io-client/dist',

@@ -12,13 +12,13 @@ module.exports = function (gulp) {
     let LOCALS = {};
     
     let
-      a = gulp.src('./src/**/*.jade')
+      a = gulp.src('./src/app/**/*.jade')
         .pipe(plumber())
         .pipe(jade({
           locals: LOCALS,
           pretty: true
         }))
-        .pipe(gulp.dest('./src/'))
+        .pipe(gulp.dest('./dist/app'))
         .pipe(livereload());
 
     let b = gulp.src('./*.jade')

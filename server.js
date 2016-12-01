@@ -31,7 +31,10 @@ app.get("*", function (req, res, next) {
 });
 
 app.use((req, res, next)=>{
-
+  
+  if(/src.+\.(html|css)$/.test(req.url)){
+    req.url = req.url.replace('src', 'dist')
+  }
   if(/\..{1,4}$/.test(req.url)){
     if(/\.css$/.test(req.url)){
       res.sendFile(__dirname +req.url)
@@ -45,8 +48,7 @@ app.use((req, res, next)=>{
       res.sendFile(__dirname +req.url)
       // console.log('node', req.url)
       kNM++;
-    }
-    else{
+    }else{
       next()
     }
     timeout && clearTimeout(timeout);

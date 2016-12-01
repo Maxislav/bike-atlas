@@ -12,7 +12,7 @@ module.exports = function (gulp) {
       .pipe(less({
         paths: [ path.join(__dirname, 'less', 'includes') ]
       }))
-      .pipe(gulp.dest('src/app/'))
+      .pipe(gulp.dest('dist/app'))
       .pipe(livereload());
   });
   

@@ -4,6 +4,7 @@ import {Hero} from './hero';
 import {HeroService} from './hero.service';
 
 
+
 @Component({
     moduleId: module.id,
     selector: 'my-app',
@@ -17,12 +18,8 @@ import {HeroService} from './hero.service';
 
 export class AppComponent {
     title = 'Tour of Heroes';
-
-
     constructor(){
 
     }
-
-
 
 }
