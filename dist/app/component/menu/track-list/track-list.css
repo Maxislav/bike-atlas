@@ -11,3 +11,7 @@
   display: block;
   float: right;
 }
+li {
+  padding: 8px;
+  color: black;
+}

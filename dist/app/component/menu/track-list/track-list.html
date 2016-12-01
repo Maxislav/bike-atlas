@@ -1,0 +1,9 @@
+
+<div>Список</div>
+<div>
+  <ul>
+    <li *ngFor="let track of list; let i = index" [style.background]="track.color">{{i}}: {{track.distance}} km
+      <div (click)="hideTrack(track)" class="del">&#215;</div>
+    </li>
+  </ul>
+</div>

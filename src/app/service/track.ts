@@ -4,13 +4,9 @@
 
 import {Injectable} from '@angular/core';
 import * as R from '@ramda/ramda.min.js';
+import {Track as Tr, Point} from 'app/service/track.var';
+import {Util} from './util';
 
-class _Tracks {
-    id: string;
-    show: Function;
-    hide: Function;
-    coordinates: Array<Array<number>>
-}
 
 @Injectable()
 export class Track {
@@ -19,13 +15,14 @@ export class Track {
 
     layerIds:Array<number>;
 
-    private _trackList: Array<_Tracks> = [];
+    private util: Util;
+    private _trackList: Array<Tr> = [];
     private _map:any;
 
     constructor() {
         this.layerIds = [];
         this._trackList = [];
-        console.log('constructror')
+        this.util = new Util();
 
     }
 
@@ -33,10 +30,12 @@ export class Track {
         this.map = map
     }
 
-    showTrack(data:Array<{lng:number, lat:number}>) {
+    showTrack(data:Array<Point>) {
 
         const $this = this;
         const coordinates = [];
+        const points: Array<Point> = []
+
         const trackList = this.trackList;
 
         const color = this._getColor()
@@ -44,8 +43,9 @@ export class Track {
 
 
 
-        data.forEach(item=> {
-            coordinates.push([item.lng, item.lat])
+        data.forEach(({lng, lat})=> {
+            coordinates.push([lng, lat])
+            points.push({lng,lat})
         });
 
         let layerId:string = this.getRandom(0, 5000000, false)+'';
@@ -77,7 +77,7 @@ export class Track {
             }
         });
 
-        let tr: _Tracks = {
+        let tr: Tr = {
             hide: function () {
                 $this.map.removeLayer(layerId);
                 $this.map.removeSource(layerId);
@@ -89,13 +89,17 @@ export class Track {
                 return $this.showTrack(data)
             },
             id: layerId,
-            coordinates: coordinates
+            coordinates: coordinates,
+            points: points,
+            color:color
+            //distance: (function() { return $this.util.distance(this)})()
         };
 
+        tr.distance = this.util.distance(tr);
 
 
         trackList.push(tr);
-        console.log(this._trackList)
+        console.log(this._trackList);
 
         return tr
     }
@@ -139,11 +143,11 @@ export class Track {
         return this._map;
     }
 
-    get trackList():Array<_Tracks> {
+    get trackList():Array<Tr> {
         return this._trackList;
     }
 
-    set trackList(value:Array<_Tracks>) {
+    set trackList(value:Array<Tr>) {
         this._trackList = value;
     }
 

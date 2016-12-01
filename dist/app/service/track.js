@@ -13,17 +13,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var R = require('@ramda/ramda.min.js');
-var _Tracks = (function () {
-    function _Tracks() {
-    }
-    return _Tracks;
-}());
+var util_1 = require('./util');
 var Track = (function () {
     function Track() {
         this._trackList = [];
         this.layerIds = [];
         this._trackList = [];
-        console.log('constructror');
+        this.util = new util_1.Util();
     }
     Track.prototype.setMap = function (map) {
         this.map = map;
@@ -31,11 +27,14 @@ var Track = (function () {
     Track.prototype.showTrack = function (data) {
         var $this = this;
         var coordinates = [];
+        var points = [];
         var trackList = this.trackList;
         var color = this._getColor();
         console.log(color);
-        data.forEach(function (item) {
-            coordinates.push([item.lng, item.lat]);
+        data.forEach(function (_a) {
+            var lng = _a.lng, lat = _a.lat;
+            coordinates.push([lng, lat]);
+            points.push({ lng: lng, lat: lat });
         });
         var layerId = this.getRandom(0, 5000000, false) + '';
         this.map.addSource(layerId, {
@@ -75,8 +74,11 @@ var Track = (function () {
                 return $this.showTrack(data);
             },
             id: layerId,
-            coordinates: coordinates
+            coordinates: coordinates,
+            points: points,
+            color: color
         };
+        tr.distance = this.util.distance(tr);
         trackList.push(tr);
         console.log(this._trackList);
         return tr;

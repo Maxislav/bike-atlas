@@ -22,7 +22,8 @@ var TrackList = (function () {
         core_1.Component({
             moduleId: module.id,
             selector: 'track-list',
-            template: "<div>Список</div><ul><li *ngFor='let track of list'>{{track.id}}<div class='del' (click)='hideTrack(track)'>x</div></li></ul>",
+            //template: "<div>Список</div><ul><li *ngFor='let track of list; let i = index'>{{i}}: {{track.distance}} km<div class='del' (click)='hideTrack(track)'>x</div></li></ul>",
+            templateUrl: "./track-list.html",
             styleUrls: ['./track-list.css']
         }), 
         __metadata('design:paramtypes', [(typeof (_a = typeof track_1.Track !== 'undefined' && track_1.Track) === 'function' && _a) || Object])
