@@ -59,7 +59,7 @@ var Track = (function () {
             "paint": {
                 "line-color": color,
                 "line-width": 8,
-                "line-opacity": 0.5
+                "line-opacity": 0.8
             }
         });
         var tr = {
@@ -79,8 +79,9 @@ var Track = (function () {
             color: color
         };
         tr.distance = this.util.distance(tr);
+        this.util.bearing(tr.points);
         trackList.push(tr);
-        console.log(this._trackList);
+        console.log(tr);
         return tr;
     };
     Track.prototype.getRandom = function (min, max, int) {

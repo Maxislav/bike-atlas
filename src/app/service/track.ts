@@ -47,6 +47,8 @@ export class Track {
             coordinates.push([lng, lat])
             points.push({lng,lat})
         });
+        
+        
 
         let layerId:string = this.getRandom(0, 5000000, false)+'';
 
@@ -73,7 +75,7 @@ export class Track {
             "paint": {
                 "line-color": color,
                 "line-width": 8,
-                "line-opacity": 0.5
+                "line-opacity": 0.8
             }
         });
 
@@ -96,10 +98,11 @@ export class Track {
         };
 
         tr.distance = this.util.distance(tr);
+        this.util.bearing(tr.points);
 
 
         trackList.push(tr);
-        console.log(this._trackList);
+        console.log(tr);
 
         return tr
     }

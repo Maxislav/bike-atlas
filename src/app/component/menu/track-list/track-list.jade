@@ -1,5 +1,8 @@
 div Список
 div
     ul
-        li( *ngFor="let track of list\; let i = index" ,  [style.background]="track.color") {{i}}: {{track.distance}} km
+        li( *ngFor="let track of list\; let i = index" ,  [style.background]="track.color")
+
             .del( (click)='hideTrack(track)') &#215;
+            .go( (click)="onGo(track)") go
+            div {{i}}: {{track.distance}} km

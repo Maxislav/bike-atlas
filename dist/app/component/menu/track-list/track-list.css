@@ -11,6 +11,12 @@
   display: block;
   float: right;
 }
+.go {
+  cursor: pointer;
+  display: block;
+  float: right;
+  margin-right: 10px;
+}
 li {
   padding: 8px;
   color: black;

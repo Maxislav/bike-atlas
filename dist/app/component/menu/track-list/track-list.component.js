@@ -18,6 +18,26 @@ var TrackList = (function () {
     TrackList.prototype.hideTrack = function (track) {
         track.hide();
     };
+    TrackList.prototype.onGo = function (tr) {
+        var map = this.track.map;
+        var i = 0;
+        flyTo(tr.coordinates[0]);
+        map.setPitch(60);
+        function flyTo(center) {
+            map.flyTo({
+                center: center,
+                speed: 0.2,
+                curve: 1
+            });
+            if (i < tr.coordinates.length) {
+                setTimeout(function () {
+                    i++;
+                    flyTo(tr.coordinates[i]);
+                    tr.points[i].bearing && map.setBearing(tr.points[i].bearing);
+                }, 300);
+            }
+        }
+    };
     TrackList = __decorate([
         core_1.Component({
             moduleId: module.id,
