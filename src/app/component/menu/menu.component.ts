@@ -24,8 +24,16 @@ declare var document: any;
     providers: [MenuTrackComponent, MenuService, LoadTrack ,  TrackList]
 })
 export class MenuComponent{
+    get menuOpenLogin():boolean {
+        return this._menuOpenLogin;
+    }
+
+    set menuOpenLogin(value:boolean) {
+        this._menuOpenLogin = value;
+    }
 
     public menuOpen: boolean;
+    
     trackList: Array<any>
 
     constructor(private ms: MenuService, track: Track){
@@ -51,6 +59,25 @@ export class MenuComponent{
         }
 
     }
+    onOpenLogin(){
+        var click =  onclick.bind(this);
+
+        this.ms.menuOpenLogin = !this.ms.menuOpenLogin;
+        if(this.ms.menuOpenLogin ){
+            setTimeout(()=>{
+                document.body.addEventListener('click',click)
+            },100)
+        }else{
+            document.body.removeEventListener('click', click)
+        }
+
+        function onclick(e){
+            document.body.removeEventListener('click', click);
+            this.ms.menuOpenLogin = false
+        }
+        
+    }
+    
 
     //menuOpen: this.ms.menuOpe
 }

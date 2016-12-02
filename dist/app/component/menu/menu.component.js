@@ -23,6 +23,16 @@ var MenuComponent = (function () {
         this.trackList = track.trackList;
         //this.menuOpen = ms.menuOpen
     }
+    Object.defineProperty(MenuComponent.prototype, "menuOpenLogin", {
+        get: function () {
+            return this._menuOpenLogin;
+        },
+        set: function (value) {
+            this._menuOpenLogin = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     MenuComponent.prototype.onOpen = function () {
         var click = onclick.bind(this);
         this.ms.menuOpen = !this.ms.menuOpen;
@@ -37,6 +47,22 @@ var MenuComponent = (function () {
         function onclick(e) {
             document.body.removeEventListener('click', click);
             this.ms.menuOpen = false;
+        }
+    };
+    MenuComponent.prototype.onOpenLogin = function () {
+        var click = onclick.bind(this);
+        this.ms.menuOpenLogin = !this.ms.menuOpenLogin;
+        if (this.ms.menuOpenLogin) {
+            setTimeout(function () {
+                document.body.addEventListener('click', click);
+            }, 100);
+        }
+        else {
+            document.body.removeEventListener('click', click);
+        }
+        function onclick(e) {
+            document.body.removeEventListener('click', click);
+            this.ms.menuOpenLogin = false;
         }
     };
     MenuComponent = __decorate([

@@ -2,8 +2,10 @@ table
     tr
         td.button.menu( (click)="onOpen()" ) Маршрут
         td
-        td.button.enter Войти
+        td.button.enter( (click)="onOpenLogin()") Войти
 menu-track(*ngIf="ms.menuOpen")
 menu-track-load(*ngIf="ms.menuLoadOpen")
-track-list(*ngIf="trackList.length")
+track-list(*ngIf="trackList.length", [style.top]="ms.menuOpen ?  '150px' : '100%' ")
+menu-login(*ngIf="ms.menuOpenLogin")
+
 //track-list

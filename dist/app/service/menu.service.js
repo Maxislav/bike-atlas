@@ -36,6 +36,16 @@ var MenuService = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(MenuService.prototype, "menuOpenLogin", {
+        get: function () {
+            return this._menuOpenLogin;
+        },
+        set: function (value) {
+            this._menuOpenLogin = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     MenuService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [])

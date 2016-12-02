@@ -30,6 +30,7 @@ var load_1 = require("./component/menu/menu-track/load/load");
 var socket_oi_service_1 = require("./service/socket.oi.service");
 var track_1 = require("./service/track");
 var track_list_component_1 = require("./component/menu/track-list/track-list.component");
+var menu_login_component_1 = require("./component/menu/menu-login/menu-login.component");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -51,6 +52,7 @@ var AppModule = (function () {
                 heroes_component_1.HeroesComponent,
                 menu_component_1.MenuComponent,
                 menu_track_component_1.MenuTrackComponent,
+                menu_login_component_1.MenuLoginComponent,
                 load_1.LoadTrack,
                 track_list_component_1.TrackList
             ],
