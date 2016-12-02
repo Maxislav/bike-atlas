@@ -27,6 +27,7 @@ var MapService = (function () {
             load: []
         };
         var socket = io.socket;
+        var F = parseFloat;
         socket.on('file', function (d) {
             var track = [];
             var xml = String.fromCharCode.apply(null, new Uint8Array(d));
@@ -35,10 +36,12 @@ var MapService = (function () {
             var forEach = Array.prototype.forEach;
             forEach.call(xmlDoc.getElementsByTagName('trkpt'), function (item) {
                 //console.log(item.getAttribute('lat'), item.getAttribute('lon'))
-                track.push({
-                    lng: item.getAttribute('lon'),
-                    lat: item.getAttribute('lat')
-                });
+                if (item.getAttribute('lon')) {
+                    track.push({
+                        lng: F(item.getAttribute('lon')),
+                        lat: F(item.getAttribute('lat'))
+                    });
+                }
             });
             var at = trackService.showTrack(track);
             /*  setTimeout(()=>{

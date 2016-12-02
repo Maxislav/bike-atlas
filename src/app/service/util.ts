@@ -3,7 +3,7 @@
  */
   
 //import Tr from "app/service/track.var";
-import {Point} from "./track.var";
+//import {Point} from "./track.var";
 import {Track, Point} from 'app/service/track.var';
 
 
@@ -19,33 +19,49 @@ export class Util{
     var lat1, lat2, long1, long2;
 
     for (var i = 0; i < (arrTrackFull.length - 1); i++) {
-      lat1 = arrTrackFull[i].lat;
-      long1 = arrTrackFull[i].lng;
-      lat2 = arrTrackFull[i + 1].lat;
-      long2 = arrTrackFull[i + 1].lng;
-      //перевод коордитат в радианы
-      lat1 *= Math.PI / 180;
-      lat2 *= Math.PI / 180;
-      long1 *= Math.PI / 180;
-      long2 *= Math.PI / 180;
-      //вычисление косинусов и синусов широт и разницы долгот
-      var cl1 = Math.cos(lat1);
-      var cl2 = Math.cos(lat2);
-      var sl1 = Math.sin(lat1);
-      var sl2 = Math.sin(lat2);
-      var delta = long2 - long1;
-      var cdelta = Math.cos(delta);
-      var sdelta = Math.sin(delta);
-      //вычисления длины большого круга
-      var y = Math.sqrt(Math.pow(cl2 * sdelta, 2) + Math.pow(cl1 * sl2 - sl1 * cl2 * cdelta, 2));
-      var x = sl1 * sl2 + cl1 * cl2 * cdelta;
-      var ad = Math.atan2(y, x);
-      var dist = ad * R; //расстояние между двумя координатами в метрах
+
+      var dist = this.distanceBetween2(
+          {
+            lng: arrTrackFull[i].lng,
+            lat: arrTrackFull[i].lat,
+          },
+          {
+            lng: arrTrackFull[i + 1].lng,
+            lat: arrTrackFull[i + 1].lat
+          }
+      );
       dist_sum = dist_sum + dist;
     }
     dist_sum = dist_sum / 1000;
     dist_sum = parseFloat(dist_sum.toFixed(3));
     return dist_sum;
+  }
+
+  distanceBetween2(point1: Point, point2: Point){
+    const R = 6372795;  //радиус Земли
+    var lat1, lat2, long1, long2;
+    lat1 = point1.lat;
+    long1 = point1.lng;
+    lat2 = point2.lat;
+    long2 = point2.lng;
+    //перевод коордитат в радианы
+    lat1 *= Math.PI / 180;
+    lat2 *= Math.PI / 180;
+    long1 *= Math.PI / 180;
+    long2 *= Math.PI / 180;
+    //вычисление косинусов и синусов широт и разницы долгот
+    var cl1 = Math.cos(lat1);
+    var cl2 = Math.cos(lat2);
+    var sl1 = Math.sin(lat1);
+    var sl2 = Math.sin(lat2);
+    var delta = long2 - long1;
+    var cdelta = Math.cos(delta);
+    var sdelta = Math.sin(delta);
+    //вычисления длины большого круга
+    var y = Math.sqrt(Math.pow(cl2 * sdelta, 2) + Math.pow(cl1 * sl2 - sl1 * cl2 * cdelta, 2));
+    var x = sl1 * sl2 + cl1 * cl2 * cdelta;
+    var ad = Math.atan2(y, x);
+    return ad * R;
   }
   
   bearing(points: Array<Point>){
@@ -78,7 +94,6 @@ export class Util{
         else
           dLong = (2.0 * Math.PI + dLong);
       }
-
       return (degrees(Math.atan2(dLong, dPhi)) + 360.0) % 360.0;
     }
 

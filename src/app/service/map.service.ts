@@ -35,6 +35,7 @@ export class MapService {
             load: []
         };
         const socket = io.socket;
+        const F = parseFloat;
         socket.on('file', d=>{
             const track = [];
             let xml = String.fromCharCode.apply(null, new Uint8Array(d));
@@ -43,10 +44,13 @@ export class MapService {
             var forEach = Array.prototype.forEach;
             forEach.call(xmlDoc.getElementsByTagName('trkpt'), item=>{
                 //console.log(item.getAttribute('lat'), item.getAttribute('lon'))
-                track.push({
-                    lng:item.getAttribute('lon'),
-                    lat:item.getAttribute('lat')
-                })
+                if(item.getAttribute('lon')){
+                    track.push({
+                        lng:F(item.getAttribute('lon')),
+                        lat:F(item.getAttribute('lat'))
+                    })
+                }
+
             })
 
             let at = trackService.showTrack(track)

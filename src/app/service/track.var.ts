@@ -1,7 +1,8 @@
 
 export class Point{
     lng: number;
-    lat: number
+    lat: number;
+    bearing: number
 }
 
 

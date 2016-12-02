@@ -10,44 +10,62 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var track_1 = require("app/service/track");
+var util_1 = require("app/service/util");
 var TrackList = (function () {
     function TrackList(track) {
         this.track = track;
+        this.util = new util_1.Util();
         this.list = track.trackList;
     }
     TrackList.prototype.hideTrack = function (track) {
         track.hide();
     };
-    TrackList.prototype.onGo = function (tr) {
+    TrackList.prototype.onGo = function (_tr) {
         var map = this.track.map;
+        var points = this.fillTrack(_tr.points);
+        //return
         var i = 0;
         flyTo();
         function flyTo() {
-            map.easeTo({
-                center: tr.coordinates[i],
-                pitch: 60,
-                zoom: 16,
-                duration: 100,
-                animate: true,
-                easing: function (t) {
-                    //console.log(t)
-                    if (t == 1) {
-                        setTimeout(function () {
-                            map.rotateTo(tr.points[i].bearing, { duration: 70, easing: function (t) {
-                                    if (t == 1 && i < tr.points.length - 1) {
-                                        setTimeout(function () {
-                                            i++;
-                                            flyTo();
-                                        }, 1);
-                                    }
-                                    return t;
-                                } });
-                        }, 1);
-                    }
-                    return t;
-                }
-            });
+            map.setCenter(points[i]);
+            if (i < points.length - 2) {
+                setTimeout(function () {
+                    i++;
+                    flyTo();
+                }, 10);
+            }
         }
+    };
+    TrackList.prototype.fillTrack = function (points) {
+        var _this = this;
+        var fillTrack = [];
+        var F = parseFloat;
+        points.forEach(function (point, i) {
+            if (i < points.length - 1) {
+                var distBetween = parseInt(_this.util.distanceBetween2(point, points[i + 1]));
+                var arr = fill(point, points[i + 1], distBetween / 10);
+                fillTrack = fillTrack.concat(arr);
+            }
+        });
+        //console.log(fillTrack)
+        function fill(point1, point2, steps) {
+            var arr = [];
+            var lngStep = (point2.lng - point1.lng) / steps;
+            var latStep = (point2.lat - point1.lat) / steps;
+            for (var i = 0; i < steps; i++) {
+                arr.push([
+                    point1.lng + (lngStep * i),
+                    point1.lat + (latStep * i)
+                ]);
+                if (i == steps - 1) {
+                    arr[i] = [];
+                    arr[i][0] = point2.lng;
+                    arr[i][1] = point2.lat;
+                }
+            }
+            return arr;
+        }
+        return fillTrack;
     };
     TrackList = __decorate([
         core_1.Component({
