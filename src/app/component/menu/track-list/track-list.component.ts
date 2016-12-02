@@ -23,73 +23,33 @@ export class TrackList {
     onGo(tr: TrackVar){
         const map = this.track.map;
         let i = 0;
-       // map.setPitch(60);
-        //map.rotateTo(tr.piints[i].bearing,{} )
-
-        flyTo(tr.coordinates[i])
-       /* map.easeTo({
-            center: tr.coordinates[0],
-            pitch: 60,
-            bearing: tr.points[i].bearing,
-            easing: function (t) {
-                console.log(t)
-                return t;
-            }
-        })
-*/
-
-        //flyTo(tr.coordinates[0])
-
-
-
-
-        function flyTo(center: Array<number>){
-
+        flyTo();
+        function flyTo(){
             map.easeTo({
                 center: tr.coordinates[i],
                 pitch: 60,
                 zoom:16,
                 duration: 100,
                 animate: true,
-                //bearing: tr.points[i].bearing,
                 easing: function (t) {
                     //console.log(t)
                     if(t==1){
                         setTimeout(()=>{
                             map.rotateTo(tr.points[i].bearing,
-                                {duration: 20, easing: function (t) {
+                                {duration: 70, easing: function (t) {
                                     if(t==1 && i<tr.points.length-1){
                                         setTimeout(()=>{
                                             i++;
-                                            flyTo(tr.coordinates[i])
+                                            flyTo()
                                         }, 1)
-
                                     }
                                     return t
                                 }});
                         }, 1)
-
-
-
                     }
                     return t;
                 }
-            })
-
-
-
-
-
-            //tr.points[i].bearing && map.setBearing(tr.points[i].bearing)
-            if(i<tr.coordinates.length){
-               /* setTimeout(()=>{
-                    i++;
-                    flyTo(tr.coordinates[i]);
-
-                }, 300)*/
-            }
-
-
+            });
         }
 
     }
