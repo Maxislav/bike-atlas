@@ -33,29 +33,37 @@ export class MenuTrackComponent{
     }
     onSelect(item, $event){
 
-        const click =  onclick.bind(this);
-
         switch (item.value){
             case 'load':
                 this.ms.menuLoadOpen = true;
-                setTimeout(()=>{
-                    document.body.addEventListener('click',click)
-                },100);
                 break;
             default:
                 return null
         }
 
+       // const click =  onclick.bind(this);
 
-       this.ms.menuOpen = false;
+        /*switch (item.value){
+            case 'load':
+                this.ms.menuLoadOpen = true;
+               /!* setTimeout(()=>{
+                    document.body.addEventListener('click',click)
+                },100);*!/
+                break;
+            default:
+                return null
+        }
+*/
 
-      function onclick(e){
+       //this.ms.menuOpen = false;
+
+      /*function onclick(e){
           if(e.target.tagName!='INPUT'){
               document.body.removeEventListener('click',click);
               this.ms.menuLoadOpen = false
           }
 
-      }
+      }*/
 
     }
 }

@@ -24,17 +24,17 @@ declare var document: any;
     providers: [MenuTrackComponent, MenuService, LoadTrack ,  TrackList]
 })
 export class MenuComponent{
-    get menuOpenLogin():boolean {
+   /* get menuOpenLogin():boolean {
         return this._menuOpenLogin;
     }
 
     set menuOpenLogin(value:boolean) {
         this._menuOpenLogin = value;
-    }
+    }*/
 
     public menuOpen: boolean;
     
-    trackList: Array<any>
+    trackList: Array<any>;
 
     constructor(private ms: MenuService, track: Track){
         this.trackList = track.trackList

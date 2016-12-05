@@ -28,23 +28,28 @@ export class LoadTrack{
     onSelect(e){
         e.preventDefault();
         e.stopPropagation();
-        e.target.parentElement.getElementsByTagName('input')[1].click()
-    }
-    onSubmit(e){
-        e.preventDefault();
-        e.stopPropagation();
-        let fileSelect = e.target.parentElement.getElementsByTagName('input')[1];
-        let FReader = new FileReader();
-        FReader.onload = function (e) {
-            console.log(e)
-        };
 
-        var file = fileSelect.files[0];
-        var stream = ss.createStream();
-       // console.log(file)
 
-        ss(this.socket).emit('file', stream, {size: file.size});
-        ss.createBlobReadStream(file).pipe(stream);
+        let elFile = e.target.parentElement.getElementsByTagName('input')[1];
+        elFile.addEventListener('change', ()=>{
+            let FReader = new FileReader();
+            FReader.onload = function (e) {
+                console.log(e)
+            };
+            var file = elFile.files[0];
+            var stream = ss.createStream();
+            ss(this.socket).emit('file', stream, {size: file.size});
+            ss.createBlobReadStream(file).pipe(stream);
+            this.ms.menuLoadOpen = false
+
+        });
+
+        elFile.addEventListener('click', (e)=>{
+           // e.preventDefault()
+            e.stopPropagation()
+        })
+        elFile.click()
+
 
     }
 }

@@ -23,16 +23,6 @@ var MenuComponent = (function () {
         this.trackList = track.trackList;
         //this.menuOpen = ms.menuOpen
     }
-    Object.defineProperty(MenuComponent.prototype, "menuOpenLogin", {
-        get: function () {
-            return this._menuOpenLogin;
-        },
-        set: function (value) {
-            this._menuOpenLogin = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
     MenuComponent.prototype.onOpen = function () {
         var click = onclick.bind(this);
         this.ms.menuOpen = !this.ms.menuOpen;

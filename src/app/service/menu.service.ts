@@ -12,7 +12,7 @@ export class MenuService{
 
 
     constructor(){
-
+        this._menuLoadOpen = false;
         this._menuOpen = false
     }
     get menuOpen():boolean {
@@ -28,6 +28,20 @@ export class MenuService{
     }
 
     set menuLoadOpen(value:boolean) {
+        const click =  onclick.bind(this);
+        if(value){
+            setTimeout(()=>{
+                document.body.addEventListener('click',click)
+            },100)
+        }else{
+            document.body.removeEventListener('click',click);
+        }
+
+        function onclick(e){
+             document.body.removeEventListener('click',click);
+             this.menuLoadOpen = false;
+         }
+
         this._menuLoadOpen = value;
     }
 

@@ -25,23 +25,26 @@ var LoadTrack = (function () {
         this.socket = io.socket;
     }
     LoadTrack.prototype.onSelect = function (e) {
+        var _this = this;
         e.preventDefault();
         e.stopPropagation();
-        e.target.parentElement.getElementsByTagName('input')[1].click();
-    };
-    LoadTrack.prototype.onSubmit = function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var fileSelect = e.target.parentElement.getElementsByTagName('input')[1];
-        var FReader = new FileReader();
-        FReader.onload = function (e) {
-            console.log(e);
-        };
-        var file = fileSelect.files[0];
-        var stream = ss.createStream();
-        // console.log(file)
-        ss(this.socket).emit('file', stream, { size: file.size });
-        ss.createBlobReadStream(file).pipe(stream);
+        var elFile = e.target.parentElement.getElementsByTagName('input')[1];
+        elFile.addEventListener('change', function () {
+            var FReader = new FileReader();
+            FReader.onload = function (e) {
+                console.log(e);
+            };
+            var file = elFile.files[0];
+            var stream = ss.createStream();
+            ss(_this.socket).emit('file', stream, { size: file.size });
+            ss.createBlobReadStream(file).pipe(stream);
+            _this.ms.menuLoadOpen = false;
+        });
+        elFile.addEventListener('click', function (e) {
+            // e.preventDefault()
+            e.stopPropagation();
+        });
+        elFile.click();
     };
     LoadTrack = __decorate([
         core_1.Component({

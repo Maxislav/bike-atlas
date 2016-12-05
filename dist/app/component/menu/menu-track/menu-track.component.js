@@ -31,24 +31,33 @@ var MenuTrackComponent = (function () {
         this.menu = MENU;
     }
     MenuTrackComponent.prototype.onSelect = function (item, $event) {
-        var click = onclick.bind(this);
         switch (item.value) {
             case 'load':
                 this.ms.menuLoadOpen = true;
-                setTimeout(function () {
-                    document.body.addEventListener('click', click);
-                }, 100);
                 break;
             default:
                 return null;
         }
-        this.ms.menuOpen = false;
-        function onclick(e) {
-            if (e.target.tagName != 'INPUT') {
-                document.body.removeEventListener('click', click);
-                this.ms.menuLoadOpen = false;
-            }
+        // const click =  onclick.bind(this);
+        /*switch (item.value){
+            case 'load':
+                this.ms.menuLoadOpen = true;
+               /!* setTimeout(()=>{
+                    document.body.addEventListener('click',click)
+                },100);*!/
+                break;
+            default:
+                return null
         }
+*/
+        //this.ms.menuOpen = false;
+        /*function onclick(e){
+            if(e.target.tagName!='INPUT'){
+                document.body.removeEventListener('click',click);
+                this.ms.menuLoadOpen = false
+            }
+  
+        }*/
     };
     MenuTrackComponent = __decorate([
         core_1.Component({

@@ -14,6 +14,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var MenuService = (function () {
     function MenuService() {
+        this._menuLoadOpen = false;
         this._menuOpen = false;
     }
     Object.defineProperty(MenuService.prototype, "menuOpen", {
@@ -31,6 +32,19 @@ var MenuService = (function () {
             return this._menuLoadOpen;
         },
         set: function (value) {
+            var click = onclick.bind(this);
+            if (value) {
+                setTimeout(function () {
+                    document.body.addEventListener('click', click);
+                }, 100);
+            }
+            else {
+                document.body.removeEventListener('click', click);
+            }
+            function onclick(e) {
+                document.body.removeEventListener('click', click);
+                this.menuLoadOpen = false;
+            }
             this._menuLoadOpen = value;
         },
         enumerable: true,
