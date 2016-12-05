@@ -22,38 +22,56 @@ export class TrackList {
         //this.permitMovie = true
       
     }
-    hideTrack(track: TrackVar){
-        track.hide();
+    hideTrack(track?: TrackVar){
+        track && track.hide();
         if(this.stop){
             this.stop()
         }
     }
+
     onGo(_tr: TrackVar){
+        this.hideTrack();
         const $this = this;
         const map = this.track.map;
         const points = this.fillTrack(_tr.points);
         const marker = this.track.showSpriteMarker(points[0]);
         let timeout;
+
         let i = 0;
+        let step = 1;
         flyTo();
         function flyTo(){
             map.setCenter([points[i].lng, points[i].lat]);
-
             marker.setCenter(points[i], points[i].bearing)
             if(i<points.length-2){
                 timeout = setTimeout(()=>{
-                    i++;
+                    i+=step;
                     flyTo()
                 },10)
             }else{
                 stop()
             }
+        }
 
+        map.on('moveend' , moveend);
+
+        function moveend(){
+            switch (true){
+                case  map.getZoom()<10:
+                    step = 10;
+                    break;
+                case map.getZoom()<18:
+                    step = parseInt(18 - map.getZoom());
+                    break;
+                default:
+                    step = 1;
+            }
 
         }
 
         function stop(){
-            $this.stop()
+            $this.stop();
+            map.off('moveend' , moveend);
         }
 
         this.stop = function () {
@@ -69,33 +87,35 @@ export class TrackList {
         points.forEach((point, i)=>{
             if(i<points.length-1){
                 let distBetween = parseInt(this.util.distanceBetween2(point, points[i+1]));
-                let arr = fill(point, points[i+1], distBetween/2)
+                let arr = fill(point, points[i+1], distBetween)
                 fillTrack = fillTrack.concat(arr);
                 //console.log(distBetween)
             }
         });
 
-        //console.log(fillTrack)
 
 
         function fill(point1, point2, steps){
-            const arr = [];
+            const arr: Point[] = [];
                 let lngStep = (point2.lng - point1.lng)/steps;
                 let latStep = (point2.lat - point1.lat)/steps;
-
-            for(let i = 0; i<steps; i++){
-
-                arr.push({
-                    lng: point1.lng + (lngStep * i),
-                    lat: point1.lat + (latStep * i),
-                    bearing: point2.bearing
-                 });
-                if(i==steps-1){
-                    arr[i] = point2;
-                   /* arr[i][0] = point2.lng;
-                    arr[i][1] = point2.lat*/
+            if(1<steps){
+                for(let i = 0; i<steps; i++){
+                    arr.push({
+                        lng: point1.lng + (lngStep * i),
+                        lat: point1.lat + (latStep * i),
+                        bearing: point2.bearing
+                    });
+                    if(i==steps-1){
+                        arr[i] = point2;
+                    }
                 }
+            }else{
+                arr.push(point1);
+                arr.push(point2);
             }
+
+
             return arr
 
         }
