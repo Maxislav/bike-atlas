@@ -8,7 +8,7 @@ import {MenuTrackComponent} from './menu-track/menu-track.component'
 import any = jasmine.any;
 import {MenuService} from "app/service/menu.service";
 import {LoadTrack} from "./menu-track/load/load";
-import {Track} from "../../service/track";
+import {TrackService} from "../../service/track.service";
 import {TrackList} from "./track-list/track-list.component";
 //import {Track} from "./track";
 
@@ -36,7 +36,7 @@ export class MenuComponent{
     
     trackList: Array<any>;
 
-    constructor(private ms: MenuService, track: Track){
+    constructor(private ms: MenuService, track: TrackService){
         this.trackList = track.trackList
         //this.menuOpen = ms.menuOpen
     }

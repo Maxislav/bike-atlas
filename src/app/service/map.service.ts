@@ -5,7 +5,7 @@ import {Injectable, ApplicationRef} from '@angular/core';
 import {SimpleChanges, OnChanges} from '@angular/core';
 import {LocalStorage} from '../service/local-storage.service';
 import {Io} from "./socket.oi.service";
-import {Track} from "./track";
+import {TrackService} from "./track.service";
 
 
 @Injectable()
@@ -30,7 +30,7 @@ export class MapService {
     //private ref: ApplicationRef
 
 
-    constructor(private ref:ApplicationRef, private ls:LocalStorage, private io:Io, private trackService: Track) {
+    constructor(private ref:ApplicationRef, private ls:LocalStorage, private io:Io, private trackService: TrackService) {
         this.events = {
             load: []
         };
@@ -50,8 +50,7 @@ export class MapService {
                         lat:F(item.getAttribute('lat'))
                     })
                 }
-
-            })
+            });
 
             let at = trackService.showTrack(track)
 

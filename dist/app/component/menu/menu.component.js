@@ -15,7 +15,7 @@ var core_1 = require('@angular/core');
 var menu_track_component_1 = require('./menu-track/menu-track.component');
 var menu_service_1 = require("app/service/menu.service");
 var load_1 = require("./menu-track/load/load");
-var track_1 = require("../../service/track");
+var track_service_1 = require("../../service/track.service");
 var track_list_component_1 = require("./track-list/track-list.component");
 var MenuComponent = (function () {
     function MenuComponent(ms, track) {
@@ -63,7 +63,7 @@ var MenuComponent = (function () {
             styleUrls: ['./menu.component.css'],
             providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService, load_1.LoadTrack, track_list_component_1.TrackList]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, track_1.Track])
+        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, track_service_1.TrackService])
     ], MenuComponent);
     return MenuComponent;
     var _a;

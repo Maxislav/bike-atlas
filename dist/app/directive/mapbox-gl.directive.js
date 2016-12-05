@@ -48,20 +48,23 @@ var MapboxGlDirective = (function () {
             container: el.nativeElement,
             center: [localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
             zoom: localStorageCenter.zoom || 8,
-            _style: 'mapbox://styles/mapbox/streets-v9',
+            //"sprite": "http://localhost:8080/src/img/milsymbol",
+            // _style: 'mapbox://styles/mapbox/streets-v9',
             style: {
                 "version": 8,
                 "name": "plastun",
-                "sprite": "mapbox://sprites/mapbox/streets-v8",
-                "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+                // "sprite": "mapbox://sprites/mapbox/streets-v8",
+                // "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+                "sprite": "http://localhost:8080/src/sprite/sprite",
+                //"sprite": "mapbox://sprites/mapbox/streets-v8",
                 "sources": {
-                    "satelite-google": {
-                        "type": "raster",
-                        "tiles": [
-                            "http://iis.contour.net:8081/map/g.h/{z}/{x}/{y}"
-                        ],
-                        "tileSize": 256
-                    },
+                    /* "satelite-google": {
+                         "type": "raster",
+                         "tiles": [
+                             "http://iis.contour.net:8081/map/g.h/{z}/{x}/{y}"
+                         ],
+                         "tileSize": 256
+                     },*/
                     "google-default": {
                         "type": "raster",
                         "tiles": [

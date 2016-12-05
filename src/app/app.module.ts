@@ -19,7 +19,7 @@ import {LocalStorage} from "./service/local-storage.service";
 import {MenuTrackComponent} from "./component/menu/menu-track/menu-track.component";
 import {LoadTrack} from "./component/menu/menu-track/load/load";
 import {Io} from "./service/socket.oi.service";
-import {Track} from "./service/track";
+import {TrackService} from "./service/track.service";
 import {TrackList} from "./component/menu/track-list/track-list.component";
 import {MenuLoginComponent} from "./component/menu/menu-login/menu-login.component";
 
@@ -48,6 +48,6 @@ import {MenuLoginComponent} from "./component/menu/menu-login/menu-login.compone
     bootstrap: [
         AppComponent
     ],
-    providers: [TransactionResolver, MenuComponent, LocalStorage, Io, Track]
+    providers: [TransactionResolver, MenuComponent, LocalStorage, Io, TrackService]
 })
 export class AppModule {}

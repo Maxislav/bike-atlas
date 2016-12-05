@@ -84,12 +84,38 @@ var TrackService = (function () {
         console.log(tr);
         return tr;
     };
-    TrackService.prototype.showSpriteMarker = function () {
+    TrackService.prototype.showSpriteMarker = function (point) {
         var point = {
             "type": "Point",
-            "coordinates": [-74.50, 40]
+            "coordinates": [point.lng, point.lat]
         };
-        this.map.addSource('drone', { type: 'geojson', data: point });
+        var map = this.map;
+        var F = parseFloat;
+        var layerId = this.getRandom(0, 5000000, false) + '';
+        map.addSource(layerId, { type: 'geojson', data: point });
+        map.addLayer({
+            "id": layerId,
+            "type": "symbol",
+            "source": layerId,
+            "layout": {
+                "icon-image": "arrow"
+            }
+        });
+        return {
+            id: layerId,
+            setCenter: function (_point, bearing) {
+                point.coordinates = [_point.lng, _point.lat];
+                if (bearing) {
+                    map.setLayoutProperty(layerId, 'icon-rotate', bearing - map.getBearing());
+                }
+                map.getSource(layerId).setData(point);
+            },
+            hide: function () {
+                map.removeLayer(layerId);
+                map.removeSource(layerId);
+                console.log('delete marker id', layerId);
+            },
+        };
     };
     TrackService.prototype.getRandom = function (min, max, int) {
         var rand = min + Math.random() * (max - min);
@@ -146,4 +172,4 @@ var TrackService = (function () {
     return TrackService;
 }());
 exports.TrackService = TrackService;
-//# sourceMappingURL=track.js.map
+//# sourceMappingURL=track.service.js.map

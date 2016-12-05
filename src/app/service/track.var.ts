@@ -5,6 +5,9 @@ export class Point{
     bearing: number
 }
 
+export class Coordinate extends Array<number>{
+    
+}
 
 export  class Track {
     id: string;
@@ -13,3 +16,5 @@ export  class Track {
     coordinates: Array<Array<number>>;
     points: Array<Point>
 }
+
+

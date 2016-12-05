@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.css' rel='stylesheet' />
+
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+
+
+
+</head>
+<body>
+<div id="map">
+
+</div>
+</body>
+
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxa3o3Nm9oMDAya2l3bTJ3ZDN0MDRrdSJ9.Ty19_lyeTVUu8OxxDK8Ymg';
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+
+        style: {
+            "version": 8,
+            "name": "plastun",
+            // "sprite": "mapbox://sprites/mapbox/streets-v8",
+            // "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+            "sprite": "http://localhost:8080/src/img/milsymbol",
+
+            //"sprite": "mapbox://sprites/mapbox/streets-v8",
+            "sources": {
+                /* "satelite-google": {
+                 "tiles": [
+                 "http://iis.contour.net:8081/map/g.h/{z}/{x}/{y}"
+                 ],
+                 "tileSize": 256
+                 },*/
+
+                "google-default": {
+                    "type": "raster",
+                    "tiles":[
+                        "http://mt0.googleapis.com/vt/lyrs=m@207000000&hl=ru&src=api&x={x}&y={y}&z={z}&s=Galile"
+                    ],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "google-default",
+                "source": "google-default",
+                "type": "raster"
+            }]
+        },
+
+
+        center: [-74.50, 40], // starting position
+        zoom: 9 // starting zoom
+    });
+</script>
+</html>

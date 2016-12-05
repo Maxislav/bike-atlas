@@ -25,6 +25,12 @@ let kNM = 0;
 
 app.get("*", function (req, res, next) {
   let reqUrl = ''  ;
+
+ // console.log(req.url)
+  if(req.url.match(/img/)){
+    console.log('oldosdkosdsdwsed')
+  }
+  
   if(req.url.match(/^\/app/)){
     reqUrl+='/src/'+req.url
   }else{
@@ -35,6 +41,7 @@ app.get("*", function (req, res, next) {
 });
 
 app.use((req, res, next)=>{
+  //console.log(req.url)
   
   if(/src.+\.(html|css)$/.test(req.url)){
     req.url = req.url.replace('src', 'dist')
@@ -42,11 +49,11 @@ app.use((req, res, next)=>{
   if(/\..{1,4}$/.test(req.url)){
     if(/\.css$/.test(req.url)){
       res.sendFile(__dirname +req.url)
-       console.log('css  ', req.url)
+      //console.log('css  ', req.url)
       kCss++;
     }else  if(/^\/src.+\.js$/.test(req.url)){
       res.sendFile(__dirname +req.url)
-     // console.log('js  ', req.url)
+      //console.log('js  ', req.url)
       kMyJs++;
     }else  if(/node_modules/.test(req.url)){
       res.sendFile(__dirname +req.url)

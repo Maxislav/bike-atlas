@@ -4,12 +4,12 @@
 
 import {Injectable} from '@angular/core';
 import * as R from '@ramda/ramda.min.js';
-import {Track as Tr, Point} from 'app/service/track.var';
+import {Track as Tr, Point, Coordinate} from 'app/service/track.var';
 import {Util} from './util';
 
 
 @Injectable()
-export class Track {
+export class TrackService {
 
 
 
@@ -105,6 +105,45 @@ export class Track {
         console.log(tr);
 
         return tr
+    }
+
+    showSpriteMarker(point: Point){
+        var point = {
+            "type": "Point",
+            "coordinates": [point.lng, point.lat]
+        };
+        const map = this.map;
+        const F = parseFloat;
+
+        let layerId:string = this.getRandom(0, 5000000, false)+'';
+
+        map.addSource(layerId, { type: 'geojson', data: point });
+
+        map.addLayer({
+            "id": layerId,
+            "type": "symbol",
+            "source": layerId,
+            "layout": {
+                "icon-image": "arrow"
+            }
+        });
+        return {
+            id: layerId,
+            setCenter: function (_point: Point, bearing: number) {
+
+                point.coordinates = [_point.lng, _point.lat];
+                if(bearing){
+                    map.setLayoutProperty(layerId, 'icon-rotate', bearing-map.getBearing());
+                }
+                map.getSource(layerId).setData(point);
+            },
+            hide: function () {
+                map.removeLayer(layerId);
+                map.removeSource(layerId);
+                console.log('delete marker id', layerId)
+            },
+        }
+
     }
 
    

@@ -9,32 +9,49 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var track_1 = require("app/service/track");
+var track_service_1 = require("app/service/track.service");
 var util_1 = require("app/service/util");
 var TrackList = (function () {
     function TrackList(track) {
         this.track = track;
         this.util = new util_1.Util();
         this.list = track.trackList;
+        //this.permitMovie = true
     }
     TrackList.prototype.hideTrack = function (track) {
         track.hide();
+        if (this.stop) {
+            this.stop();
+        }
     };
     TrackList.prototype.onGo = function (_tr) {
+        var $this = this;
         var map = this.track.map;
         var points = this.fillTrack(_tr.points);
-        //return
+        var marker = this.track.showSpriteMarker(points[0]);
+        var timeout;
         var i = 0;
         flyTo();
         function flyTo() {
-            map.setCenter(points[i]);
+            map.setCenter([points[i].lng, points[i].lat]);
+            marker.setCenter(points[i], points[i].bearing);
             if (i < points.length - 2) {
-                setTimeout(function () {
+                timeout = setTimeout(function () {
                     i++;
                     flyTo();
                 }, 10);
             }
+            else {
+                stop();
+            }
         }
+        function stop() {
+            $this.stop();
+        }
+        this.stop = function () {
+            clearTimeout(timeout);
+            marker.hide();
+        };
     };
     TrackList.prototype.fillTrack = function (points) {
         var _this = this;
@@ -43,7 +60,7 @@ var TrackList = (function () {
         points.forEach(function (point, i) {
             if (i < points.length - 1) {
                 var distBetween = parseInt(_this.util.distanceBetween2(point, points[i + 1]));
-                var arr = fill(point, points[i + 1], distBetween / 10);
+                var arr = fill(point, points[i + 1], distBetween / 2);
                 fillTrack = fillTrack.concat(arr);
             }
         });
@@ -53,14 +70,13 @@ var TrackList = (function () {
             var lngStep = (point2.lng - point1.lng) / steps;
             var latStep = (point2.lat - point1.lat) / steps;
             for (var i = 0; i < steps; i++) {
-                arr.push([
-                    point1.lng + (lngStep * i),
-                    point1.lat + (latStep * i)
-                ]);
+                arr.push({
+                    lng: point1.lng + (lngStep * i),
+                    lat: point1.lat + (latStep * i),
+                    bearing: point2.bearing
+                });
                 if (i == steps - 1) {
-                    arr[i] = [];
-                    arr[i][0] = point2.lng;
-                    arr[i][1] = point2.lat;
+                    arr[i] = point2;
                 }
             }
             return arr;
@@ -75,7 +91,7 @@ var TrackList = (function () {
             templateUrl: "./track-list.html",
             styleUrls: ['./track-list.css']
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof track_1.Track !== 'undefined' && track_1.Track) === 'function' && _a) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof track_service_1.TrackService !== 'undefined' && track_service_1.TrackService) === 'function' && _a) || Object])
     ], TrackList);
     return TrackList;
     var _a;
