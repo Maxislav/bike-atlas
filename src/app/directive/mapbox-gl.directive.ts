@@ -47,7 +47,7 @@ export class MapboxGlDirective implements AfterViewInit {
                 "name": "plastun",
                // "sprite": "mapbox://sprites/mapbox/streets-v8",
                // "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
-                "sprite": "http://localhost:8080/src/sprite/sprite",
+                "sprite": "http://"+window.location.hostname+":8080/src/sprite/sprite",
                 //"sprite": "mapbox://sprites/mapbox/streets-v8",
                 "sources": {
                    /* "satelite-google": {
