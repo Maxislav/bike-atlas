@@ -24,20 +24,7 @@ var MenuComponent = (function () {
         //this.menuOpen = ms.menuOpen
     }
     MenuComponent.prototype.onOpen = function () {
-        var click = onclick.bind(this);
         this.ms.menuOpen = !this.ms.menuOpen;
-        if (this.ms.menuOpen) {
-            setTimeout(function () {
-                document.body.addEventListener('click', click);
-            }, 100);
-        }
-        else {
-            document.body.removeEventListener('click', click);
-        }
-        function onclick(e) {
-            document.body.removeEventListener('click', click);
-            this.ms.menuOpen = false;
-        }
     };
     MenuComponent.prototype.onOpenLogin = function () {
         var click = onclick.bind(this);

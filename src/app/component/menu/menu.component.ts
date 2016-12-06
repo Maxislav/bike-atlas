@@ -41,23 +41,7 @@ export class MenuComponent{
         //this.menuOpen = ms.menuOpen
     }
     onOpen(){
-        var click =  onclick.bind(this);
-        
-        
         this.ms.menuOpen = !this.ms.menuOpen;
-        if(this.ms.menuOpen ){
-            setTimeout(()=>{
-                document.body.addEventListener('click',click)
-            },100)
-        }else{
-            document.body.removeEventListener('click', click)
-        }
-
-        function onclick(e){
-            document.body.removeEventListener('click', click);
-            this.ms.menuOpen = false
-        }
-
     }
     onOpenLogin(){
         var click =  onclick.bind(this);

@@ -22,6 +22,19 @@ var MenuService = (function () {
             return this._menuOpen;
         },
         set: function (value) {
+            var click = onclick.bind(this);
+            if (value) {
+                setTimeout(function () {
+                    document.body.addEventListener('click', click);
+                }, 100);
+            }
+            else {
+                document.body.removeEventListener('click', click);
+            }
+            function onclick(e) {
+                document.body.removeEventListener('click', click);
+                this.menuOpen = false;
+            }
             this._menuOpen = value;
         },
         enumerable: true,

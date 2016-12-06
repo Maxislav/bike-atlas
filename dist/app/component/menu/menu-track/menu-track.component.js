@@ -10,6 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var menu_service_1 = require("app/service/menu.service");
+var socket_oi_service_1 = require("app/service/socket.oi.service");
+var ss = require('node_modules/socket.io-stream/socket.io-stream.js');
 var Item = (function () {
     function Item() {
     }
@@ -26,50 +28,58 @@ var MENU = [
     }
 ];
 var MenuTrackComponent = (function () {
-    function MenuTrackComponent(ms) {
+    function MenuTrackComponent(ms, io) {
         this.ms = ms;
+        this.io = io;
         this.menu = MENU;
+        this.socket = io.socket;
     }
     MenuTrackComponent.prototype.onSelect = function (item, $event) {
         switch (item.value) {
             case 'load':
-                this.ms.menuLoadOpen = true;
+                //console.log(t)
+                $event.preventDefault();
+                $event.stopPropagation();
+                this.loadFile($event);
+                //this.ms.menuLoadOpen = true;
                 break;
             default:
                 return null;
         }
-        // const click =  onclick.bind(this);
-        /*switch (item.value){
-            case 'load':
-                this.ms.menuLoadOpen = true;
-               /!* setTimeout(()=>{
-                    document.body.addEventListener('click',click)
-                },100);*!/
-                break;
-            default:
-                return null
-        }
-*/
-        //this.ms.menuOpen = false;
-        /*function onclick(e){
-            if(e.target.tagName!='INPUT'){
-                document.body.removeEventListener('click',click);
-                this.ms.menuLoadOpen = false
-            }
-  
-        }*/
+    };
+    MenuTrackComponent.prototype.loadFile = function (e) {
+        var _this = this;
+        this.ms.menuOpen = false;
+        var elFile = e.target.parentElement.getElementsByTagName('input')[1];
+        // console.log(elFile)
+        elFile.addEventListener('change', function () {
+            var FReader = new FileReader();
+            FReader.onload = function (e) {
+                console.log(e);
+            };
+            var file = elFile.files[0];
+            var stream = ss.createStream();
+            ss(_this.socket).emit('file', stream, { size: file.size });
+            ss.createBlobReadStream(file).pipe(stream);
+            _this.ms.menuLoadOpen = false;
+        });
+        elFile.addEventListener('click', function (e) {
+            // e.preventDefault()
+            e.stopPropagation();
+        });
+        elFile.click();
     };
     MenuTrackComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'menu-track',
-            template: "<ul>\n            <li *ngFor=\"let item of menu\" (click)=\"onSelect(item, $event)\">{{item.text}}</li>\n        </ul>",
+            templateUrl: './menu-track.html',
             styleUrls: ['./menu-track.css'],
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, (typeof (_b = typeof socket_oi_service_1.Io !== 'undefined' && socket_oi_service_1.Io) === 'function' && _b) || Object])
     ], MenuTrackComponent);
     return MenuTrackComponent;
-    var _a;
+    var _a, _b;
 }());
 exports.MenuTrackComponent = MenuTrackComponent;
 //# sourceMappingURL=menu-track.component.js.map
