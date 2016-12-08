@@ -17,7 +17,6 @@ import {InfoPositionComponent} from "./component/info-position/info-position-com
 import {MenuComponent} from "./component/menu/menu.component";
 import {LocalStorage} from "./service/local-storage.service";
 import {MenuTrackComponent} from "./component/menu/menu-track/menu-track.component";
-import {LoadTrack} from "./component/menu/menu-track/load/load";
 import {Io} from "./service/socket.oi.service";
 import {TrackService} from "./service/track.service";
 import {TrackList} from "./component/menu/track-list/track-list.component";
@@ -41,7 +40,6 @@ import {MenuLoginComponent} from "./component/menu/menu-login/menu-login.compone
         MenuComponent,
         MenuTrackComponent,
         MenuLoginComponent,
-        LoadTrack,
         TrackList
 
     ],

@@ -7,7 +7,6 @@ import {MenuTrackComponent} from './menu-track/menu-track.component'
 
 import any = jasmine.any;
 import {MenuService} from "app/service/menu.service";
-import {LoadTrack} from "./menu-track/load/load";
 import {TrackService} from "../../service/track.service";
 import {TrackList} from "./track-list/track-list.component";
 //import {Track} from "./track";
@@ -21,7 +20,7 @@ declare var document: any;
     selector: 'menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.css'],
-    providers: [MenuTrackComponent, MenuService, LoadTrack ,  TrackList]
+    providers: [MenuTrackComponent, MenuService,   TrackList]
 })
 export class MenuComponent{
    /* get menuOpenLogin():boolean {

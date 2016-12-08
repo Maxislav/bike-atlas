@@ -4,7 +4,7 @@
   "scripts": {
     "_start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "start": "concurrently \"npm run gulpDev\" \"npm run server\"  ",
-    "server": "node server.js",
+    "server": "node server/index.js",
     "gulpDev": "node_modules/.bin/gulp",
     "lite": "lite-server",
     "postinstall": "typings install",

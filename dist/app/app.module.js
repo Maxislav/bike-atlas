@@ -26,7 +26,6 @@ var info_position_component_1 = require("./component/info-position/info-position
 var menu_component_1 = require("./component/menu/menu.component");
 var local_storage_service_1 = require("./service/local-storage.service");
 var menu_track_component_1 = require("./component/menu/menu-track/menu-track.component");
-var load_1 = require("./component/menu/menu-track/load/load");
 var socket_oi_service_1 = require("./service/socket.oi.service");
 var track_service_1 = require("./service/track.service");
 var track_list_component_1 = require("./component/menu/track-list/track-list.component");
@@ -53,7 +52,6 @@ var AppModule = (function () {
                 menu_component_1.MenuComponent,
                 menu_track_component_1.MenuTrackComponent,
                 menu_login_component_1.MenuLoginComponent,
-                load_1.LoadTrack,
                 track_list_component_1.TrackList
             ],
             bootstrap: [

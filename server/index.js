@@ -2,35 +2,35 @@
  * Created by maxislav on 20.10.16.
  */
 const livereload = require('express-livereload');
+const path = require('path');
 const express = require('express');
-
 const port = 8080;
+
+
+const dirname =  path.normalize(__dirname+'/../');
 
 let app = express();
 livereload(app, {
-  watchDir: __dirname + '/dist'
+  watchDir: dirname + '/dist'
 });
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 const ss = require('socket.io-stream');
 
 server.listen(8081);
-let timeout; 
+let timeout;
 let k = 0;
 let kSrc = 0;
 let kCss = 0;
 let kMyJs = 0;
 let kNM = 0;
 
+app.post('/import/kml-data', function (req, res, next){
+  console.log('import/kml-data', req)
+});
 
 app.get("*", function (req, res, next) {
   let reqUrl = ''  ;
-
- // console.log(req.url)
-  if(req.url.match(/img/)){
-    console.log('oldosdkosdsdwsed')
-  }
-  
   if(req.url.match(/^\/app/)){
     reqUrl+='/src/'+req.url
   }else{
@@ -42,21 +42,21 @@ app.get("*", function (req, res, next) {
 
 app.use((req, res, next)=>{
   //console.log(req.url)
-  
+
   if(/src.+\.(html|css)$/.test(req.url)){
     req.url = req.url.replace('src', 'dist')
   }
   if(/\..{1,4}$/.test(req.url)){
     if(/\.css$/.test(req.url)){
-      res.sendFile(__dirname +req.url)
+      res.sendFile(dirname +req.url)
       //console.log('css  ', req.url)
       kCss++;
     }else  if(/^\/src.+\.js$/.test(req.url)){
-      res.sendFile(__dirname +req.url)
+      res.sendFile(dirname +req.url)
       //console.log('js  ', req.url)
       kMyJs++;
     }else  if(/node_modules/.test(req.url)){
-      res.sendFile(__dirname +req.url)
+      res.sendFile(dirname +req.url)
       // console.log('node', req.url)
       kNM++;
     }else{
@@ -73,14 +73,15 @@ app.use((req, res, next)=>{
       kCss = 0;
     }, 1000);
     k++;
-   
+
   }else{
-    res.sendFile(__dirname + '/index.html')  
+    path
+    res.sendFile(dirname + '/index.html')
   }
-  
-  
-  
-  
+
+
+
+
 });
 
 
@@ -89,11 +90,11 @@ app.use((req, res, next)=>{
 app.get('/node_modules*', function(req, res) {
   //console.log("node_modules -> ", req.url)
   if(/^\/node_m/.test(req.url)){
-    res.sendFile(__dirname +req.url)
+    res.sendFile(dirname +req.url)
   }else{
-    res.sendFile(__dirname +'/src/app/' +req.url)  
+    res.sendFile(dirname +'/src/app/' +req.url)
   }
-  
+
 });
 
 //app.use(express.static(__dirname));
@@ -101,11 +102,11 @@ app.get('/node_modules*', function(req, res) {
 
 app.get('/*template*', function(req, res) {
   //console.log(req.url)
-  res.sendFile(__dirname + req.url)
+  res.sendFile(dirname + req.url)
 });
 app.get('*', function(req, res) {
   //console.log(req.url)
-  res.sendFile(__dirname + req.url)
+  res.sendFile(dirname + req.url)
 });
 
 io.on('connection', function (socket) {
