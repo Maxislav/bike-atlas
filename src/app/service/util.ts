@@ -68,7 +68,7 @@ export class Util{
 
     points.forEach((point:Point, i: number)=>{
       if(i!=points.length-1){
-        point.bearing = getBearing(point.lat, point.lng, points[i+1].lat, points[i+1].lng)
+        points[i+1].bearing = getBearing(point.lat, point.lng, points[i+1].lat, points[i+1].lng)
       }
     });
 

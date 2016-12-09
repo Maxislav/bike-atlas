@@ -17,7 +17,14 @@
   float: right;
   margin-right: 10px;
 }
+.go:active {
+  color: white;
+  transform: scaleX(0.8, 0, 8);
+  box-shadow: inset 0 0 20px black;
+}
 li {
-  padding: 8px;
   color: black;
+}
+li > div {
+  padding: 8px;
 }

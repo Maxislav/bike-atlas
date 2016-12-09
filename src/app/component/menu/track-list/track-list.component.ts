@@ -47,7 +47,7 @@ export class TrackList {
                 timeout = setTimeout(()=>{
                     i+=step;
                     flyTo()
-                },10)
+                },40)
             }else{
                 stop()
             }
@@ -58,10 +58,10 @@ export class TrackList {
         function moveend(){
             switch (true){
                 case  map.getZoom()<10:
-                    step = 10;
+                    step = 40;
                     break;
                 case map.getZoom()<18:
-                    step = parseInt(18 - map.getZoom());
+                    step = 5*parseInt(''+(18 - map.getZoom()));
                     break;
                 default:
                     step = 1;

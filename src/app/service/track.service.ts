@@ -61,7 +61,7 @@ export class TrackService {
 
         const trackList = this.trackList;
 
-        const color = this._getColor()
+        const color = this._getColor();
         console.log(color);
 
 
@@ -185,10 +185,15 @@ export class TrackService {
     }
     _getColor(){
         const I = parseInt;
+        const colors: Array<string> = [
+
+        ];
+
+
         let c = ['0','0','0'];
 
         c.forEach( (r, i) => {
-            r = I(this.getRandom(100,255,true)).toString(16);
+            r = I(this.getRandom(100,200,true)).toString(16);
             if(r.length<2){
                 c[i]='0'+r
             }else{

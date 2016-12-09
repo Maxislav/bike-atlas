@@ -156,9 +156,10 @@ var TrackService = (function () {
     TrackService.prototype._getColor = function () {
         var _this = this;
         var I = parseInt;
+        var colors = [];
         var c = ['0', '0', '0'];
         c.forEach(function (r, i) {
-            r = I(_this.getRandom(100, 255, true)).toString(16);
+            r = I(_this.getRandom(100, 200, true)).toString(16);
             if (r.length < 2) {
                 c[i] = '0' + r;
             }

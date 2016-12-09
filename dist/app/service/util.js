@@ -53,7 +53,7 @@ var Util = (function () {
     Util.prototype.bearing = function (points) {
         points.forEach(function (point, i) {
             if (i != points.length - 1) {
-                point.bearing = getBearing(point.lat, point.lng, points[i + 1].lat, points[i + 1].lng);
+                points[i + 1].bearing = getBearing(point.lat, point.lng, points[i + 1].lat, points[i + 1].lng);
             }
         });
         function radians(n) {
