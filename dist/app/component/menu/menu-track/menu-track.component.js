@@ -12,6 +12,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var menu_service_1 = require("app/service/menu.service");
 var socket_oi_service_1 = require("app/service/socket.oi.service");
+var track_service_1 = require("app/service/track.service");
 var ss = require('node_modules/socket.io-stream/socket.io-stream.js');
 var log = console.log;
 var MENU = [
@@ -30,9 +31,10 @@ var MENU = [
     }
 ];
 var MenuTrackComponent = (function () {
-    function MenuTrackComponent(ms, io) {
+    function MenuTrackComponent(ms, io, trackService) {
         this.ms = ms;
         this.io = io;
+        this.trackService = trackService;
         this.menu = MENU;
         this.socket = io.socket;
     }
@@ -71,11 +73,10 @@ var MenuTrackComponent = (function () {
         elFile.click();
     };
     MenuTrackComponent.prototype.importFile = function (e) {
+        var trackService = this.trackService;
         this.ms.menuOpen = false;
         var elFile = e.target.parentElement.getElementsByTagName('input')[1];
         elFile.addEventListener('change', function () {
-            console.log('olol');
-            var FReader = new FileReader();
             var file = elFile.files;
             upload(file[0]);
         });
@@ -85,14 +86,12 @@ var MenuTrackComponent = (function () {
         elFile.click();
         function upload(file) {
             var xhr = new XMLHttpRequest();
-            // обработчик для закачки
             xhr.upload.onprogress = function (event) {
                 console.log(event.loaded + ' / ' + event.total);
             };
-            // обработчики успеха и ошибки
-            // если status == 200, то это успех, иначе ошибка
             xhr.onload = xhr.onerror = function () {
                 if (this.status == 200) {
+                    trackService.showGpxTrack(this.response);
                     download(file.name.replace(/kml$/, 'gpx'), this.response);
                 }
                 else {
@@ -125,10 +124,10 @@ var MenuTrackComponent = (function () {
             templateUrl: './menu-track.html',
             styleUrls: ['./menu-track.css'],
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, (typeof (_b = typeof socket_oi_service_1.Io !== 'undefined' && socket_oi_service_1.Io) === 'function' && _b) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, (typeof (_b = typeof socket_oi_service_1.Io !== 'undefined' && socket_oi_service_1.Io) === 'function' && _b) || Object, (typeof (_c = typeof track_service_1.TrackService !== 'undefined' && track_service_1.TrackService) === 'function' && _c) || Object])
     ], MenuTrackComponent);
     return MenuTrackComponent;
-    var _a, _b;
+    var _a, _b, _c;
 }());
 exports.MenuTrackComponent = MenuTrackComponent;
 //# sourceMappingURL=menu-track.component.js.map

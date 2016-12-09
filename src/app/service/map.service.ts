@@ -4,7 +4,6 @@
 import {Injectable, ApplicationRef} from '@angular/core';
 import {SimpleChanges, OnChanges} from '@angular/core';
 import {LocalStorage} from '../service/local-storage.service';
-import {Io} from "./socket.oi.service";
 import {TrackService} from "./track.service";
 
 
@@ -30,36 +29,11 @@ export class MapService {
     //private ref: ApplicationRef
 
 
-    constructor(private ref:ApplicationRef, private ls:LocalStorage, private io:Io, private trackService: TrackService) {
+    constructor(private ref:ApplicationRef, private ls:LocalStorage, private trackService: TrackService) {
         this.events = {
             load: []
         };
-        const socket = io.socket;
-        const F = parseFloat;
-        socket.on('file', d=>{
-            const track = [];
-            let xml = String.fromCharCode.apply(null, new Uint8Array(d));
-            let parser = new DOMParser();
-            let xmlDoc = parser.parseFromString(xml, "text/xml");
-            var forEach = Array.prototype.forEach;
-            forEach.call(xmlDoc.getElementsByTagName('trkpt'), item=>{
-                //console.log(item.getAttribute('lat'), item.getAttribute('lon'))
-                if(item.getAttribute('lon')){
-                    track.push({
-                        lng:F(item.getAttribute('lon')),
-                        lat:F(item.getAttribute('lat'))
-                    })
-                }
-            });
-            let at = trackService.showTrack(track)
-
-          /*  setTimeout(()=>{
-                at.hide()
-            }, 1000)
-*/
-            
-            
-        });
+       
     }
 
     setMap(map:any) {

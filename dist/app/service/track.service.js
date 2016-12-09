@@ -14,13 +14,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var R = require('@ramda/ramda.min.js');
 var util_1 = require('./util');
+var socket_oi_service_1 = require("./socket.oi.service");
+var F = parseFloat;
 var TrackService = (function () {
-    function TrackService() {
+    function TrackService(io) {
+        var _this = this;
+        this.io = io;
         this._trackList = [];
         this.layerIds = [];
         this._trackList = [];
         this.util = new util_1.Util();
+        var socket = io.socket;
+        socket.on('file', function (d) {
+            var xmlStr = String.fromCharCode.apply(null, new Uint8Array(d));
+            _this.showGpxTrack(xmlStr);
+        });
     }
+    TrackService.prototype.showGpxTrack = function (xmlStr) {
+        var track = [];
+        var parser = new DOMParser();
+        var xmlDoc = parser.parseFromString(xmlStr, "text/xml");
+        var forEach = Array.prototype.forEach;
+        forEach.call(xmlDoc.getElementsByTagName('trkpt'), function (item) {
+            if (item.getAttribute('lon')) {
+                track.push({
+                    lng: F(item.getAttribute('lon')),
+                    lat: F(item.getAttribute('lat'))
+                });
+            }
+        });
+        this.showTrack(track);
+    };
     TrackService.prototype.setMap = function (map) {
         this.map = map;
     };
@@ -167,7 +191,7 @@ var TrackService = (function () {
     });
     TrackService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [socket_oi_service_1.Io])
     ], TrackService);
     return TrackService;
 }());

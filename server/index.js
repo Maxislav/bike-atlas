@@ -27,9 +27,8 @@ app.use(bodyParser.json())
 livereload(app, {
   watchDir: dirname + '/dist'
 });
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-const ss = require('socket.io-stream');
+const server = require('http').Server(app);
+require('./socket-data')(require('socket.io')(server));
 
 server.listen(8081);
 let timeout;
@@ -121,14 +120,14 @@ app.get('*', function(req, res) {
   //console.log(req.url)
   res.sendFile(dirname + req.url)
 });
+/*
 
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
   socket.on('my other event', function (data) {
     console.log(data);
   });
-
-  ss(socket).on('file', function(stream) {
+  socketStream(socket).on('file', function(stream) {
     let data = [];
     stream.on('data', (d)=>{
       data.push(d);
@@ -139,6 +138,7 @@ io.on('connection', function (socket) {
     });
   });
 });
+*/
 
 
 

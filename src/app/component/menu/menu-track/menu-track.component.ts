@@ -2,6 +2,7 @@
 import { Component, Injectable } from '@angular/core';
 import {MenuService} from "app/service/menu.service";
 import {Io} from "app/service/socket.oi.service";
+import {TrackService} from "app/service/track.service";
 const ss = require('node_modules/socket.io-stream/socket.io-stream.js');
 
 const log = console.log
@@ -51,7 +52,7 @@ const MENU: Item[] = [
 export class MenuTrackComponent{
     menu = MENU;
     private socket: any;
-    constructor(private ms: MenuService, private io: Io){
+    constructor(private ms: MenuService, private io: Io, private trackService: TrackService){
         this.socket = io.socket
     }
     onSelect(item, $event){
@@ -94,13 +95,11 @@ export class MenuTrackComponent{
 
     importFile(e: Event){
 
+        const trackService = this.trackService;
         this.ms.menuOpen = false;
         const elFile: myElement  = e.target.parentElement.getElementsByTagName('input')[1];
 
         elFile.addEventListener('change', ()=>{
-          console.log('olol')
-
-            let FReader = new FileReader();
             var file = elFile.files;
             upload(file[0])
         });
@@ -110,19 +109,17 @@ export class MenuTrackComponent{
         });
         elFile.click();
 
+
+
         function upload(file) {
 
             var xhr = new XMLHttpRequest();
-
-            // обработчик для закачки
             xhr.upload.onprogress = function(event) {
                 console.log(event.loaded + ' / ' + event.total);
             };
-
-            // обработчики успеха и ошибки
-            // если status == 200, то это успех, иначе ошибка
             xhr.onload = xhr.onerror = function() {
                 if (this.status == 200) {
+                    trackService.showGpxTrack(this.response);
                     download(file.name.replace(/kml$/, 'gpx'), this.response);
                 } else {
                     log("error " + this.status);

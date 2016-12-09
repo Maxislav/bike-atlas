@@ -13,42 +13,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var local_storage_service_1 = require('../service/local-storage.service');
-var socket_oi_service_1 = require("./socket.oi.service");
 var track_service_1 = require("./track.service");
 var MapService = (function () {
     // public ls: LocalStorage
     //private ref: ApplicationRef
-    function MapService(ref, ls, io, trackService) {
+    function MapService(ref, ls, trackService) {
         this.ref = ref;
         this.ls = ls;
-        this.io = io;
         this.trackService = trackService;
         this.events = {
             load: []
         };
-        var socket = io.socket;
-        var F = parseFloat;
-        socket.on('file', function (d) {
-            var track = [];
-            var xml = String.fromCharCode.apply(null, new Uint8Array(d));
-            var parser = new DOMParser();
-            var xmlDoc = parser.parseFromString(xml, "text/xml");
-            var forEach = Array.prototype.forEach;
-            forEach.call(xmlDoc.getElementsByTagName('trkpt'), function (item) {
-                //console.log(item.getAttribute('lat'), item.getAttribute('lon'))
-                if (item.getAttribute('lon')) {
-                    track.push({
-                        lng: F(item.getAttribute('lon')),
-                        lat: F(item.getAttribute('lat'))
-                    });
-                }
-            });
-            var at = trackService.showTrack(track);
-            /*  setTimeout(()=>{
-                  at.hide()
-              }, 1000)
-  */
-        });
     }
     MapService.prototype.setMap = function (map) {
         var _this = this;
@@ -99,7 +74,7 @@ var MapService = (function () {
     };
     MapService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [core_1.ApplicationRef, local_storage_service_1.LocalStorage, socket_oi_service_1.Io, track_service_1.TrackService])
+        __metadata('design:paramtypes', [core_1.ApplicationRef, local_storage_service_1.LocalStorage, track_service_1.TrackService])
     ], MapService);
     return MapService;
 }());

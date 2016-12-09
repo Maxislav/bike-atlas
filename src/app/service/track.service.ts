@@ -6,12 +6,11 @@ import {Injectable} from '@angular/core';
 import * as R from '@ramda/ramda.min.js';
 import {Track as Tr, Point, Coordinate} from 'app/service/track.var';
 import {Util} from './util';
-
+import {Io} from "./socket.oi.service";
+const F = parseFloat;
 
 @Injectable()
 export class TrackService {
-
-
 
     layerIds:Array<number>;
 
@@ -19,11 +18,35 @@ export class TrackService {
     private _trackList: Array<Tr> = [];
     private _map:any;
 
-    constructor() {
+    constructor(private io:Io) {
         this.layerIds = [];
         this._trackList = [];
         this.util = new Util();
 
+        const socket = io.socket;
+
+        socket.on('file', d=>{
+
+            let xmlStr = String.fromCharCode.apply(null, new Uint8Array(d));
+            this.showGpxTrack(xmlStr)
+
+        });
+    }
+
+    showGpxTrack(xmlStr: string){
+        const track = [];
+        let parser = new DOMParser();
+        let xmlDoc = parser.parseFromString(xmlStr, "text/xml");
+        var forEach = Array.prototype.forEach;
+        forEach.call(xmlDoc.getElementsByTagName('trkpt'), item=>{
+            if(item.getAttribute('lon')){
+                track.push({
+                    lng:F(item.getAttribute('lon')),
+                    lat:F(item.getAttribute('lat'))
+                })
+            }
+        });
+        this.showTrack(track)
     }
 
     setMap(map:any) {
