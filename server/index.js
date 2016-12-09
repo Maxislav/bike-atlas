@@ -5,11 +5,25 @@ const livereload = require('express-livereload');
 const path = require('path');
 const express = require('express');
 const port = 8080;
+const kmlData = require('./kml-data');
+var bodyParser = require('body-parser');
+var fileUpload = require('express-fileupload');
+
+
 
 
 const dirname =  path.normalize(__dirname+'/../');
 
-let app = express();
+const app = express();
+
+app.use(fileUpload());
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
 livereload(app, {
   watchDir: dirname + '/dist'
 });
@@ -25,9 +39,8 @@ let kCss = 0;
 let kMyJs = 0;
 let kNM = 0;
 
-app.post('/import/kml-data', function (req, res, next){
-  console.log('import/kml-data', req)
-});
+app.post('/import/kml-data',kmlData);
+//app.use(express.bodyParser());
 
 app.get("*", function (req, res, next) {
   let reqUrl = ''  ;

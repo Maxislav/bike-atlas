@@ -101,9 +101,9 @@ export class MenuTrackComponent{
           console.log('olol')
 
             let FReader = new FileReader();
-            var file = elFile.files[0];
-            upload(file)
-        })
+            var file = elFile.files;
+            upload(file[0])
+        });
 
         elFile.addEventListener('click', (e)=>{
             e.stopPropagation()
@@ -123,15 +123,33 @@ export class MenuTrackComponent{
             // если status == 200, то это успех, иначе ошибка
             xhr.onload = xhr.onerror = function() {
                 if (this.status == 200) {
-                    log("success");
+                    download(file.name.replace(/kml$/, 'gpx'), this.response);
                 } else {
                     log("error " + this.status);
                 }
             };
 
             xhr.open("POST", "/import/kml-data", true);
-            xhr.send(file);
+            var formData = new FormData();
+            formData.append('file', file);
+            xhr.send(formData);
 
+        }
+
+
+        function download(filename, text) {
+            var pom = document.createElement('a');
+            pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            pom.setAttribute('download', filename);
+
+            if (document.createEvent) {
+                var event = document.createEvent('MouseEvents');
+                event.initEvent('click', true, true);
+                pom.dispatchEvent(event);
+            }
+            else {
+                pom.click();
+            }
         }
 
     }

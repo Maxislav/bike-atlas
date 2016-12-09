@@ -51,7 +51,6 @@ export class MapService {
                     })
                 }
             });
-
             let at = trackService.showTrack(track)
 
           /*  setTimeout(()=>{
