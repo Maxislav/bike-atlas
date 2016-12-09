@@ -3,7 +3,7 @@
 npm i
 
 ## compile 
-tsc
+tsc && gulp
 
 ## start
 node server/index.js
