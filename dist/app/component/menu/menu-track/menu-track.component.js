@@ -36,6 +36,7 @@ var MenuTrackComponent = (function () {
         this.io = io;
         this.trackService = trackService;
         this.menu = MENU;
+        this.loadBtn = 0;
         this.socket = io.socket;
     }
     MenuTrackComponent.prototype.onSelect = function (item, $event) {
@@ -54,23 +55,32 @@ var MenuTrackComponent = (function () {
     };
     MenuTrackComponent.prototype.loadFile = function (e) {
         var _this = this;
-        this.ms.menuOpen = false;
+        this.loadBtn++;
+        console.log(this.loadBtn);
         var elFile = e.target.parentElement.getElementsByTagName('input')[1];
         elFile.addEventListener('change', function () {
+            goStrem.call(_this);
+        });
+        if (this.loadBtn == 2) {
+            goStrem.call(this);
+        }
+        elFile.addEventListener('click', function (e) {
+            e.stopPropagation();
+        });
+        elFile.click();
+        function goStrem() {
+            this.ms.menuOpen = false;
+            this.loadBtn = 0;
             var FReader = new FileReader();
             FReader.onload = function (e) {
                 console.log(e);
             };
             var file = elFile.files[0];
             var stream = ss.createStream();
-            ss(_this.socket).emit('file', stream, { size: file.size });
+            ss(this.socket).emit('file', stream, { size: file.size });
             ss.createBlobReadStream(file).pipe(stream);
-            _this.ms.menuLoadOpen = false;
-        });
-        elFile.addEventListener('click', function (e) {
-            e.stopPropagation();
-        });
-        elFile.click();
+            this.ms.menuLoadOpen = false;
+        }
     };
     MenuTrackComponent.prototype.importFile = function (e) {
         var trackService = this.trackService;

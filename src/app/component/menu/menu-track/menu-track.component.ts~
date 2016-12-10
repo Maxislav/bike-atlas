@@ -95,7 +95,7 @@ export class MenuTrackComponent{
 
 	function goStrem(){
  		this.ms.menuOpen = false;
-		this.loadBtn = 0;
+this.loadBtn = 0;
 	 	let FReader = new FileReader();
             FReader.onload = function (e) {
                 console.log(e)
