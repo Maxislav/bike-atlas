@@ -36,7 +36,7 @@ var MenuTrackComponent = (function () {
         this.io = io;
         this.trackService = trackService;
         this.menu = MENU;
-        this.loadBtn = 0;
+        this.clickLoad = 0;
         this.socket = io.socket;
     }
     MenuTrackComponent.prototype.onSelect = function (item, $event) {
@@ -55,22 +55,21 @@ var MenuTrackComponent = (function () {
     };
     MenuTrackComponent.prototype.loadFile = function (e) {
         var _this = this;
-        this.loadBtn++;
-        console.log(this.loadBtn);
+        this.clickLoad++;
         var elFile = e.target.parentElement.getElementsByTagName('input')[1];
         elFile.addEventListener('change', function () {
-            goStrem.call(_this);
+            goStream.call(_this);
         });
-        if (this.loadBtn == 2) {
-            goStrem.call(this);
+        if (this.clickLoad == 2) {
+            goStream.call(this);
         }
         elFile.addEventListener('click', function (e) {
             e.stopPropagation();
         });
         elFile.click();
-        function goStrem() {
+        function goStream() {
             this.ms.menuOpen = false;
-            this.loadBtn = 0;
+            this.clickLoad = 0;
             var FReader = new FileReader();
             FReader.onload = function (e) {
                 console.log(e);
@@ -79,22 +78,24 @@ var MenuTrackComponent = (function () {
             var stream = ss.createStream();
             ss(this.socket).emit('file', stream, { size: file.size });
             ss.createBlobReadStream(file).pipe(stream);
-            this.ms.menuLoadOpen = false;
         }
     };
     MenuTrackComponent.prototype.importFile = function (e) {
+        this.clickLoad++;
         var trackService = this.trackService;
         this.ms.menuOpen = false;
         var elFile = e.target.parentElement.getElementsByTagName('input')[1];
-        elFile.addEventListener('change', function () {
-            var file = elFile.files;
-            upload(file[0]);
-        });
+        elFile.addEventListener('change', goStream.bind(this));
         elFile.addEventListener('click', function (e) {
             e.stopPropagation();
         });
         elFile.click();
-        function upload(file) {
+        if (this.clickLoad == 2) {
+            goStream.call(this);
+        }
+        function goStream() {
+            this.clickLoad = 0;
+            var file = elFile.files[0];
             var xhr = new XMLHttpRequest();
             xhr.upload.onprogress = function (event) {
                 console.log(event.loaded + ' / ' + event.total);

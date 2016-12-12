@@ -6,15 +6,12 @@ const TRACK = [];
 
 
 module.exports = function (req, res, next) {
-  var sampleFile;
-  console.log(req.files)
 
   if (!req.files.file) {
     res.end('No files were uploaded.');
     return;
   }
   let name = req.files.file.name;
- // sampleFile = req.files.f;
   Promise.resolve(req.files.file.data.toString())
     .then((xmlStr)=> {
       return toJson(xmlStr)

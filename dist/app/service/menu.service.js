@@ -40,29 +40,6 @@ var MenuService = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(MenuService.prototype, "menuLoadOpen", {
-        get: function () {
-            return this._menuLoadOpen;
-        },
-        set: function (value) {
-            var click = onclick.bind(this);
-            if (value) {
-                setTimeout(function () {
-                    document.body.addEventListener('click', click);
-                }, 100);
-            }
-            else {
-                document.body.removeEventListener('click', click);
-            }
-            function onclick(e) {
-                document.body.removeEventListener('click', click);
-                this.menuLoadOpen = false;
-            }
-            this._menuLoadOpen = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(MenuService.prototype, "menuOpenLogin", {
         get: function () {
             return this._menuOpenLogin;

@@ -37,27 +37,7 @@ export class MenuService{
         this._menuOpen = value;
     }
 
-    get menuLoadOpen():boolean {
-        return this._menuLoadOpen;
-    }
-
-    set menuLoadOpen(value:boolean) {
-        const click =  onclick.bind(this);
-        if(value){
-            setTimeout(()=>{
-                document.body.addEventListener('click',click)
-            },100)
-        }else{
-            document.body.removeEventListener('click',click);
-        }
-
-        function onclick(e){
-             document.body.removeEventListener('click',click);
-             this.menuLoadOpen = false;
-         }
-
-        this._menuLoadOpen = value;
-    }
+    
 
     get menuOpenLogin():boolean {
         return this._menuOpenLogin;

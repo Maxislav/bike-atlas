@@ -1,5 +1,5 @@
 ///<reference path="../../../../../node_modules/@angular/compiler/src/ml_parser/ast.d.ts"/>
-import { Component, Injectable } from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import {MenuService} from "app/service/menu.service";
 import {Io} from "app/service/socket.oi.service";
 import {TrackService} from "app/service/track.service";
@@ -8,29 +8,29 @@ const ss = require('node_modules/socket.io-stream/socket.io-stream.js');
 const log = console.log
 
 interface Item {
-    text: string;
-    value: string;
-    enctype?:  string ;
+    text:string;
+    value:string;
+    enctype?:string ;
 
 }
 
-interface myElement extends Element{
+interface myElement extends Element {
     click():void;
-    files?: Array<File>
+    files?:Array<File>
 }
-interface myEventTarget extends EventTarget{
-    parentElement: myElement;
+interface myEventTarget extends EventTarget {
+    parentElement:myElement;
 }
-interface myEvent extends Event{
-    target: myEventTarget
+interface myEvent extends Event {
+    target:myEventTarget
 }
 
 
-const MENU: Item[] = [
+const MENU:Item[] = [
     {
         value: 'load',
         text: "Загрузить",
-        enctype:"multipart/form-data",
+        enctype: "multipart/form-data",
     },
     {
         value: 'import',
@@ -45,22 +45,24 @@ const MENU: Item[] = [
 @Component({
     moduleId: module.id,
     selector: 'menu-track',
-    templateUrl:'./menu-track.html',
+    templateUrl: './menu-track.html',
     styleUrls: ['./menu-track.css'],
-   // providers: [MenuService]
+    // providers: [MenuService]
 })
-export class MenuTrackComponent{
+export class MenuTrackComponent {
     menu = MENU;
-    private socket: any;
-	private loadBtn: number =0;	
-    constructor(private ms: MenuService, private io: Io, private trackService: TrackService){
+    private socket:any;
+    private clickLoad:number = 0;
+
+    constructor(private ms:MenuService, private io:Io, private trackService:TrackService) {
         this.socket = io.socket
     }
-    onSelect(item, $event){
+
+    onSelect(item, $event) {
         $event.preventDefault();
         $event.stopPropagation();
 
-        switch (item.value){
+        switch (item.value) {
             case 'load':
                 this.loadFile($event);
                 break;
@@ -73,30 +75,26 @@ export class MenuTrackComponent{
 
     }
 
-    loadFile(e: Event){
-	this.loadBtn++;
-	console.log(this.loadBtn)
-       
-        const elFile: myElement = e.target.parentElement.getElementsByTagName('input')[1];
-        elFile.addEventListener('change', ()=>{
-		
-           goStrem.call(this)
+    loadFile(e:Event) {
+        this.clickLoad++;
+        const elFile:myElement = e.target.parentElement.getElementsByTagName('input')[1];
+        elFile.addEventListener('change', ()=> {
+            goStream.call(this)
         });
 
-	if(this.loadBtn == 2){
+        if (this.clickLoad == 2) {
+            goStream.call(this)
+        }
 
-		goStrem.call(this)
-	}
-
-        elFile.addEventListener('click', (e)=>{
+        elFile.addEventListener('click', (e)=> {
             e.stopPropagation()
         });
-        elFile.click()
+        elFile.click();
 
-	function goStrem(){
- 		this.ms.menuOpen = false;
-		this.loadBtn = 0;
-	 	let FReader = new FileReader();
+        function goStream() {
+            this.ms.menuOpen = false;
+            this.clickLoad = 0;
+            let FReader = new FileReader();
             FReader.onload = function (e) {
                 console.log(e)
             };
@@ -104,35 +102,34 @@ export class MenuTrackComponent{
             var stream = ss.createStream();
             ss(this.socket).emit('file', stream, {size: file.size});
             ss.createBlobReadStream(file).pipe(stream);
-            this.ms.menuLoadOpen = false
-	}
+        }
     }
 
-    importFile(e: Event){
+    importFile(e:Event) {
+        this.clickLoad++;
 
         const trackService = this.trackService;
         this.ms.menuOpen = false;
-        const elFile: myElement  = e.target.parentElement.getElementsByTagName('input')[1];
+        const elFile:myElement = e.target.parentElement.getElementsByTagName('input')[1];
 
-        elFile.addEventListener('change', ()=>{
-            var file = elFile.files;
-            upload(file[0])
-        });
+        elFile.addEventListener('change',goStream.bind(this));
 
-        elFile.addEventListener('click', (e)=>{
+        elFile.addEventListener('click', (e)=> {
             e.stopPropagation()
         });
         elFile.click();
+        if (this.clickLoad == 2) {
+            goStream.call(this)
+        }
 
-
-
-        function upload(file) {
-
+        function goStream() {
+            this.clickLoad = 0;
+            var file = elFile.files[0];
             var xhr = new XMLHttpRequest();
-            xhr.upload.onprogress = function(event) {
+            xhr.upload.onprogress = function (event) {
                 console.log(event.loaded + ' / ' + event.total);
             };
-            xhr.onload = xhr.onerror = function() {
+            xhr.onload = xhr.onerror = function () {
                 if (this.status == 200) {
                     trackService.showGpxTrack(this.response);
                     download(file.name.replace(/kml$/, 'gpx'), this.response);
