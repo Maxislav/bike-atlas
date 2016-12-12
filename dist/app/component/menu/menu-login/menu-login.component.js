@@ -9,23 +9,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+//import { Rp } from '@angular/core';
+var menu_service_1 = require("app/service/menu.service");
+var router_1 = require("@angular/router");
+//import {RouterLink} from "@angular/router-deprecated";
 var MenuLoginComponent = (function () {
-    function MenuLoginComponent() {
+    function MenuLoginComponent(router, ms) {
+        this.router = router;
+        this.ms = ms;
     }
-    MenuLoginComponent.prototype.onClick = function (e) {
-        e.stopPropagation();
-        e.preventDefault();
+    MenuLoginComponent.prototype.goToReg = function () {
+        this.router.navigate(['/auth/map/registration']);
+        this.ms.menuOpenLogin = false;
     };
     MenuLoginComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'menu-login',
-            template: '<div (click)="onClick($event)" ><label>Имя</label><input type="text"><label>Пароль</label><input type="password"></div>',
+            //directives: [RouterLink],
+            templateUrl: './menu-login.component.html',
             styleUrls: ['./menu-login.css'],
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [router_1.Router, (typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object])
     ], MenuLoginComponent);
     return MenuLoginComponent;
+    var _a;
 }());
 exports.MenuLoginComponent = MenuLoginComponent;
 //# sourceMappingURL=menu-login.component.js.map

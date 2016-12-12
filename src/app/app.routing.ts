@@ -11,6 +11,7 @@ import {HeroesComponent} from './heroes.component';
 import {TransactionResolver} from "./transaction.resolve";
 import {AuthComponent} from "./auth.component";
 import {MapComponent} from "./map.component";
+import {RegistrationComponent} from "./component/registration/registration.component";
 
 const  appRouters: Routes = [
     {
@@ -31,6 +32,10 @@ const  appRouters: Routes = [
                 children: [
                     {
                         path: ''
+                    },
+                    {
+                        path:'registration',
+                        component: RegistrationComponent
                     }
                 ]
             }

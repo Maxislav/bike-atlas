@@ -22,7 +22,9 @@ var MapComponent = (function () {
             template: [
                 '<info-position>',
                 '</info-position>',
-                '<mapbox-gl> map loading...</mapbox-gl>'].join(''),
+                '<router-outlet></router-outlet>',
+                '<mapbox-gl> map loading...</mapbox-gl>'
+            ].join(''),
             styleUrls: ['css/map.component.css'],
             directives: [mapbox_gl_directive_1.MapboxGlDirective],
             providers: [hero_service_1.HeroService]

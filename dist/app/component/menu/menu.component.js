@@ -26,20 +26,7 @@ var MenuComponent = (function () {
         this.ms.menuOpen = !this.ms.menuOpen;
     };
     MenuComponent.prototype.onOpenLogin = function () {
-        var click = onclick.bind(this);
         this.ms.menuOpenLogin = !this.ms.menuOpenLogin;
-        if (this.ms.menuOpenLogin) {
-            setTimeout(function () {
-                document.body.addEventListener('click', click);
-            }, 100);
-        }
-        else {
-            document.body.removeEventListener('click', click);
-        }
-        function onclick(e) {
-            document.body.removeEventListener('click', click);
-            this.ms.menuOpenLogin = false;
-        }
     };
     MenuComponent = __decorate([
         core_1.Component({

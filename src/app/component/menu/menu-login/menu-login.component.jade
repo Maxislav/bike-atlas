@@ -1,0 +1,8 @@
+div((click)="$event.stopPropagation();$event.preventDefault()")
+    label Имя
+    input(type="text")
+    label Пароль
+    input( type="password")
+    p
+        //a(routerLink="/auth/map/registration") Регистрация
+        a((click)="goToReg()") Регистрация

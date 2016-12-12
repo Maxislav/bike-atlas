@@ -21,6 +21,7 @@ import {Io} from "./service/socket.oi.service";
 import {TrackService} from "./service/track.service";
 import {TrackList} from "./component/menu/track-list/track-list.component";
 import {MenuLoginComponent} from "./component/menu/menu-login/menu-login.component";
+import {RegistrationComponent} from "./component/registration/registration.component";
 
 @NgModule({
     imports: [
@@ -31,6 +32,7 @@ import {MenuLoginComponent} from "./component/menu/menu-login/menu-login.compone
     declarations: [
         //LeafletMapDirective,
         //DashboardComponent,
+        RegistrationComponent,
         InfoPositionComponent,
         MapComponent,
         AuthComponent,

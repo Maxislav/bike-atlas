@@ -10,7 +10,9 @@ import {MapboxGlDirective} from "./directive/mapbox-gl.directive";
     template: [
         '<info-position>',
         '</info-position>',
-        '<mapbox-gl> map loading...</mapbox-gl>'].join('') ,
+        '<router-outlet></router-outlet>',
+        '<mapbox-gl> map loading...</mapbox-gl>'
+    ].join('') ,
     styleUrls: ['css/map.component.css'],
     directives: [MapboxGlDirective],
     providers: [HeroService]

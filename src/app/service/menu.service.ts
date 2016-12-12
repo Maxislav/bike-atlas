@@ -7,13 +7,12 @@ export class MenuService{
     
 
     private _menuOpen: boolean;
-    private _menuLoadOpen: boolean;
     private _menuOpenLogin: boolean;
 
 
     constructor(){
-        this._menuLoadOpen = false;
         this._menuOpen = false
+        this._menuOpenLogin = false
     }
     get menuOpen():boolean {
         return this._menuOpen;
@@ -44,6 +43,25 @@ export class MenuService{
     }
 
     set menuOpenLogin(value:boolean) {
+
+
+        const click =  onclick.bind(this);
+
+
+        if(value){
+            setTimeout(()=>{
+                document.body.addEventListener('click',click)
+            },100)
+        }else{
+            document.body.removeEventListener('click', click)
+        }
+
+        function onclick(e){
+            document.body.removeEventListener('click', click);
+            this.menuOpenLogin = false
+        }
+
+
         this._menuOpenLogin = value;
     }
 

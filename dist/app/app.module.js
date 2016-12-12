@@ -30,6 +30,7 @@ var socket_oi_service_1 = require("./service/socket.oi.service");
 var track_service_1 = require("./service/track.service");
 var track_list_component_1 = require("./component/menu/track-list/track-list.component");
 var menu_login_component_1 = require("./component/menu/menu-login/menu-login.component");
+var registration_component_1 = require("./component/registration/registration.component");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -43,6 +44,7 @@ var AppModule = (function () {
             declarations: [
                 //LeafletMapDirective,
                 //DashboardComponent,
+                registration_component_1.RegistrationComponent,
                 info_position_component_1.InfoPositionComponent,
                 map_component_1.MapComponent,
                 auth_component_1.AuthComponent,

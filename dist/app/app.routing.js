@@ -3,6 +3,7 @@ var router_1 = require('@angular/router');
 var heroes_component_1 = require('./heroes.component');
 var auth_component_1 = require("./auth.component");
 var map_component_1 = require("./map.component");
+var registration_component_1 = require("./component/registration/registration.component");
 var appRouters = [
     {
         path: '',
@@ -22,6 +23,10 @@ var appRouters = [
                 children: [
                     {
                         path: ''
+                    },
+                    {
+                        path: 'registration',
+                        component: registration_component_1.RegistrationComponent
                     }
                 ]
             }

@@ -23,13 +23,6 @@ declare var document: any;
     providers: [MenuTrackComponent, MenuService,   TrackList]
 })
 export class MenuComponent{
-   /* get menuOpenLogin():boolean {
-        return this._menuOpenLogin;
-    }
-
-    set menuOpenLogin(value:boolean) {
-        this._menuOpenLogin = value;
-    }*/
 
     public menuOpen: boolean;
     
@@ -43,21 +36,10 @@ export class MenuComponent{
         this.ms.menuOpen = !this.ms.menuOpen;
     }
     onOpenLogin(){
-        var click =  onclick.bind(this);
 
         this.ms.menuOpenLogin = !this.ms.menuOpenLogin;
-        if(this.ms.menuOpenLogin ){
-            setTimeout(()=>{
-                document.body.addEventListener('click',click)
-            },100)
-        }else{
-            document.body.removeEventListener('click', click)
-        }
-
-        function onclick(e){
-            document.body.removeEventListener('click', click);
-            this.ms.menuOpenLogin = false
-        }
+        
+        
         
     }
     
