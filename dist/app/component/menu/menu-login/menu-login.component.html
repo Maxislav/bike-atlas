@@ -1,0 +1,10 @@
+
+<div (click)="$event.stopPropagation();$event.preventDefault()">
+  <label>Имя</label>
+  <input type="text"/>
+  <label>Пароль</label>
+  <input type="password"/>
+  <p>
+    <!--a(routerLink="/auth/map/registration") Регистрация--><a (click)="goToReg()">Регистрация</a>
+  </p>
+</div>
