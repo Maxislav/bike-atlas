@@ -22,7 +22,7 @@ table td.button {
   text-align: center;
 }
 table td.button:hover {
-  background-color: #12aaac;
+  background-color: rgba(202, 232, 255, 0.7);
 }
 table td.button.menu {
   width: 60px;
