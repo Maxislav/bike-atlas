@@ -1,15 +1,15 @@
 
-export class Point{
+export interface  Point{
     lng: number;
     lat: number;
-    bearing: number
+    bearing?: number;
 }
 
-export class Coordinate extends Array<number>{
+export interface Coordinate extends Array<number>{
     
 }
 
-export  class Track {
+export  interface Track {
     id: string;
     show: Function;
     hide: Function;
