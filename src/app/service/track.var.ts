@@ -13,7 +13,7 @@ export  interface Track {
     id: string;
     show: Function;
     hide: Function;
-    coordinates: Array<[number, number]>;
+    coordinates: Array<Coordinate>;
     points: Array<Point>
 }
 
