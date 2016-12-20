@@ -8,6 +8,7 @@ const port = 8080;
 const kmlData = require('./kml-data');
 var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
+const tileProxi = require('./tile-proxy');
 
 
 
@@ -37,6 +38,12 @@ let kSrc = 0;
 let kCss = 0;
 let kMyJs = 0;
 let kNM = 0;
+
+
+/**
+ * tiler proxy
+ */
+app.get('/hills/:z/:x/:y', tileProxi);
 
 app.post('/import/kml-data',kmlData);
 //app.use(express.bodyParser());
@@ -104,9 +111,6 @@ app.get('/node_modules*', function(req, res) {
 
 });
 
-//app.use(express.static(__dirname));
-
-
 app.get('/*template*', function(req, res) {
   //console.log(req.url)
   res.sendFile(dirname + req.url)
@@ -115,25 +119,7 @@ app.get('*', function(req, res) {
   //console.log(req.url)
   res.sendFile(dirname + req.url)
 });
-/*
 
-io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
-  socketStream(socket).on('file', function(stream) {
-    let data = [];
-    stream.on('data', (d)=>{
-      data.push(d);
-    });
-    stream.on('end', (e, d)=>{
-      console.log("file send")
-      socket.emit('file', Buffer.concat(data));
-    });
-  });
-});
-*/
 
 
 

@@ -56,19 +56,18 @@ var MapboxGlDirective = (function () {
                 // "sprite": "mapbox://sprites/mapbox/streets-v8",
                 // "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
                 "sprite": "http://" + window.location.hostname + ":8080/src/sprite/sprite",
-                //"sprite": "mapbox://sprites/mapbox/streets-v8",
                 "sources": {
-                    /* "satelite-google": {
-                         "type": "raster",
-                         "tiles": [
-                             "http://iis.contour.net:8081/map/g.h/{z}/{x}/{y}"
-                         ],
-                         "tileSize": 256
-                     },*/
                     "google-default": {
                         "type": "raster",
                         "tiles": [
-                            "http://mt0.googleapis.com/vt/lyrs=m@207000000&hl=ru&src=api&x={x}&y={y}&z={z}&s=Galile"
+                            "http://mt0.googleapis.com/vt/lyrs=m@207000000&hl=ru&src=api&x={x}&y={y}&z={z}&s=Galile",
+                        ],
+                        "tileSize": 256
+                    },
+                    "hills": {
+                        "type": "raster",
+                        "tiles": [
+                            "hills/{z}/{x}/{y}.png"
                         ],
                         "tileSize": 256
                     }
@@ -76,6 +75,10 @@ var MapboxGlDirective = (function () {
                 "layers": [{
                         "id": "google-default",
                         "source": "google-default",
+                        "type": "raster"
+                    }, {
+                        "id": "hills",
+                        "source": "hills",
                         "type": "raster"
                     }]
             }
