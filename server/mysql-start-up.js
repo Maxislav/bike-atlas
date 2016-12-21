@@ -1,5 +1,5 @@
 const mysql      = require('mysql');
-let config = require('../user-pass.json');
+let config = require('./mysql.config.json');
 let connection = null;
 
 
