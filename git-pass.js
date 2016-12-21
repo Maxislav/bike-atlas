@@ -3,10 +3,10 @@
  */
 const exec = require('child_process').exec;
 const fs = require('fs');
-
-getPass()
+toCommit();
+/*getPass()
   .then(toZip)
-  .then(toCommit);
+  .then(toCommit);*/
 
 function getPass() {
   return new Promise((resolve, reject)=>{
