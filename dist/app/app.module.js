@@ -31,6 +31,7 @@ var track_service_1 = require("./service/track.service");
 var track_list_component_1 = require("./component/menu/track-list/track-list.component");
 var menu_login_component_1 = require("./component/menu/menu-login/menu-login.component");
 var registration_component_1 = require("./component/registration/registration.component");
+var md5_service_1 = require("./service/md5.service");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -41,6 +42,9 @@ var AppModule = (function () {
                 forms_1.FormsModule,
                 app_routing_1.routing
             ],
+            /**
+             * Компоненты
+             */
             declarations: [
                 //LeafletMapDirective,
                 //DashboardComponent,
@@ -59,7 +63,7 @@ var AppModule = (function () {
             bootstrap: [
                 app_component_1.AppComponent
             ],
-            providers: [transaction_resolve_1.TransactionResolver, menu_component_1.MenuComponent, local_storage_service_1.LocalStorage, socket_oi_service_1.Io, track_service_1.TrackService]
+            providers: [transaction_resolve_1.TransactionResolver, menu_component_1.MenuComponent, local_storage_service_1.LocalStorage, socket_oi_service_1.Io, track_service_1.TrackService, md5_service_1.Md5]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

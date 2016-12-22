@@ -10,9 +10,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
+var md5_service_1 = require("../../service/md5.service");
 var RegistrationComponent = (function () {
-    function RegistrationComponent(location) {
+    function RegistrationComponent(location, md5) {
         this.location = location;
+        this.md5 = md5;
     }
     RegistrationComponent.prototype.onCancel = function () {
         this.location.back();
@@ -20,13 +22,20 @@ var RegistrationComponent = (function () {
     RegistrationComponent.prototype.onOk = function () {
         this.location.back();
     };
+    Object.defineProperty(RegistrationComponent.prototype, "pass1", {
+        set: function (val) {
+            this._pass1 = this.md5.hash(val);
+        },
+        enumerable: true,
+        configurable: true
+    });
     RegistrationComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             templateUrl: './registration.component.html',
-            styleUrls: ['./registration.component.css']
+            styleUrls: ['./registration.component.css'],
         }), 
-        __metadata('design:paramtypes', [common_1.Location])
+        __metadata('design:paramtypes', [common_1.Location, md5_service_1.Md5])
     ], RegistrationComponent);
     return RegistrationComponent;
 }());

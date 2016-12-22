@@ -22,6 +22,7 @@ import {TrackService} from "./service/track.service";
 import {TrackList} from "./component/menu/track-list/track-list.component";
 import {MenuLoginComponent} from "./component/menu/menu-login/menu-login.component";
 import {RegistrationComponent} from "./component/registration/registration.component";
+import {Md5} from "./service/md5.service";
 
 @NgModule({
     imports: [
@@ -29,6 +30,9 @@ import {RegistrationComponent} from "./component/registration/registration.compo
         FormsModule,
         routing
     ],
+    /**
+     * Компоненты
+     */
     declarations: [
         //LeafletMapDirective,
         //DashboardComponent,
@@ -43,11 +47,10 @@ import {RegistrationComponent} from "./component/registration/registration.compo
         MenuTrackComponent,
         MenuLoginComponent,
         TrackList
-
     ],
     bootstrap: [
         AppComponent
     ],
-    providers: [TransactionResolver, MenuComponent, LocalStorage, Io, TrackService]
+    providers: [TransactionResolver, MenuComponent, LocalStorage, Io, TrackService, Md5]
 })
 export class AppModule {}
