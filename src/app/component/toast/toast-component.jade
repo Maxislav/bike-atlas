@@ -1,2 +1,2 @@
-.my-animation(*ngFor="let item of messages")
+.my-animation(*ngFor="let item of messages", [ngClass]="item.className", (click)="item.remove()")
         | {{item.text}}

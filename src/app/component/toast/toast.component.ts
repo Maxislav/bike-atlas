@@ -2,7 +2,9 @@ import { Component, Injectable} from '@angular/core';
 
 interface Message{
     type?: string;
-    text: string
+    className?: string;
+    text: string;
+    remove?: Function
 };
 
 @Injectable()
@@ -12,15 +14,18 @@ export class ToastService{
         this.messages = [];
     }
 
-    push(message: Message){
+    show(message: Message){
+        message.className = message.type || 'default';
         this.messages.push(message);
-        
         const res = {
             remove:  () => {
                 const index = this.messages.indexOf(message);
-                this.messages.splice(index, 1)
+                if(-1<index){
+                    this.messages.splice(index, 1)    
+                }
             }
         };
+        message.remove = res.remove;
         
         setTimeout(()=>{
             res.remove();
@@ -40,6 +45,7 @@ export class ToastService{
 })
 export class ToastComponent{
     public messages: Array<Message>;
+    private cl: string;
     constructor(private ts: ToastService){
         this.messages = ts.messages;
     }

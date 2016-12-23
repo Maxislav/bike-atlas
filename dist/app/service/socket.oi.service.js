@@ -12,7 +12,22 @@ var core_1 = require("@angular/core");
 var io = require("socket/socket.io.js");
 var Io = (function () {
     function Io() {
+        var _this = this;
         this._socket = io("http://" + window.location.hostname + ":8081");
+        this._socket.$emit = function (name, data) {
+            return new Promise(function (resolve, reject) {
+                var timeout = setTimeout(function () {
+                    reject('Error by timeout ');
+                }, 30000);
+                var response = function (d) {
+                    clearTimeout(timeout);
+                    _this.socket.off(name, response);
+                    resolve(d);
+                };
+                _this.socket.on(name, response);
+                _this.socket.emit(name, data);
+            });
+        };
         this._socket.on('news', function (d) {
             //console.log(d,'klklttewefewfwe')
         });

@@ -13,6 +13,22 @@ export class Io{
 
     constructor(){
         this._socket = io("http://"+window.location.hostname+":8081");
+
+        this._socket.$emit = (name: string, data: Object)=>{
+            return new Promise((resolve, reject)=>{
+                const timeout = setTimeout(()=>{
+                    reject('Error by timeout ')
+                }, 30000);
+                const response = (d) =>{
+                    clearTimeout(timeout);
+                    this.socket.off(name, response);
+                    resolve(d);
+                };
+
+                this.socket.on(name, response);
+                this.socket.emit(name, data)
+            })
+        }
         this._socket.on('news',(d)=>{
             //console.log(d,'klklttewefewfwe')
         });

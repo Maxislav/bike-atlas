@@ -5,6 +5,16 @@ module.exports = (io)=>{
     socket.on('my other event', function (data) {
       console.log(data);
     });
+
+    socket.on('onRegist',  (d) =>{
+      console.log(d)
+      socket.emit('onRegist', {id: 0})
+    });
+    
+    
+    
+    
+    
     socketStream(socket).on('file', function(stream) {
       let data = [];
       stream.on('data', (d)=>{

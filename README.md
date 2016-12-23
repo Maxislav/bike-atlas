@@ -1,9 +1,21 @@
 # Atlas-Angular2
 ## Install
-npm i
 
-## compile 
-tsc && gulp
+```
+~$ npm i
+```
 
+## compile
+```
+~$ tsc && gulp
+```
+
+## DataBase create
+
+```bash
+~$ node server/mysql-start-up.js
+```
 ## start
-node server/index.js
+```bash
+~$ node server/index.js
+```

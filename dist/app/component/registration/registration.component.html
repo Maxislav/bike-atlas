@@ -2,11 +2,11 @@
 <div class="content">
   <form name="reg">
     <label>Имя</label>
-    <input type="text" name="_name"/>
+    <input type="text" name="_name" [(ngModel)]="name"/>
     <label>Пароль</label>
     <input type="password" name="_pass" [(ngModel)]="pass1"/>
     <label>Пароль</label>
-    <input type="password" name="_pass"/>
+    <input type="password" name="_pass" [(ngModel)]="pass2"/>
     <div class="button-container">
       <div>
         <button (click)="onCancel()">Cancel</button>

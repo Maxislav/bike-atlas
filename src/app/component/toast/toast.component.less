@@ -1,3 +1,4 @@
+@import "../../css/constant";
 :host{
   position: absolute;
   width: 300px;
@@ -11,6 +12,17 @@ div{
   margin: 10px;
   padding: 10px 15px;
   background: white;
+  box-shadow: @box-shadow;
+  &.danger{
+    background: @danger-background;
+    color: white;
+  }
+  &.warning{
+    background: @warning-background;
+  }
+  &.success{
+    background: @success-background;
+  }
 }
 
 @keyframes MyAnimation {
@@ -23,5 +35,5 @@ div{
 }
 
 .my-animation {
-  animation: MyAnimation 0.2s;
+  animation: MyAnimation 0.3s;
 }
