@@ -64,12 +64,17 @@ app.use((req, res, next)=>{
   if(/src.+\.(html|css)$/.test(req.url)){
     req.url = req.url.replace('src', 'dist')
   }
+  
+  if(/sprite/.test(req.url)){
+    console.log('sprite', req.url)
+  }
   if(/\..{1,4}$/.test(req.url)){
     
     switch (true){
       case /\.css$/.test(req.url):
       case /^\/src.+\.js$/.test(req.url):
       case /node_modules/.test(req.url):
+        req.url = path.normalize(req.url)
         console.log('files', req.url);
         res.sendFile(dirname +req.url);
         break;

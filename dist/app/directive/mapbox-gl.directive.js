@@ -55,7 +55,7 @@ var MapboxGlDirective = (function () {
                 "name": "plastun",
                 // "sprite": "mapbox://sprites/mapbox/streets-v8",
                 // "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
-                "sprite": "http://" + window.location.hostname + ":8080/src/sprite/sprite",
+                "sprite": "http://" + window.location.hostname + "/src/sprite/sprite",
                 "sources": {
                     "google-default": {
                         "type": "raster",
