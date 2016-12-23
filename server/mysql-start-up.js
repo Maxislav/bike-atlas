@@ -54,7 +54,7 @@ function createDatabase() {
 function createTable() {
   return new Promise((res, rej)=>{
     const query  = 'CREATE TABLE IF NOT EXISTS `monitoring`.`user` ' +
-      '( `id` INT(11) NOT NULL AUTO_INCREMENT , `name` VARCHAR(16) NOT NULL , `pass` VARCHAR(16) NOT NULL , `opt` VARCHAR(16) NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+      '( `id` INT(11) NOT NULL AUTO_INCREMENT , `name` VARCHAR(16) NOT NULL , `pass` VARCHAR(32) NOT NULL , `opt` VARCHAR(16) NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;';
     connection.query(query, (err)=>{
       if(err){
         console.log('Error createTable');

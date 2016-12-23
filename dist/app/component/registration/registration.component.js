@@ -50,17 +50,20 @@ var RegistrationComponent = (function () {
         }
     };
     RegistrationComponent.prototype.onRegist = function () {
+        var _this = this;
         var pass = this.md5.hash(this.pass1);
         var name = this.name;
         this.socket.$emit('onRegist', { name: name, pass: pass })
             .then(function (d) {
-            console.log(d);
+            _this.ts.show({
+                type: 'success',
+                text: 'Регистрация Ок!'
+            });
+            _this.location.back();
         }, function (err) {
             console.error(err);
         });
         console.log(name, pass);
-        //this.socket.emit()
-        this.location.back();
     };
     Object.defineProperty(RegistrationComponent.prototype, "pass1", {
         get: function () {

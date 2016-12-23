@@ -53,15 +53,17 @@ export class RegistrationComponent{
         const name = this.name;
         this.socket.$emit('onRegist', {name: name, pass: pass})
             .then((d)=>{
-                console.log(d)
+                this.ts.show({
+                    type: 'success',
+                    text: 'Регистрация Ок!'
+                });
+                this.location.back();
             },(err)=>{
                 console.error(err)
-            })
+            });
 
         console.log(name, pass);
-        //this.socket.emit()
 
-        this.location.back();
     }
 
     set pass1(val){
