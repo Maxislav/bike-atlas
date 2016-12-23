@@ -9,7 +9,7 @@ import {HeroService} from './hero.service';
     moduleId: module.id,
     selector: 'my-app',
     //templateUrl: 'src/app/template/my-app.html',
-    template:'<router-outlet></router-outlet>',
+    template:'<toast-component></toast-component><router-outlet></router-outlet>',
     styleUrls: [
         'css/app.component.css',
     ]

@@ -11,15 +11,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var md5_service_1 = require("../../service/md5.service");
+var toast_component_1 = require("../toast/toast.component");
 var RegistrationComponent = (function () {
-    function RegistrationComponent(location, md5) {
+    function RegistrationComponent(location, md5, ts) {
         this.location = location;
         this.md5 = md5;
+        this.ts = ts;
     }
     RegistrationComponent.prototype.onCancel = function () {
         this.location.back();
     };
     RegistrationComponent.prototype.onOk = function () {
+        this.ts.push({
+            text: 'Тест'
+        });
         this.location.back();
     };
     Object.defineProperty(RegistrationComponent.prototype, "pass1", {
@@ -35,7 +40,7 @@ var RegistrationComponent = (function () {
             templateUrl: './registration.component.html',
             styleUrls: ['./registration.component.css'],
         }), 
-        __metadata('design:paramtypes', [common_1.Location, md5_service_1.Md5])
+        __metadata('design:paramtypes', [common_1.Location, md5_service_1.Md5, toast_component_1.ToastService])
     ], RegistrationComponent);
     return RegistrationComponent;
 }());

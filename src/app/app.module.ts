@@ -23,6 +23,7 @@ import {TrackList} from "./component/menu/track-list/track-list.component";
 import {MenuLoginComponent} from "./component/menu/menu-login/menu-login.component";
 import {RegistrationComponent} from "./component/registration/registration.component";
 import {Md5} from "./service/md5.service";
+import {ToastComponent, ToastService} from "./component/toast/toast.component";
 
 @NgModule({
     imports: [
@@ -46,11 +47,13 @@ import {Md5} from "./service/md5.service";
         MenuComponent,
         MenuTrackComponent,
         MenuLoginComponent,
-        TrackList
+        TrackList,
+        ToastComponent
+
     ],
     bootstrap: [
         AppComponent
     ],
-    providers: [TransactionResolver, MenuComponent, LocalStorage, Io, TrackService, Md5]
+    providers: [TransactionResolver, MenuComponent, LocalStorage, Io, TrackService, Md5, ToastService]
 })
 export class AppModule {}
