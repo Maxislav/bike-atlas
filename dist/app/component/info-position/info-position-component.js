@@ -32,8 +32,8 @@ var InfoPositionComponent = (function () {
         core_1.Component({
             selector: 'info-position',
             //template:'<div>lat: {{mapService.lat}}</div>' + '<div>Pixel: {{pixelY}}</div>',
-            templateUrl: 'app/component/info-position/info-position-component.html',
-            styleUrls: ['app/component/info-position/info-position.css']
+            templateUrl: 'dist/app/component/info-position/info-position-component.html',
+            styleUrls: ['dist/app/component/info-position/info-position.css']
         }), 
         __metadata('design:paramtypes', [mercator_service_1.Mercator, map_service_1.MapService])
     ], InfoPositionComponent);

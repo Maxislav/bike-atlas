@@ -8,7 +8,7 @@ const port = 8080;
 const kmlData = require('./kml-data');
 var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
-const tileProxi = require('./tile-proxy');
+const tileProxy = require('./tile-proxy');
 
 
 
@@ -43,7 +43,7 @@ let kNM = 0;
 /**
  * tiler proxy
  */
-app.get('/hills/:z/:x/:y', tileProxi);
+app.get('*/hills/:z/:x/:y', tileProxy);
 
 app.post('/import/kml-data',kmlData);
 //app.use(express.bodyParser());
