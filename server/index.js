@@ -30,6 +30,7 @@ livereload(app, {
   watchDir: dirname + '/dist'
 });*/
 const server = require('http').Server(app);
+server.listen(8081);
 socketData(server);
 
 //server.listen(8081);

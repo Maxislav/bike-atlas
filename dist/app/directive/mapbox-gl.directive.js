@@ -70,11 +70,20 @@ var MapboxGlDirective = (function () {
                             "hills/{z}/{x}/{y}.png"
                         ],
                         "tileSize": 256
-                    }
+                    },
+                    "osm": {
+                        "type": "raster",
+                        "tiles": [
+                            "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                            "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                            "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        ],
+                        "tileSize": 256
+                    },
                 },
                 "layers": [{
                         "id": "google-default",
-                        "source": "google-default",
+                        "source": "osm",
                         "type": "raster"
                     }, {
                         "id": "hills",

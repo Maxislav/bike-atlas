@@ -53,7 +53,6 @@ export class MapboxGlDirective implements AfterViewInit {
                         "type": "raster",
                         "tiles":[
                             "http://mt0.googleapis.com/vt/lyrs=m@207000000&hl=ru&src=api&x={x}&y={y}&z={z}&s=Galile",
-
                         ],
                         "tileSize": 256
                     },
@@ -63,11 +62,21 @@ export class MapboxGlDirective implements AfterViewInit {
                             "hills/{z}/{x}/{y}.png"
                         ],
                         "tileSize": 256
-                    }
+                    },
+                    "osm": {
+                        "type": "raster",
+                        "tiles":[
+                            "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                            "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                            "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        ],
+                        "tileSize": 256
+                    },
+
                 },
                 "layers": [{
                     "id": "google-default",
-                    "source": "google-default",
+                    "source": "osm",
                     "type": "raster"
                 }, {
                     "id": "hills",
