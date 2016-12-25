@@ -1,14 +1,15 @@
 /**
  * Created by maxislav on 20.10.16.
  */
-const livereload = require('express-livereload');
+//const livereload = require('express-livereload');
 const path = require('path');
 const express = require('express');
 const port = 8080;
 const kmlData = require('./kml-data');
-var bodyParser = require('body-parser');
-var fileUpload = require('express-fileupload');
+const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 const tileProxy = require('./tile-proxy');
+const socketData = require('./socket-data');
 
 
 
@@ -24,14 +25,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
-
+/*
 livereload(app, {
   watchDir: dirname + '/dist'
-});
+});*/
 const server = require('http').Server(app);
-require('./socket-data')(require('socket.io')(server));
+socketData(server);
 
-server.listen(8081);
+//server.listen(8081);
 let timeout;
 let k = 0;
 let kSrc = 0;
