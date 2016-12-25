@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "concurrently": "^2.0.0",
+    "connect-livereload": "^0.6.0",
     "es6-promise": "^3.2.1",
     "express-livereload": "0.0.24",
     "lite-server": "^2.2.0",

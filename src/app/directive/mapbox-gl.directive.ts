@@ -81,7 +81,9 @@ export class MapboxGlDirective implements AfterViewInit {
                 }, {
                     "id": "hills",
                     "source": "hills",
-                    "type": "raster"
+                    "type": "raster",
+                    "minzoom": 7,
+                    "maxzoom": 14
                 }]
             }
         });

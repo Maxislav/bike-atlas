@@ -25,6 +25,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
+
+
 /*
 livereload(app, {
   watchDir: dirname + '/dist'

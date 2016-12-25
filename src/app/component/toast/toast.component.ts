@@ -14,6 +14,7 @@ export class ToastService{
         this.messages = [];
     }
 
+
     show(message: Message){
         message.className = message.type || 'default';
         this.messages.push(message);
