@@ -3,6 +3,10 @@ div((click)="$event.stopPropagation();$event.preventDefault()")
     input(type="text")
     label Пароль
     input( type="password")
+    .button-container
+        div()
+            button() Вход
+    div(style="border-bottom: 1px solid transparent; clear: both;")
     p
         //a(routerLink="/auth/map/registration") Регистрация
         a((click)="goToReg()") Регистрация
