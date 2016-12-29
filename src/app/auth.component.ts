@@ -8,6 +8,7 @@ import {MapService} from "./service/map.service";
 import {PositionSize} from "./service/position-size.service";
 import {InfoPositionComponent} from "./component/info-position/info-position-component";
 import {MenuComponent} from "./component/menu/menu.component";
+import {LocalStorage} from "./service/local-storage.service";
 //noinspection TypeScriptCheckImport
 
 
@@ -23,9 +24,7 @@ import {MenuComponent} from "./component/menu/menu.component";
 export class AuthComponent{
 
     socket: any;
-    constructor(el: ElementRef){
-        //console.log(io)
-      
-       // console.log(el)
+    constructor(el: ElementRef, private  ls : LocalStorage){
+     console.log(ls.userKey)
     }
 }

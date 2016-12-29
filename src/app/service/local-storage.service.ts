@@ -8,6 +8,7 @@ export class LocalStorage{
     
 
     private prefix: string;
+    private _userKey: string;
     private _mapCenter: {
         lng: number,
         lat:number,
@@ -38,8 +39,15 @@ export class LocalStorage{
         localStorage.setItem(this.prefix+'-'+'map-center', JSON.stringify(value));
         this._mapCenter = value;
     }
-    //get mapCenter
 
+    set userKey(key){
+        localStorage.setItem(this.prefix+'-'+'user-key',key);
+        this._userKey = key;
+    }
 
+    get userKey(){
+        this._userKey = localStorage.getItem(this.prefix+'-'+'user-key');
+        return this._userKey;
+    }
 
 }

@@ -39,6 +39,18 @@ var LocalStorage = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(LocalStorage.prototype, "userKey", {
+        get: function () {
+            this._userKey = localStorage.getItem(this.prefix + '-' + 'user-key');
+            return this._userKey;
+        },
+        set: function (key) {
+            localStorage.setItem(this.prefix + '-' + 'user-key', key);
+            this._userKey = key;
+        },
+        enumerable: true,
+        configurable: true
+    });
     LocalStorage = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [])

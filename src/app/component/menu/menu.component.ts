@@ -36,13 +36,6 @@ export class MenuComponent{
         this.ms.menuOpen = !this.ms.menuOpen;
     }
     onOpenLogin(){
-
         this.ms.menuOpenLogin = !this.ms.menuOpenLogin;
-        
-        
-        
     }
-    
-
-    //menuOpen: this.ms.menuOpe
 }

@@ -18,11 +18,12 @@ var map_service_1 = require("./service/map.service");
 var position_size_service_1 = require("./service/position-size.service");
 var info_position_component_1 = require("./component/info-position/info-position-component");
 var menu_component_1 = require("./component/menu/menu.component");
+var local_storage_service_1 = require("./service/local-storage.service");
 //noinspection TypeScriptCheckImport
 var AuthComponent = (function () {
-    function AuthComponent(el) {
-        //console.log(io)
-        // console.log(el)
+    function AuthComponent(el, ls) {
+        this.ls = ls;
+        console.log(ls.userKey);
     }
     AuthComponent = __decorate([
         core_1.Component({
@@ -33,7 +34,7 @@ var AuthComponent = (function () {
                 'css/auth.component.css',
             ]
         }), 
-        __metadata('design:paramtypes', [core_2.ElementRef])
+        __metadata('design:paramtypes', [core_2.ElementRef, local_storage_service_1.LocalStorage])
     ], AuthComponent);
     return AuthComponent;
 }());

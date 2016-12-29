@@ -4,6 +4,7 @@ import {MenuService} from "app/service/menu.service";
 import {Router} from "@angular/router";
 import {Io} from "../../../service/socket.oi.service";
 import {Md5} from "../../../service/md5.service";
+import {LocalStorage} from "../../../service/local-storage.service";
 //import {RouterLink} from "@angular/router-deprecated";
 
 
@@ -20,10 +21,9 @@ export class MenuLoginComponent {
     private pass:string;
     private socket;
 
-    constructor(private router:Router, private ms:MenuService, private  io:Io, private md5:Md5) {
+    constructor(private router:Router, private ms:MenuService, private  io:Io, private md5:Md5, private ls: LocalStorage) {
         this.socket = io.socket;
     }
-
 
     goToReg() {
         this.router.navigate(['/auth/map/registration']);
@@ -37,7 +37,10 @@ export class MenuLoginComponent {
                 pass: this.md5.hash(this.pass)
             })
             .then(d=> {
-                console.log(d)
+                if(d.result == 'ok'){
+                    console.log(d)
+                    this.ls.userKey = d.hash
+                }
             });
     }
 }
