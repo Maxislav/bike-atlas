@@ -52,16 +52,35 @@ function createDatabase() {
 }
 
 function createTable() {
-  return new Promise((res, rej)=>{
+  const tableUser =  new Promise((res, rej)=>{
     const query  = 'CREATE TABLE IF NOT EXISTS `monitoring`.`user` ' +
       '( `id` INT(11) NOT NULL AUTO_INCREMENT , `name` VARCHAR(16) NOT NULL , `pass` VARCHAR(32) NOT NULL , `opt` VARCHAR(16) NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;';
     connection.query(query, (err)=>{
       if(err){
-        console.log('Error createTable');
+        console.log('Error tableUser');
         rej(err);
         return;
       }
       res(connection);
     })
-  })
+  });
+
+  const tableHash = new Promise((res, rej)=>{
+    const query = 'CREATE TABLE `monitoring`.`hash` ' +
+      '( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `key` VARCHAR(32) NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+
+    connection.query(query, (err)=>{
+      if(err){
+        console.log('Error  tableHash');
+        rej(err);
+        return;
+      }
+      res(connection);
+    })
+  });
+  
+  return Promise.all([tableUser, tableHash])
+
+
+
 }

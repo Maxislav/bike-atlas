@@ -4,6 +4,13 @@
 let connection;
 let socket;
 
+function getRandom(min, max, int) {
+  var rand = min + Math.random() * (max - min);
+  if(int){
+    rand = Math.round(rand)
+  }
+  return rand;
+}
 
 class OnEnter{
 
@@ -26,8 +33,16 @@ class OnEnter{
       }
       console.log(rows);
       if(rows.length){
-        socket.emit('onEnter', rows)
-
+        if(rows.length == 1 && rows[0].pass == data.pass){
+          socket.emit('onEnter', {
+            result: 'ok',
+            hash: this.getHash()
+          })
+        }
+        socket.emit('onEnter', {
+          result: false,
+          message: 'user or password incorrect'
+        })
       }else{
         socket.emit('onEnter', {
           result: false,
@@ -39,6 +54,14 @@ class OnEnter{
 
   }
 
+  getHash(){
+    const $possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let hash = '';
+    for(let i=0; i<32; i++){
+      hash += ''+$possible[getRandom(0,61, true)] ;
+    };
+    return hash;
+  }
 
 
 
