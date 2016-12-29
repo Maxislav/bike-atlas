@@ -36,7 +36,6 @@ var MenuLoginComponent = (function () {
             .then(function (d) {
             console.log(d);
         });
-        //console.log(this.name, this.md5.hash(this.pass))
     };
     MenuLoginComponent = __decorate([
         core_1.Component({

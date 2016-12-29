@@ -38,7 +38,6 @@ export class MenuLoginComponent {
             })
             .then(d=> {
                 console.log(d)
-            })
-        //console.log(this.name, this.md5.hash(this.pass))
+            });
     }
 }

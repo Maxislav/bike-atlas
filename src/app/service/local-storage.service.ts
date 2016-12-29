@@ -7,6 +7,7 @@ import {Injectable} from "@angular/core";
 export class LocalStorage{
     
 
+    private prefix: string;
     private _mapCenter: {
         lng: number,
         lat:number,
@@ -14,16 +15,17 @@ export class LocalStorage{
     };
 
     constructor(){
+        this.prefix = window.location.hostname;
         this._mapCenter = {
             lng: null,
             lat: null,
             zoom: null
         };
         var strMapCenter =  JSON.stringify(this._mapCenter);
-        if(!localStorage.getItem('mapCenter')){
-            localStorage.setItem('mapCenter', strMapCenter)
+        if(!localStorage.getItem(this.prefix+'-'+'map-center')){
+            localStorage.setItem(this.prefix+'-'+'map-center', strMapCenter)
         }else{
-            this.mapCenter = JSON.parse(localStorage.getItem('mapCenter'))
+            this.mapCenter = JSON.parse(localStorage.getItem(this.prefix+'-'+'map-center'))
         }
 
     }
@@ -33,7 +35,7 @@ export class LocalStorage{
     }
 
     set mapCenter(value:{lng:number; lat:number; zoom:number}) {
-        localStorage.setItem('mapCenter', JSON.stringify(value));
+        localStorage.setItem(this.prefix+'-'+'map-center', JSON.stringify(value));
         this._mapCenter = value;
     }
     //get mapCenter

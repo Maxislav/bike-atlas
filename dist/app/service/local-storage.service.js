@@ -14,17 +14,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var LocalStorage = (function () {
     function LocalStorage() {
+        this.prefix = window.location.hostname;
         this._mapCenter = {
             lng: null,
             lat: null,
             zoom: null
         };
         var strMapCenter = JSON.stringify(this._mapCenter);
-        if (!localStorage.getItem('mapCenter')) {
-            localStorage.setItem('mapCenter', strMapCenter);
+        if (!localStorage.getItem(this.prefix + '-' + 'map-center')) {
+            localStorage.setItem(this.prefix + '-' + 'map-center', strMapCenter);
         }
         else {
-            this.mapCenter = JSON.parse(localStorage.getItem('mapCenter'));
+            this.mapCenter = JSON.parse(localStorage.getItem(this.prefix + '-' + 'map-center'));
         }
     }
     Object.defineProperty(LocalStorage.prototype, "mapCenter", {
@@ -32,7 +33,7 @@ var LocalStorage = (function () {
             return this._mapCenter;
         },
         set: function (value) {
-            localStorage.setItem('mapCenter', JSON.stringify(value));
+            localStorage.setItem(this.prefix + '-' + 'map-center', JSON.stringify(value));
             this._mapCenter = value;
         },
         enumerable: true,
