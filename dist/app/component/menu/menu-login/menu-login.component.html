@@ -1,12 +1,12 @@
 
 <div (click)="$event.stopPropagation();$event.preventDefault()">
   <label>Имя</label>
-  <input type="text"/>
+  <input type="text" [(ngModel)]="name"/>
   <label>Пароль</label>
-  <input type="password"/>
+  <input type="password" [(ngModel)]="pass"/>
   <div class="button-container">
     <div>
-      <button>Вход</button>
+      <button (click)="onEnter($event)">Вход</button>
     </div>
   </div>
   <div style="border-bottom: 1px solid transparent; clear: both;"></div>

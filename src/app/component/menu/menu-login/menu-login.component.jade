@@ -1,11 +1,11 @@
 div((click)="$event.stopPropagation();$event.preventDefault()")
     label Имя
-    input(type="text")
+    input(type="text", [(ngModel)]="name")
     label Пароль
-    input( type="password")
+    input( type="password", [(ngModel)]="pass")
     .button-container
         div()
-            button() Вход
+            button((click)="onEnter($event)") Вход
     div(style="border-bottom: 1px solid transparent; clear: both;")
     p
         //a(routerLink="/auth/map/registration") Регистрация

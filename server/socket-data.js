@@ -51,7 +51,6 @@ function onRegist(data) {
     arrData.push(data[item])
   });
 
-
   return checkExistUser(arrData)
     .then((rows) => {
       if (rows.length) {
@@ -107,6 +106,14 @@ module.exports = (sever) => {
         socket.emit('file', Buffer.concat(data));
       });
     });
+    
+    socket.on('onEnter', d=>{
+      console.log('onEnter', d)
+      socket.emit('onEnter', d)
+    })
+    
+    
+    
   });
 
 
