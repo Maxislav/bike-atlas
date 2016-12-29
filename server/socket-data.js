@@ -3,10 +3,10 @@ const socketStream = require('socket.io-stream');
 const mysql = require('mysql');
 const config = require('./mysql.config.json');
 const io = require('socket.io')
-
 config.mysql['database'] = 'monitoring';
 const connection = mysql.createConnection(config.mysql);
-
+const onEnter = require('./socket-data/on-enter');
+onEnter.connection = connection;
 
 /**
  * Проверка ли существукт user
@@ -109,7 +109,8 @@ module.exports = (sever) => {
     
     socket.on('onEnter', d=>{
       console.log('onEnter', d)
-      socket.emit('onEnter', d)
+      socket.emit('onEnter', d);
+
     })
     
     

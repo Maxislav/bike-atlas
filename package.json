@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "_start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
-    "start": "concurrently \"npm run gulpDev\" \"npm run server\"  ",
+    "start": "concurrently \"npm run gulpDev\" \"npm run server-dev\"  ",
     "server": "node server/index.js",
+    "server-dev": "node-dev server/index.js",
     "gulpDev": "node_modules/.bin/gulp",
     "lite": "lite-server",
     "postinstall": "typings install",
@@ -55,6 +56,7 @@
     "es6-promise": "^3.2.1",
     "express-livereload": "0.0.24",
     "lite-server": "^2.2.0",
+    "node-dev": "^3.1.3",
     "reflect-metadata": "^0.1.3",
     "typescript": "^1.8.10",
     "typings": "^1.0.4"
