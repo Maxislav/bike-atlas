@@ -74,6 +74,7 @@ function onRegist(data) {
 module.exports = (sever) => {
 
   io(sever).on('connection', function (socket) {
+    onEnter.socket = socket;
     socket.emit('news', {hello: 'world'});
     socket.on('my other event', function (data) {
       console.log(data);
@@ -107,11 +108,7 @@ module.exports = (sever) => {
       });
     });
     
-    socket.on('onEnter', d=>{
-      console.log('onEnter', d)
-      socket.emit('onEnter', d);
-
-    })
+  
     
     
     
