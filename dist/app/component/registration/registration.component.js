@@ -21,10 +21,16 @@ var RegistrationComponent = (function () {
         this.io = io;
         this.socket = io.socket;
     }
-    RegistrationComponent.prototype.onCancel = function () {
+    RegistrationComponent.prototype.onCancel = function (e) {
+        e.preventDefault();
         this.location.back();
     };
-    RegistrationComponent.prototype.onOk = function () {
+    RegistrationComponent.prototype.onSubmit = function (e) {
+        e.preventDefault();
+        console.log('olol');
+    };
+    RegistrationComponent.prototype.onOk = function (e) {
+        e.preventDefault();
         if (!this.name) {
             this.ts.show({
                 type: 'warning',
@@ -55,15 +61,23 @@ var RegistrationComponent = (function () {
         var name = this.name;
         this.socket.$emit('onRegist', { name: name, pass: pass })
             .then(function (d) {
-            _this.ts.show({
-                type: 'success',
-                text: 'Регистрация Ок!'
-            });
-            _this.location.back();
+            if (d.result == 'ok') {
+                _this.ts.show({
+                    type: 'success',
+                    text: 'Регистрация Ок!'
+                });
+                _this.location.back();
+            }
+            else if (!d.result && d.message == 'User exist') {
+                _this.ts.show({
+                    type: 'danger',
+                    text: 'Пользователь уже существует'
+                });
+            }
         }, function (err) {
             console.error(err);
         });
-        console.log(name, pass);
+        //console.log(name, pass);
     };
     Object.defineProperty(RegistrationComponent.prototype, "pass1", {
         get: function () {

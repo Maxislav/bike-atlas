@@ -13,9 +13,10 @@ div{
   padding: 10px 15px;
   background: white;
   box-shadow: @box-shadow;
-  &.danger{
+  &.danger, &.error{
     background: @danger-background;
     color: white;
+    text-shadow: 0 0 2px black;
   }
   &.warning{
     background: @warning-background;

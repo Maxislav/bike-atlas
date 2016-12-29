@@ -7,24 +7,72 @@ const io = require('socket.io')
 config.mysql['database'] = 'monitoring';
 const connection = mysql.createConnection(config.mysql);
 
-function onRegist(data) {
+
+/**
+ * Ghjверка ли существукт user
+ * @param arrData
+ * @returns {Promise}
+ */
+
+function checkExistUser(arrData) {
 
     return new Promise((resolve, reject) => {
-        const tepmlate = ['name', 'pass'];
-        const arrData = [];
-        tepmlate.forEach(item => {
-            arrData.push(data[item])
-        });
+        const query = 'SELECT `name` from user WHERE `name`=? order by `id` desc limit 150';
+        connection.query(query, arrData, (err, rows) => {
+            if (err) {
+                reject(err);
+                return
+            }
+            console.log('Rowx =>', rows)
+            resolve(rows)
+        })
+    })
+}
 
+function addUser(arrData) {
+    return new Promise((resolve, reject) => {
         connection.query('INSERT INTO `user` (`id`, `name`, `pass`, `opt`) VALUES (NULL, ?, ?, NULL)', arrData, (err, results) => {
             if (err) {
                 reject(err);
                 return;
             }
 
-            resolve(results)
+
+            //resolve(results)
+            resolve({
+                result: 'ok',
+                message: null
+            })
         })
     })
+}
+
+
+function onRegist(data) {
+    const tepmlate = ['name', 'pass'];
+    const arrData = [];
+    tepmlate.forEach(item => {
+        arrData.push(data[item])
+    });
+
+
+    return checkExistUser(arrData)
+        .then((rows) => {
+            if (rows.length) {
+                return {
+                    result: false,
+                    message: 'User exist'
+                }
+            } else {
+                return addUser(arrData)
+            }
+
+        })
+        .catch((err) => {
+            console.log('onRegist +>', err)
+        })
+
+
 }
 
 

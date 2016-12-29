@@ -16,14 +16,21 @@ export class RegistrationComponent{
     private _pass2: string;
     private socket;
 
+
     constructor(private location: Location, private md5: Md5, private ts: ToastService, private io: Io) {
         this.socket = io.socket;
     }
-    onCancel(){
+    onCancel(e){
+        e.preventDefault();
         this.location.back();
     }
-    onOk(){
+    onSubmit(e){
+        e.preventDefault()
 
+        console.log('olol')
+    }
+    onOk(e){
+        e.preventDefault();
         if(!this.name){
             this.ts.show({
                 type: 'warning',
@@ -53,16 +60,25 @@ export class RegistrationComponent{
         const name = this.name;
         this.socket.$emit('onRegist', {name: name, pass: pass})
             .then((d)=>{
+            if(d.result == 'ok'){
                 this.ts.show({
                     type: 'success',
                     text: 'Регистрация Ок!'
                 });
                 this.location.back();
+            }else if(!d.result && d.message =='User exist'){
+                this.ts.show({
+                    type: 'danger',
+                    text: 'Пользователь уже существует'
+                });
+            }
+
+
             },(err)=>{
                 console.error(err)
             });
 
-        console.log(name, pass);
+        //console.log(name, pass);
 
     }
 
