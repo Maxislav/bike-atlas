@@ -16,10 +16,13 @@ var menu_track_component_1 = require('./menu-track/menu-track.component');
 var menu_service_1 = require("app/service/menu.service");
 var track_service_1 = require("../../service/track.service");
 var track_list_component_1 = require("./track-list/track-list.component");
+var auth_service_1 = require("../../service/auth.service");
 var MenuComponent = (function () {
-    function MenuComponent(ms, track) {
+    function MenuComponent(ms, track, as) {
         this.ms = ms;
+        this.as = as;
         this.trackList = track.trackList;
+        //this.userName = as.userName;
         //this.menuOpen = ms.menuOpen
     }
     MenuComponent.prototype.onOpen = function () {
@@ -36,7 +39,7 @@ var MenuComponent = (function () {
             styleUrls: ['./menu.component.css'],
             providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService, track_list_component_1.TrackList]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, track_service_1.TrackService])
+        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, track_service_1.TrackService, auth_service_1.AuthService])
     ], MenuComponent);
     return MenuComponent;
     var _a;

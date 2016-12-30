@@ -27,7 +27,20 @@ function getUserIdByHash(arrData) {
   })
 }
 
-function setUserHash(id) {
+function deleteHashRow(data) {
+  return new Promise((resolve, reject)=>{
+    connection.query('DELETE FROM `hash` WHERE `key`=?', [data.hash], (err, result) =>{
+        if(err){
+          reject(err);
+          return;
+        }
+        const index = hashKeys.indexOf(data.hash)
+        if(-1<index){
+            hashKeys.splice(index,1)
+        }
+        resolve(result)
+    })
+  })
 
 }
 
@@ -87,7 +100,6 @@ class OnEnter{
     const hash =  this.getHash();
     getUserIdByHash(arrData)
       .then(id=>{
-
         connection.query('INSERT INTO `hash` (`id`, `user_id`, `key`) VALUES (NULL, ?, ?)', [id, hash], (err, results)=>{
           if(err){
             socket.emit('onEnter', {
@@ -97,11 +109,28 @@ class OnEnter{
           }else{
             socket.emit('onEnter', {
               result: 'ok',
-              hash: hash
+              hash: hash,
+              name: arrData[0]
             })
           }
         })
       });
+
+  }
+  onExit(data){
+      deleteHashRow(data)
+          .then((d)=>{
+
+              socket.emit('onExit', {
+                result: 'ok'
+              })
+          })
+          .catch(err=>{
+              socket.emit('onExit', {
+                  result: false,
+                  message: err
+              })
+          })
 
   }
 
@@ -132,7 +161,8 @@ class OnEnter{
   }
   set socket(s){
     socket = s;
-    socket.on('onEnter', this.onEnter.bind(this))
+    socket.on('onEnter', this.onEnter.bind(this));
+    socket.on('onExit', this.onExit.bind(this));
   }
 }
 

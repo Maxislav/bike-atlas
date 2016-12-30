@@ -3,7 +3,7 @@
   <tr>
     <td (click)="onOpen()" class="button menu">Маршрут</td>
     <td></td>
-    <td (click)="onOpenLogin()" class="button enter">Войти</td>
+    <td (click)="onOpenLogin()" class="button enter">{{as.userName || 'Войти' }}</td>
   </tr>
 </table>
 <menu-track *ngIf="ms.menuOpen"></menu-track>

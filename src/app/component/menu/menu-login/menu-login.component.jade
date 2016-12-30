@@ -1,12 +1,16 @@
-div((click)="$event.stopPropagation();$event.preventDefault()")
-    label Имя
-    input(type="text", [(ngModel)]="name")
-    label Пароль
-    input( type="password", [(ngModel)]="pass")
-    .button-container
-        div()
-            button((click)="onEnter($event)") Вход
-    div(style="border-bottom: 1px solid transparent; clear: both;")
-    p
-        //a(routerLink="/auth/map/registration") Регистрация
-        a((click)="goToReg()") Регистрация
+div((click)="$event.stopPropagation();$event.preventDefault()" )
+    div(*ngIf="!as.userName")
+        label Имя
+        input(type="text", [(ngModel)]="name")
+        label Пароль
+        input( type="password", [(ngModel)]="pass")
+        .button-container
+            div()
+                button((click)="onEnter($event)") Вход
+        div(style="border-bottom: 1px solid transparent; clear: both;")
+        p
+            a((click)="goToReg()") Регистрация
+    div(*ngIf="as.userName")
+        .button-container
+            div()
+                button((click)="onExit($event)") Выйти

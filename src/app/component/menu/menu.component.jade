@@ -2,7 +2,8 @@ table
     tr
         td.button.menu( (click)="onOpen()" ) Маршрут
         td
-        td.button.enter( (click)="onOpenLogin()") Войти
+        td.button.enter( (click)="onOpenLogin()")
+            |{{as.userName || 'Войти' }}
 menu-track(*ngIf="ms.menuOpen")
 menu-track-load(*ngIf="ms.menuLoadOpen")
 track-list(*ngIf="trackList.length", [style.top]="ms.menuOpen ?  '150px' : '100%' ")

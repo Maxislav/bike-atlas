@@ -45,7 +45,12 @@ var LocalStorage = (function () {
             return this._userKey;
         },
         set: function (key) {
-            localStorage.setItem(this.prefix + '-' + 'user-key', key);
+            if (key) {
+                localStorage.setItem(this.prefix + '-' + 'user-key', key);
+            }
+            else {
+                localStorage.removeItem(this.prefix + '-' + 'user-key');
+            }
             this._userKey = key;
         },
         enumerable: true,

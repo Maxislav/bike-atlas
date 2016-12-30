@@ -1,16 +1,23 @@
 
 <div (click)="$event.stopPropagation();$event.preventDefault()">
-  <label>Имя</label>
-  <input type="text" [(ngModel)]="name"/>
-  <label>Пароль</label>
-  <input type="password" [(ngModel)]="pass"/>
-  <div class="button-container">
-    <div>
-      <button (click)="onEnter($event)">Вход</button>
+  <div *ngIf="!as.userName">
+    <label>Имя</label>
+    <input type="text" [(ngModel)]="name"/>
+    <label>Пароль</label>
+    <input type="password" [(ngModel)]="pass"/>
+    <div class="button-container">
+      <div>
+        <button (click)="onEnter($event)">Вход</button>
+      </div>
+    </div>
+    <div style="border-bottom: 1px solid transparent; clear: both;"></div>
+    <p><a (click)="goToReg()">Регистрация</a></p>
+  </div>
+  <div *ngIf="as.userName">
+    <div class="button-container">
+      <div>
+        <button (click)="onExit($event)">Выйти</button>
+      </div>
     </div>
   </div>
-  <div style="border-bottom: 1px solid transparent; clear: both;"></div>
-  <p>
-    <!--a(routerLink="/auth/map/registration") Регистрация--><a (click)="goToReg()">Регистрация</a>
-  </p>
 </div>

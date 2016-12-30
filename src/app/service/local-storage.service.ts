@@ -41,7 +41,12 @@ export class LocalStorage{
     }
 
     set userKey(key){
-        localStorage.setItem(this.prefix+'-'+'user-key',key);
+        if(key){
+            localStorage.setItem(this.prefix+'-'+'user-key',key);
+        }else{
+            localStorage.removeItem(this.prefix+'-'+'user-key')
+        }
+
         this._userKey = key;
     }
 

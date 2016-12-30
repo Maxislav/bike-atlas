@@ -13,24 +13,31 @@ var socket_oi_service_1 = require("./socket.oi.service");
 var local_storage_service_1 = require("./local-storage.service");
 var AuthService = (function () {
     function AuthService(io, ls) {
+        var _this = this;
         this.io = io;
         this.ls = ls;
         this._userName = null;
-        /*this.socket = io.socket;
-
-        this.socket.on('connect',(d)=>{
-            console.log('connect');
-            console.log(ls.userKey);
-
-
-        });
-        this.socket.on('disconnect', (d)=>{
+        this.socket = io.socket;
+        this.socket.on('connect', this.onConnect.bind(this));
+        this.socket.on('disconnect', function (d) {
             console.log('disconnect');
-            this.userName = null;
+            _this.userName = null;
         });
-*/
-        //this.socket.on('onAuth', this.onAuth.bind(this))
     }
+    AuthService.prototype.onConnect = function () {
+        var _this = this;
+        this.socket.$emit('onAuth', {
+            hash: this.ls.userKey
+        }).then(function (d) {
+            if (d.result == 'ok') {
+                _this.userName = d.user.name;
+            }
+            else {
+                _this.userName = null;
+            }
+            console.log(d);
+        });
+    };
     Object.defineProperty(AuthService.prototype, "userName", {
         get: function () {
             return this._userName;

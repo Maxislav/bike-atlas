@@ -12,40 +12,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by maxislav on 10.10.16.
  */
 var core_1 = require('@angular/core');
-var core_2 = require('@angular/core');
 var mercator_service_1 = require("../../service/mercator.service");
 var map_service_1 = require("../../service/map.service");
 var position_size_service_1 = require("../../service/position-size.service");
 var info_position_component_1 = require("../info-position/info-position-component");
 var menu_component_1 = require("../menu/menu.component");
-var local_storage_service_1 = require("../../service/local-storage.service");
-var socket_oi_service_1 = require("../../service/socket.oi.service");
+var auth_service_1 = require("../../service/auth.service");
 //noinspection TypeScriptCheckImport
 var AuthComponent = (function () {
-    function AuthComponent(el, ls, io) {
-        this.ls = ls;
-        this.io = io;
-        console.log(ls.userKey);
-        this.socket = io.socket;
-        this.socket.on('connect', this.onConnect.bind(this));
+    function AuthComponent(as) {
+        this.as = as;
+        this.as = as;
     }
-    AuthComponent.prototype.onConnect = function () {
-        this.socket.$emit('onAuth', {
-            hash: this.ls.userKey
-        }).then(function (d) {
-            console.log(d);
-        });
-    };
-    Object.defineProperty(AuthComponent.prototype, "userName", {
-        get: function () {
-            return this._userName;
-        },
-        set: function (value) {
-            this._userName = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
     AuthComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
@@ -55,7 +33,7 @@ var AuthComponent = (function () {
                 'auth.component.css',
             ]
         }), 
-        __metadata('design:paramtypes', [core_2.ElementRef, local_storage_service_1.LocalStorage, socket_oi_service_1.Io])
+        __metadata('design:paramtypes', [auth_service_1.AuthService])
     ], AuthComponent);
     return AuthComponent;
 }());

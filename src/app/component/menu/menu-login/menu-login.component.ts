@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {Io} from "../../../service/socket.oi.service";
 import {Md5} from "../../../service/md5.service";
 import {LocalStorage} from "../../../service/local-storage.service";
+import {AuthService} from "../../../service/auth.service";
 //import {RouterLink} from "@angular/router-deprecated";
 
 
@@ -21,7 +22,7 @@ export class MenuLoginComponent {
     private pass:string;
     private socket;
 
-    constructor(private router:Router, private ms:MenuService, private  io:Io, private md5:Md5, private ls: LocalStorage) {
+    constructor(private router:Router, private ms:MenuService, private  io:Io, private md5:Md5, private ls: LocalStorage, public as: AuthService) {
         this.socket = io.socket;
     }
 
@@ -38,9 +39,24 @@ export class MenuLoginComponent {
             })
             .then(d=> {
                 if(d.result == 'ok'){
-                    console.log(d)
-                    this.ls.userKey = d.hash
+                    console.log(d);
+                    this.ls.userKey = d.hash;
+                    this.as.userName = d.name;
                 }
             });
+    }
+    onExit(e){
+        this.socket
+            .$emit('onExit', {
+                hash: this.ls.userKey
+            })
+            .then(d=>{
+                if(d.result=='ok'){
+                    this.ls.userKey = null;
+                    this.as.userName = null;
+                }
+            })
+
+
     }
 }
