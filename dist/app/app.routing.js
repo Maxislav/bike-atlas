@@ -4,6 +4,7 @@ var heroes_component_1 = require('./heroes.component');
 var auth_component_1 = require("./component/auth-component/auth.component");
 var map_component_1 = require("./map.component");
 var registration_component_1 = require("./component/registration/registration.component");
+var device_component_1 = require("./component/device/device.component");
 var appRouters = [
     {
         path: '',
@@ -27,6 +28,10 @@ var appRouters = [
                     {
                         path: 'registration',
                         component: registration_component_1.RegistrationComponent
+                    },
+                    {
+                        path: 'device',
+                        component: device_component_1.DeviceComponent
                     }
                 ]
             }

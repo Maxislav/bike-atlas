@@ -11,6 +11,8 @@ div((click)="$event.stopPropagation();$event.preventDefault()" )
         p
             a((click)="goToReg()") Регистрация
     div(*ngIf="as.userName")
+        p
+            a((click)="goDevice()") Устройства
         .button-container
             div()
                 button((click)="onExit($event)") Выйти

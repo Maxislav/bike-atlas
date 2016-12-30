@@ -77,7 +77,6 @@ var RegistrationComponent = (function () {
         }, function (err) {
             console.error(err);
         });
-        //console.log(name, pass);
     };
     Object.defineProperty(RegistrationComponent.prototype, "pass1", {
         get: function () {

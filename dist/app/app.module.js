@@ -33,6 +33,7 @@ var menu_login_component_1 = require("./component/menu/menu-login/menu-login.com
 var registration_component_1 = require("./component/registration/registration.component");
 var md5_service_1 = require("./service/md5.service");
 var toast_component_1 = require("./component/toast/toast.component");
+var device_component_1 = require("./component/device/device.component");
 var auth_service_1 = require("./service/auth.service");
 var AppModule = (function () {
     function AppModule() {
@@ -61,7 +62,8 @@ var AppModule = (function () {
                 menu_track_component_1.MenuTrackComponent,
                 menu_login_component_1.MenuLoginComponent,
                 track_list_component_1.TrackList,
-                toast_component_1.ToastComponent
+                toast_component_1.ToastComponent,
+                device_component_1.DeviceComponent
             ],
             bootstrap: [
                 app_component_1.AppComponent
@@ -74,8 +76,7 @@ var AppModule = (function () {
                 track_service_1.TrackService,
                 md5_service_1.Md5,
                 toast_component_1.ToastService,
-                auth_service_1.AuthService
-            ]
+                auth_service_1.AuthService]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

@@ -8,12 +8,17 @@ export class MenuService{
 
     private _menuOpen: boolean;
     private _menuOpenLogin: boolean;
+    private _menuDevice: boolean;
 
 
     constructor(){
-        this._menuOpen = false
-        this._menuOpenLogin = false
+        this._menuOpen = false;
+        this._menuOpenLogin = false;
+        this._menuDevice = false;
     }
+
+
+
     get menuOpen():boolean {
         return this._menuOpen;
     }
@@ -43,11 +48,7 @@ export class MenuService{
     }
 
     set menuOpenLogin(value:boolean) {
-
-
         const click =  onclick.bind(this);
-
-
         if(value){
             setTimeout(()=>{
                 document.body.addEventListener('click',click)
@@ -60,8 +61,6 @@ export class MenuService{
             document.body.removeEventListener('click', click);
             this.menuOpenLogin = false
         }
-
-
         this._menuOpenLogin = value;
     }
 

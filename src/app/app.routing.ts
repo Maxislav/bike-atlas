@@ -12,6 +12,7 @@ import {TransactionResolver} from "./transaction.resolve";
 import {AuthComponent} from "./component/auth-component/auth.component";
 import {MapComponent} from "./map.component";
 import {RegistrationComponent} from "./component/registration/registration.component";
+import {DeviceComponent} from "./component/device/device.component";
 
 const  appRouters: Routes = [
     {
@@ -36,6 +37,10 @@ const  appRouters: Routes = [
                     {
                         path:'registration',
                         component: RegistrationComponent
+                    },
+                    {
+                        path:'device',
+                        component: DeviceComponent
                     }
                 ]
             }

@@ -59,6 +59,10 @@ var MenuLoginComponent = (function () {
             }
         });
     };
+    MenuLoginComponent.prototype.goDevice = function () {
+        this.router.navigate(['/auth/map/device']);
+        this.ms.menuOpenLogin = false;
+    };
     MenuLoginComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

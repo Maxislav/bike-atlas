@@ -24,6 +24,8 @@ import {MenuLoginComponent} from "./component/menu/menu-login/menu-login.compone
 import {RegistrationComponent} from "./component/registration/registration.component";
 import {Md5} from "./service/md5.service";
 import {ToastComponent, ToastService} from "./component/toast/toast.component";
+import {DeviceComponent} from "./component/device/device.component";
+import {AuthService} from "./service/auth.service";
 
 @NgModule({
     imports: [
@@ -48,7 +50,8 @@ import {ToastComponent, ToastService} from "./component/toast/toast.component";
         MenuTrackComponent,
         MenuLoginComponent,
         TrackList,
-        ToastComponent
+        ToastComponent,
+        DeviceComponent
 
     ],
     bootstrap: [
@@ -61,6 +64,7 @@ import {ToastComponent, ToastService} from "./component/toast/toast.component";
         Io,
         TrackService,
         Md5,
-        ToastService]
+        ToastService,
+    AuthService]
 })
 export class AppModule {}

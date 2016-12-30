@@ -72,14 +72,9 @@ export class RegistrationComponent{
                     text: 'Пользователь уже существует'
                 });
             }
-
-
             },(err)=>{
                 console.error(err)
             });
-
-        //console.log(name, pass);
-
     }
 
     set pass1(val){

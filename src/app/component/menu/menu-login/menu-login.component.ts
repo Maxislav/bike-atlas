@@ -59,4 +59,8 @@ export class MenuLoginComponent {
 
 
     }
+    goDevice(){
+        this.router.navigate(['/auth/map/device']);
+        this.ms.menuOpenLogin = false
+    }
 }

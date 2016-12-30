@@ -34,7 +34,7 @@ function deleteHashRow(data) {
           reject(err);
           return;
         }
-        const index = hashKeys.indexOf(data.hash)
+        const index = hashKeys.indexOf(data.hash);
         if(-1<index){
             hashKeys.splice(index,1)
         }

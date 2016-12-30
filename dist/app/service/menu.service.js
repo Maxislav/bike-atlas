@@ -16,6 +16,7 @@ var MenuService = (function () {
     function MenuService() {
         this._menuOpen = false;
         this._menuOpenLogin = false;
+        this._menuDevice = false;
     }
     Object.defineProperty(MenuService.prototype, "menuOpen", {
         get: function () {
