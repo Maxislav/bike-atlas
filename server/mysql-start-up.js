@@ -57,7 +57,7 @@ function createTable() {
       '( `id` INT(11) NOT NULL AUTO_INCREMENT , `name` VARCHAR(16) NOT NULL , `pass` VARCHAR(32) NOT NULL , `opt` VARCHAR(16) NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;';
     connection.query(query, (err)=>{
       if(err){
-        console.log('Error tableUser');
+        console.log('Error tableUser create');
         rej(err);
         return;
       }
@@ -66,12 +66,12 @@ function createTable() {
   });
 
   const tableHash = new Promise((res, rej)=>{
-    const query = 'CREATE TABLE `monitoring`.`hash` ' +
+    const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`hash` ' +
       '( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `key` VARCHAR(32) NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;';
 
     connection.query(query, (err)=>{
       if(err){
-        console.log('Error  tableHash');
+        console.log('Error  tableHash create');
         rej(err);
         return;
       }
