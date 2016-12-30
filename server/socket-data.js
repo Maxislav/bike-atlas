@@ -6,7 +6,20 @@ const io = require('socket.io')
 config.mysql['database'] = 'monitoring';
 const connection = mysql.createConnection(config.mysql);
 const onEnter = require('./socket-data/on-enter');
-onEnter.connection = connection;
+const onAuth = require('./socket-data/on-auth')
+connection.connect((err)=>{
+    if (err) {
+        console.error('error connecting: ' + err.stack);
+        return;
+    }
+    console.log('connected as id ' + connection.threadId);
+    onEnter.connection = connection;
+    onEnter.setHashKeys();
+    onAuth.connection = connection;
+
+});
+
+
 
 /**
  * Проверка ли существукт user
@@ -75,10 +88,7 @@ module.exports = (sever) => {
 
   io(sever).on('connection', function (socket) {
     onEnter.socket = socket;
-    socket.emit('news', {hello: 'world'});
-    socket.on('my other event', function (data) {
-      console.log(data);
-    });
+    onAuth.socket = socket;
 
     socket.on('onRegist', (d) => {
       console.log('onRegist start', d);

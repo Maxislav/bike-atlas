@@ -20,7 +20,7 @@ var app_routing_1 = require('./app.routing');
 var heroes_component_1 = require("./heroes.component");
 //import {DashboardComponent} from "./dasboard.component";
 var transaction_resolve_1 = require("./transaction.resolve");
-var auth_component_1 = require("./auth.component");
+var auth_component_1 = require("./component/auth-component/auth.component");
 var map_component_1 = require("./map.component");
 var info_position_component_1 = require("./component/info-position/info-position-component");
 var menu_component_1 = require("./component/menu/menu.component");
@@ -33,6 +33,7 @@ var menu_login_component_1 = require("./component/menu/menu-login/menu-login.com
 var registration_component_1 = require("./component/registration/registration.component");
 var md5_service_1 = require("./service/md5.service");
 var toast_component_1 = require("./component/toast/toast.component");
+var auth_service_1 = require("./service/auth.service");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -65,7 +66,16 @@ var AppModule = (function () {
             bootstrap: [
                 app_component_1.AppComponent
             ],
-            providers: [transaction_resolve_1.TransactionResolver, menu_component_1.MenuComponent, local_storage_service_1.LocalStorage, socket_oi_service_1.Io, track_service_1.TrackService, md5_service_1.Md5, toast_component_1.ToastService]
+            providers: [
+                transaction_resolve_1.TransactionResolver,
+                menu_component_1.MenuComponent,
+                local_storage_service_1.LocalStorage,
+                socket_oi_service_1.Io,
+                track_service_1.TrackService,
+                md5_service_1.Md5,
+                toast_component_1.ToastService,
+                auth_service_1.AuthService
+            ]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

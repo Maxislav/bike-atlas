@@ -11,7 +11,7 @@ import {routing} from './app.routing';
 import {HeroesComponent} from "./heroes.component";
 //import {DashboardComponent} from "./dasboard.component";
 import {TransactionResolver} from "./transaction.resolve";
-import {AuthComponent} from "./auth.component";
+import {AuthComponent} from "./component/auth-component/auth.component";
 import {MapComponent} from "./map.component";
 import {InfoPositionComponent} from "./component/info-position/info-position-component";
 import {MenuComponent} from "./component/menu/menu.component";
@@ -54,6 +54,13 @@ import {ToastComponent, ToastService} from "./component/toast/toast.component";
     bootstrap: [
         AppComponent
     ],
-    providers: [TransactionResolver, MenuComponent, LocalStorage, Io, TrackService, Md5, ToastService]
+    providers: [
+        TransactionResolver,
+        MenuComponent,
+        LocalStorage,
+        Io,
+        TrackService,
+        Md5,
+        ToastService]
 })
 export class AppModule {}

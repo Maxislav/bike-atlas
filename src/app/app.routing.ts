@@ -9,7 +9,7 @@ import {HeroesComponent} from './heroes.component';
 //import {Hero} from "./hero";
 //import {HEROES, Hero} from "./hero";
 import {TransactionResolver} from "./transaction.resolve";
-import {AuthComponent} from "./auth.component";
+import {AuthComponent} from "./component/auth-component/auth.component";
 import {MapComponent} from "./map.component";
 import {RegistrationComponent} from "./component/registration/registration.component";
 
