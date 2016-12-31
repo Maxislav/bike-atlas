@@ -11,11 +11,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var socket_oi_service_1 = require("./socket.oi.service");
 var local_storage_service_1 = require("./local-storage.service");
+var device_service_1 = require("./device.service");
 var AuthService = (function () {
-    function AuthService(io, ls) {
+    function AuthService(io, ls, ds) {
         var _this = this;
         this.io = io;
         this.ls = ls;
+        this.ds = ds;
         this._userName = null;
         this.socket = io.socket;
         this.socket.on('connect', this.onConnect.bind(this));
@@ -31,6 +33,7 @@ var AuthService = (function () {
         }).then(function (d) {
             if (d.result == 'ok') {
                 _this.userName = d.user.name;
+                _this.ds.updateDevices(_this.ls.userKey);
             }
             else {
                 _this.userName = null;
@@ -50,7 +53,7 @@ var AuthService = (function () {
     });
     AuthService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage])
+        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, device_service_1.DeviceService])
     ], AuthService);
     return AuthService;
 }());

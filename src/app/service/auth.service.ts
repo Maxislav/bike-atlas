@@ -1,13 +1,14 @@
 import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
 import {LocalStorage} from "./local-storage.service";
+import {DeviceService} from "./device.service";
 
 @Injectable()
 export class AuthService {
     socket: any;
     private _userName: string = null;
 
-    constructor(private io: Io, private  ls: LocalStorage) {
+    constructor(private io: Io, private  ls: LocalStorage, private ds: DeviceService) {
         this.socket = io.socket;
 
         this.socket.on('connect', this.onConnect.bind(this));
@@ -22,7 +23,8 @@ export class AuthService {
             hash: this.ls.userKey
         }).then(d => {
             if(d.result =='ok'){
-                this.userName = d.user.name
+                this.userName = d.user.name;
+                this.ds.updateDevices(this.ls.userKey)
             }else{
                 this.userName = null;
             }

@@ -1,30 +1,8 @@
 let connection;
 let socket;
+const util = require('./util');
 
-function getUserIdByHash(data) {
-    return new Promise((resolve, reject)=>{
-        connection.query('SELECT * FROM `hash` WHERE `key`=?', [data.hash], (err, rows)=>{
-            if(err){
-                reject(err);
-                return;
-            }
-            resolve(rows[0]);
-        });
-    })
-}
 
-function getUserNameById(row) {
-    return new Promise((resolve, reject)=>{
-        connection.query('SELECT * FROM `user` WHERE `id`=?', [row.user_id], (err, rows)=>{
-            if(err){
-                reject(err);
-                return;
-            }
-
-            resolve(rows[0]);
-        });
-    })
-}
 
 
 class OnAuth{
@@ -32,8 +10,10 @@ class OnAuth{
 
     }
     onAuth(data){
-        getUserIdByHash(data)
-            .then(getUserNameById)
+        util.getUserIdByHash(connection, data.hash)
+            .then((row)=>{
+                return util.getUserNameById(connection,row.user_id)
+            })
             .then(user=>{
                 console.log(user)
                 socket.emit('onAuth', {
@@ -57,7 +37,6 @@ class OnAuth{
     get connection(){
         return connection;
     }
-
 
     get socket(){
         return socket;

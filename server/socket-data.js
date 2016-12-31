@@ -6,7 +6,8 @@ const io = require('socket.io')
 config.mysql['database'] = 'monitoring';
 const connection = mysql.createConnection(config.mysql);
 const onEnter = require('./socket-data/on-enter');
-const onAuth = require('./socket-data/on-auth')
+const onAuth = require('./socket-data/on-auth');
+const device = require('./socket-data/device');
 connection.connect((err)=>{
     if (err) {
         console.error('error connecting: ' + err.stack);
@@ -14,8 +15,10 @@ connection.connect((err)=>{
     }
     console.log('connected as id ' + connection.threadId);
     onEnter.connection = connection;
-    onEnter.setHashKeys();
     onAuth.connection = connection;
+    device.connection = connection;
+    onEnter.setHashKeys();
+
 
 });
 
@@ -89,6 +92,7 @@ module.exports = (sever) => {
   io(sever).on('connection', function (socket) {
     onEnter.socket = socket;
     onAuth.socket = socket;
+    device.socket = socket;
 
     socket.on('onRegist', (d) => {
       console.log('onRegist start', d);
