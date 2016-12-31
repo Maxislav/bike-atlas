@@ -78,8 +78,21 @@ function createTable() {
       res(connection);
     })
   });
+
+  const tableDevice = new Promise((res, rej)=>{
+      const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`device` ' +
+          '( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `device_key` VARCHAR(32) NOT NULL , `phone` VARCHAR(32) NULL  , PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+      connection.query(query, (err)=>{
+          if(err){
+              console.log('Error  tableDevice create');
+              rej(err);
+              return;
+          }
+          res(connection);
+      })
+  });
   
-  return Promise.all([tableUser, tableHash])
+  return Promise.all([tableUser, tableHash, tableDevice])
 
 
 
