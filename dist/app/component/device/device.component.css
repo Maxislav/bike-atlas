@@ -1,0 +1,32 @@
+.button-container > div {
+  float: right;
+  margin-top: 15px;
+}
+button {
+  padding: 8px 15px;
+  margin-left: 8px;
+  border: none;
+  background: white;
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+}
+button:active {
+  color: #999999;
+  box-shadow: none;
+}
+:host {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  width: 100%;
+}
+.content {
+  background: rgba(255, 255, 255, 0.9);
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 30px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
