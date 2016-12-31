@@ -9,9 +9,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var common_1 = require('@angular/common');
+var router_1 = require("@angular/router");
 var DeviceComponent = (function () {
-    function DeviceComponent() {
+    function DeviceComponent(location, router) {
+        this.location = location;
+        this.router = router;
     }
+    DeviceComponent.prototype.onOk = function (e) {
+        e.preventDefault();
+        this.router.navigate(['/auth/map']);
+    };
+    DeviceComponent.prototype.onCancel = function (e) {
+        e.preventDefault();
+        this.router.navigate(['/auth/map']);
+    };
     DeviceComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
@@ -20,7 +32,7 @@ var DeviceComponent = (function () {
                 'device.component.css',
             ]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [common_1.Location, router_1.Router])
     ], DeviceComponent);
     return DeviceComponent;
 }());
