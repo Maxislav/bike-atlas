@@ -3,18 +3,15 @@ let socket;
 const util = require('./util');
 
 
-
-
-class OnAuth{
-    constructor(){
+class OnAuth {
+    constructor() {
 
     }
-    onAuth(data){
-        util.getUserIdByHash(connection, data.hash)
-            .then((row)=>{
-                return util.getUserNameById(connection,row.user_id)
-            })
-            .then(user=>{
+
+    onAuth(data) {
+        util
+            .getUserByHash(connection, data.hash)
+            .then(user => {
                 console.log(user)
                 socket.emit('onAuth', {
                     result: 'ok',
@@ -23,25 +20,27 @@ class OnAuth{
                     }
                 })
             })
-            .catch(err=>{
+            .catch(err => {
                 socket.emit('onAuth', {
                     result: false,
-                    message:err
+                    message: err
                 })
             });
     }
 
-    set connection(con){
+    set connection(con) {
         connection = con;
     }
-    get connection(){
+
+    get connection() {
         return connection;
     }
 
-    get socket(){
+    get socket() {
         return socket;
     }
-    set socket(s){
+
+    set socket(s) {
         socket = s;
         socket.on('onAuth', this.onAuth.bind(this))
     }

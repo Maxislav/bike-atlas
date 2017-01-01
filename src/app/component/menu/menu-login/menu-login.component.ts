@@ -6,6 +6,7 @@ import {Io} from "../../../service/socket.oi.service";
 import {Md5} from "../../../service/md5.service";
 import {LocalStorage} from "../../../service/local-storage.service";
 import {AuthService} from "../../../service/auth.service";
+import {ToastService} from "../../toast/toast.component";
 //import {RouterLink} from "@angular/router-deprecated";
 
 
@@ -18,11 +19,11 @@ import {AuthService} from "../../../service/auth.service";
     // providers: [MenuService]
 })
 export class MenuLoginComponent {
-    private name:string;
-    private pass:string;
+    private name: string;
+    private pass: string;
     private socket;
 
-    constructor(private router:Router, private ms:MenuService, private  io:Io, private md5:Md5, private ls: LocalStorage, public as: AuthService) {
+    constructor(private router: Router, private ms: MenuService, private  io: Io, private md5: Md5, private ls: LocalStorage, public as: AuthService, private ts: ToastService) {
         this.socket = io.socket;
     }
 
@@ -37,21 +38,30 @@ export class MenuLoginComponent {
                 name: this.name,
                 pass: this.md5.hash(this.pass)
             })
-            .then(d=> {
-                if(d.result == 'ok'){
-                    console.log(d);
-                    this.ls.userKey = d.hash;
-                    this.as.userName = d.name;
+            .then(d => {
+                console.log(d);
+                switch (d.result) {
+                    case 'ok':
+                        this.ls.userKey = d.hash;
+                        this.as.userName = d.name;
+                        break;
+                    case false:
+                        this.ts.show({
+                            type: 'warning',
+                            text: 'Невеное имя пользователя или пароль'
+                        })
+
                 }
             });
     }
-    onExit(e){
+
+    onExit(e) {
         this.socket
             .$emit('onExit', {
                 hash: this.ls.userKey
             })
-            .then(d=>{
-                if(d.result=='ok'){
+            .then(d => {
+                if (d.result == 'ok') {
                     this.ls.userKey = null;
                     this.as.userName = null;
                 }
@@ -59,7 +69,8 @@ export class MenuLoginComponent {
 
 
     }
-    goDevice(){
+
+    goDevice() {
         this.router.navigate(['/auth/map/device']);
         this.ms.menuOpenLogin = false
     }
