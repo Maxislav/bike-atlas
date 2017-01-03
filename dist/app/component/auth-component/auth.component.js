@@ -13,27 +13,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var mercator_service_1 = require("../../service/mercator.service");
-var map_service_1 = require("../../service/map.service");
 var position_size_service_1 = require("../../service/position-size.service");
 var info_position_component_1 = require("../info-position/info-position-component");
 var menu_component_1 = require("../menu/menu.component");
 var auth_service_1 = require("../../service/auth.service");
+var log_service_1 = require("../../service/log.service");
 //noinspection TypeScriptCheckImport
 var AuthComponent = (function () {
-    function AuthComponent(as) {
+    function AuthComponent(as, ls) {
         this.as = as;
+        this.ls = ls;
         this.as = as;
     }
     AuthComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
             templateUrl: 'auth.component.html',
-            providers: [mercator_service_1.Mercator, map_service_1.MapService, info_position_component_1.InfoPositionComponent, position_size_service_1.PositionSize, menu_component_1.MenuComponent],
+            //providers: [Mercator, MapService, InfoPositionComponent, PositionSize, MenuComponent],
+            providers: [mercator_service_1.Mercator, info_position_component_1.InfoPositionComponent, position_size_service_1.PositionSize, menu_component_1.MenuComponent],
             styleUrls: [
                 'auth.component.css',
             ]
         }), 
-        __metadata('design:paramtypes', [auth_service_1.AuthService])
+        __metadata('design:paramtypes', [auth_service_1.AuthService, log_service_1.LogService])
     ], AuthComponent);
     return AuthComponent;
 }());

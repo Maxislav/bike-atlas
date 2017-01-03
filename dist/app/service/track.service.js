@@ -138,7 +138,7 @@ var TrackService = (function () {
                 map.removeLayer(layerId);
                 map.removeSource(layerId);
                 console.log('delete marker id', layerId);
-            },
+            }
         };
     };
     TrackService.prototype.getRandom = function (min, max, int) {

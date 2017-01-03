@@ -77,6 +77,7 @@ export class MapboxGlDirective implements AfterViewInit {
                 "layers": [{
                     "id": "google-default",
                     "source": "osm",
+                    //"source": "google-default",
                     "type": "raster"
                 }, {
                     "id": "hills",

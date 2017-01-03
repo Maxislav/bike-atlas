@@ -153,7 +153,6 @@ export class TrackService {
         return {
             id: layerId,
             setCenter: function (_point: Point, bearing: number) {
-
                 point.coordinates = [_point.lng, _point.lat];
                 if(bearing){
                     map.setLayoutProperty(layerId, 'icon-rotate', bearing-map.getBearing());
@@ -164,12 +163,10 @@ export class TrackService {
                 map.removeLayer(layerId);
                 map.removeSource(layerId);
                 console.log('delete marker id', layerId)
-            },
+            }
         }
 
     }
-
-   
 
     getRandom(min, max, int) {
         var rand = min + Math.random() * (max - min);

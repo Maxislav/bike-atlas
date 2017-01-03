@@ -5,16 +5,22 @@ import {Injectable, ApplicationRef} from '@angular/core';
 import {SimpleChanges, OnChanges} from '@angular/core';
 import {LocalStorage} from '../service/local-storage.service';
 import {TrackService} from "./track.service";
-import {LogService} from "./log.service";
 
 
 @Injectable()
 export class MapService {
+    get map(): any {
+        return this._map;
+    }
+
+    set map(value: any) {
+        this._map = value;
+    }
 
     public events:{
         load:Function[]
     };
-    public map:any;
+    private _map:any;
     public lat:number;
     public lng:number;
     public lngMap:number;
@@ -30,12 +36,13 @@ export class MapService {
     //private ref: ApplicationRef
 
 
-    constructor(private ref:ApplicationRef, private ls:LocalStorage, private trackService: TrackService, private logs: LogService) {
+    constructor(private ref:ApplicationRef, private ls:LocalStorage, private trackService: TrackService) {
         this.events = {
             load: []
         };
        
     }
+
 
     setMap(map:any) {
         this.map = map;
@@ -83,9 +90,6 @@ export class MapService {
 
     registerEvent(name:string, f:Function) {
 
-        //console.log(this.events)
-
-        // debugger
         this.events[name] = this.events[name] || [];
         this.events[name].push(f)
     }

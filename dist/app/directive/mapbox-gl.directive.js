@@ -84,6 +84,7 @@ var MapboxGlDirective = (function () {
                 "layers": [{
                         "id": "google-default",
                         "source": "osm",
+                        //"source": "google-default",
                         "type": "raster"
                     }, {
                         "id": "hills",

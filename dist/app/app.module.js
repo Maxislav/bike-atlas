@@ -37,6 +37,8 @@ var device_component_1 = require("./component/device/device.component");
 var auth_service_1 = require("./service/auth.service");
 var device_service_1 = require("./service/device.service");
 var log_service_1 = require("./service/log.service");
+var marker_service_1 = require("./service/marker.service");
+var map_service_1 = require("./service/map.service");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -80,7 +82,10 @@ var AppModule = (function () {
                 toast_component_1.ToastService,
                 auth_service_1.AuthService,
                 device_service_1.DeviceService,
-                log_service_1.LogService]
+                log_service_1.LogService,
+                map_service_1.MapService,
+                marker_service_1.MarkerService,
+            ]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

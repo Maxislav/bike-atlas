@@ -28,6 +28,8 @@ import {DeviceComponent} from "./component/device/device.component";
 import {AuthService} from "./service/auth.service";
 import {DeviceService} from "./service/device.service";
 import {LogService} from "./service/log.service";
+import {MarkerService} from "./service/marker.service";
+import {MapService} from "./service/map.service";
 
 @NgModule({
     imports: [
@@ -69,6 +71,9 @@ import {LogService} from "./service/log.service";
         ToastService,
     AuthService,
     DeviceService,
-        LogService]
+        LogService,
+        MapService,
+    MarkerService,
+    ]
 })
 export class AppModule {}
