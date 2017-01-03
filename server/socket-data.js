@@ -8,6 +8,7 @@ const connection = mysql.createConnection(config.mysql);
 const OnEnter = require('./socket-data/on-enter');
 const OnAuth = require('./socket-data/on-auth');
 const Device = require('./socket-data/device');
+const Logger = require('./logger');
 connection.connect((err)=>{
     if (err) {
         console.error('error connecting: ' + err.stack);
@@ -87,50 +88,47 @@ function onRegist(data) {
 }
 
 
-module.exports = (sever) => {
-  const ioServer =  io(sever);
+module.exports = (sever, app) => {
+    const ioServer = io(sever);
+    const logger = new Logger(app, ioServer, connection);
+
     ioServer.on('connection', function (socket) {
-    const onEnter = new OnEnter(socket, connection);
-    const onAuth = new OnAuth(socket, connection);
-    const device = new Device(socket, connection);
+        logger.sockets = ioServer.sockets.connected;
+        const onEnter = new OnEnter(socket, connection);
+        const onAuth = new OnAuth(socket, connection, logger);
+        const device = new Device(socket, connection, logger);
 
-    //console.log('connected', ioServer.sockets.connected['483'].emit('ii', 'olo'));
+        socket.on('onRegist', (d) => {
+            console.log('onRegist start', d);
+
+            onRegist(d)
+                .then(d => {
+                    socket.emit('onRegist', d)
+                }, err => {
+                    console.error(err)
+                })
+                .catch((err) => {
+                    console.error('Cache onRegist', err);
+                    socket.emit('onRegist', {result: false, status: 500, message: err})
+                })
+
+        });
 
 
-    socket.on('onRegist', (d) => {
-      console.log('onRegist start', d);
+        socketStream(socket).on('file', function (stream) {
+            let data = [];
+            stream.on('data', (d) => {
+                data.push(d);
+            });
+            stream.on('end', (e, d) => {
+                console.log("file send")
+                socket.emit('file', Buffer.concat(data));
+            });
+        });
 
-      onRegist(d)
-        .then(d => {
-          socket.emit('onRegist', d)
-        }, err => {
-          console.error(err)
-        })
-        .catch((err)=> {
-          console.error('Cache onRegist', err);
-          socket.emit('onRegist', {result: false, status: 500, message: err})
-        })
 
     });
 
 
-    socketStream(socket).on('file', function (stream) {
-      let data = [];
-      stream.on('data', (d) => {
-        data.push(d);
-      });
-      stream.on('end', (e, d) => {
-        console.log("file send")
-        socket.emit('file', Buffer.concat(data));
-      });
-    });
-    
-  
-    
-    
-    
-  });
-
-
-  //INSERT INTO `user` (`id`, `name`, `pass`, `opt`) VALUES (NULL, 'max', 'eeew', NULL);
+    //INSERT INTO `user` (`id`, `name`, `pass`, `opt`) VALUES (NULL, 'max', 'eeew', NULL);
 };

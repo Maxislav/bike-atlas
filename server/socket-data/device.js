@@ -3,7 +3,8 @@ const util = require('./util');
 
 class Device{
 
-    constructor(socket, connection){
+    constructor(socket, connection, logger){
+        this.logger = logger;
         this.socket = socket;
         this.connection = connection;
         socket.on('getDevice', this.getDevice.bind(this))
@@ -23,8 +24,13 @@ class Device{
                         id: item.device_key,
                         name: item.name,
                         phone: item.phone
-                    })
+                    });
+                    this.logger.updateDevice(item.device_key, this.socket.id)
                 });
+
+
+               // this.logger.sockets[this.socket.id]
+
                 this.socket.emit('getDevice', {
                     result: 'ok',
                     devices: devices

@@ -3,8 +3,9 @@ const util = require('./util');
 
 
 class OnAuth {
-    constructor(socket, _connection) {
+    constructor(socket, _connection, logger) {
         this.socket = socket;
+        this.logger = logger;
         connection = _connection;
         this.socket.on('onAuth', this.onAuth.bind(this));
     }

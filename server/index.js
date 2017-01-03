@@ -14,6 +14,7 @@ const socketData = require('./socket-data');
 
 
 
+
 const dirname =  path.normalize(__dirname+'/../');
 
 const app = express();
@@ -33,7 +34,7 @@ livereload(app, {
 });*/
 const server = require('http').Server(app);
 server.listen(8081);
-socketData(server);
+socketData(server, app);
 
 //server.listen(8081);
 let timeout;
@@ -43,13 +44,6 @@ let kCss = 0;
 let kMyJs = 0;
 let kNM = 0;
 
-app.get('/logger*', (req, res, next) => {
-    console.log('logger',req.params)
-
-    res.statusCode = 200;
-    res.end( 'Ok' );
-    //next()
-});
 
 /**
  * tiler proxy
