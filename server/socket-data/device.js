@@ -17,6 +17,9 @@ class Device{
                 socket.emit('getDevice', null)
             })
     }
+    onAddDevice(device){
+       // console.log()
+    }
 
     set connection(con){
         connection = con;
@@ -31,6 +34,7 @@ class Device{
     set socket(s){
         socket = s;
         socket.on('getDevice', this.getDevice.bind(this))
+        socket.on('onAddDevice', this.onAddDevice.bind(this))
     }
 }
 

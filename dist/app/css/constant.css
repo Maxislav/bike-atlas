@@ -2,9 +2,11 @@
   float: right;
   margin-top: 15px;
 }
+.button-container > div button {
+  margin-left: 8px;
+}
 button {
   padding: 8px 15px;
-  margin-left: 8px;
   border: none;
   background: white;
   border-radius: 2px;

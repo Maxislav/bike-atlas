@@ -4,8 +4,10 @@ import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
 
 export interface Device{
+
     id: string;
-    phone: string
+    name: string;
+    phone?: string
 }
 
 @Injectable()
@@ -25,6 +27,13 @@ export class DeviceService{
             })
             .catch(err=>{
                 console.log(err)
+            })
+    }
+
+    onAddDevice(device: Device){
+        this.socket.$emit('onAddDevice', device)
+            .then(d=>{
+                console.log(d)
             })
     }
 

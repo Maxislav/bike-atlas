@@ -11,11 +11,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var router_1 = require("@angular/router");
+var device_service_1 = require("../../service/device.service");
 var DeviceComponent = (function () {
-    function DeviceComponent(location, router) {
+    function DeviceComponent(location, router, ds) {
         this.location = location;
         this.router = router;
+        this.ds = ds;
+        this.device = {
+            name: null,
+            id: null
+        };
     }
+    DeviceComponent.prototype.onAdd = function (e) {
+        e.preventDefault();
+        console.log(this.device);
+        this.ds.onAddDevice(this.device);
+    };
     DeviceComponent.prototype.onOk = function (e) {
         e.preventDefault();
         this.router.navigate(['/auth/map']);
@@ -32,7 +43,7 @@ var DeviceComponent = (function () {
                 'device.component.css',
             ]
         }), 
-        __metadata('design:paramtypes', [common_1.Location, router_1.Router])
+        __metadata('design:paramtypes', [common_1.Location, router_1.Router, device_service_1.DeviceService])
     ], DeviceComponent);
     return DeviceComponent;
 }());

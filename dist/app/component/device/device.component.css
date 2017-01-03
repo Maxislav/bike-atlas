@@ -2,9 +2,11 @@
   float: right;
   margin-top: 15px;
 }
+.button-container > div button {
+  margin-left: 8px;
+}
 button {
   padding: 8px 15px;
-  margin-left: 8px;
   border: none;
   background: white;
   border-radius: 2px;
@@ -25,8 +27,43 @@ button:active {
 }
 .content {
   background: rgba(255, 255, 255, 0.9);
-  max-width: 400px;
+  max-width: 600px;
   margin: 20px auto;
-  padding: 30px;
+  padding: 30px 15px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+}
+input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  outline: none;
+  border: none;
+  border-radius: 2px;
+  background: none;
+  border-bottom: 2px solid darkgrey;
+  margin: -2px;
+}
+table {
+  width: 100%;
+}
+.row {
+  margin: 0 -5px;
+}
+thead {
+  font-size: 10px;
+}
+td {
+  padding: 5px;
+}
+td:last-child {
+  width: 40px;
+}
+td.required:after {
+  float: left;
+  padding: 0 5px;
+  content: '*';
+  display: block;
+  color: red;
 }

@@ -25,6 +25,12 @@ var DeviceService = (function () {
             console.log(err);
         });
     };
+    DeviceService.prototype.onAddDevice = function (device) {
+        this.socket.$emit('onAddDevice', device)
+            .then(function (d) {
+            console.log(d);
+        });
+    };
     Object.defineProperty(DeviceService.prototype, "devices", {
         get: function () {
             return this._devices;
