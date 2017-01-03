@@ -1,4 +1,5 @@
 let app, ioServer;
+const dateFormat = require('dateformat');
 
 module.exports = class Logger {
     /** @namespace this.connection */
@@ -16,6 +17,7 @@ module.exports = class Logger {
     onLog(req, res, next) {
 
         const device_id = req.query.id;
+        let data = null;
 
         let checkSum;
         try {
@@ -28,17 +30,27 @@ module.exports = class Logger {
             res.setStatus = 200;
             checkSum = checkSum.replace(/\*/, '');
             res.end(checkSum);
+            try{
+                data = this.parseGprmc(req.query.gprmc);
+                data.device_key = req.query.id;
+            }catch (err){
+                console.error('Error parse', err)
+            }
+
         } else {
             res.setStatus = 500;
             res.end();
         }
-        //console.log('checkSum', checkSum)
+        if(data){
+
+        }
+
+        console.log('data', data);
         if (this.devices && this.devices[device_id]) {
             this.devices[device_id].forEach(socket_id => {
-                this.sockets[socket_id] && this.sockets[socket_id].emit('log', req.query.gprmc);
-//                $GPRMC,153946,A,5023.31220,N,3029.63150,E,0.000000,0.000000,030117,,*2A
-
-                console.log(req.query.gprmc)
+                if(data){
+                    this.sockets[socket_id] && this.sockets[socket_id].emit('log', data);
+                }
             })
         }
     }
@@ -63,6 +75,34 @@ module.exports = class Logger {
         console.log('onDisconnect', this.devices)
     }
 
+    // $GPRMC,153946,A,5023.31220,N,3029.63150,E,0.000000,0.000000,030117,,*2A
+    parseGprmc(gprmc) {
+        const arrData = gprmc.split(',');
+        const timeStamp = arrData[1];
+        const dateStamp = arrData[9];
+        let date = new Date(
+            '20' + dateStamp[4] + dateStamp[5],
+            parseFloat('' + dateStamp[2] + dateStamp[3]) - 1,
+            '' + dateStamp[0] + dateStamp[1],
+            '' + timeStamp[0] + timeStamp[1],
+            '' + timeStamp[2] + timeStamp[3],
+            '' + timeStamp[4] + timeStamp[5]
+        );
+        const dateMysql = dateFormat(date, 'yyyy-mm-dd HH:MM:ss.L');
+        const lng = arrData[4]=='N' ? minToDec(arrData[3]): '-'+minToDec(arrData[3]);
+        const lat = arrData[6] == 'E' ? minToDec(arrData[5]): '-'+minToDec(arrData[5]);
+        const azimuth = arrData[10];
+        const speed = parseFloat(arrData[7])*1.852;
+
+        return {
+            date: dateMysql,
+            lng,
+            lat,
+            azimuth,
+            speed,
+            src: gprmc
+        }
+    }
 
     set sockets(connected) {
         this._sockets = connected;
@@ -74,3 +114,17 @@ module.exports = class Logger {
 
 
 };
+
+function minToDec(src) {
+    let lng = src.split('');
+    let comaIndex = lng.indexOf('.');
+    lng.splice(comaIndex,1);
+    lng.splice(comaIndex-2,0,':');
+    lng = lng.join('');
+    let arrLng = lng.split(':');
+    let prefix = arrLng[0];
+    let suffix = arrLng[1].split(''); suffix.splice(2,0,'.'); suffix = suffix.join('');
+    suffix  = ''+100*parseFloat(suffix)/60;
+    suffix = suffix.replace('.', '');
+    return parseFloat(prefix+'.'+suffix).toFixed(6);
+}

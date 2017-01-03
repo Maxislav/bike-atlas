@@ -91,8 +91,32 @@ function createTable() {
           res(connection);
       })
   });
+
+
+    const tableLogger = new Promise((res, rej)=>{
+        const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`logger` ' +
+            '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+            '`device_key` VARCHAR(32) NOT NULL , ' +
+            '`lng` FLOAT(16) NOT NULL, ' +
+            '`lat` FLOAT(16) NOT NULL  , ' +
+            '`alt` FLOAT(8) NOT NULL, ' +
+            '`speed` FLOAT(8) NULL DEFAULT NULL, ' +
+            '`azimuth` FLOAT(4) NULL DEFAULT NULL, ' +
+            '`date` DATETIME NOT NULL, ' +
+            '`src` VARCHAR(64) NULL DEFAULT NULL,' +
+            'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+        connection.query(query, (err)=>{
+            if(err){
+                console.log('Error  tableLogger create');
+                rej(err);
+                return;
+            }
+            res(connection);
+        })
+    });
+
   
-  return Promise.all([tableUser, tableHash, tableDevice])
+  return Promise.all([tableUser, tableHash, tableDevice, tableLogger])
 
 
 
