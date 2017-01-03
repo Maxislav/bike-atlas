@@ -94,8 +94,8 @@ module.exports = (sever) => {
     const onAuth = new OnAuth(socket, connection);
     const device = new Device(socket, connection);
 
-    //onAuth.socket = socket;
-    //device.socket = socket;
+
+
 
     socket.on('onRegist', (d) => {
       console.log('onRegist start', d);

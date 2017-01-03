@@ -6,20 +6,22 @@ class OnAuth {
     constructor(socket, _connection) {
         this.socket = socket;
         connection = _connection;
-       this.socket.on('onAuth', this.onAuth.bind(this));
+        this.socket.on('onAuth', this.onAuth.bind(this));
     }
 
     onAuth(data) {
         util
             .getUserByHash(connection, data.hash)
             .then(user => {
-                console.log(user)
-               this.socket.emit('onAuth', {
-                    result: 'ok',
-                    user: {
-                        name: user.name
-                    }
-                })
+               return util.updateSocketIdByHash(connection, data.hash, this.socket.id)
+                   .then(d=>{
+                       this.socket.emit('onAuth', {
+                           result: 'ok',
+                           user: {
+                               name: user.name
+                           }
+                       })
+                   })
             })
             .catch(err => {
                this.socket.emit('onAuth', {

@@ -47,7 +47,7 @@ class OnEnter{
                     })
                 })
                 .catch(err=>{
-                  console.error()
+                  console.error(err)
                 })
         }else{
           this.socket.emit('onEnter', {
@@ -62,9 +62,7 @@ class OnEnter{
           message: 'User not exist'
         })
       }
-
     })
-
   }
   getHash(){
     const $possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -81,8 +79,9 @@ class OnEnter{
 
   setHash(user_id){
     const hash =  this.getHash();
+    console.log(this.socket.id)
     return new Promise((resolve, reject)=>{
-        connection.query('INSERT INTO `hash` (`id`, `user_id`, `key`) VALUES (NULL, ?, ?)', [user_id, hash], (err, results)=>{
+        connection.query('INSERT INTO `hash` (`id`, `user_id`, `socket_id`, `key`) VALUES (NULL, ?, ?, ?)', [user_id, this.socket.id, hash], (err, results)=>{
             if(err){
                 reject(err);
                 return;

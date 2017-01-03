@@ -15,8 +15,6 @@ module.exports = {
             });
         })
     },
-
-
     getUserById: function (connection, id) {
         return new Promise((resolve, reject) => {
             connection.query('SELECT * FROM `user` WHERE `id`=?', [id], (err, rows) => {
@@ -30,6 +28,17 @@ module.exports = {
             .catch(err => {
                 console.error('Error getUserById', err)
             });
+    },
+    updateSocketIdByHash: function(connection, hash, socket_id){
+        return new Promise((resolve, reject) => {
+                connection.query('UPDATE `hash` SET socket_id = ? WHERE hash.key = ?', [socket_id, hash], (err, rows) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve()
+                })
+        })
     },
     deleteHashRow: function (connection, hash) {
         return new Promise((resolve, reject)=>{
