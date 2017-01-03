@@ -25,12 +25,39 @@ module.exports = {
                 resolve(rows[0]);
             });
         })
+            .catch(err => {
+                console.error('Error getUserById', err)
+            });
+    },
+    getDeviceByHash: function (connection, hash) {
+      return this.getUserIdByHash(connection, hash)
+          .then(user_id=>{
+              return new Promise((resolve, reject)=>{
+                  connection.query('SELECT * FROM `device` WHERE `user_id`=?', [user_id], function (err, rows) {
+                      if (err) {
+                          reject(err);
+                          return;
+                      }
+                      resolve(rows)
+                  })
+              })
+          })
     },
     getUserByHash: function (connection, hash) {
-        return this.getUserIdByHash(connection, hash)
-            .then((id)=>{
-               return this.getUserById(connection, id)
-            })
+        return new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM `user` INNER JOIN `hash` ON hash.user_id = user.id AND hash.key=?', [hash], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows[0]);
+
+            });
+        })
+            .catch(err => {
+                console.error('Error getUserByHash', err)
+            });
+
     }
 
 };

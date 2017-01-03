@@ -1,10 +1,21 @@
 let connection;
 let socket;
+const util = require('./util');
 
 class Device{
 
+    /**
+     *
+     * @param {{hash: string}}d
+     */
     getDevice(d){
-        socket.emit('getDevice', d)
+        util.getDeviceByHash(connection, d.hash)
+            .then(rows=>{
+                socket.emit('getDevice', rows)
+            })
+            .catch((err)=>{
+                socket.emit('getDevice', null)
+            })
     }
 
     set connection(con){

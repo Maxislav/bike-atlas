@@ -7,6 +7,7 @@ import {Md5} from "../../../service/md5.service";
 import {LocalStorage} from "../../../service/local-storage.service";
 import {AuthService} from "../../../service/auth.service";
 import {ToastService} from "../../toast/toast.component";
+import {DeviceService} from "../../../service/device.service";
 //import {RouterLink} from "@angular/router-deprecated";
 
 
@@ -23,7 +24,14 @@ export class MenuLoginComponent {
     private pass: string;
     private socket;
 
-    constructor(private router: Router, private ms: MenuService, private  io: Io, private md5: Md5, private ls: LocalStorage, public as: AuthService, private ts: ToastService) {
+    constructor(private router: Router,
+                private ms: MenuService,
+                private  io: Io,
+                private md5: Md5,
+                private ls: LocalStorage,
+                public as: AuthService,
+                private ds: DeviceService,
+                private ts: ToastService) {
         this.socket = io.socket;
     }
 
@@ -44,6 +52,7 @@ export class MenuLoginComponent {
                     case 'ok':
                         this.ls.userKey = d.hash;
                         this.as.userName = d.name;
+                        this.ds.updateDevices(d.hash);
                         break;
                     case false:
                         this.ts.show({

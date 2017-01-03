@@ -17,15 +17,17 @@ var md5_service_1 = require("../../../service/md5.service");
 var local_storage_service_1 = require("../../../service/local-storage.service");
 var auth_service_1 = require("../../../service/auth.service");
 var toast_component_1 = require("../../toast/toast.component");
+var device_service_1 = require("../../../service/device.service");
 //import {RouterLink} from "@angular/router-deprecated";
 var MenuLoginComponent = (function () {
-    function MenuLoginComponent(router, ms, io, md5, ls, as, ts) {
+    function MenuLoginComponent(router, ms, io, md5, ls, as, ds, ts) {
         this.router = router;
         this.ms = ms;
         this.io = io;
         this.md5 = md5;
         this.ls = ls;
         this.as = as;
+        this.ds = ds;
         this.ts = ts;
         this.socket = io.socket;
     }
@@ -46,6 +48,7 @@ var MenuLoginComponent = (function () {
                 case 'ok':
                     _this.ls.userKey = d.hash;
                     _this.as.userName = d.name;
+                    _this.ds.updateDevices(d.hash);
                     break;
                 case false:
                     _this.ts.show({
@@ -80,7 +83,7 @@ var MenuLoginComponent = (function () {
             templateUrl: './menu-login.component.html',
             styleUrls: ['./menu-login.css'],
         }), 
-        __metadata('design:paramtypes', [router_1.Router, (typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, socket_oi_service_1.Io, md5_service_1.Md5, local_storage_service_1.LocalStorage, auth_service_1.AuthService, toast_component_1.ToastService])
+        __metadata('design:paramtypes', [router_1.Router, (typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, socket_oi_service_1.Io, md5_service_1.Md5, local_storage_service_1.LocalStorage, auth_service_1.AuthService, device_service_1.DeviceService, toast_component_1.ToastService])
     ], MenuLoginComponent);
     return MenuLoginComponent;
     var _a;
