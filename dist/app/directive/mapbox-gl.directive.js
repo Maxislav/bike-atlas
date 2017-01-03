@@ -33,12 +33,23 @@ var MapboxGlDirective = (function () {
         this.el = el;
         this.renderer = renderer;
         this.mapService = mapService;
+        this.mapService.mapboxgl = mapboxgl;
         renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'rgba(200,200,200, 1)');
         //renderer.setElementStyle(el.nativeElement, 'color', 'white');
         // renderer.setElementStyle(el.nativeElement, 'width', '100%');
         //renderer.setElementStyle(el.nativeElement, 'height', '100%');
         renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'gray');
     }
+    Object.defineProperty(MapboxGlDirective.prototype, "mapboxgl", {
+        get: function () {
+            return this._mapboxgl;
+        },
+        set: function (value) {
+            this._mapboxgl = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     MapboxGlDirective.prototype.ngAfterViewInit = function () {
         var localStorageCenter = this.ls.mapCenter;
         var el = this.el;

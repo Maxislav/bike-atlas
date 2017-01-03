@@ -9,6 +9,16 @@ import {TrackService} from "./track.service";
 
 @Injectable()
 export class MapService {
+    get mapboxgl(): any {
+        return this._mapboxgl;
+    }
+
+    set mapboxgl(value: any) {
+        this._mapboxgl = value;
+    }
+
+
+
     get map(): any {
         return this._map;
     }
@@ -30,6 +40,7 @@ export class MapService {
     public pitch:number;
     public bearing:number;
 
+    private _mapboxgl: any;
     socket:any;
 
     // public ls: LocalStorage

@@ -10,3 +10,8 @@
   width: 100%;
   height: 100%;
 }
+:host mapbox-gl .mapboxgl-popup-content {
+  padding: 5px;
+  font: 12px/12px Geneva, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}

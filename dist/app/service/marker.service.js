@@ -15,7 +15,7 @@ var MarkerService = (function () {
         this.maps = maps;
         this.layerIds = [];
     }
-    MarkerService.prototype.marker = function (p) {
+    MarkerService.prototype.marker = function (p, name) {
         var point = {
             "type": "Point",
             "coordinates": [p.lng, p.lat],
@@ -35,13 +35,21 @@ var MarkerService = (function () {
                 "icon-rotate": point.bearing
             }
         });
+        var mapboxgl = this.maps.mapboxgl;
+        //console.log()
+        var popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15], closeButton: false })
+            .setLngLat(point.coordinates)
+            .setHTML('<div>' + name + '</div>')
+            .addTo(map);
         var marker = {
             id: layerId,
+            popup: popup,
             setCenter: function (_point) {
                 point.coordinates = [_point.lng, _point.lat];
                 if (_point.bearing) {
                     map.setLayoutProperty(layerId, 'icon-rotate', _point.bearing - map.getBearing());
                 }
+                popup.setLngLat(point.coordinates);
                 map.getSource(layerId).setData(point);
             },
             update: function () {

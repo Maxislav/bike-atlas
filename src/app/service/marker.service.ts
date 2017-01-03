@@ -8,6 +8,7 @@ export interface Marker{
     setCenter: Function;
     hide: Function;
     update: Function;
+    popup: any;
 }
 
 
@@ -20,7 +21,7 @@ export class MarkerService{
     }
 
 
-    marker(p: Point): Marker{
+    marker(p: Point, name: string): Marker{
         let point = {
             "type": "Point",
             "coordinates": [p.lng, p.lat],
@@ -43,14 +44,24 @@ export class MarkerService{
                 "icon-rotate": point.bearing
             }
         });
+        const mapboxgl = this.maps.mapboxgl;
+
+        //console.log()
+
+        const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
+            .setLngLat(point.coordinates)
+            .setHTML('<div>'+name+'</div>')
+            .addTo(map);
 
         const marker: Marker = {
             id: layerId,
+            popup: popup,
             setCenter: function (_point: Point) {
                 point.coordinates = [_point.lng, _point.lat];
                 if(_point.bearing){
                     map.setLayoutProperty(layerId, 'icon-rotate', _point.bearing-map.getBearing());
                 }
+                popup.setLngLat(point.coordinates);
                 map.getSource(layerId).setData(point);
             },
             update: function () {

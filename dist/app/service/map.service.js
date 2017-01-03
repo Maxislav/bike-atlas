@@ -25,6 +25,16 @@ var MapService = (function () {
             load: []
         };
     }
+    Object.defineProperty(MapService.prototype, "mapboxgl", {
+        get: function () {
+            return this._mapboxgl;
+        },
+        set: function (value) {
+            this._mapboxgl = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(MapService.prototype, "map", {
         get: function () {
             return this._map;

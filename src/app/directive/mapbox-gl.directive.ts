@@ -21,13 +21,20 @@ class MyEl extends HTMLElement{
     selector: 'mapbox-gl',
 })
 export class MapboxGlDirective implements AfterViewInit {
+    get mapboxgl(): any {
+        return this._mapboxgl;
+    }
+
+    set mapboxgl(value: any) {
+        this._mapboxgl = value;
+    }
     renderer:Renderer;
     el:ElementRef;
     nativeElement:any;
     map: any;
     private center: number[];
     private mapService;
-
+    private _mapboxgl: any;
 
     ngAfterViewInit():void {
 
@@ -106,6 +113,8 @@ export class MapboxGlDirective implements AfterViewInit {
         this.el = el;
         this.renderer = renderer;
         this.mapService = mapService;
+        this.mapService.mapboxgl = mapboxgl;
+
 
         renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'rgba(200,200,200, 1)');
         //renderer.setElementStyle(el.nativeElement, 'color', 'white');

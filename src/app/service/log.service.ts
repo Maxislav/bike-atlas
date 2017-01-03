@@ -42,7 +42,7 @@ export class LogService{
                     lng: parseFloat(d.lng),
                     lat: parseFloat(d.lat),
                     bearing: parseFloat(d.azimuth)
-                })
+                }, device ? device.name : null)
             }
         }
         //his.devices[d.device_key] = this.devices[d.device_key] ||
