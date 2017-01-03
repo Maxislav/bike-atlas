@@ -1,6 +1,6 @@
 let app, ioServer;
 const dateFormat = require('dateformat');
-
+const util = require('./socket-data/util');
 module.exports = class Logger {
     /** @namespace this.connection */
 
@@ -42,7 +42,7 @@ module.exports = class Logger {
             res.end();
         }
         if(data){
-
+            util.insertLog(this.connection, data)
         }
 
         console.log('data', data);
@@ -96,9 +96,10 @@ module.exports = class Logger {
 
         return {
             date: dateMysql,
+            alt: 0,
             lng,
             lat,
-            azimuth,
+            azimuth: azimuth || 0,
             speed,
             src: gprmc
         }

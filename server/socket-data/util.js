@@ -110,6 +110,21 @@ module.exports = {
                         });
                 })
             })
+    },
+    insertLog: function (connection, data) {
+        return new Promise((resolve, reject)=>{
+            connection.query('INSERT INTO `logger` (`id`, `device_key`, `lng`, `lat`, `alt`, `speed`, `azimuth`, `date`, `src`) VALUES (' +
+                'NULL, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [data.device_key, data.lng, data.lat, data.alt, data.speed, data.azimuth, data.date, data.src], (err, result)=>{
+
+                if(err){
+                    reject(err);
+                    return;
+                }
+                resolve(result)
+
+            } )
+        })
     }
 
 };

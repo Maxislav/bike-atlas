@@ -99,11 +99,11 @@ function createTable() {
             '`device_key` VARCHAR(32) NOT NULL , ' +
             '`lng` FLOAT(16) NOT NULL, ' +
             '`lat` FLOAT(16) NOT NULL  , ' +
-            '`alt` FLOAT(8) NOT NULL, ' +
+            '`alt` FLOAT(8) NOT NULL DEFAULT 0, ' +
             '`speed` FLOAT(8) NULL DEFAULT NULL, ' +
             '`azimuth` FLOAT(4) NULL DEFAULT NULL, ' +
             '`date` DATETIME NOT NULL, ' +
-            '`src` VARCHAR(64) NULL DEFAULT NULL,' +
+            '`src` VARCHAR(128) NULL DEFAULT NULL,' +
             'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
         connection.query(query, (err)=>{
             if(err){
