@@ -81,7 +81,7 @@ function createTable() {
 
   const tableDevice = new Promise((res, rej)=>{
       const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`device` ' +
-          '( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `device_key` VARCHAR(32) NOT NULL , `phone` VARCHAR(32) NULL  , PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+          '( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `device_key` VARCHAR(32) NOT NULL , `name` VARCHAR(32) NOT NULL, `phone` VARCHAR(32) NULL  , PRIMARY KEY (`id`)) ENGINE = InnoDB;';
       connection.query(query, (err)=>{
           if(err){
               console.log('Error  tableDevice create');

@@ -29,45 +29,41 @@ module.exports = {
                 console.error('Error getUserById', err)
             });
     },
-    updateSocketIdByHash: function(connection, hash, socket_id){
+    updateSocketIdByHash: function (connection, hash, socket_id) {
         return new Promise((resolve, reject) => {
-                connection.query('UPDATE `hash` SET socket_id = ? WHERE hash.key = ?', [socket_id, hash], (err, rows) => {
-                    if (err) {
-                        reject(err);
-                        return;
-                    }
-                    resolve()
-                })
-        })
-    },
-    deleteHashRow: function (connection, hash) {
-        return new Promise((resolve, reject)=>{
-            connection.query('DELETE FROM `hash` WHERE `key`=?', [hash], (err, result) =>{
-                if(err){
+            connection.query('UPDATE `hash` SET socket_id = ? WHERE hash.key = ?', [socket_id, hash], (err, rows) => {
+                if (err) {
                     reject(err);
                     return;
                 }
-               /* const index = hashKeys.indexOf(data.hash);
-                if(-1<index){
-                    hashKeys.splice(index,1)
-                }*/
+                resolve()
+            })
+        })
+    },
+    deleteHashRow: function (connection, hash) {
+        return new Promise((resolve, reject) => {
+            connection.query('DELETE FROM `hash` WHERE `key`=?', [hash], (err, result) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
                 resolve(result)
             })
         })
     },
     getDeviceByHash: function (connection, hash) {
-      return this.getUserIdByHash(connection, hash)
-          .then(user_id=>{
-              return new Promise((resolve, reject)=>{
-                  connection.query('SELECT * FROM `device` WHERE `user_id`=?', [user_id], function (err, rows) {
-                      if (err) {
-                          reject(err);
-                          return;
-                      }
-                      resolve(rows)
-                  })
-              })
-          })
+        return this.getUserIdByHash(connection, hash)
+            .then(user_id => {
+                return new Promise((resolve, reject) => {
+                    connection.query('SELECT * FROM `device` WHERE `user_id`=?', [user_id], function (err, rows) {
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        resolve(rows)
+                    })
+                })
+            })
     },
     getUserByHash: function (connection, hash) {
         return new Promise((resolve, reject) => {
@@ -84,6 +80,36 @@ module.exports = {
                 console.error('Error getUserByHash', err)
             });
 
+    },
+    getUserIdBySocketId: function (connection, socket_id) {
+        return new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM `hash` WHERE `socket_id`=?', [socket_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                if (rows && rows.length) {
+                    resolve(rows[0].user_id);
+                } else {
+                    resolve(rows)
+                }
+
+            });
+        })
+    },
+    addDeviceBySocketId: function (connection, socket_id, device) {
+        return this.getUserIdBySocketId(connection, socket_id)
+            .then(user_id => {
+                return new Promise((resolve, reject) => {
+                    connection.query('INSERT INTO `device` (`id`, `user_id`, `device_key`, `name` ,`phone`) VALUES (NULL, ?, ?, ?, ?)',
+                        [user_id, device.id, device.name, device.phone], (err, results) => {
+                            if (err) {
+                                reject(err)
+                            }
+                            resolve(true)
+                        });
+                })
+            })
     }
 
 };

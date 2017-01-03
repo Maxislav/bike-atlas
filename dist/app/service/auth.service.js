@@ -33,7 +33,7 @@ var AuthService = (function () {
         }).then(function (d) {
             if (d.result == 'ok') {
                 _this.userName = d.user.name;
-                _this.ds.updateDevices(_this.ls.userKey);
+                _this.ds.updateDevices();
             }
             else {
                 _this.userName = null;

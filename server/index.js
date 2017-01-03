@@ -43,6 +43,13 @@ let kCss = 0;
 let kMyJs = 0;
 let kNM = 0;
 
+app.get('/logger*', (req, res, next) => {
+    console.log('logger',req.params)
+
+    res.statusCode = 200;
+    res.end( 'Ok' );
+    //next()
+});
 
 /**
  * tiler proxy

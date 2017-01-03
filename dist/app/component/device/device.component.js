@@ -21,11 +21,24 @@ var DeviceComponent = (function () {
             name: null,
             id: null
         };
+        this.devices = ds.devices;
     }
     DeviceComponent.prototype.onAdd = function (e) {
+        var _this = this;
         e.preventDefault();
         console.log(this.device);
-        this.ds.onAddDevice(this.device);
+        this.ds.onAddDevice(this.device)
+            .then(function (d) {
+            if (d && d.result == 'ok') {
+                _this.reset();
+            }
+        });
+    };
+    DeviceComponent.prototype.reset = function () {
+        this.device = {
+            name: null,
+            id: null
+        };
     };
     DeviceComponent.prototype.onOk = function (e) {
         e.preventDefault();

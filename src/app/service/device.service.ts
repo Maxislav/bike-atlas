@@ -2,9 +2,9 @@
 
 import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
+import {LocalStorage} from "./local-storage.service";
 
 export interface Device{
-
     id: string;
     name: string;
     phone?: string
@@ -15,14 +15,20 @@ export class DeviceService{
 
     private _devices: Array<Device>;
     private socket: any;
-    constructor(private io: Io){
+    constructor(private io: Io, private ls: LocalStorage){
         this.socket = io.socket;
         this._devices = [];
     }
 
-    updateDevices(hash){
+    updateDevices(){
+
+       const hash = this.ls.userKey;
+
         this.socket.$emit('getDevice', {hash})
             .then(d=>{
+                if(d && d.result =='ok'){
+                    this.devices = d.devices
+                }
                 console.log(d)
             })
             .catch(err=>{
@@ -31,10 +37,18 @@ export class DeviceService{
     }
 
     onAddDevice(device: Device){
-        this.socket.$emit('onAddDevice', device)
-            .then(d=>{
-                console.log(d)
-            })
+        return new Promise((resolve, reject)=>{
+            this.socket.$emit('onAddDevice', device)
+                .then(d=>{
+                    if(d && d.result =='ok'){
+                        this.updateDevices();
+                        resolve(d)
+                    }
+                    reject()
+                })
+        })
+
+
     }
 
     get devices(): Array<Device> {

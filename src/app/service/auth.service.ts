@@ -24,7 +24,7 @@ export class AuthService {
         }).then(d => {
             if(d.result =='ok'){
                 this.userName = d.user.name;
-                this.ds.updateDevices(this.ls.userKey)
+                this.ds.updateDevices()
             }else{
                 this.userName = null;
             }

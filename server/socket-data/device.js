@@ -17,9 +17,17 @@ class Device{
     getDevice(d){
         util.getDeviceByHash(this.connection, d.hash)
             .then(rows=>{
+                const devices = [];
+                rows.forEach(item=>{
+                    devices.push({
+                        id: item.device_key,
+                        name: item.name,
+                        phone: item.phone
+                    })
+                });
                 this.socket.emit('getDevice', {
                     result: 'ok',
-                    devices: rows
+                    devices: devices
                 } )
             })
             .catch((err)=>{
@@ -29,7 +37,18 @@ class Device{
             })
     }
     onAddDevice(device){
-        console.log(this.socket.id)
+        util.addDeviceBySocketId(this.connection, this.socket.id, device)
+            .then(d=>{
+                this.socket.emit('onAddDevice', {
+                    result: 'ok'
+                });
+            })
+            .catch(err=>{
+                this.socket.emit('onAddDevice', {
+                    result: false,
+                    message: err
+                });
+            })
     }
 
 

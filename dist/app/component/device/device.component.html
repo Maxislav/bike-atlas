@@ -12,6 +12,12 @@
         </tr>
       </thead>
       <tbody>
+        <tr *ngFor="let device of devices">
+          <td>{{device.name}}</td>
+          <td>{{device.id}}</td>
+          <td>{{device.phone}}</td>
+          <td></td>
+        </tr>
         <tr>
           <td>
             <input type="text" [(ngModel)]="device.name"/>

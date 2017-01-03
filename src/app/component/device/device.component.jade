@@ -3,6 +3,8 @@ div.content
         | Регистрация устройства
 
     div.row
+
+
         table
             thead
                 tr
@@ -11,6 +13,11 @@ div.content
                     td Телефон
                     td
             tbody
+                tr(*ngFor="let device of devices")
+                    td {{device.name}}
+                    td {{device.id}}
+                    td {{device.phone}}
+                    td
                 tr
                     td
                         input(type='text', [(ngModel)]='device.name')

@@ -88,13 +88,13 @@ function onRegist(data) {
 
 
 module.exports = (sever) => {
-
-  io(sever).on('connection', function (socket) {
+  const ioServer =  io(sever);
+    ioServer.on('connection', function (socket) {
     const onEnter = new OnEnter(socket, connection);
     const onAuth = new OnAuth(socket, connection);
     const device = new Device(socket, connection);
 
-
+    //console.log('connected', ioServer.sockets.connected['483'].emit('ii', 'olo'));
 
 
     socket.on('onRegist', (d) => {
