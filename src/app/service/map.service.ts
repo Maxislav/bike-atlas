@@ -5,6 +5,7 @@ import {Injectable, ApplicationRef} from '@angular/core';
 import {SimpleChanges, OnChanges} from '@angular/core';
 import {LocalStorage} from '../service/local-storage.service';
 import {TrackService} from "./track.service";
+import {LogService} from "./log.service";
 
 
 @Injectable()
@@ -29,7 +30,7 @@ export class MapService {
     //private ref: ApplicationRef
 
 
-    constructor(private ref:ApplicationRef, private ls:LocalStorage, private trackService: TrackService) {
+    constructor(private ref:ApplicationRef, private ls:LocalStorage, private trackService: TrackService, private logs: LogService) {
         this.events = {
             load: []
         };

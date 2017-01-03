@@ -94,9 +94,13 @@ module.exports = (sever, app) => {
 
     ioServer.on('connection', function (socket) {
         logger.sockets = ioServer.sockets.connected;
-        const onEnter = new OnEnter(socket, connection);
+        const onEnter = new OnEnter(socket, connection, logger);
         const onAuth = new OnAuth(socket, connection, logger);
         const device = new Device(socket, connection, logger);
+
+        socket.on('disconnect',()=>{
+            logger.onDisconnect(socket.id)
+        });
 
         socket.on('onRegist', (d) => {
             console.log('onRegist start', d);

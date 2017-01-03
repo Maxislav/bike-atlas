@@ -36,6 +36,7 @@ var toast_component_1 = require("./component/toast/toast.component");
 var device_component_1 = require("./component/device/device.component");
 var auth_service_1 = require("./service/auth.service");
 var device_service_1 = require("./service/device.service");
+var log_service_1 = require("./service/log.service");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -78,7 +79,8 @@ var AppModule = (function () {
                 md5_service_1.Md5,
                 toast_component_1.ToastService,
                 auth_service_1.AuthService,
-                device_service_1.DeviceService]
+                device_service_1.DeviceService,
+                log_service_1.LogService]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

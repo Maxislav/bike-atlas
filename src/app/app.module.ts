@@ -27,6 +27,7 @@ import {ToastComponent, ToastService} from "./component/toast/toast.component";
 import {DeviceComponent} from "./component/device/device.component";
 import {AuthService} from "./service/auth.service";
 import {DeviceService} from "./service/device.service";
+import {LogService} from "./service/log.service";
 
 @NgModule({
     imports: [
@@ -67,6 +68,7 @@ import {DeviceService} from "./service/device.service";
         Md5,
         ToastService,
     AuthService,
-    DeviceService]
+    DeviceService,
+        LogService]
 })
 export class AppModule {}

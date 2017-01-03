@@ -15,7 +15,9 @@ function getRandom(min, max, int) {
 
 
 class OnEnter{
-  constructor(socket, _connection){
+  constructor(socket, _connection, logger){
+
+    this.logger = logger
     this.socket = socket;
     this.connection = connection = _connection;
     this.setHashKeys();
@@ -24,11 +26,7 @@ class OnEnter{
   }
 
   onEnter(data){
-    const tepmlate = ['name', 'pass'];
-    /*const arrData = [];
-    tepmlate.forEach(item => {
-      arrData.push(data[item])
-    });*/
+
     const query = 'SELECT * from user WHERE `name`=? order by `id` desc limit 150';
     connection.query(query, [data.name], (err, rows) => {
       if (err) {
@@ -92,7 +90,6 @@ class OnEnter{
     })
   }
   onExit(data){
-
       util.deleteHashRow(connection, data.hash)
           .then((d) => {
               this.socket.emit('onExit', {
@@ -102,12 +99,14 @@ class OnEnter{
               if (-1 < index) {
                   hashKeys.splice(index, 1)
               }
+              this.logger.onDisconnect(this.socket.id)
           })
           .catch(err => {
               this.socket.emit('onExit', {
                   result: false,
                   message: err
               })
+              this.logger.onDisconnect(this.socket.id)
           });
 
   }
