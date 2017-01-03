@@ -1,56 +1,50 @@
-
-
 import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
 import {LocalStorage} from "./local-storage.service";
 
-export interface Device{
+export interface Device {
     id: string;
     name: string;
     phone?: string
 }
 
 
-
 @Injectable()
-export class DeviceService{
+export class DeviceService {
 
     private _devices: Array<Device>;
     private socket: any;
-    constructor(private io: Io, private ls: LocalStorage){
+
+    constructor(private io: Io, private ls: LocalStorage) {
         this.socket = io.socket;
         this._devices = [];
     }
 
-    updateDevices(){
-
-       const hash = this.ls.userKey;
-
+    updateDevices() {
+        const hash = this.ls.userKey;
         this.socket.$emit('getDevice', {hash})
-            .then(d=>{
-                if(d && d.result =='ok'){
+            .then(d => {
+                if (d && d.result == 'ok') {
                     this.devices = d.devices
                 }
                 console.log(d)
             })
-            .catch(err=>{
+            .catch(err => {
                 console.log(err)
             })
     }
 
-    onAddDevice(device: Device){
-        return new Promise((resolve, reject)=>{
+    onAddDevice(device: Device) {
+        return new Promise((resolve, reject) => {
             this.socket.$emit('onAddDevice', device)
-                .then(d=>{
-                    if(d && d.result =='ok'){
+                .then(d => {
+                    if (d && d.result == 'ok') {
                         this.updateDevices();
                         resolve(d)
                     }
                     reject()
                 })
         })
-
-
     }
 
     get devices(): Array<Device> {
@@ -59,7 +53,7 @@ export class DeviceService{
 
     set devices(devices: Array<Device>) {
         this._devices.length = 0;
-        devices.forEach(device=>{
+        devices.forEach(device => {
             this._devices.push(device)
         });
     }

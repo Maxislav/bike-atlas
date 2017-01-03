@@ -125,6 +125,19 @@ module.exports = {
 
             } )
         })
+    },
+    getLastPosition: function (connection, device) {
+        return new Promise((resolve, reject)=>{
+            connection.query('SELECT * FROM `logger` WHERE `device_key`=? ORDER BY `date` DESC LIMIT 1 ', [device.id], (err, rows) => {
+                if(err){
+                    reject(err)
+                    return;
+                }
+                resolve (rows)
+
+            })
+        })
+
     }
 
 };

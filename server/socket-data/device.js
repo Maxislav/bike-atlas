@@ -27,6 +27,7 @@ class Device{
                     });
                     this.logger.updateDevice(item.device_key, this.socket.id)
                 });
+                this.emitLastPosition(devices);
 
 
                // this.logger.sockets[this.socket.id]
@@ -55,6 +56,31 @@ class Device{
                     message: err
                 });
             })
+    }
+
+    emitLastPosition(devices){
+        const arrPromise = [];
+        devices.forEach(device=>{
+            arrPromise.push(util.getLastPosition(this.connection, device));
+        });
+
+
+        Promise.all(arrPromise)
+            .then(devices=>{
+                devices.forEach(rows=>{
+                    if(rows && rows.length){
+                        this.socket.emit('log', rows[0])
+                    }
+
+                });
+                //console.log('emitLastPosition', d)
+            })
+            .catch(err=>{
+                console.error('emitLastPosition', err)
+            })
+
+
+
     }
 
 
