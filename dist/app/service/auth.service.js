@@ -43,7 +43,7 @@ var AuthService = (function () {
         }).then(function (d) {
             if (d.result == 'ok') {
                 _this.userName = d.user.name;
-                _this.setting = d.user.setting;
+                _this.setting = d.user.setting || _this.setting;
                 _this.ds.updateDevices();
             }
             else {

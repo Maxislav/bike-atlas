@@ -44,7 +44,7 @@ export class AuthService implements Resolve<any>{
         }).then(d => {
             if(d.result =='ok'){
                 this.userName = d.user.name;
-                this.setting = d.user.setting;
+                this.setting = d.user.setting || this.setting;
                 this.ds.updateDevices()
             }else{
                 this.userName = null;
