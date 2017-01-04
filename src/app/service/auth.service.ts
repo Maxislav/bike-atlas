@@ -24,6 +24,10 @@ export class AuthService implements Resolve<any>{
         });
     }
 
+    onAuth(){
+        this.onConnect()
+    }
+
     onConnect() {
         this.socket.$emit('onAuth', {
             hash: this.ls.userKey

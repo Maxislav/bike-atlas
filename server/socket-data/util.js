@@ -139,6 +139,48 @@ module.exports = {
         })
 
     },
+    onRegist: function (connection, d) {
+        return this.checkExistUser(connection, d)
+            .then((rows) => {
+                if (rows.length) {
+                    return {
+                        result: false,
+                        message: 'User exist'
+                    }
+                } else {
+                    return this.addUser(connection, d)
+                }
+            })
+            .catch((err) => {
+                console.log('onRegist +>', err)
+            })
+    },
+    checkExistUser: function (connection, d) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT `name` from user WHERE `name`=? order by `id` desc limit 150';
+            connection.query(query, [d.name, d.pass], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows)
+            })
+        })
+    },
+    addUser: function (connection, d) {
+        return new Promise((resolve, reject) => {
+            connection.query('INSERT INTO `user` (`id`, `name`, `pass`, `opt`) VALUES (NULL, ?, ?, NULL)', [d.name, d.pass], (err, results) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve({
+                    result: 'ok',
+                    message: null
+                })
+            })
+        })
+    },
     formatDevice: function(d) {
         return {
             id: d.device_key,

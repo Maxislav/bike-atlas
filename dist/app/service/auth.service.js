@@ -32,6 +32,9 @@ var AuthService = (function () {
             _this.resolveAuth = resolve;
         });
     };
+    AuthService.prototype.onAuth = function () {
+        this.onConnect();
+    };
     AuthService.prototype.onConnect = function () {
         var _this = this;
         this.socket.$emit('onAuth', {

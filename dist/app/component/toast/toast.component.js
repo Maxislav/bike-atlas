@@ -29,7 +29,7 @@ var ToastService = (function () {
         message.remove = res.remove;
         setTimeout(function () {
             res.remove();
-        }, 500000);
+        }, 5000);
         return res;
     };
     ToastService = __decorate([

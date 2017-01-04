@@ -8,6 +8,7 @@ import {LocalStorage} from "../../../service/local-storage.service";
 import {AuthService} from "../../../service/auth.service";
 import {ToastService} from "../../toast/toast.component";
 import {DeviceService} from "../../../service/device.service";
+import {LoginService} from "../../../service/login.service";
 //import {RouterLink} from "@angular/router-deprecated";
 
 
@@ -31,7 +32,8 @@ export class MenuLoginComponent {
                 private ls: LocalStorage,
                 public as: AuthService,
                 private ds: DeviceService,
-                private ts: ToastService) {
+                private ts: ToastService,
+                private loginService: LoginService) {
         this.socket = io.socket;
     }
 
@@ -41,26 +43,10 @@ export class MenuLoginComponent {
     }
 
     onEnter(e) {
-        this.socket
-            .$emit('onEnter', {
+        this.loginService
+            .onEnter({
                 name: this.name,
                 pass: this.md5.hash(this.pass)
-            })
-            .then(d => {
-                console.log(d);
-                switch (d.result) {
-                    case 'ok':
-                        this.ls.userKey = d.hash;
-                        this.as.userName = d.name;
-                        this.ds.updateDevices(d.hash);
-                        break;
-                    case false:
-                        this.ts.show({
-                            type: 'warning',
-                            text: 'Невеное имя пользователя или пароль'
-                        })
-
-                }
             });
     }
 

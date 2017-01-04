@@ -13,12 +13,14 @@ var common_1 = require('@angular/common');
 var md5_service_1 = require("../../service/md5.service");
 var toast_component_1 = require("../toast/toast.component");
 var socket_oi_service_1 = require("../../service/socket.oi.service");
+var login_service_1 = require("../../service/login.service");
 var RegistrationComponent = (function () {
-    function RegistrationComponent(location, md5, ts, io) {
+    function RegistrationComponent(location, md5, ts, io, loginService) {
         this.location = location;
         this.md5 = md5;
         this.ts = ts;
         this.io = io;
+        this.loginService = loginService;
         this.socket = io.socket;
     }
     RegistrationComponent.prototype.onCancel = function (e) {
@@ -65,6 +67,10 @@ var RegistrationComponent = (function () {
                 _this.ts.show({
                     type: 'success',
                     text: 'Регистрация Ок!'
+                });
+                _this.loginService.onEnter({
+                    name: name,
+                    pass: pass
                 });
                 _this.location.back();
             }
@@ -115,7 +121,7 @@ var RegistrationComponent = (function () {
             templateUrl: './registration.component.html',
             styleUrls: ['./registration.component.css'],
         }), 
-        __metadata('design:paramtypes', [common_1.Location, md5_service_1.Md5, toast_component_1.ToastService, socket_oi_service_1.Io])
+        __metadata('design:paramtypes', [common_1.Location, md5_service_1.Md5, toast_component_1.ToastService, socket_oi_service_1.Io, login_service_1.LoginService])
     ], RegistrationComponent);
     return RegistrationComponent;
 }());

@@ -30,6 +30,7 @@ import {DeviceService} from "./service/device.service";
 import {LogService} from "./service/log.service";
 import {MarkerService} from "./service/marker.service";
 import {MapService} from "./service/map.service";
+import {LoginService} from "./service/login.service";
 
 @NgModule({
     imports: [
@@ -73,7 +74,8 @@ import {MapService} from "./service/map.service";
         DeviceService,
         LogService,
         MapService,
-        MarkerService
+        MarkerService,
+        LoginService
     ]
 })
 export class AppModule {

@@ -39,6 +39,7 @@ var device_service_1 = require("./service/device.service");
 var log_service_1 = require("./service/log.service");
 var marker_service_1 = require("./service/marker.service");
 var map_service_1 = require("./service/map.service");
+var login_service_1 = require("./service/login.service");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -84,7 +85,8 @@ var AppModule = (function () {
                 device_service_1.DeviceService,
                 log_service_1.LogService,
                 map_service_1.MapService,
-                marker_service_1.MarkerService
+                marker_service_1.MarkerService,
+                login_service_1.LoginService
             ]
         }), 
         __metadata('design:paramtypes', [])

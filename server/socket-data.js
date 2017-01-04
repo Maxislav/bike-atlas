@@ -8,6 +8,7 @@ const connection = mysql.createConnection(config.mysql);
 const OnEnter = require('./socket-data/on-enter');
 const OnAuth = require('./socket-data/on-auth');
 const Device = require('./socket-data/device');
+const OnRegist = require('./socket-data/on-regist');
 const Logger = require('./logger');
 connection.connect((err)=>{
     if (err) {
@@ -15,51 +16,7 @@ connection.connect((err)=>{
         return;
     }
     console.log('connected as id ' + connection.threadId);
-    //onEnter.connection = connection;
-    //onAuth.connection = connection;
-    //device.connection = connection;
-    //onEnter.setHashKeys();
-
-
 });
-
-
-
-/**
- * Проверка ли существукт user
- * @param arrData
- * @returns {Promise}
- */
-
-function checkExistUser(arrData) {
-
-  return new Promise((resolve, reject) => {
-    const query = 'SELECT `name` from user WHERE `name`=? order by `id` desc limit 150';
-    connection.query(query, arrData, (err, rows) => {
-      if (err) {
-        reject(err);
-        return
-      }
-      resolve(rows)
-    })
-  })
-}
-
-function addUser(arrData) {
-  return new Promise((resolve, reject) => {
-    connection.query('INSERT INTO `user` (`id`, `name`, `pass`, `opt`) VALUES (NULL, ?, ?, NULL)', arrData, (err, results) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve({
-        result: 'ok',
-        message: null
-      })
-    })
-  })
-}
-
 
 function onRegist(data) {
   const tepmlate = ['name', 'pass'];
@@ -97,27 +54,10 @@ module.exports = (sever, app) => {
         const onEnter = new OnEnter(socket, connection, logger);
         const onAuth = new OnAuth(socket, connection, logger);
         const device = new Device(socket, connection, logger);
-
+        const onRegist = new OnRegist(socket, connection, logger);
         socket.on('disconnect',()=>{
             logger.onDisconnect(socket.id)
         });
-
-        socket.on('onRegist', (d) => {
-            console.log('onRegist start', d);
-
-            onRegist(d)
-                .then(d => {
-                    socket.emit('onRegist', d)
-                }, err => {
-                    console.error(err)
-                })
-                .catch((err) => {
-                    console.error('Cache onRegist', err);
-                    socket.emit('onRegist', {result: false, status: 500, message: err})
-                })
-
-        });
-
 
         socketStream(socket).on('file', function (stream) {
             let data = [];

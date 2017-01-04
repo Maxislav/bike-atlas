@@ -30,7 +30,7 @@ export class ToastService{
         
         setTimeout(()=>{
             res.remove();
-        }, 500000);
+        }, 5000);
         return res
     }
 

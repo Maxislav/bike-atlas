@@ -3,6 +3,7 @@ import {Location} from '@angular/common';
 import {Md5} from "../../service/md5.service";
 import {ToastService} from "../toast/toast.component";
 import {Io} from "../../service/socket.oi.service";
+import {LoginService} from "../../service/login.service";
 
 @Component({
     moduleId: module.id,
@@ -17,7 +18,7 @@ export class RegistrationComponent{
     private socket;
 
 
-    constructor(private location: Location, private md5: Md5, private ts: ToastService, private io: Io) {
+    constructor(private location: Location, private md5: Md5, private ts: ToastService, private io: Io, private loginService: LoginService) {
         this.socket = io.socket;
     }
     onCancel(e){
@@ -65,7 +66,12 @@ export class RegistrationComponent{
                     type: 'success',
                     text: 'Регистрация Ок!'
                 });
+                this.loginService.onEnter({
+                    name,
+                    pass
+                });
                 this.location.back();
+
             }else if(!d.result && d.message =='User exist'){
                 this.ts.show({
                     type: 'danger',
