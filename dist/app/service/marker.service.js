@@ -83,7 +83,7 @@ var MarkerService = (function () {
         map.on('move', move);
         timer = setInterval(function () {
             marker.updateMarker();
-        }, 1000);
+        }, 5000);
         return marker;
     };
     MarkerService.prototype.getNewLayer = function (min, max, int) {
@@ -108,6 +108,7 @@ exports.MarkerService = MarkerService;
 function getIconImage(device) {
     var dateLong = new Date((new Date(device.date).getTime() - (new Date().getTimezoneOffset() * 60 * 1000))).getTime();
     var passed = new Date().getTime() - dateLong;
+    console.log(passed / 1000);
     if (passed < 10 * 60 * 1000) {
         if (device.speed < 0.1) {
             return 'green';
