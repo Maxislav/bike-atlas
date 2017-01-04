@@ -12,7 +12,15 @@ class OnRegist {
     onRegist(d) {
         util.onRegist(this.connection, d)
             .then(d => {
-                this.socket.emit('onRegist', d)
+                if(d && d.result == 'ok'){
+                    this.socket.emit('onRegist', {
+                        result: 'ok',
+                        message: null
+                    })
+                }else{
+                    this.socket.emit('onRegist', d)
+                }
+
             }, err => {
                 console.error(err)
             })

@@ -121,6 +121,7 @@ function createTable() {
             '`user_id` INT NOT NULL , ' +
             '`map` VARCHAR(16) NULL DEFAULT NULL, ' +
             '`hill` BOOLEAN NOT NULL DEFAULT 0, ' +
+            '`lock` BOOLEAN NOT NULL DEFAULT 0, ' +
             'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
         connection.query(query, (err) => {
             if (err) {

@@ -31,12 +31,64 @@ var MapboxGlDirective = (function () {
     function MapboxGlDirective(el, renderer, mapService, positionSiz, ls, as) {
         this.ls = ls;
         this.as = as;
-        console.log(as.userName);
+        this.setting = as.setting;
         this.center = [30.5, 50.5];
         this.el = el;
         this.renderer = renderer;
         this.mapService = mapService;
         this.mapService.mapboxgl = mapboxgl;
+        this.styleSource = {
+            "google-default": {
+                "type": "raster",
+                "tiles": [
+                    "http://mt0.googleapis.com/vt/lyrs=m@207000000&hl=ru&src=api&x={x}&y={y}&z={z}&s=Galile",
+                ],
+                "tileSize": 256
+            },
+            "hills": {
+                "type": "raster",
+                "tiles": [
+                    "hills/{z}/{x}/{y}.png"
+                ],
+                "tileSize": 256
+            },
+            "osm": {
+                "type": "raster",
+                "tiles": [
+                    "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                ],
+                "tileSize": 256
+            }
+        };
+        var layers = {
+            'osm': {
+                "id": "osm",
+                "source": "osm",
+                "type": "raster"
+            },
+            'ggl': {
+                "id": "google-default",
+                "source": "google-default",
+                "type": "raster"
+            },
+            hill: {
+                "id": "hills",
+                "source": "hills",
+                "type": "raster",
+                "minzoom": 7,
+                "maxzoom": 14
+            }
+        };
+        console.log(as.setting);
+        this.layers = [];
+        if (!as.setting.map || as.setting.map == 'ggl') {
+            this.layers.push(layers.ggl);
+        }
+        if (as.setting.hill) {
+            this.layers.push(layers.hill);
+        }
         renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'rgba(200,200,200, 1)');
         //renderer.setElementStyle(el.nativeElement, 'color', 'white');
         // renderer.setElementStyle(el.nativeElement, 'width', '100%');
@@ -77,43 +129,8 @@ var MapboxGlDirective = (function () {
                 // "sprite": "mapbox://sprites/mapbox/streets-v8",
                 // "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
                 "sprite": "http://" + window.location.hostname + "/src/sprite/sprite",
-                "sources": {
-                    "google-default": {
-                        "type": "raster",
-                        "tiles": [
-                            "http://mt0.googleapis.com/vt/lyrs=m@207000000&hl=ru&src=api&x={x}&y={y}&z={z}&s=Galile",
-                        ],
-                        "tileSize": 256
-                    },
-                    "hills": {
-                        "type": "raster",
-                        "tiles": [
-                            "hills/{z}/{x}/{y}.png"
-                        ],
-                        "tileSize": 256
-                    },
-                    "osm": {
-                        "type": "raster",
-                        "tiles": [
-                            "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                            "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                            "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        ],
-                        "tileSize": 256
-                    },
-                },
-                "layers": [{
-                        "id": "google-default",
-                        "source": "osm",
-                        //"source": "google-default",
-                        "type": "raster"
-                    }, {
-                        "id": "hills",
-                        "source": "hills",
-                        "type": "raster",
-                        "minzoom": 7,
-                        "maxzoom": 14
-                    }]
+                "sources": this.styleSource,
+                "layers": this.layers
             }
         });
         this.map.addControl(new mapboxgl.NavigationControl({

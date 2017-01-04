@@ -20,6 +20,7 @@ var AuthService = (function () {
         this.ds = ds;
         this._userName = null;
         this.socket = io.socket;
+        this._setting = {};
         this.socket.on('connect', this.onConnect.bind(this));
         this.socket.on('disconnect', function (d) {
             console.log('disconnect');
@@ -42,6 +43,7 @@ var AuthService = (function () {
         }).then(function (d) {
             if (d.result == 'ok') {
                 _this.userName = d.user.name;
+                _this.setting = d.user.setting;
                 _this.ds.updateDevices();
             }
             else {
@@ -57,6 +59,16 @@ var AuthService = (function () {
         },
         set: function (name) {
             this._userName = name;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AuthService.prototype, "setting", {
+        get: function () {
+            return this._setting;
+        },
+        set: function (value) {
+            this._setting = value;
         },
         enumerable: true,
         configurable: true

@@ -149,6 +149,15 @@ module.exports = {
                     }
                 } else {
                     return this.addUser(connection, d)
+                        .then(result=>{
+                            return this.addSettingUser(connection, result.insertId)
+                                .then((result)=>{
+                                    return {
+                                        result: 'ok',
+                                        message: null
+                                    }
+                                })
+                        })
                 }
             })
             .catch((err) => {
@@ -169,15 +178,38 @@ module.exports = {
     },
     addUser: function (connection, d) {
         return new Promise((resolve, reject) => {
-            connection.query('INSERT INTO `user` (`id`, `name`, `pass`, `opt`) VALUES (NULL, ?, ?, NULL)', [d.name, d.pass], (err, results) => {
+            connection.query('INSERT INTO `user` ' +
+                '(`id`, `name`, `pass`, `opt`) VALUES (NULL, ?, ?, NULL)', [d.name, d.pass], (err, results) => {
                 if (err) {
                     reject(err);
                     return;
                 }
-                resolve({
-                    result: 'ok',
-                    message: null
-                })
+                console.log('results', results)
+                resolve(results);
+            })
+        })
+    },
+    addSettingUser: function (connection, user_id) {
+        return new Promise((resolve, reject) => {
+            connection.query('INSERT INTO `setting` ' +
+                '(`id`, `user_id`, `map`, `hill`, `lock`) VALUES (NULL, ?, ?, ?, ?)', [user_id, 'ggl', true, true], (err, results) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(results);
+            })
+        })
+    },
+    getUserSettingByUserId: function (connection, user_id) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * from `setting` WHERE `user_id`=? order by `id` desc limit 150';
+            connection.query(query, [user_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows[0])
             })
         })
     },

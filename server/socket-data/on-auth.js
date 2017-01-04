@@ -14,18 +14,22 @@ class OnAuth {
         util
             .getUserByHash(connection, data.hash)
             .then(user => {
-               return util.updateSocketIdByHash(connection, data.hash, this.socket.id)
-                   .then(d=>{
-                       this.socket.emit('onAuth', {
-                           result: 'ok',
-                           user: {
-                               name: user.name
-                           }
-                       })
-                   })
+                return util.updateSocketIdByHash(connection, data.hash, this.socket.id)
+                    .then(d => {
+                        return util.getUserSettingByUserId(connection, user.user_id)
+                            .then(setting => {
+                                this.socket.emit('onAuth', {
+                                    result: 'ok',
+                                    user: {
+                                        name: user.name,
+                                        setting: setting
+                                    }
+                                })
+                            })
+                    })
             })
             .catch(err => {
-               this.socket.emit('onAuth', {
+                this.socket.emit('onAuth', {
                     result: false,
                     message: err
                 })

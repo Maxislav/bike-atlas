@@ -4,13 +4,24 @@ import {LocalStorage} from "./local-storage.service";
 import {DeviceService} from "./device.service";
 import {Resolve} from "@angular/router";
 
+export interface Setting{
+    hill?: boolean;
+    id?: number;
+    map?: string;
+    lock?: boolean;
+}
+
 @Injectable()
 export class AuthService implements Resolve<any>{
+
     socket: any;
     private _userName: string = null;
+    private _setting: Setting;
+
     private resolveAuth: Function;
     constructor(private io: Io, private  ls: LocalStorage, private ds: DeviceService) {
         this.socket = io.socket;
+        this._setting = {};
         this.socket.on('connect', this.onConnect.bind(this));
         this.socket.on('disconnect', (d) => {
             console.log('disconnect');
@@ -20,7 +31,6 @@ export class AuthService implements Resolve<any>{
     resolve(): Promise<any> {
         return new Promise((resolve, reject)=>{
             this.resolveAuth = resolve;
-
         });
     }
 
@@ -34,11 +44,12 @@ export class AuthService implements Resolve<any>{
         }).then(d => {
             if(d.result =='ok'){
                 this.userName = d.user.name;
+                this.setting = d.user.setting;
                 this.ds.updateDevices()
             }else{
                 this.userName = null;
             }
-            console.log(d)
+            console.log(d);
             this.resolveAuth(true)
         })
     }
@@ -49,6 +60,13 @@ export class AuthService implements Resolve<any>{
 
     set userName(name) {
         this._userName = name
+    }
+    get setting(): Setting {
+        return this._setting;
+    }
+
+    set setting(value: Setting  ) {
+        this._setting = value;
     }
 }
 

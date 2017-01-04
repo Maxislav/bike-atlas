@@ -91,7 +91,7 @@ module.exports = class Logger {
         const dateMysql = dateFormat(date, 'yyyy-mm-dd HH:MM:ss.L');
         const lat = arrData[4]=='N' ? minToDec(arrData[3]): '-'+minToDec(arrData[3]);
         const lng = arrData[6] == 'E' ? minToDec(arrData[5]): '-'+minToDec(arrData[5]);
-        const azimuth = arrData[10];
+        const azimuth = arrData[8];
         const speed = parseFloat(arrData[7])*1.852;
 
         return {
