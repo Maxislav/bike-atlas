@@ -1,9 +1,30 @@
 {
   "arrow": {
-    "width": 480,
-    "height": 480,
+    "width": 256,
+    "height": 256,
     "x": 0,
     "y": 0,
+    "pixelRatio": 10
+  },
+  "green": {
+    "width": 256,
+    "height": 256,
+    "x": 0,
+    "y": 256,
+    "pixelRatio": 10
+  },
+  "yellow": {
+    "width": 256,
+    "height": 256,
+    "x": 0,
+    "y": 512,
+    "pixelRatio": 10
+  },
+  "white": {
+    "width": 256,
+    "height": 256,
+    "x": 0,
+    "y": 768,
     "pixelRatio": 10
   }
 }

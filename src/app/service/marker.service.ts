@@ -118,6 +118,9 @@ export class MarkerService{
 }
 
 function getIconImage(device){
+   /* alert(new Date(device.date))
+    return 'green';*/
+
     let dateLong = new Date((new Date(device.date).getTime() -(new Date().getTimezoneOffset()*60*1000))).getTime();
     let passed = new Date().getTime() - dateLong
 
@@ -132,6 +135,5 @@ function getIconImage(device){
     }else{
         return 'white'
     }
-
 
 }

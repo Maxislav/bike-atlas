@@ -103,6 +103,8 @@ var MarkerService = (function () {
 }());
 exports.MarkerService = MarkerService;
 function getIconImage(device) {
+    /* alert(new Date(device.date))
+     return 'green';*/
     var dateLong = new Date((new Date(device.date).getTime() - (new Date().getTimezoneOffset() * 60 * 1000))).getTime();
     var passed = new Date().getTime() - dateLong;
     if (passed < 10 + 60 * 1000) {
