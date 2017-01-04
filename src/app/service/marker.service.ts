@@ -125,7 +125,7 @@ export class MarkerService{
 
 function getIconImage(device){
 
-    let dateLong = new Date((new Date(device.date).getTime() -(new Date().getTimezoneOffset()*60*1000))).getTime();
+    let dateLong = new Date(device.date).getTime();
     let passed = new Date().getTime() - dateLong;
     console.log(passed/1000)
     if(passed<10*60*1000){

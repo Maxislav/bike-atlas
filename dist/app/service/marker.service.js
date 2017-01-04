@@ -106,7 +106,7 @@ var MarkerService = (function () {
 }());
 exports.MarkerService = MarkerService;
 function getIconImage(device) {
-    var dateLong = new Date((new Date(device.date).getTime() - (new Date().getTimezoneOffset() * 60 * 1000))).getTime();
+    var dateLong = new Date(device.date).getTime();
     var passed = new Date().getTime() - dateLong;
     console.log(passed / 1000);
     if (passed < 10 * 60 * 1000) {

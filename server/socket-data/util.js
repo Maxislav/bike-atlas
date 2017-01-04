@@ -1,3 +1,5 @@
+const dateFormat = require('dateformat');
+
 module.exports = {
     getUserIdByHash: function (connection, hash) {
         return new Promise((resolve, reject) => {
@@ -218,7 +220,7 @@ module.exports = {
             id: d.device_key,
             alt: d.alt,
             azimuth: d.azimuth,
-            date: d.date,
+            date: d.date.toISOString(),//dateFormat(d.date, 'yyyy-mm-dd HH:MM:ss.L'),
             lat: d.lat,
             lng: d.lng,
             speed: d.speed,
