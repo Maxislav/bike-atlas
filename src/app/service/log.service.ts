@@ -4,10 +4,16 @@ import {DeviceService} from "./device.service";
 import {MarkerService, Marker} from "./marker.service";
 //import {MarkerService} from "./marker.service";
 
-export interface DeviceMarker{
-    id: string,
-    name: string,
-    marker: Marker
+export interface DeviceData{
+    id: string;
+    alt: number;
+    name: string;
+    azimuth: number;
+    date: string;
+    lat: number,
+    lng: number,
+    speed: number,
+    src: string
 }
 
 
@@ -21,31 +27,23 @@ export class LogService{
         this.socket.on('log',this.log.bind(this));
         this.devices = {};
     }
-    log(d){
-      console.log(d)
+    log(deviceData: DeviceData){
+      console.log(deviceData);
 
-        if( this.devices[d.device_key] ){
-            this.devices[d.device_key].maker.setCenter({
-                lng: parseFloat(d.lng),
-                lat: parseFloat(d.lat),
-                bearing: parseFloat(d.azimuth)
-            })
+        if( this.devices[deviceData.id] ){
+            this.devices[deviceData.id].maker.setCenter(deviceData);
+
         }else{
             let device = this.ds.devices.find(item=>{
-                return item.id == d.device_key
+                return item.id == deviceData.id
             });
-            console.log(device)
-            this.devices[d.device_key] = {
-                id: d.device_key,
+            deviceData.name = device.name;
+            this.devices[deviceData.id] = {
+                id: deviceData.id,
                 name: device ? device.name : null,
-                maker: this.markerService.marker({
-                    lng: parseFloat(d.lng),
-                    lat: parseFloat(d.lat),
-                    bearing: parseFloat(d.azimuth)
-                }, device ? device.name : null)
+                maker: this.markerService.marker(deviceData)
             }
         }
-        //his.devices[d.device_key] = this.devices[d.device_key] ||
     }
 }
 

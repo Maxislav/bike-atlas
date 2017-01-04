@@ -115,7 +115,7 @@ module.exports = {
         return new Promise((resolve, reject)=>{
             connection.query('INSERT INTO `logger` (`id`, `device_key`, `lng`, `lat`, `alt`, `speed`, `azimuth`, `date`, `src`) VALUES (' +
                 'NULL, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [data.device_key, data.lng, data.lat, data.alt, data.speed, data.azimuth, data.date, data.src], (err, result)=>{
+                [data.id, data.lng, data.lat, data.alt, data.speed, data.azimuth, data.date, data.src], (err, result)=>{
 
                 if(err){
                     reject(err);
@@ -138,6 +138,18 @@ module.exports = {
             })
         })
 
+    },
+    formatDevice: function(d) {
+        return {
+            id: d.device_key,
+            alt: d.alt,
+            azimuth: d.azimuth,
+            date: d.date,
+            lat: d.lat,
+            lng: d.lng,
+            speed: d.speed,
+            src: d.src
+        }
     }
 
 };

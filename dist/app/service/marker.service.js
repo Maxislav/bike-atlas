@@ -15,11 +15,12 @@ var MarkerService = (function () {
         this.maps = maps;
         this.layerIds = [];
     }
-    MarkerService.prototype.marker = function (p, name) {
+    MarkerService.prototype.marker = function (deviceData) {
+        var _deviceData = deviceData;
         var point = {
             "type": "Point",
-            "coordinates": [p.lng, p.lat],
-            "bearing": p.bearing
+            "coordinates": [deviceData.lng, deviceData.lat],
+            "bearing": deviceData.azimuth
         };
         var map = this.maps.map;
         var mapBearing = map.getBearing();
@@ -31,26 +32,32 @@ var MarkerService = (function () {
             "type": "symbol",
             "source": layerId,
             "layout": {
-                "icon-image": "arrow",
+                "icon-image": getIconImage(deviceData),
                 "icon-rotate": point.bearing
             }
         });
         var mapboxgl = this.maps.mapboxgl;
-        //console.log()
         var popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15], closeButton: false })
             .setLngLat(point.coordinates)
-            .setHTML('<div>' + name + '</div>')
+            .setHTML('<div>' + deviceData.name + '</div>')
             .addTo(map);
+        var timer = null;
         var marker = {
             id: layerId,
             popup: popup,
-            setCenter: function (_point) {
-                point.coordinates = [_point.lng, _point.lat];
-                if (_point.bearing) {
-                    map.setLayoutProperty(layerId, 'icon-rotate', _point.bearing - map.getBearing());
+            setCenter: function (d) {
+                _deviceData = d;
+                point.coordinates = [d.lng, d.lat];
+                if (d.azimuth) {
+                    map.setLayoutProperty(layerId, 'icon-rotate', d.azimuth - map.getBearing());
                 }
+                console.log(this);
+                this.updateMarker(d);
                 popup.setLngLat(point.coordinates);
                 map.getSource(layerId).setData(point);
+            },
+            updateMarker: function (d) {
+                map.setLayoutProperty(layerId, 'icon-image', getIconImage(d));
             },
             update: function () {
                 map.setLayoutProperty(layerId, 'icon-rotate', point.bearing - map.getBearing());
@@ -61,6 +68,7 @@ var MarkerService = (function () {
                 map.removeSource(layerId);
                 console.log('delete marker id', layerId);
                 map.off('move', move);
+                timer && clearInterval(timer);
             }
         };
         function move() {
@@ -70,6 +78,9 @@ var MarkerService = (function () {
             }
         }
         map.on('move', move);
+        timer = setInterval(function () {
+            marker.updateMarker(_deviceData);
+        }, 10000);
         return marker;
     };
     MarkerService.prototype.getNewLayer = function (min, max, int) {
@@ -91,4 +102,22 @@ var MarkerService = (function () {
     return MarkerService;
 }());
 exports.MarkerService = MarkerService;
+function getIconImage(device) {
+    var dateLong = new Date((new Date(device.date).getTime() - (new Date().getTimezoneOffset() * 60 * 1000))).getTime();
+    var passed = new Date().getTime() - dateLong;
+    if (passed < 10 + 60 * 1000) {
+        if (device.speed < 0.1) {
+            return 'green';
+        }
+        else {
+            return 'arrow';
+        }
+    }
+    else if (passed < 3600 * 12 * 1000) {
+        return 'yellow';
+    }
+    else {
+        return 'white';
+    }
+}
 //# sourceMappingURL=marker.service.js.map

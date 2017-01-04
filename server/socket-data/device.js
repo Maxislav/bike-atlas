@@ -64,27 +64,21 @@ class Device{
             arrPromise.push(util.getLastPosition(this.connection, device));
         });
 
-
         Promise.all(arrPromise)
             .then(devices=>{
                 devices.forEach(rows=>{
                     if(rows && rows.length){
-                        this.socket.emit('log', rows[0])
+                        this.socket.emit('log', util.formatDevice(rows[0]))
                     }
 
                 });
-                //console.log('emitLastPosition', d)
             })
             .catch(err=>{
                 console.error('emitLastPosition', err)
             })
 
-
-
     }
-
-
-
 }
+
 
 module.exports = Device;
