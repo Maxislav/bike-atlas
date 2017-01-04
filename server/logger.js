@@ -88,7 +88,7 @@ module.exports = class Logger {
             '' + timeStamp[2] + timeStamp[3],
             '' + timeStamp[4] + timeStamp[5]
         );
-        const dateMysql = dateFormat(date, 'yyyy-mm-dd HH:MM:ss.L');
+        const dateMysql = date.toISOString(); //dateFormat(date, 'yyyy-mm-dd HH:MM:ss.L');
         const lat = arrData[4]=='N' ? minToDec(arrData[3]): '-'+minToDec(arrData[3]);
         const lng = arrData[6] == 'E' ? minToDec(arrData[5]): '-'+minToDec(arrData[5]);
         const azimuth = arrData[8];
