@@ -80,7 +80,7 @@ app.use((req, res, next)=>{
       case /^\/src.+\.js$/.test(req.url):
       case /node_modules/.test(req.url):
         req.url = path.normalize(req.url)
-        console.log('files', req.url);
+       // console.log('files', req.url);
         res.sendFile(dirname +req.url);
         break;
       default:

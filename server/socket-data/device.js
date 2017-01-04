@@ -68,6 +68,7 @@ class Device{
             .then(devices=>{
                 devices.forEach(rows=>{
                     if(rows && rows.length){
+                        console.log('emitLastPosition ->', rows[0])
                         this.socket.emit('log', util.formatDevice(rows[0]))
                     }
 
