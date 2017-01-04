@@ -33,7 +33,6 @@ table {
 }
 table td {
   height: 100%;
-  width: 100%;
   padding: 0 15px;
   cursor: pointer;
   transition: background-color 0.1s;
@@ -45,7 +44,7 @@ table td.button:hover {
   background-color: rgba(202, 232, 255, 0.7);
 }
 table td.button.menu {
-  width: 60px;
+  width: 80px;
 }
 table td.button.enter {
   width: 60px;

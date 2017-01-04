@@ -23,19 +23,21 @@ var LogService = (function () {
     LogService.prototype.log = function (deviceData) {
         console.log(deviceData);
         if (this.devices[deviceData.id]) {
-            this.devices[deviceData.id].maker.setCenter(deviceData);
+            this.devices[deviceData.id].update(deviceData);
         }
         else {
             var device = this.ds.devices.find(function (item) {
                 return item.id == deviceData.id;
             });
             deviceData.name = device.name;
-            this.devices[deviceData.id] = {
-                id: deviceData.id,
-                name: device ? device.name : null,
-                maker: this.markerService.marker(deviceData)
-            };
+            this.devices[deviceData.id] = this.markerService.marker(deviceData);
         }
+    };
+    LogService.prototype.getDeviceData = function (id) {
+        if (this.devices[id]) {
+            return this.devices[id].deviceData;
+        }
+        return null;
     };
     LogService = __decorate([
         core_1.Injectable(), 

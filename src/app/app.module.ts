@@ -31,6 +31,7 @@ import {LogService} from "./service/log.service";
 import {MarkerService} from "./service/marker.service";
 import {MapService} from "./service/map.service";
 import {LoginService} from "./service/login.service";
+import {MenuAthleteComponent} from "./component/menu/menu-athlete/menu.athlete.component";
 
 @NgModule({
     imports: [
@@ -56,7 +57,8 @@ import {LoginService} from "./service/login.service";
         MenuLoginComponent,
         TrackList,
         ToastComponent,
-        DeviceComponent
+        DeviceComponent,
+        MenuAthleteComponent
 
     ],
     bootstrap: [

@@ -1,0 +1,4 @@
+
+<ul (click)="$event.stopPropagation()">
+  <li *ngFor="let athlete of devices; let i = index" (click)="selectDevice(athlete)">{{athlete.name}}</li>
+</ul>

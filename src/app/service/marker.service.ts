@@ -8,9 +8,11 @@ export interface Marker{
     id: string;
     setCenter: Function;
     hide: Function;
+    rotate: Function;
     update: Function;
     popup: any;
-    updateMarker: Function
+    updateMarker: Function,
+    deviceData: DeviceData
 }
 
 
@@ -23,7 +25,6 @@ export class MarkerService{
     }
 
     marker(deviceData: DeviceData): Marker{
-        let _deviceData = deviceData;
         let point = {
             "type": "Point",
             "coordinates": [deviceData.lng, deviceData.lat],
@@ -62,21 +63,24 @@ export class MarkerService{
         const marker: Marker = {
             id: layerId,
             popup: popup,
+            deviceData: deviceData,
             setCenter: function (d: DeviceData) {
-                _deviceData = d;
+
+            },
+            updateMarker: function(){
+                map.setLayoutProperty(layerId, 'icon-image', getIconImage(this.deviceData));
+            },
+            update: function (d: DeviceData) {
+                this.deviceData = d;
                 point.coordinates = [d.lng, d.lat];
                 if(d.azimuth){
                     map.setLayoutProperty(layerId, 'icon-rotate', d.azimuth-map.getBearing());
                 }
-                console.log(this)
                 this.updateMarker(d);
                 popup.setLngLat(point.coordinates);
                 map.getSource(layerId).setData(point);
             },
-            updateMarker: function(d: DeviceData){
-                map.setLayoutProperty(layerId, 'icon-image', getIconImage(d));
-            },
-            update: function () {
+            rotate: function () {
                 map.setLayoutProperty(layerId, 'icon-rotate', point.bearing-map.getBearing());
                 map.getSource(layerId).setData(point)
             },
@@ -91,7 +95,7 @@ export class MarkerService{
 
         function move(){
             if(map.getBearing()!=mapBearing){
-                marker.update();
+                marker.rotate();
                 mapBearing = map.getBearing();
             }
         }
@@ -99,8 +103,8 @@ export class MarkerService{
         map.on('move', move);
 
         timer = setInterval(()=>{
-            marker.updateMarker(_deviceData);
-        }, 10000);
+            marker.updateMarker();
+        }, 1000);
 
         return marker;
     }
@@ -120,13 +124,10 @@ export class MarkerService{
 }
 
 function getIconImage(device){
-   /* alert(new Date(device.date))
-    return 'green';*/
 
     let dateLong = new Date((new Date(device.date).getTime() -(new Date().getTimezoneOffset()*60*1000))).getTime();
-    let passed = new Date().getTime() - dateLong
-
-    if(passed<10+60*1000){
+    let passed = new Date().getTime() - dateLong;
+    if(passed<10*60*1000){
         if(device.speed<0.1){
             return 'green';
         }else{

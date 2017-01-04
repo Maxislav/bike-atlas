@@ -1,6 +1,6 @@
 :host {
   position: absolute;
-  left: 80px;
+  left: 0;
   top: 100%;
   z-index: 2;
 }
@@ -8,6 +8,7 @@ ul li {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.8);
   padding: 15px;
+  min-width: 80px;
 }
 ul li:hover {
   background-color: rgba(0, 0, 0, 0.6);

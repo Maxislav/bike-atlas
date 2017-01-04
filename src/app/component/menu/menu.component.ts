@@ -41,4 +41,7 @@ export class MenuComponent{
     onOpenLogin(){
         this.ms.menuOpenLogin = !this.ms.menuOpenLogin;
     }
+    onOpenAthlete(){
+        this.ms.menuAthlete = !this.ms.menuAthlete;
+    }
 }

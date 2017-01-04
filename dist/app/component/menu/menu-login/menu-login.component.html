@@ -1,24 +1,26 @@
 
 <div (click)="$event.stopPropagation();$event.preventDefault()">
-  <div *ngIf="!as.userName">
-    <label>Имя</label>
-    <input type="text" [(ngModel)]="name"/>
-    <label>Пароль</label>
-    <input type="password" [(ngModel)]="pass"/>
-    <div class="button-container">
-      <div>
-        <button (click)="onEnter($event)">Вход</button>
-      </div>
-    </div>
+  <ul *ngIf="!as.userName">
+    <li>
+      <label>Имя</label>
+      <input type="text" [(ngModel)]="name"/>
+    </li>
+    <li>
+      <label>Пароль</label>
+      <input type="password" [(ngModel)]="pass"/>
+    </li>
+    <li>
+      <div (click)="onEnter($event)">Вход</div>
+    </li>
     <div style="border-bottom: 1px solid transparent; clear: both;"></div>
     <p><a (click)="goToReg()">Регистрация</a></p>
-  </div>
-  <div *ngIf="as.userName">
-    <p><a (click)="goDevice()">Устройства</a></p>
-    <div class="button-container">
-      <div>
-        <button (click)="onExit($event)">Выйти</button>
-      </div>
-    </div>
-  </div>
+  </ul>
+  <ul *ngIf="as.userName">
+    <li><a (click)="goDevice()">Устройства</a></li>
+    <li>
+      <div (click)="onExit($event)">Выйти</div>
+    </li>
+    <!--.button-containerdiv()
+    -->
+  </ul>
 </div>

@@ -1,11 +1,13 @@
 
 <table>
   <tr>
+    <td (click)="onOpenAthlete()" class="button menu">Участники</td>
     <td (click)="onOpen()" class="button menu">Маршрут</td>
     <td></td>
     <td (click)="onOpenLogin()" class="button enter">{{as.userName || 'Войти' }}</td>
   </tr>
 </table>
+<menu-athlete *ngIf="ms.menuAthlete"></menu-athlete>
 <menu-track *ngIf="ms.menuOpen"></menu-track>
 <menu-track-load *ngIf="ms.menuLoadOpen"></menu-track-load>
 <track-list *ngIf="trackList.length" [style.top]="ms.menuOpen ?  '150px' : '100%' "></track-list>

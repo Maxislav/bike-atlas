@@ -31,6 +31,9 @@ var MenuComponent = (function () {
     MenuComponent.prototype.onOpenLogin = function () {
         this.ms.menuOpenLogin = !this.ms.menuOpenLogin;
     };
+    MenuComponent.prototype.onOpenAthlete = function () {
+        this.ms.menuAthlete = !this.ms.menuAthlete;
+    };
     MenuComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

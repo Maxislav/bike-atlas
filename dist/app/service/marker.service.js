@@ -16,7 +16,6 @@ var MarkerService = (function () {
         this.layerIds = [];
     }
     MarkerService.prototype.marker = function (deviceData) {
-        var _deviceData = deviceData;
         var point = {
             "type": "Point",
             "coordinates": [deviceData.lng, deviceData.lat],
@@ -47,21 +46,23 @@ var MarkerService = (function () {
         var marker = {
             id: layerId,
             popup: popup,
+            deviceData: deviceData,
             setCenter: function (d) {
-                _deviceData = d;
+            },
+            updateMarker: function () {
+                map.setLayoutProperty(layerId, 'icon-image', getIconImage(this.deviceData));
+            },
+            update: function (d) {
+                this.deviceData = d;
                 point.coordinates = [d.lng, d.lat];
                 if (d.azimuth) {
                     map.setLayoutProperty(layerId, 'icon-rotate', d.azimuth - map.getBearing());
                 }
-                console.log(this);
                 this.updateMarker(d);
                 popup.setLngLat(point.coordinates);
                 map.getSource(layerId).setData(point);
             },
-            updateMarker: function (d) {
-                map.setLayoutProperty(layerId, 'icon-image', getIconImage(d));
-            },
-            update: function () {
+            rotate: function () {
                 map.setLayoutProperty(layerId, 'icon-rotate', point.bearing - map.getBearing());
                 map.getSource(layerId).setData(point);
             },
@@ -75,14 +76,14 @@ var MarkerService = (function () {
         };
         function move() {
             if (map.getBearing() != mapBearing) {
-                marker.update();
+                marker.rotate();
                 mapBearing = map.getBearing();
             }
         }
         map.on('move', move);
         timer = setInterval(function () {
-            marker.updateMarker(_deviceData);
-        }, 10000);
+            marker.updateMarker();
+        }, 1000);
         return marker;
     };
     MarkerService.prototype.getNewLayer = function (min, max, int) {
@@ -105,11 +106,9 @@ var MarkerService = (function () {
 }());
 exports.MarkerService = MarkerService;
 function getIconImage(device) {
-    /* alert(new Date(device.date))
-     return 'green';*/
     var dateLong = new Date((new Date(device.date).getTime() - (new Date().getTimezoneOffset() * 60 * 1000))).getTime();
     var passed = new Date().getTime() - dateLong;
-    if (passed < 10 + 60 * 1000) {
+    if (passed < 10 * 60 * 1000) {
         if (device.speed < 0.1) {
             return 'green';
         }
