@@ -84,7 +84,7 @@ var AppModule = (function () {
                 device_service_1.DeviceService,
                 log_service_1.LogService,
                 map_service_1.MapService,
-                marker_service_1.MarkerService,
+                marker_service_1.MarkerService
             ]
         }), 
         __metadata('design:paramtypes', [])

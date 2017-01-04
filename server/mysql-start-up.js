@@ -115,8 +115,24 @@ function createTable() {
         })
     });
 
+    const tableSetting = new Promise((res, rej) => {
+        const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`setting` ' +
+            '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+            '`user_id` INT NOT NULL , ' +
+            '`map` VARCHAR(16) NULL DEFAULT NULL, ' +
+            '`hill` BOOLEAN NOT NULL DEFAULT 0, ' +
+            'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+        connection.query(query, (err) => {
+            if (err) {
+                console.log('Error table setting create');
+                rej(err);
+                return;
+            }
+            res(connection);
+        })
+    });
 
-    return Promise.all([tableUser, tableHash, tableDevice, tableLogger])
+    return Promise.all([tableUser, tableHash, tableDevice, tableLogger, tableSetting])
 
 
 }

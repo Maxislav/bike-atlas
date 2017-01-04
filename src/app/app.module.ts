@@ -69,11 +69,12 @@ import {MapService} from "./service/map.service";
         TrackService,
         Md5,
         ToastService,
-    AuthService,
-    DeviceService,
+        AuthService,
+        DeviceService,
         LogService,
         MapService,
-    MarkerService,
+        MarkerService
     ]
 })
-export class AppModule {}
+export class AppModule {
+}
