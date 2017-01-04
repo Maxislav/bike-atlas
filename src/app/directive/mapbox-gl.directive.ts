@@ -6,6 +6,8 @@ import {MapService} from "../service/map.service";
 import {PositionSize} from "../service/position-size.service";
 import { LocalStorage } from '../service/local-storage.service';
 import * as mapboxgl from "@lib/mapbox-gl/mapbox-gl.js";
+import {Resolve} from "@angular/router";
+import {AuthService} from "../service/auth.service";
 
 declare var L: any;
 declare var gl:any;
@@ -20,7 +22,15 @@ class MyEl extends HTMLElement{
 @Directive({
     selector: 'mapbox-gl',
 })
-export class MapboxGlDirective implements AfterViewInit {
+export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
+    resolve(): Promise<any> {
+        return new Promise((resolve, reject)=>{
+
+            setTimeout(()=>{
+                resolve()
+            }, 5000)
+        });
+    }
     get mapboxgl(): any {
         return this._mapboxgl;
     }
@@ -107,9 +117,9 @@ export class MapboxGlDirective implements AfterViewInit {
 
 
 
-    constructor(el: ElementRef, renderer: Renderer, mapService: MapService, positionSiz: PositionSize, private ls: LocalStorage) {
+    constructor(el: ElementRef, renderer: Renderer, mapService: MapService, positionSiz: PositionSize, private ls: LocalStorage, private as: AuthService) {
+        console.log(as.userName);
         this.center = [30.5, 50.5];
-
         this.el = el;
         this.renderer = renderer;
         this.mapService = mapService;

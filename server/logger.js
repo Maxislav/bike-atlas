@@ -1,6 +1,7 @@
 let app, ioServer;
 const dateFormat = require('dateformat');
 const util = require('./socket-data/util');
+const http = require( "http" );
 module.exports = class Logger {
     /** @namespace this.connection */
 
@@ -10,7 +11,6 @@ module.exports = class Logger {
         this.connection = connection;
         this._sockets = {};
         this.devices = {};
-
         app.get('/log*', this.onLog.bind(this))
     }
 

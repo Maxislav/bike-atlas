@@ -13,7 +13,11 @@ export class TransactionResolver implements Resolve<Promise< Hero[]>> {
     constructor() {
 
     }
-     resolve () : Promise<Hero[]>{
-        return new Promise<Hero[]>(resolve => setTimeout(() => resolve(HEROES), 1000))
+    resolve () : Promise<Hero[]>{
+        return new Promise<Hero[]>(resolve => {
+            setTimeout(() => {
+                resolve(HEROES)
+            }, 1000)
+        })
     }
 }

@@ -4,6 +4,7 @@ import {HeroService} from "./hero.service";
 import {MapService} from "./service/map.service";
 import {InfoPositionComponent} from "./component/info-position/info-position-component";
 import {MapboxGlDirective} from "./directive/mapbox-gl.directive";
+import {LogService} from "./service/log.service";
 
 @Component({
     moduleId: module.id,
@@ -20,7 +21,7 @@ import {MapboxGlDirective} from "./directive/mapbox-gl.directive";
 export class MapComponent {
 
 
-    constructor(mercator: Mercator, mapService: MapService){
+    constructor(mercator: Mercator, mapService: MapService, private ls: LogService){
 
     }
 

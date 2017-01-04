@@ -2,15 +2,11 @@
  * Created by maxislav on 10.10.16.
  */
 import { Component } from '@angular/core';
-import { ElementRef } from '@angular/core';
 import {Mercator} from "../../service/mercator.service";
-import {MapService} from "../../service/map.service";
 import {PositionSize} from "../../service/position-size.service";
 import {InfoPositionComponent} from "../info-position/info-position-component";
 import {MenuComponent} from "../menu/menu.component";
 import {AuthService} from "../../service/auth.service";
-import {LogService} from "../../service/log.service";
-//noinspection TypeScriptCheckImport
 
 
 @Component({
@@ -25,7 +21,7 @@ import {LogService} from "../../service/log.service";
 
 export class AuthComponent{
 
-    constructor(public as: AuthService, private ls: LogService){
+    constructor(public as: AuthService ){
         this.as = as;
     }
 

@@ -17,12 +17,9 @@ var position_size_service_1 = require("../../service/position-size.service");
 var info_position_component_1 = require("../info-position/info-position-component");
 var menu_component_1 = require("../menu/menu.component");
 var auth_service_1 = require("../../service/auth.service");
-var log_service_1 = require("../../service/log.service");
-//noinspection TypeScriptCheckImport
 var AuthComponent = (function () {
-    function AuthComponent(as, ls) {
+    function AuthComponent(as) {
         this.as = as;
-        this.ls = ls;
         this.as = as;
     }
     AuthComponent = __decorate([
@@ -35,7 +32,7 @@ var AuthComponent = (function () {
                 'auth.component.css',
             ]
         }), 
-        __metadata('design:paramtypes', [auth_service_1.AuthService, log_service_1.LogService])
+        __metadata('design:paramtypes', [auth_service_1.AuthService])
     ], AuthComponent);
     return AuthComponent;
 }());

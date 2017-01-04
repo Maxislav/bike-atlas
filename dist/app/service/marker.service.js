@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var map_service_1 = require("./map.service");
 var MarkerService = (function () {
-    function MarkerService(maps) {
-        this.maps = maps;
+    function MarkerService(mapService) {
+        this.mapService = mapService;
         this.layerIds = [];
     }
     MarkerService.prototype.marker = function (deviceData) {
@@ -22,21 +22,23 @@ var MarkerService = (function () {
             "coordinates": [deviceData.lng, deviceData.lat],
             "bearing": deviceData.azimuth
         };
-        var map = this.maps.map;
+        var map = this.mapService.map;
         var mapBearing = map.getBearing();
         var F = parseFloat;
         var layerId = this.getNewLayer(0, 5000000, true) + '';
-        map.addSource(layerId, { type: 'geojson', data: point });
-        map.addLayer({
-            "id": layerId,
-            "type": "symbol",
-            "source": layerId,
-            "layout": {
-                "icon-image": getIconImage(deviceData),
-                "icon-rotate": point.bearing
-            }
+        this.mapService.onLoad.then(function () {
+            map.addSource(layerId, { type: 'geojson', data: point });
+            map.addLayer({
+                "id": layerId,
+                "type": "symbol",
+                "source": layerId,
+                "layout": {
+                    "icon-image": getIconImage(deviceData),
+                    "icon-rotate": point.bearing
+                }
+            });
         });
-        var mapboxgl = this.maps.mapboxgl;
+        var mapboxgl = this.mapService.mapboxgl;
         var popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15], closeButton: false })
             .setLngLat(point.coordinates)
             .setHTML('<div>' + deviceData.name + '</div>')

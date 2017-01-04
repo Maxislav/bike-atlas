@@ -19,6 +19,7 @@ var map_service_1 = require("../service/map.service");
 var position_size_service_1 = require("../service/position-size.service");
 var local_storage_service_1 = require('../service/local-storage.service');
 var mapboxgl = require("@lib/mapbox-gl/mapbox-gl.js");
+var auth_service_1 = require("../service/auth.service");
 var MyEl = (function (_super) {
     __extends(MyEl, _super);
     function MyEl(id) {
@@ -27,8 +28,10 @@ var MyEl = (function (_super) {
     return MyEl;
 }(HTMLElement));
 var MapboxGlDirective = (function () {
-    function MapboxGlDirective(el, renderer, mapService, positionSiz, ls) {
+    function MapboxGlDirective(el, renderer, mapService, positionSiz, ls, as) {
         this.ls = ls;
+        this.as = as;
+        console.log(as.userName);
         this.center = [30.5, 50.5];
         this.el = el;
         this.renderer = renderer;
@@ -40,6 +43,13 @@ var MapboxGlDirective = (function () {
         //renderer.setElementStyle(el.nativeElement, 'height', '100%');
         renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'gray');
     }
+    MapboxGlDirective.prototype.resolve = function () {
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                resolve();
+            }, 5000);
+        });
+    };
     Object.defineProperty(MapboxGlDirective.prototype, "mapboxgl", {
         get: function () {
             return this._mapboxgl;
@@ -117,7 +127,7 @@ var MapboxGlDirective = (function () {
         core_1.Directive({
             selector: 'mapbox-gl',
         }), 
-        __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer, map_service_1.MapService, position_size_service_1.PositionSize, local_storage_service_1.LocalStorage])
+        __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer, map_service_1.MapService, position_size_service_1.PositionSize, local_storage_service_1.LocalStorage, auth_service_1.AuthService])
     ], MapboxGlDirective);
     return MapboxGlDirective;
 }());

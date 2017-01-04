@@ -13,6 +13,7 @@ import {AuthComponent} from "./component/auth-component/auth.component";
 import {MapComponent} from "./map.component";
 import {RegistrationComponent} from "./component/registration/registration.component";
 import {DeviceComponent} from "./component/device/device.component";
+import {AuthService} from "./service/auth.service";
 
 const  appRouters: Routes = [
     {
@@ -23,6 +24,9 @@ const  appRouters: Routes = [
     {
         path: 'auth',
         component: AuthComponent,
+        resolve:  {
+            transactions : AuthService
+        },
         children:[
             {
                 path:''
@@ -30,6 +34,7 @@ const  appRouters: Routes = [
             {
                 path:'map',
                 component: MapComponent,
+
                 children: [
                     {
                         path: ''

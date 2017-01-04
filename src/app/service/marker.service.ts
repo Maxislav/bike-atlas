@@ -18,7 +18,7 @@ export interface Marker{
 export class MarkerService{
     private layerIds: Array<string>;
 
-    constructor(private maps: MapService){
+    constructor(private mapService: MapService){
         this.layerIds = [];
     }
 
@@ -29,24 +29,26 @@ export class MarkerService{
             "coordinates": [deviceData.lng, deviceData.lat],
             "bearing": deviceData.azimuth
         };
-        const map = this.maps.map;
+        const map = this.mapService.map;
         let mapBearing = map.getBearing();
         const F = parseFloat;
 
         let layerId:string = this.getNewLayer(0, 5000000, true)+'';
 
-        map.addSource(layerId, { type: 'geojson', data: point });
-
-        map.addLayer({
-            "id": layerId,
-            "type": "symbol",
-            "source": layerId,
-            "layout": {
-                "icon-image": getIconImage(deviceData),
-                "icon-rotate": point.bearing
-            }
+        this.mapService.onLoad.then(()=>{
+            map.addSource(layerId, { type: 'geojson', data: point });
+            map.addLayer({
+                "id": layerId,
+                "type": "symbol",
+                "source": layerId,
+                "layout": {
+                    "icon-image": getIconImage(deviceData),
+                    "icon-rotate": point.bearing
+                }
+            });
         });
-        const mapboxgl = this.maps.mapboxgl;
+
+        const mapboxgl = this.mapService.mapboxgl;
 
 
         const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})

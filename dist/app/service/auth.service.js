@@ -26,6 +26,12 @@ var AuthService = (function () {
             _this.userName = null;
         });
     }
+    AuthService.prototype.resolve = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.resolveAuth = resolve;
+        });
+    };
     AuthService.prototype.onConnect = function () {
         var _this = this;
         this.socket.$emit('onAuth', {
@@ -39,6 +45,7 @@ var AuthService = (function () {
                 _this.userName = null;
             }
             console.log(d);
+            _this.resolveAuth(true);
         });
     };
     Object.defineProperty(AuthService.prototype, "userName", {

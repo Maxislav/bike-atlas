@@ -5,6 +5,7 @@ var auth_component_1 = require("./component/auth-component/auth.component");
 var map_component_1 = require("./map.component");
 var registration_component_1 = require("./component/registration/registration.component");
 var device_component_1 = require("./component/device/device.component");
+var auth_service_1 = require("./service/auth.service");
 var appRouters = [
     {
         path: '',
@@ -14,6 +15,9 @@ var appRouters = [
     {
         path: 'auth',
         component: auth_component_1.AuthComponent,
+        resolve: {
+            transactions: auth_service_1.AuthService
+        },
         children: [
             {
                 path: ''

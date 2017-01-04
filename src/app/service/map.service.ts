@@ -9,6 +9,10 @@ import {TrackService} from "./track.service";
 
 @Injectable()
 export class MapService {
+
+    get onLoad(): Promise<_map> {
+        return this._onLoad;
+    }
     get mapboxgl(): any {
         return this._mapboxgl;
     }
@@ -20,7 +24,7 @@ export class MapService {
 
 
     get map(): any {
-        return this._map;
+       return this._map;
     }
 
     set map(value: any) {
@@ -39,8 +43,10 @@ export class MapService {
     public foo:Function;
     public pitch:number;
     public bearing:number;
+    private _onLoad: Promise<_map>;
 
     private _mapboxgl: any;
+    private _resolve: Function
     socket:any;
 
     // public ls: LocalStorage
@@ -51,6 +57,10 @@ export class MapService {
         this.events = {
             load: []
         };
+
+        this._onLoad = new Promise((resolve, reject)=>{
+            this._resolve = resolve;
+        })
        
     }
 
@@ -58,7 +68,6 @@ export class MapService {
     setMap(map:any) {
         this.map = map;
         this.trackService.setMap(map);
-
         map.on('load', ()=> {
             this.pitch = map.getPitch().toFixed(0);
             this.bearing = map.getBearing().toFixed(1)
@@ -66,6 +75,7 @@ export class MapService {
             let LngLat = map.getCenter();
             this.lngMap = LngLat.lng.toFixed(4);
             this.latMap = LngLat.lat.toFixed(4);
+            this._resolve(map);
             this.ref.tick()
         });
 

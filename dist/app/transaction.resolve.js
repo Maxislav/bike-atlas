@@ -17,7 +17,11 @@ var TransactionResolver = (function () {
     function TransactionResolver() {
     }
     TransactionResolver.prototype.resolve = function () {
-        return new Promise(function (resolve) { return setTimeout(function () { return resolve(hero_1.HEROES); }, 1000); });
+        return new Promise(function (resolve) {
+            setTimeout(function () {
+                resolve(hero_1.HEROES);
+            }, 1000);
+        });
     };
     TransactionResolver = __decorate([
         core_1.Injectable(), 

@@ -28,8 +28,7 @@ export class LogService{
         this.devices = {};
     }
     log(deviceData: DeviceData){
-      console.log(deviceData);
-
+        console.log(deviceData);
         if( this.devices[deviceData.id] ){
             this.devices[deviceData.id].maker.setCenter(deviceData);
 

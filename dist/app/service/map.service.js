@@ -18,13 +18,24 @@ var MapService = (function () {
     // public ls: LocalStorage
     //private ref: ApplicationRef
     function MapService(ref, ls, trackService) {
+        var _this = this;
         this.ref = ref;
         this.ls = ls;
         this.trackService = trackService;
         this.events = {
             load: []
         };
+        this._onLoad = new Promise(function (resolve, reject) {
+            _this._resolve = resolve;
+        });
     }
+    Object.defineProperty(MapService.prototype, "onLoad", {
+        get: function () {
+            return this._onLoad;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(MapService.prototype, "mapboxgl", {
         get: function () {
             return this._mapboxgl;
@@ -56,6 +67,7 @@ var MapService = (function () {
             var LngLat = map.getCenter();
             _this.lngMap = LngLat.lng.toFixed(4);
             _this.latMap = LngLat.lat.toFixed(4);
+            _this._resolve(map);
             _this.ref.tick();
         });
         map.on('mousemove', function (e) {
