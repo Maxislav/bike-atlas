@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * GET /?alt=0.0&code=0xF020&id=123456789012345&gprmc=%24GPRMC%2C191019.951%2CA%2C5023.32513%2CN%2C3029.62911%2CE%2C0.000000%2C0.000000%2C301213%2C%2C*3A HTTP/1.1
  Host: 31.131.16.130:10100
@@ -105,19 +106,22 @@ if (!mysql_query($sql,$db))
 
 mysql_close($db);
 
- $getdata = http_build_query($_GET);
+$getdata = http_build_query($_GET);
+$opts = array('http' =>
+ array(
+     'method'  => 'GET',
+     'content' => $getdata
+ )
+);
 
-    $opts = array('http' =>
-        array(
-            'method'  => 'GET',
-            'content' => $getdata
-        )
-    );
+$context  = stream_context_create($opts);
+$servletURL  = "http://178.62.44.54/log"."?".$getdata;
+$result = file_get_contents($servletURL);
+echo  $result;
 
-    $context  = stream_context_create($opts);
-    $servletURL  = 'http://localhost/log';
-    $result = file_get_contents(servletURL, false, $context);
-    echo $result;
+
+//echo 'dss'.$result;
+//echo  $servletURL;
 
 //$h = fopen("log.txt","w");
 
