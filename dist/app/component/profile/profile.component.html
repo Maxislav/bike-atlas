@@ -2,6 +2,15 @@
 <div class="content">
   <div>
     <div (click)="onClose()" class="close">&times;</div>
-    <p>Профиль</p>
+    <div class="row">
+      <p>Профиль</p>
+    </div>
+    <div class="row">
+      <load-img><img [src]="imageurl" (click)="onOpen()"/>
+        <div class="row">{{name}}</div>
+        <input type="file" id="files" name="files[]" multiple="" style="display: none"/>
+      </load-img>
+    </div>
+    <div class="border-hidden"></div>
   </div>
 </div>

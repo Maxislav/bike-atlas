@@ -1,5 +1,13 @@
 div.content
     div
         .close((click)="onClose()") &times;
-        p
-            | Профиль
+        .row
+            p
+                | Профиль
+        .row
+            load-img
+                img([src]="imageurl", (click)="onOpen()")
+                .row {{name}}
+
+                input(type="file" id="files" name="files[]" multiple="", style="display: none")
+        .border-hidden

@@ -5,6 +5,9 @@
 .button-container > div button {
   margin-left: 8px;
 }
+.row {
+  margin-bottom: 15px;
+}
 button {
   padding: 8px 15px;
   border: none;
@@ -38,6 +41,11 @@ button:active {
 .content > div {
   position: relative;
   padding: 30px;
+}
+img {
+  float: left;
+  width: 100px;
+  height: 100px;
 }
 .close {
   position: absolute;
