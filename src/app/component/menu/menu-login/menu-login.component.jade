@@ -13,6 +13,8 @@ div((click)="$event.stopPropagation();$event.preventDefault()" )
             a((click)="goToReg()") Регистрация
     ul(*ngIf="as.userName")
         li
+            div((click)="goToProfile()") Профиль
+        li
             a((click)="goDevice()") Устройства
         li
             div((click)="onExit($event)") Выйти

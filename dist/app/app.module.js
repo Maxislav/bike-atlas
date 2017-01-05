@@ -41,6 +41,7 @@ var marker_service_1 = require("./service/marker.service");
 var map_service_1 = require("./service/map.service");
 var login_service_1 = require("./service/login.service");
 var menu_athlete_component_1 = require("./component/menu/menu-athlete/menu.athlete.component");
+var profile_component_1 = require("./component/profile/profile.component");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -70,7 +71,8 @@ var AppModule = (function () {
                 track_list_component_1.TrackList,
                 toast_component_1.ToastComponent,
                 device_component_1.DeviceComponent,
-                menu_athlete_component_1.MenuAthleteComponent
+                menu_athlete_component_1.MenuAthleteComponent,
+                profile_component_1.ProfileComponent
             ],
             bootstrap: [
                 app_component_1.AppComponent

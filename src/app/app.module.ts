@@ -32,6 +32,7 @@ import {MarkerService} from "./service/marker.service";
 import {MapService} from "./service/map.service";
 import {LoginService} from "./service/login.service";
 import {MenuAthleteComponent} from "./component/menu/menu-athlete/menu.athlete.component";
+import {ProfileComponent} from "./component/profile/profile.component";
 
 @NgModule({
     imports: [
@@ -58,7 +59,8 @@ import {MenuAthleteComponent} from "./component/menu/menu-athlete/menu.athlete.c
         TrackList,
         ToastComponent,
         DeviceComponent,
-        MenuAthleteComponent
+        MenuAthleteComponent,
+        ProfileComponent
 
     ],
     bootstrap: [

@@ -14,6 +14,7 @@ import {MapComponent} from "./map.component";
 import {RegistrationComponent} from "./component/registration/registration.component";
 import {DeviceComponent} from "./component/device/device.component";
 import {AuthService} from "./service/auth.service";
+import {ProfileComponent} from "./component/profile/profile.component";
 
 const  appRouters: Routes = [
     {
@@ -46,6 +47,10 @@ const  appRouters: Routes = [
                     {
                         path:'device',
                         component: DeviceComponent
+                    },
+                    {
+                        path: 'profile',
+                        component:ProfileComponent
                     }
                 ]
             }

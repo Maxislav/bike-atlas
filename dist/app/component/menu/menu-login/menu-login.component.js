@@ -44,6 +44,10 @@ var MenuLoginComponent = (function () {
             pass: this.md5.hash(this.pass)
         });
     };
+    MenuLoginComponent.prototype.goToProfile = function () {
+        this.router.navigate(['/auth/map/profile']);
+        this.ms.menuOpenLogin = false;
+    };
     MenuLoginComponent.prototype.onExit = function (e) {
         var _this = this;
         this.socket

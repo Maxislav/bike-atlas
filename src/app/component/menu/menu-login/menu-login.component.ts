@@ -50,6 +50,11 @@ export class MenuLoginComponent {
             });
     }
 
+    goToProfile(){
+        this.router.navigate(['/auth/map/profile']);
+        this.ms.menuOpenLogin = false
+    }
+
     onExit(e) {
         this.socket
             .$emit('onExit', {

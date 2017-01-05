@@ -16,6 +16,9 @@
     <p><a (click)="goToReg()">Регистрация</a></p>
   </ul>
   <ul *ngIf="as.userName">
+    <li>
+      <div (click)="goToProfile()">Профиль</div>
+    </li>
     <li><a (click)="goDevice()">Устройства</a></li>
     <li>
       <div (click)="onExit($event)">Выйти</div>
