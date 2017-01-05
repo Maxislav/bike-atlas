@@ -45,6 +45,9 @@ var DeviceService = (function () {
             });
         });
     };
+    DeviceService.prototype.clearDevice = function () {
+        this._devices.length = 0;
+    };
     Object.defineProperty(DeviceService.prototype, "devices", {
         get: function () {
             return this._devices;

@@ -72,6 +72,7 @@ var MarkerService = (function () {
             hide: function () {
                 map.removeLayer(layerId);
                 map.removeSource(layerId);
+                popup.remove();
                 console.log('delete marker id', layerId);
                 map.off('move', move);
                 timer && clearInterval(timer);

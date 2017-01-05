@@ -19,9 +19,10 @@ var auth_service_1 = require("../../../service/auth.service");
 var toast_component_1 = require("../../toast/toast.component");
 var device_service_1 = require("../../../service/device.service");
 var login_service_1 = require("../../../service/login.service");
+var log_service_1 = require("../../../service/log.service");
 //import {RouterLink} from "@angular/router-deprecated";
 var MenuLoginComponent = (function () {
-    function MenuLoginComponent(router, ms, io, md5, ls, as, ds, ts, loginService) {
+    function MenuLoginComponent(router, ms, io, md5, ls, as, ds, ts, logService, loginService) {
         this.router = router;
         this.ms = ms;
         this.io = io;
@@ -30,6 +31,7 @@ var MenuLoginComponent = (function () {
         this.as = as;
         this.ds = ds;
         this.ts = ts;
+        this.logService = logService;
         this.loginService = loginService;
         this.socket = io.socket;
     }
@@ -58,6 +60,8 @@ var MenuLoginComponent = (function () {
             if (d.result == 'ok') {
                 _this.ls.userKey = null;
                 _this.as.userName = null;
+                _this.logService.clearDevices();
+                _this.ds.clearDevice();
             }
         });
     };
@@ -73,7 +77,7 @@ var MenuLoginComponent = (function () {
             templateUrl: './menu-login.component.html',
             styleUrls: ['./menu-login.css'],
         }), 
-        __metadata('design:paramtypes', [router_1.Router, (typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, socket_oi_service_1.Io, md5_service_1.Md5, local_storage_service_1.LocalStorage, auth_service_1.AuthService, device_service_1.DeviceService, toast_component_1.ToastService, login_service_1.LoginService])
+        __metadata('design:paramtypes', [router_1.Router, (typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, socket_oi_service_1.Io, md5_service_1.Md5, local_storage_service_1.LocalStorage, auth_service_1.AuthService, device_service_1.DeviceService, toast_component_1.ToastService, log_service_1.LogService, login_service_1.LoginService])
     ], MenuLoginComponent);
     return MenuLoginComponent;
     var _a;

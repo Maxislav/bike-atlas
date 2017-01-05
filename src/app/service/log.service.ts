@@ -39,6 +39,12 @@ export class LogService{
             device.marker =  this.devices[deviceData.id] = this.markerService.marker(deviceData)
         }
     }
+    clearDevices(){
+        for(let opt in this.devices){
+            this.devices[opt].hide();
+            delete this.devices[opt];
+        }
+    }
     getDeviceData(id: string) : DeviceData{
         if(this.devices[id]){
             return this.devices[id].deviceData

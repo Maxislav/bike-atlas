@@ -49,6 +49,9 @@ export class DeviceService {
                 })
         })
     }
+    clearDevice(){
+        this._devices.length = 0;
+    }
 
     get devices(): Array<Device> {
         return this._devices;

@@ -33,6 +33,12 @@ var LogService = (function () {
             device.marker = this.devices[deviceData.id] = this.markerService.marker(deviceData);
         }
     };
+    LogService.prototype.clearDevices = function () {
+        for (var opt in this.devices) {
+            this.devices[opt].hide();
+            delete this.devices[opt];
+        }
+    };
     LogService.prototype.getDeviceData = function (id) {
         if (this.devices[id]) {
             return this.devices[id].deviceData;
