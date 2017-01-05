@@ -15,6 +15,7 @@ import {RegistrationComponent} from "./component/registration/registration.compo
 import {DeviceComponent} from "./component/device/device.component";
 import {AuthService} from "./service/auth.service";
 import {ProfileComponent} from "./component/profile/profile.component";
+import {JournalComponent} from "./component/journal-component/journal.component";
 
 const  appRouters: Routes = [
     {
@@ -51,6 +52,10 @@ const  appRouters: Routes = [
                     {
                         path: 'profile',
                         component:ProfileComponent
+                    },
+                    {
+                        path: 'journal',
+                        component: JournalComponent
                     }
                 ]
             }

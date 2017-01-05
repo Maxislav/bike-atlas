@@ -8,20 +8,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var TrackList = (function () {
-    function TrackList() {
+/**
+ * Created by max on 05.01.17.
+ */
+var core_1 = require("@angular/core");
+var common_1 = require('@angular/common');
+var JournalComponent = (function () {
+    function JournalComponent(location) {
+        this.location = location;
     }
-    TrackList = __decorate([
+    JournalComponent.prototype.onClose = function () {
+        this.location.back();
+    };
+    JournalComponent = __decorate([
         core_1.Component({
+            //noinspection TypeScriptUnresolvedVariable
             moduleId: module.id,
-            selector: 'track-list',
-            template: "<div>Список</div>",
-            styleUrls: ['./track-list.css']
+            templateUrl: './journal.component.html',
+            styleUrls: ['./journal.component.css'],
         }), 
-        __metadata('design:paramtypes', [])
-    ], TrackList);
-    return TrackList;
+        __metadata('design:paramtypes', [common_1.Location])
+    ], JournalComponent);
+    return JournalComponent;
 }());
-exports.TrackList = TrackList;
-//# sourceMappingURL=track-lict.component.js.map
+exports.JournalComponent = JournalComponent;
+//# sourceMappingURL=journal.component.js.map

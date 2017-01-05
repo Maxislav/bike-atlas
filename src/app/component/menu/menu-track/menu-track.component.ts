@@ -3,6 +3,7 @@ import {Component, Injectable} from '@angular/core';
 import {MenuService} from "app/service/menu.service";
 import {Io} from "app/service/socket.oi.service";
 import {TrackService} from "app/service/track.service";
+import {Router} from "@angular/router";
 const ss = require('node_modules/socket.io-stream/socket.io-stream.js');
 
 const log = console.log
@@ -25,8 +26,11 @@ interface myEvent extends Event {
     target:myEventTarget
 }
 
-
 const MENU:Item[] = [
+    {
+        value: 'journal',
+        text: "Журнал"
+    },
     {
         value: 'load',
         text: "Загрузить",
@@ -36,10 +40,7 @@ const MENU:Item[] = [
         value: 'import',
         text: "Импорт from Google KML"
     },
-    {
-        value: 'view',
-        text: "Просмотреть"
-    }
+
 ];
 
 @Component({
@@ -54,7 +55,7 @@ export class MenuTrackComponent {
     private socket:any;
     private clickLoad:number = 0;
 
-    constructor(private ms:MenuService, private io:Io, private trackService:TrackService) {
+    constructor(private ms:MenuService, private io:Io, private trackService:TrackService, private router: Router) {
         this.socket = io.socket
     }
 
@@ -68,6 +69,11 @@ export class MenuTrackComponent {
                 break;
             case 'import':
                 this.importFile($event);
+                break;
+            case 'journal':
+                this.router.navigate(['/auth/map/journal']);
+                this.ms.menuOpen = false;
+                //this.importFile($event);
                 break;
             default:
                 return null

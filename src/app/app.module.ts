@@ -33,6 +33,7 @@ import {MapService} from "./service/map.service";
 import {LoginService} from "./service/login.service";
 import {MenuAthleteComponent} from "./component/menu/menu-athlete/menu.athlete.component";
 import {ProfileComponent} from "./component/profile/profile.component";
+import {JournalComponent} from "./component/journal-component/journal.component";
 
 @NgModule({
     imports: [
@@ -60,7 +61,8 @@ import {ProfileComponent} from "./component/profile/profile.component";
         ToastComponent,
         DeviceComponent,
         MenuAthleteComponent,
-        ProfileComponent
+        ProfileComponent,
+        JournalComponent
 
     ],
     bootstrap: [

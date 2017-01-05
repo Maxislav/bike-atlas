@@ -42,6 +42,7 @@ var map_service_1 = require("./service/map.service");
 var login_service_1 = require("./service/login.service");
 var menu_athlete_component_1 = require("./component/menu/menu-athlete/menu.athlete.component");
 var profile_component_1 = require("./component/profile/profile.component");
+var journal_component_1 = require("./component/journal-component/journal.component");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -72,7 +73,8 @@ var AppModule = (function () {
                 toast_component_1.ToastComponent,
                 device_component_1.DeviceComponent,
                 menu_athlete_component_1.MenuAthleteComponent,
-                profile_component_1.ProfileComponent
+                profile_component_1.ProfileComponent,
+                journal_component_1.JournalComponent
             ],
             bootstrap: [
                 app_component_1.AppComponent

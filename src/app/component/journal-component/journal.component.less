@@ -1,0 +1,41 @@
+@import "../../css/constant";
+:host{
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  width: 100%;
+}
+.content{
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  min-width: 600px;
+  margin-left: -300px;
+  padding: 0;
+  left: 50%;
+  top: calc(~"100% +"20px);
+  box-shadow: @box-shadow;
+  &>div{
+    position: relative;
+    padding: 30px;
+  }
+}
+.close{
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: darkred;
+  cursor: pointer;
+  padding: 15px;
+  font-size: 20px;
+  font: 30px/15px bold;
+}
+@media screen and (max-width: 600px){
+  .content{
+    position: relative;
+    width: 100%;
+    min-width: inherit;;
+    left: 0;
+    margin-left: 0;
+  }
+}

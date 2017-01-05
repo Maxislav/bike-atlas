@@ -13,9 +13,14 @@ var core_1 = require('@angular/core');
 var menu_service_1 = require("app/service/menu.service");
 var socket_oi_service_1 = require("app/service/socket.oi.service");
 var track_service_1 = require("app/service/track.service");
+var router_1 = require("@angular/router");
 var ss = require('node_modules/socket.io-stream/socket.io-stream.js');
 var log = console.log;
 var MENU = [
+    {
+        value: 'journal',
+        text: "Журнал"
+    },
     {
         value: 'load',
         text: "Загрузить",
@@ -25,16 +30,13 @@ var MENU = [
         value: 'import',
         text: "Импорт from Google KML"
     },
-    {
-        value: 'view',
-        text: "Просмотреть"
-    }
 ];
 var MenuTrackComponent = (function () {
-    function MenuTrackComponent(ms, io, trackService) {
+    function MenuTrackComponent(ms, io, trackService, router) {
         this.ms = ms;
         this.io = io;
         this.trackService = trackService;
+        this.router = router;
         this.menu = MENU;
         this.clickLoad = 0;
         this.socket = io.socket;
@@ -48,6 +50,11 @@ var MenuTrackComponent = (function () {
                 break;
             case 'import':
                 this.importFile($event);
+                break;
+            case 'journal':
+                this.router.navigate(['/auth/map/journal']);
+                this.ms.menuOpen = false;
+                //this.importFile($event);
                 break;
             default:
                 return null;
@@ -135,7 +142,7 @@ var MenuTrackComponent = (function () {
             templateUrl: './menu-track.html',
             styleUrls: ['./menu-track.css'],
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, (typeof (_b = typeof socket_oi_service_1.Io !== 'undefined' && socket_oi_service_1.Io) === 'function' && _b) || Object, (typeof (_c = typeof track_service_1.TrackService !== 'undefined' && track_service_1.TrackService) === 'function' && _c) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, (typeof (_b = typeof socket_oi_service_1.Io !== 'undefined' && socket_oi_service_1.Io) === 'function' && _b) || Object, (typeof (_c = typeof track_service_1.TrackService !== 'undefined' && track_service_1.TrackService) === 'function' && _c) || Object, router_1.Router])
     ], MenuTrackComponent);
     return MenuTrackComponent;
     var _a, _b, _c;
