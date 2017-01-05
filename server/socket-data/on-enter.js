@@ -118,7 +118,7 @@ class OnEnter{
         console.error('SELECT * FROM `hash', err)
         return;
       }
-      console.log(rows);
+      //console.log(rows);
       rows.forEach(item=>{
         hashKeys.push(item.key)
       })

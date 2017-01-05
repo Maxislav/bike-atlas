@@ -1,6 +1,7 @@
 /**
  * Created by maxislav on 20.10.16.
  */
+process.env.TZ = 'UTC';
 //const livereload = require('express-livereload');
 const path = require('path');
 const express = require('express');
