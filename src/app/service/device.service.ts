@@ -8,7 +8,7 @@ export interface Device {
     name: string;
     phone?: string,
     marker?: Marker;
-    passed?:number;
+    passed?: string;
 }
 
 

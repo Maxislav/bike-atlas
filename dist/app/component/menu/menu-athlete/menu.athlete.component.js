@@ -12,21 +12,21 @@ var core_1 = require("@angular/core");
 var device_service_1 = require("../../../service/device.service");
 var map_service_1 = require("../../../service/map.service");
 var log_service_1 = require("../../../service/log.service");
+var elapse_time_1 = require("./elapse.time");
 var MenuAthleteComponent = (function () {
     function MenuAthleteComponent(ds, mapServ, ls) {
         var _this = this;
         this.ds = ds;
         this.mapServ = mapServ;
         this.ls = ls;
+        this.timer = new elapse_time_1.Timer();
         this.devices = ds.devices;
-        this.timer = setInterval(function () {
+        this.interval = setInterval(function () {
             _this.devices.forEach(function (device) {
                 var deviceData = _this.ls.getDeviceData(device.id);
                 if (deviceData) {
                     var date = deviceData.date;
-                    var dateLong = new Date(date).getTime();
-                    var passed = new Date().getTime() - dateLong;
-                    device.passed = parseInt((passed / 1000).toFixed(0));
+                    device.passed = _this.timer.elapse(date);
                 }
             });
         }, 1000);
@@ -41,8 +41,8 @@ var MenuAthleteComponent = (function () {
         }
     };
     MenuAthleteComponent.prototype.ngOnDestroy = function () {
-        if (this.timer) {
-            clearInterval(this.timer);
+        if (this.interval) {
+            clearInterval(this.interval);
         }
     };
     MenuAthleteComponent = __decorate([

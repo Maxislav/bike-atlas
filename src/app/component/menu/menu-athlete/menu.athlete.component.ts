@@ -3,6 +3,8 @@ import {Component} from "@angular/core";
 import {DeviceService, Device} from "../../../service/device.service";
 import {MapService} from "../../../service/map.service";
 import {LogService} from "../../../service/log.service";
+import {Timer} from "./elapse.time";
+
 @Component({
     moduleId: module.id,
     selector: 'menu-athlete',
@@ -12,25 +14,22 @@ import {LogService} from "../../../service/log.service";
 })
 export class MenuAthleteComponent{
     private devices: Array<Device>;
-    private timer: number;
+    private interval: number;
     private passed: Array<number>;
+    private timer: Timer;
     constructor(private ds: DeviceService, private  mapServ: MapService, private ls: LogService){
+        this.timer = new Timer()
         this.devices = ds.devices;
-        this.timer = setInterval(()=>{
+        this.interval = setInterval(()=>{
             this.devices.forEach(device=>{
                 const deviceData  = this.ls.getDeviceData(device.id)
                 if(deviceData){
                     let date =  deviceData.date;
-                    let dateLong = new Date(date).getTime();
-                    let passed = new Date().getTime() - dateLong;
-                    device.passed = parseInt((passed/1000).toFixed(0))
+                    device.passed = this.timer.elapse(date)
                 }
             })
         }, 1000)
     }
-
-
-
 
     selectDevice(device){
         const deviceData  = this.ls.getDeviceData(device.id)
@@ -43,8 +42,8 @@ export class MenuAthleteComponent{
     }
 
     ngOnDestroy(){
-        if(this.timer){
-            clearInterval(this.timer)
+        if(this.interval){
+            clearInterval(this.interval)
         }
     }
 }

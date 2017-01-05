@@ -48,11 +48,15 @@ var MarkerService = (function () {
             popup: popup,
             deviceData: deviceData,
             timePassed: 0,
+            status: null,
             updateMarker: function () {
-                map.setLayoutProperty(layerId, 'icon-image', getIconImage(this.deviceData));
+                this.status = getIconImage(this.deviceData);
+                map.setLayoutProperty(layerId, 'icon-image', this.status);
             },
             update: function (d) {
-                this.deviceData = d;
+                for (var opt in d) {
+                    this.deviceData[opt] = d[opt];
+                }
                 point.coordinates = [d.lng, d.lat];
                 if (d.azimuth) {
                     map.setLayoutProperty(layerId, 'icon-rotate', d.azimuth - map.getBearing());

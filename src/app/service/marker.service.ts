@@ -12,7 +12,8 @@ export interface Marker{
     popup: any;
     updateMarker: Function,
     deviceData: DeviceData,
-    timePassed: number
+    timePassed: number,
+    status: string | Object;
 }
 
 
@@ -65,11 +66,15 @@ export class MarkerService{
             popup: popup,
             deviceData: deviceData,
             timePassed: 0,
+            status: null,
             updateMarker: function(){
-                map.setLayoutProperty(layerId, 'icon-image', getIconImage(this.deviceData));
+                this.status = getIconImage(this.deviceData);
+                map.setLayoutProperty(layerId, 'icon-image', this.status);
             },
             update: function (d: DeviceData) {
-                this.deviceData = d;
+                for (let opt in d){
+                    this.deviceData[opt] = d[opt]
+                }
                 point.coordinates = [d.lng, d.lat];
                 if(d.azimuth){
                     map.setLayoutProperty(layerId, 'icon-rotate', d.azimuth-map.getBearing());

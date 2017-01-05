@@ -1,0 +1,38 @@
+export class Timer {
+
+    constructor() {
+    }
+
+    elapse(d: string): string {
+
+        let timeDiff = new Date().getTime() - new Date(d).getTime();
+
+// strip the ms
+        timeDiff /= 1000;
+
+// get seconds (Original had 'round' which incorrectly counts 0:28, 0:29, 1:30 ... 1:59, 1:0)
+        const seconds = Math.round(timeDiff % 60);
+
+// remove seconds from the date
+        timeDiff = Math.floor(timeDiff / 60);
+
+// get minutes
+        const minutes = Math.round(timeDiff % 60);
+
+// remove minutes from the date
+        timeDiff = Math.floor(timeDiff / 60);
+
+// get hours
+        const hours = Math.round(timeDiff % 24);
+
+// remove hours from the date
+        timeDiff = Math.floor(timeDiff / 24);
+
+// the rest of timeDiff is number of days
+        const days = timeDiff;
+
+
+        return days + 'д ' + hours + "ч " + minutes + 'min ' + seconds + "s"
+    }
+}
+;
