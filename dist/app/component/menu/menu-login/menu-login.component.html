@@ -1,20 +1,22 @@
 
 <div (click)="$event.stopPropagation();$event.preventDefault()">
-  <ul *ngIf="!as.userName">
-    <li>
-      <label>Имя</label>
-      <input type="text" [(ngModel)]="name"/>
-    </li>
-    <li>
-      <label>Пароль</label>
-      <input type="password" [(ngModel)]="pass"/>
-    </li>
-    <li>
-      <div (click)="onEnter($event)">Вход</div>
-    </li>
-    <div style="border-bottom: 1px solid transparent; clear: both;"></div>
-    <p><a (click)="goToReg()">Регистрация</a></p>
-  </ul>
+  <div *ngIf="!as.userName">
+    <ul>
+      <li>
+        <label>Имя</label>
+        <input type="text" [(ngModel)]="name"/>
+      </li>
+      <li>
+        <label>Пароль</label>
+        <input type="password" [(ngModel)]="pass"/>
+      </li>
+      <li>
+        <div (click)="onEnter($event)">Вход</div>
+      </li>
+      <li><a (click)="goToReg()">Регистрация</a></li>
+    </ul>
+  </div>
+  <div class="border-hidden"></div>
   <ul *ngIf="as.userName">
     <li>
       <div (click)="goToProfile()">Профиль</div>

@@ -1,16 +1,17 @@
 div((click)="$event.stopPropagation();$event.preventDefault()" )
-    ul(*ngIf="!as.userName")
-        li
-            label Имя
-            input(type="text", [(ngModel)]="name")
-        li
-            label Пароль
-            input( type="password", [(ngModel)]="pass")
-        li
-            div((click)="onEnter($event)") Вход
-        div(style="border-bottom: 1px solid transparent; clear: both;")
-        p
-            a((click)="goToReg()") Регистрация
+    div(*ngIf="!as.userName")
+        ul()
+            li
+                label Имя
+                input(type="text", [(ngModel)]="name")
+            li
+                label Пароль
+                input( type="password", [(ngModel)]="pass")
+            li
+                div((click)="onEnter($event)") Вход
+            li
+                a((click)="goToReg()") Регистрация
+    .border-hidden
     ul(*ngIf="as.userName")
         li
             div((click)="goToProfile()") Профиль
