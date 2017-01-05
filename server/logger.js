@@ -5,6 +5,7 @@ const http = require( "http" );
 module.exports = class Logger {
     /** @namespace this.connection */
 
+    //  /log?id=862614000171302&dev=862614000171302&acct=862614000171302&batt=0&code=0xF020&alt=0.0&gprmc=$GPRMC,111925,A,5023.32022,N,3029.64240,E,0.000000,0.000000,050117,,*29
     constructor(_app, _ioServer, connection) {
         app = _app;
         ioServer = _ioServer;
@@ -15,6 +16,7 @@ module.exports = class Logger {
     }
 
     onLog(req, res, next) {
+
 
         const device_id = req.query.id;
         let data = null;
