@@ -1,3 +1,23 @@
+.button-container > div {
+  float: right;
+  margin-top: 15px;
+}
+.button-container > div button {
+  margin-left: 8px;
+}
+button {
+  padding: 8px 15px;
+  border: none;
+  background: white;
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+}
+button:active {
+  color: #999999;
+  box-shadow: none;
+}
 :host {
   position: absolute;
   left: 80px;
@@ -6,9 +26,10 @@
 }
 ul li {
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 15px;
+  min-width: 80px;
 }
 ul li:hover {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: #c6c8cb;
 }

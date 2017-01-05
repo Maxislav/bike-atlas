@@ -1,11 +1,10 @@
+@import "../../../css/constant";
 :host{
   position: absolute;
   right: 0;
   top: 100%;
   z-index: 3;
-  //padding:15px;
   width: 200px;
-  //background-color: rgba(0,0,0,0.8);
 }
 
 input{
@@ -20,12 +19,7 @@ input{
 }
 
 ul li{
-  cursor: pointer;
-  background-color: rgba(0,0,0,0.8);
-  padding: 15px;
-  &:hover{
-    background-color: rgba(0,0,0,0.6);
-  }
+  .ul-li();
 }
 
 label{
@@ -38,8 +32,6 @@ p{
 }
 a{
   cursor: pointer;
-  color: white;
-
 }
 .button-container>div{
   margin: 15px 0;
