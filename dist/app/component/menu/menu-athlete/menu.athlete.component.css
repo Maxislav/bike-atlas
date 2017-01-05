@@ -54,7 +54,7 @@ ul li:hover {
   background: yellow;
 }
 .status.green {
-  background: #47b607;
+  background: #2ff63a;
 }
 .status.arrow {
   background: url("src/sprite/sprite.png");
