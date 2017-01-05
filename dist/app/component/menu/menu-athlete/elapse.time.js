@@ -20,7 +20,18 @@ var Timer = (function () {
         timeDiff = Math.floor(timeDiff / 24);
         // the rest of timeDiff is number of days
         var days = timeDiff;
-        return days + 'д ' + hours + "ч " + minutes + 'min ' + seconds + "s";
+        var result = '';
+        if (0 < days) {
+            result += days + 'д ';
+        }
+        if (0 < hours) {
+            result += hours + "ч ";
+        }
+        if (0 < minutes) {
+            result += minutes + 'min ';
+        }
+        result += seconds + "s";
+        return result;
     };
     return Timer;
 }());

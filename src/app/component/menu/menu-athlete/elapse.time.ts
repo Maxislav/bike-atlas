@@ -31,8 +31,21 @@ export class Timer {
 // the rest of timeDiff is number of days
         const days = timeDiff;
 
+        let result = '';
 
-        return days + 'д ' + hours + "ч " + minutes + 'min ' + seconds + "s"
+            if (0<days) {
+                result += days + 'д ';
+            }
+            if(0<hours){
+                result+= hours + "ч "
+            }
+            if(0<minutes){
+                result+=minutes + 'min '
+            }
+            result+=seconds + "s";
+
+
+        return result
     }
 }
 ;
