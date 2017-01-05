@@ -19,7 +19,7 @@ import {LogService} from "../../../service/log.service";
     //directives: [RouterLink],
     templateUrl: './menu-login.component.html',
     styleUrls: ['./menu-login.css'],
-    // providers: [MenuService]
+     providers: [MenuService]
 })
 export class MenuLoginComponent {
     private name: string;
@@ -66,7 +66,7 @@ export class MenuLoginComponent {
                 if (d.result == 'ok') {
                     this.ls.userKey = null;
                     this.as.userName = null;
-                    this.logService.clearDevices()
+                    this.logService.clearDevices();
                     this.ds.clearDevice()
 
 

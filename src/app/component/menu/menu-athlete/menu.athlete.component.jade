@@ -1,4 +1,7 @@
 ul((click)="$event.stopPropagation()")
     li(*ngFor="let device of devices\; let i = index", (click)="selectDevice(device)")
-       div {{device.name}}
-       div.passed {{device.passed}}
+        .status(*ngIf="device.marker", [ngClass]="device.marker.status")
+        div.name {{device.name}}
+        .border-hidden
+        div.passed {{device.passed}}
+

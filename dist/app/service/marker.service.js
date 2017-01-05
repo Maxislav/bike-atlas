@@ -48,7 +48,7 @@ var MarkerService = (function () {
             popup: popup,
             deviceData: deviceData,
             timePassed: 0,
-            status: null,
+            status: getIconImage(deviceData),
             updateMarker: function () {
                 this.status = getIconImage(this.deviceData);
                 map.setLayoutProperty(layerId, 'icon-image', this.status);

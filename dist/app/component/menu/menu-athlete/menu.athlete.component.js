@@ -12,14 +12,14 @@ var core_1 = require("@angular/core");
 var device_service_1 = require("../../../service/device.service");
 var map_service_1 = require("../../../service/map.service");
 var log_service_1 = require("../../../service/log.service");
-var elapse_time_1 = require("./elapse.time");
+var timer_service_1 = require("./timer.service");
 var MenuAthleteComponent = (function () {
-    function MenuAthleteComponent(ds, mapServ, ls) {
+    function MenuAthleteComponent(ds, mapServ, ls, timer) {
         var _this = this;
         this.ds = ds;
         this.mapServ = mapServ;
         this.ls = ls;
-        this.timer = new elapse_time_1.Timer();
+        this.timer = timer;
         this.devices = ds.devices;
         this.interval = setInterval(function () {
             _this.devices.forEach(function (device) {
@@ -51,8 +51,9 @@ var MenuAthleteComponent = (function () {
             selector: 'menu-athlete',
             templateUrl: './menu.athlete.component.html',
             styleUrls: ['./menu.athlete.component.css'],
+            providers: [timer_service_1.TimerService]
         }), 
-        __metadata('design:paramtypes', [device_service_1.DeviceService, map_service_1.MapService, log_service_1.LogService])
+        __metadata('design:paramtypes', [device_service_1.DeviceService, map_service_1.MapService, log_service_1.LogService, timer_service_1.TimerService])
     ], MenuAthleteComponent);
     return MenuAthleteComponent;
 }());

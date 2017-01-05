@@ -3,22 +3,20 @@ import {Component} from "@angular/core";
 import {DeviceService, Device} from "../../../service/device.service";
 import {MapService} from "../../../service/map.service";
 import {LogService} from "../../../service/log.service";
-import {Timer} from "./elapse.time";
+import {TimerService} from "./timer.service";
 
 @Component({
     moduleId: module.id,
     selector: 'menu-athlete',
     templateUrl: './menu.athlete.component.html',
     styleUrls: ['./menu.athlete.component.css'],
-    // providers: [MenuService]
+     providers: [TimerService]
 })
 export class MenuAthleteComponent{
     private devices: Array<Device>;
     private interval: number;
     private passed: Array<number>;
-    private timer: Timer;
-    constructor(private ds: DeviceService, private  mapServ: MapService, private ls: LogService){
-        this.timer = new Timer()
+    constructor(private ds: DeviceService, private  mapServ: MapService, private ls: LogService, private timer: TimerService){
         this.devices = ds.devices;
         this.interval = setInterval(()=>{
             this.devices.forEach(device=>{

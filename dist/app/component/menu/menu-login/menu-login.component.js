@@ -76,6 +76,7 @@ var MenuLoginComponent = (function () {
             //directives: [RouterLink],
             templateUrl: './menu-login.component.html',
             styleUrls: ['./menu-login.css'],
+            providers: [menu_service_1.MenuService]
         }), 
         __metadata('design:paramtypes', [router_1.Router, (typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, socket_oi_service_1.Io, md5_service_1.Md5, local_storage_service_1.LocalStorage, auth_service_1.AuthService, device_service_1.DeviceService, toast_component_1.ToastService, log_service_1.LogService, login_service_1.LoginService])
     ], MenuLoginComponent);
