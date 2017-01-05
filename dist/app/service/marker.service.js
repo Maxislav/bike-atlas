@@ -47,8 +47,7 @@ var MarkerService = (function () {
             id: layerId,
             popup: popup,
             deviceData: deviceData,
-            setCenter: function (d) {
-            },
+            timePassed: 0,
             updateMarker: function () {
                 map.setLayoutProperty(layerId, 'icon-image', getIconImage(this.deviceData));
             },

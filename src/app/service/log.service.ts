@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
-import {DeviceService} from "./device.service";
+import {DeviceService, Device} from "./device.service";
 import {MarkerService, Marker} from "./marker.service";
 //import {MarkerService} from "./marker.service";
 
@@ -32,11 +32,11 @@ export class LogService{
         if( this.devices[deviceData.id] ){
             this.devices[deviceData.id].update(deviceData);
         }else{
-            let device = this.ds.devices.find(item=>{
+            let device : Device = this.ds.devices.find(item=>{
                 return item.id == deviceData.id
             });
             deviceData.name = device.name;
-            this.devices[deviceData.id] = this.markerService.marker(deviceData)
+            device.marker =  this.devices[deviceData.id] = this.markerService.marker(deviceData)
         }
     }
     getDeviceData(id: string) : DeviceData{

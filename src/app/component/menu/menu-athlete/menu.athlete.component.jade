@@ -1,3 +1,4 @@
 ul((click)="$event.stopPropagation()")
-    li(*ngFor="let athlete of devices\; let i = index", (click)="selectDevice(athlete)")
-       | {{athlete.name}}
+    li(*ngFor="let device of devices\; let i = index", (click)="selectDevice(device)")
+       div {{device.name}}
+       div.passed {{device.passed}}

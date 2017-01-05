@@ -6,13 +6,13 @@ import {DeviceData} from "./log.service";
 
 export interface Marker{
     id: string;
-    setCenter: Function;
     hide: Function;
     rotate: Function;
     update: Function;
     popup: any;
     updateMarker: Function,
-    deviceData: DeviceData
+    deviceData: DeviceData,
+    timePassed: number
 }
 
 
@@ -64,9 +64,7 @@ export class MarkerService{
             id: layerId,
             popup: popup,
             deviceData: deviceData,
-            setCenter: function (d: DeviceData) {
-
-            },
+            timePassed: 0,
             updateMarker: function(){
                 map.setLayoutProperty(layerId, 'icon-image', getIconImage(this.deviceData));
             },
@@ -99,9 +97,7 @@ export class MarkerService{
                 mapBearing = map.getBearing();
             }
         }
-
         map.on('move', move);
-
         timer = setInterval(()=>{
             marker.updateMarker();
         }, 10000);

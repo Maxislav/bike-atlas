@@ -36,3 +36,6 @@ ul li {
 ul li:hover {
   background-color: white;
 }
+.passed {
+  font-size: 10px;
+}

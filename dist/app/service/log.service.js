@@ -30,7 +30,7 @@ var LogService = (function () {
                 return item.id == deviceData.id;
             });
             deviceData.name = device.name;
-            this.devices[deviceData.id] = this.markerService.marker(deviceData);
+            device.marker = this.devices[deviceData.id] = this.markerService.marker(deviceData);
         }
     };
     LogService.prototype.getDeviceData = function (id) {

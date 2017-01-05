@@ -1,11 +1,14 @@
 import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
 import {LocalStorage} from "./local-storage.service";
+import {Marker} from "./marker.service";
 
 export interface Device {
     id: string;
     name: string;
-    phone?: string
+    phone?: string,
+    marker?: Marker;
+    passed?:number;
 }
 
 

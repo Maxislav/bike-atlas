@@ -14,19 +14,35 @@ var map_service_1 = require("../../../service/map.service");
 var log_service_1 = require("../../../service/log.service");
 var MenuAthleteComponent = (function () {
     function MenuAthleteComponent(ds, mapServ, ls) {
+        var _this = this;
         this.ds = ds;
         this.mapServ = mapServ;
         this.ls = ls;
         this.devices = ds.devices;
+        this.timer = setInterval(function () {
+            _this.devices.forEach(function (device) {
+                var deviceData = _this.ls.getDeviceData(device.id);
+                if (deviceData) {
+                    var date = deviceData.date;
+                    var dateLong = new Date(date).getTime();
+                    var passed = new Date().getTime() - dateLong;
+                    device.passed = parseInt((passed / 1000).toFixed(0));
+                }
+            });
+        }, 1000);
     }
     MenuAthleteComponent.prototype.selectDevice = function (device) {
-        // console.log(device)
         var deviceData = this.ls.getDeviceData(device.id);
         console.log(deviceData);
         if (deviceData) {
             this.mapServ.map.flyTo({
                 center: [deviceData.lng, deviceData.lat]
             });
+        }
+    };
+    MenuAthleteComponent.prototype.ngOnDestroy = function () {
+        if (this.timer) {
+            clearInterval(this.timer);
         }
     };
     MenuAthleteComponent = __decorate([
