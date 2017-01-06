@@ -11,6 +11,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var common_1 = require('@angular/common');
 var friends_service_1 = require("../../service/friends.service");
+var UsersContainer = (function () {
+    function UsersContainer(el, renderer) {
+        var w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0], x = w.innerWidth || e.clientWidth || g.clientWidth, y = w.innerHeight || e.clientHeight || g.clientHeight;
+        renderer.setElementStyle(el.nativeElement, 'height', y - 300 + 'px');
+    }
+    UsersContainer = __decorate([
+        core_1.Directive({
+            selector: 'users-container',
+        }), 
+        __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer])
+    ], UsersContainer);
+    return UsersContainer;
+}());
+exports.UsersContainer = UsersContainer;
 var FriendsComponent = (function () {
     function FriendsComponent(location, fr) {
         this.location = location;
@@ -28,6 +42,7 @@ var FriendsComponent = (function () {
             //noinspection TypeScriptUnresolvedVariable
             moduleId: module.id,
             templateUrl: './friends-component.html',
+            directives: [UsersContainer],
             styleUrls: ['./friends-component.css'],
         }), 
         __metadata('design:paramtypes', [common_1.Location, friends_service_1.FriendsService])

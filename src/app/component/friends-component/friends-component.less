@@ -6,6 +6,22 @@
   z-index: 5;
   width: 100%;
 }
+*{
+  box-sizing: border-box;
+}
+users-container{
+  display: block;
+  overflow-y: auto;
+  td{
+    border-bottom: 1px solid #cfdcef;
+    padding: 5px 0;
+  }
+  .invite{
+    font-size: 12px;
+    float: right;
+    cursor: pointer;
+  }
+}
 .content{
   position: absolute;
   background: rgba(255, 255, 255, 0.9);
@@ -30,12 +46,16 @@
   font-size: 20px;
   font: 30px/15px bold;
 }
+.users{
+  overflow-y: auto;
+}
 table{
   width: 100%;
 }
 img{
   width: 60px;
   height: 60px;
+  display: block;
 }
 
 @media screen and (max-width: 600px){

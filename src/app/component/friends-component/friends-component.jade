@@ -9,10 +9,14 @@ div.content
                 div()
                     button( style="float: right", (click)="getAllUsers($event)") Просмотреть участников
             .border-hidden
-        .row
-            table
-                tbody
-                    tr(*ngFor="let user of allUsers\; let i = index")
-                        td
-                            img([src]="user.image || 'src/img/no-avatar.gif' ")
-                        td {{user.name}}
+        .row(*ngIf="allUsers.length")
+            users-container
+                table
+                    tbody
+                        tr(*ngFor="let user of allUsers\; let i = index")
+                            td
+                                img([src]="user.image || 'src/img/no-avatar.gif' ")
+                            td {{user.name}}
+                            td
+                                .invite
+                                    | Пригласить (в разработке)

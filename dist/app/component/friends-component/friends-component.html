@@ -13,15 +13,20 @@
       </div>
       <div class="border-hidden"></div>
     </div>
-    <div class="row">
-      <table>
-        <tbody>
-          <tr *ngFor="let user of allUsers; let i = index">
-            <td><img [src]="user.image || 'src/img/no-avatar.gif' "/></td>
-            <td>{{user.name}}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div *ngIf="allUsers.length" class="row">
+      <users-container>
+        <table>
+          <tbody>
+            <tr *ngFor="let user of allUsers; let i = index">
+              <td><img [src]="user.image || 'src/img/no-avatar.gif' "/></td>
+              <td>{{user.name}}</td>
+              <td>
+                <div class="invite">Пригласить (в разработке)</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </users-container>
     </div>
   </div>
 </div>

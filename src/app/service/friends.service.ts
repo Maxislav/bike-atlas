@@ -65,8 +65,11 @@ export class FriendsService {
     set friends(value:Array<User>){
         this._friends.length = 0;
         if(value){
+
+
             value.forEach(item=>{
                 this._friends.push(item)
+
             })
         }
     }
@@ -82,6 +85,7 @@ export class FriendsService {
         if(value){
             value.forEach(item=>{
                 this._users.push(item)
+
             })
         }
     }
