@@ -61,3 +61,8 @@ table td.icoUser img {
   width: 34px;
   height: 34px;
 }
+@media screen and (max-width: 450px) {
+  table td.icoUser {
+    display: none;
+  }
+}
