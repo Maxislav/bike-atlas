@@ -20,9 +20,10 @@ var toast_component_1 = require("../../toast/toast.component");
 var device_service_1 = require("../../../service/device.service");
 var login_service_1 = require("../../../service/login.service");
 var log_service_1 = require("../../../service/log.service");
+var friends_service_1 = require("../../../service/friends.service");
 //import {RouterLink} from "@angular/router-deprecated";
 var MenuLoginComponent = (function () {
-    function MenuLoginComponent(router, ms, io, md5, ls, as, ds, ts, logService, loginService) {
+    function MenuLoginComponent(router, ms, io, md5, ls, as, ds, ts, logService, friend, loginService) {
         this.router = router;
         this.ms = ms;
         this.io = io;
@@ -32,6 +33,7 @@ var MenuLoginComponent = (function () {
         this.ds = ds;
         this.ts = ts;
         this.logService = logService;
+        this.friend = friend;
         this.loginService = loginService;
         this.socket = io.socket;
     }
@@ -61,6 +63,8 @@ var MenuLoginComponent = (function () {
                 _this.ls.userKey = null;
                 _this.as.userName = null;
                 _this.as.userImage = null;
+                _this.as.userId = null;
+                _this.friend.clearUsers();
                 _this.logService.clearDevices();
                 _this.ds.clearDevice();
             }
@@ -82,7 +86,7 @@ var MenuLoginComponent = (function () {
             templateUrl: './menu-login.component.html',
             styleUrls: ['./menu-login.css'],
         }), 
-        __metadata('design:paramtypes', [router_1.Router, (typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, socket_oi_service_1.Io, md5_service_1.Md5, local_storage_service_1.LocalStorage, auth_service_1.AuthService, device_service_1.DeviceService, toast_component_1.ToastService, log_service_1.LogService, login_service_1.LoginService])
+        __metadata('design:paramtypes', [router_1.Router, (typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, socket_oi_service_1.Io, md5_service_1.Md5, local_storage_service_1.LocalStorage, auth_service_1.AuthService, device_service_1.DeviceService, toast_component_1.ToastService, log_service_1.LogService, friends_service_1.FriendsService, login_service_1.LoginService])
     ], MenuLoginComponent);
     return MenuLoginComponent;
     var _a;

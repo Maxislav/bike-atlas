@@ -10,6 +10,7 @@ import {ToastService} from "../../toast/toast.component";
 import {DeviceService} from "../../../service/device.service";
 import {LoginService} from "../../../service/login.service";
 import {LogService} from "../../../service/log.service";
+import {FriendsService} from "../../../service/friends.service";
 //import {RouterLink} from "@angular/router-deprecated";
 
 
@@ -35,6 +36,7 @@ export class MenuLoginComponent {
                 private ds: DeviceService,
                 private ts: ToastService,
                 private logService: LogService,
+                private friend: FriendsService,
                 private loginService: LoginService) {
         this.socket = io.socket;
     }
@@ -67,6 +69,8 @@ export class MenuLoginComponent {
                     this.ls.userKey = null;
                     this.as.userName = null;
                     this.as.userImage = null;
+                    this.as.userId = null;
+                    this.friend.clearUsers();
                     this.logService.clearDevices();
                     this.ds.clearDevice()
 

@@ -40,6 +40,9 @@ var FriendsService = (function () {
             }
         });
     };
+    FriendsService.prototype.clearUsers = function () {
+        this.users = [];
+    };
     Object.defineProperty(FriendsService.prototype, "friends", {
         get: function () {
             return this._friends;

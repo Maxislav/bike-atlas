@@ -42,6 +42,7 @@ var LoginService = (function () {
                 this.ls.userKey = d.hash;
                 this.as.userName = d.name;
                 this.as.userImage = d.image;
+                this.as.userId = d.id;
                 this.ds.updateDevices();
                 break;
             case false:

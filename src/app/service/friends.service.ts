@@ -61,12 +61,14 @@ export class FriendsService {
             })
     }
 
+    clearUsers(){
+        this.users = []
+    }
+
 
     set friends(value:Array<User>){
         this._friends.length = 0;
         if(value){
-
-
             value.forEach(item=>{
                 this._friends.push(item)
 
