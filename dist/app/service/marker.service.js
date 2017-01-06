@@ -42,7 +42,7 @@ var MarkerService = (function () {
             .setLngLat(point.coordinates)
             .setHTML('<div>' + deviceData.name + '</div>')
             .addTo(map);
-        var timer = null;
+        var intervalUpdateMarker = null;
         var marker = {
             id: layerId,
             popup: popup,
@@ -75,7 +75,7 @@ var MarkerService = (function () {
                 popup.remove();
                 console.log('delete marker id', layerId);
                 map.off('move', move);
-                timer && clearInterval(timer);
+                intervalUpdateMarker && clearInterval(intervalUpdateMarker);
             }
         };
         function move() {
@@ -85,7 +85,7 @@ var MarkerService = (function () {
             }
         }
         map.on('move', move);
-        timer = setInterval(function () {
+        intervalUpdateMarker = setInterval(function () {
             marker.updateMarker();
         }, 10000);
         return marker;

@@ -59,7 +59,7 @@ export class MarkerService{
             .addTo(map);
 
 
-        let timer = null;
+        let intervalUpdateMarker = null;
 
         const marker: Marker = {
             id: layerId,
@@ -93,7 +93,7 @@ export class MarkerService{
                 popup.remove();
                 console.log('delete marker id', layerId);
                 map.off('move', move);
-                timer && clearInterval(timer);
+                intervalUpdateMarker && clearInterval(intervalUpdateMarker);
             }
         };
 
@@ -104,7 +104,7 @@ export class MarkerService{
             }
         }
         map.on('move', move);
-        timer = setInterval(()=>{
+        intervalUpdateMarker = setInterval(()=>{
             marker.updateMarker();
         }, 10000);
 
