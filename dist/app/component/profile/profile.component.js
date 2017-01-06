@@ -13,14 +13,20 @@ var common_1 = require('@angular/common');
 var auth_service_1 = require("../../service/auth.service");
 var router_1 = require("@angular/router");
 var app_component_1 = require("../../app.component");
+var socket_oi_service_1 = require("../../service/socket.oi.service");
+var toast_component_1 = require("../toast/toast.component");
 var ProfileComponent = (function () {
-    function ProfileComponent(location, elRef, as, router, lh) {
+    function ProfileComponent(location, elRef, as, router, lh, io, toast) {
         this.location = location;
         this.elRef = elRef;
+        this.as = as;
         this.router = router;
         this.lh = lh;
-        this.imageurl = 'src/img/no-avatar.gif';
+        this.io = io;
+        this.toast = toast;
+        this.imageurl = as.userImage;
         this.name = as.userName;
+        this.socket = io.socket;
     }
     ProfileComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
@@ -76,6 +82,21 @@ var ProfileComponent = (function () {
         this.inputEl.click();
     };
     ProfileComponent.prototype.onSave = function () {
+        var _this = this;
+        if (!this.imageurl) {
+            this.toast.show({
+                type: 'warning',
+                text: 'Пустое изображение'
+            });
+            return;
+        }
+        this.socket.$emit('onImage', this.imageurl)
+            .then(function (d) {
+            console.log(d);
+            if (d && d.result == 'ok') {
+                _this.as.userImage = _this.imageurl;
+            }
+        });
     };
     ProfileComponent = __decorate([
         core_1.Component({
@@ -83,7 +104,7 @@ var ProfileComponent = (function () {
             templateUrl: './profile.component.html',
             styleUrls: ['./profile.component.css'],
         }), 
-        __metadata('design:paramtypes', [common_1.Location, core_1.ElementRef, auth_service_1.AuthService, router_1.Router, app_component_1.NavigationHistory])
+        __metadata('design:paramtypes', [common_1.Location, core_1.ElementRef, auth_service_1.AuthService, router_1.Router, app_component_1.NavigationHistory, socket_oi_service_1.Io, toast_component_1.ToastService])
     ], ProfileComponent);
     return ProfileComponent;
 }());

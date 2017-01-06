@@ -3,6 +3,8 @@ import {Location} from '@angular/common';
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
 import {NavigationHistory} from "../../app.component";
+import {Io} from "../../service/socket.oi.service";
+import {ToastService} from "../toast/toast.component";
 
 
 
@@ -15,13 +17,18 @@ export class ProfileComponent implements AfterViewInit{
     private imageurl: string;
     private inputEl: Element;
     private name: string;
+    private socket: any;
     constructor(private location: Location,
                 private elRef: ElementRef,
-                as: AuthService,
+                private as: AuthService,
                 private router:Router,
-                private lh: NavigationHistory){
-        this.imageurl = 'src/img/no-avatar.gif';
+                private lh: NavigationHistory,
+                private io : Io,
+                private toast: ToastService
+    ){
+        this.imageurl = as.userImage;
         this.name = as.userName;
+        this.socket = io.socket;
     }
     ngAfterViewInit():void{
         const el =this.elRef.nativeElement;
@@ -77,7 +84,21 @@ export class ProfileComponent implements AfterViewInit{
         this.inputEl.click()
     }
     onSave(){
+        if(!this.imageurl){
+            this.toast.show({
+                type: 'warning',
+                text: 'Пустое изображение'
+            });
+            return;
+        }
 
+        this.socket.$emit('onImage', this.imageurl)
+            .then(d=>{
+                console.log(d)
+                if(d && d.result == 'ok'){
+                    this.as.userImage = this.imageurl
+                }
+            })
     }
 
 }

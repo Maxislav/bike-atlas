@@ -41,7 +41,8 @@ class OnEnter{
                     this.socket.emit('onEnter', {
                         result: 'ok',
                         hash: hash,
-                        name: rows[0].name
+                        name: rows[0].name,
+                        image: rows[0].image
                     })
                 })
                 .catch(err=>{

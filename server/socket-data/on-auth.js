@@ -21,6 +21,7 @@ class OnAuth {
                                 this.socket.emit('onAuth', {
                                     result: 'ok',
                                     user: {
+                                        image: user.image,
                                         name: user.name,
                                         setting: setting
                                     }

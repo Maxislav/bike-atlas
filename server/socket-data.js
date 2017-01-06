@@ -9,6 +9,8 @@ const OnEnter = require('./socket-data/on-enter');
 const OnAuth = require('./socket-data/on-auth');
 const Device = require('./socket-data/device');
 const OnRegist = require('./socket-data/on-regist');
+const OnProfile = require('./socket-data/on-profile');
+
 const Logger = require('./logger');
 connection.connect((err)=>{
     if (err) {
@@ -55,6 +57,7 @@ module.exports = (sever, app) => {
         const onAuth = new OnAuth(socket, connection, logger);
         const device = new Device(socket, connection, logger);
         const onRegist = new OnRegist(socket, connection, logger);
+        const onProfile = new OnProfile(socket, connection, logger);
         socket.on('disconnect',()=>{
             logger.onDisconnect(socket.id)
         });

@@ -227,6 +227,17 @@ module.exports = {
             })
         })
     },
+    setImageProfile: function (connection, user_id, base64) {
+        return new Promise((resolve, reject) => {
+            connection.query('UPDATE `user` SET image = ? WHERE id = ?', [base64, user_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve()
+            })
+        })
+    },
     formatDevice: function(d) {
         return {
             id: d.device_key,

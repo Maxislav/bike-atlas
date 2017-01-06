@@ -66,6 +66,7 @@ export class MenuLoginComponent {
                 if (d.result == 'ok') {
                     this.ls.userKey = null;
                     this.as.userName = null;
+                    this.as.userImage = null;
                     this.logService.clearDevices();
                     this.ds.clearDevice()
 

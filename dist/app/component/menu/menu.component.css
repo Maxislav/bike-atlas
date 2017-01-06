@@ -52,3 +52,11 @@ table td.button.menu {
 table td.button.enter {
   width: 60px;
 }
+.icoUser {
+  width: 40px;
+}
+.icoUser img {
+  display: block;
+  width: 34px;
+  height: 34px;
+}

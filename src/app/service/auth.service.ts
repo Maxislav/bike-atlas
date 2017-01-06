@@ -14,8 +14,10 @@ export interface Setting{
 @Injectable()
 export class AuthService implements Resolve<any>{
 
+
     socket: any;
     private _userName: string = null;
+    private _userImage: string = null;
     private _setting: Setting;
 
     private resolveAuth: Function;
@@ -43,6 +45,7 @@ export class AuthService implements Resolve<any>{
             hash: this.ls.userKey
         }).then(d => {
             if(d.result =='ok'){
+                this.userImage = d.user.image;
                 this.userName = d.user.name;
                 this.setting = d.user.setting || this.setting;
                 this.ds.updateDevices()
@@ -67,6 +70,13 @@ export class AuthService implements Resolve<any>{
 
     set setting(value: Setting  ) {
         this._setting = value;
+    }
+    get userImage(): string {
+        return this._userImage;
+    }
+
+    set userImage(value: string) {
+        this._userImage = value;
     }
 }
 

@@ -3,6 +3,8 @@ table
         td.button.menu((click)="onOpenAthlete()") Участники
         td.button.menu( (click)="onOpen()" ) Маршруты
         td
+        td.icoUser
+            img([src]="as.userImage || 'src/img/no-avatar.gif' ", (click)="goToProfile()")
         td.button.enter( (click)="onOpenLogin()")
             |{{as.userName || 'Войти' }}
 menu-athlete(*ngIf="ms.menuAthlete")

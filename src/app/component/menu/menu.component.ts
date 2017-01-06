@@ -10,6 +10,7 @@ import {MenuService} from "app/service/menu.service";
 import {TrackService} from "../../service/track.service";
 import {TrackList} from "./track-list/track-list.component";
 import {AuthService} from "../../service/auth.service";
+import {Router} from "@angular/router";
 //import {Track} from "./track";
 
 declare var document: any;
@@ -30,7 +31,7 @@ export class MenuComponent{
     
     trackList: Array<any>;
 
-    constructor(private ms: MenuService, track: TrackService, public as: AuthService){
+    constructor(private ms: MenuService, track: TrackService, public as: AuthService, private router: Router){
         this.trackList = track.trackList;
         //this.userName = as.userName;
         //this.menuOpen = ms.menuOpen
@@ -43,5 +44,10 @@ export class MenuComponent{
     }
     onOpenAthlete(){
         this.ms.menuAthlete = !this.ms.menuAthlete;
+    }
+    goToProfile(){
+        if(this.as.userName){
+            this.router.navigate(['/auth/map/profile']);
+        }
     }
 }

@@ -60,6 +60,7 @@ var MenuLoginComponent = (function () {
             if (d.result == 'ok') {
                 _this.ls.userKey = null;
                 _this.as.userName = null;
+                _this.as.userImage = null;
                 _this.logService.clearDevices();
                 _this.ds.clearDevice();
             }

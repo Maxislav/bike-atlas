@@ -6,7 +6,7 @@
       <p>Профиль</p>
     </div>
     <div class="row">
-      <load-img><img [src]="imageurl" (click)="onOpenImage()"/>
+      <load-img><img [src]="imageurl || 'src/img/no-avatar.gif' " (click)="onOpenImage()"/>
         <div class="row">{{name}}</div>
         <input type="file" id="files" name="files[]" multiple="" style="display: none"/>
       </load-img>

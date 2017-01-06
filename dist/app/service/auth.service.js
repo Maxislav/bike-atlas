@@ -19,6 +19,7 @@ var AuthService = (function () {
         this.ls = ls;
         this.ds = ds;
         this._userName = null;
+        this._userImage = null;
         this.socket = io.socket;
         this._setting = {};
         this.socket.on('connect', this.onConnect.bind(this));
@@ -42,6 +43,7 @@ var AuthService = (function () {
             hash: this.ls.userKey
         }).then(function (d) {
             if (d.result == 'ok') {
+                _this.userImage = d.user.image;
                 _this.userName = d.user.name;
                 _this.setting = d.user.setting || _this.setting;
                 _this.ds.updateDevices();
@@ -69,6 +71,16 @@ var AuthService = (function () {
         },
         set: function (value) {
             this._setting = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AuthService.prototype, "userImage", {
+        get: function () {
+            return this._userImage;
+        },
+        set: function (value) {
+            this._userImage = value;
         },
         enumerable: true,
         configurable: true
