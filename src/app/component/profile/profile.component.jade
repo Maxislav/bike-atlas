@@ -6,8 +6,11 @@ div.content
                 | Профиль
         .row
             load-img
-                img([src]="imageurl", (click)="onOpen()")
+                img([src]="imageurl", (click)="onOpenImage()")
                 .row {{name}}
 
                 input(type="file" id="files" name="files[]" multiple="", style="display: none")
+        .border-hidden
+            div()
+                button( style="float: right", (click)="onSave($event)") Сохранить
         .border-hidden

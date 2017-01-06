@@ -97,7 +97,7 @@ class Device{
                 });
             })
             .catch(err=>{
-                console.error('emitLastPosition', err)
+                console.error('Error emitLastPosition->', err)
             })
 
     }
