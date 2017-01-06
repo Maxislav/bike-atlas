@@ -29,12 +29,37 @@ button:active {
   width: 100%;
 }
 .content {
+  position: absolute;
   background: rgba(255, 255, 255, 0.9);
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 30px 15px;
+  min-width: 600px;
+  margin-left: -300px;
+  padding: 0;
+  left: 50%;
+  top: calc(100% + 20px);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
-  box-sizing: border-box;
+}
+.content > div {
+  position: relative;
+  padding: 30px;
+}
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: darkred;
+  cursor: pointer;
+  padding: 15px;
+  font-size: 20px;
+  font: 30px/15px bold;
+}
+@media screen and (max-width: 600px) {
+  .content {
+    position: relative;
+    width: 100%;
+    min-width: inherit;
+    left: 0;
+    margin-left: 0;
+  }
 }
 input {
   display: block;
@@ -71,4 +96,16 @@ td.required:after {
   content: '*';
   display: block;
   color: red;
+}
+td.predelCell {
+  padding: 0;
+}
+.predel {
+  display: inline-block;
+  float: right;
+  color: darkred;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 20px;
+  font: 30px/15px bold;
 }

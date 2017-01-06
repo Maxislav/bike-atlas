@@ -1,46 +1,52 @@
 
 <div class="content">
-  <div>Регистрация устройства</div>
-  <div class="row">
-    <table>
-      <thead>
-        <tr>
-          <td class="required">Имя</td>
-          <td class="required">Идентификатор устройства</td>
-          <td>Телефон</td>
-          <td></td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let device of devices">
-          <td>{{device.name}}</td>
-          <td>{{device.id}}</td>
-          <td>{{device.phone}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>
-            <input type="text" [(ngModel)]="device.name"/>
-          </td>
-          <td>
-            <input type="text" [(ngModel)]="device.id"/>
-          </td>
-          <td>
-            <input type="text" [(ngModel)]="device.phone"/>
-          </td>
-          <td>
-            <button (click)="onAdd($event)">Добавить</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="border-hidden"></div>
-  <div class="button-container">
-    <div>
-      <button style="float: right" (click)="onOk($event)">Ok</button>
-      <button (click)="onCancel($event)">Cancel</button>
+  <div (click)="clearPredel()">
+    <div (click)="onClose()" class="close">&times;</div>
+    <div>Регистрация устройства</div>
+    <div class="row">
+      <table>
+        <thead>
+          <tr>
+            <td class="required">Имя</td>
+            <td class="required">Идентификатор устройства</td>
+            <td>Телефон</td>
+            <td></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let device of devices; let i = index" (click)="preDel($event, i)">
+            <td>{{device.name}}</td>
+            <td>{{device.id}}</td>
+            <td>{{device.phone}}</td>
+            <td class="predelCell">
+              <!--.close((click)="onClose()") &times;-->
+              <div *ngIf="btnPreDel.index==i" (click)="onDel($event, i)" class="predel">&times;</div>
+            </td>
+            <!-- button((click)='onDel($event, i)') {{btnPreDel.index}}-->
+          </tr>
+          <tr>
+            <td>
+              <input type="text" [(ngModel)]="device.name"/>
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="device.id"/>
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="device.phone"/>
+            </td>
+            <td>
+              <button (click)="onAdd($event)">Добавить</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <!--.border-hidden-->
+    <!--.button-container
+    div()
+        button( style="float: right", (click)="onOk($event)") Ok
+        button( (click)="onCancel($event)" ) Cancel
+    -->
+    <div class="border-hidden"></div>
   </div>
-  <div class="border-hidden"></div>
 </div>

@@ -12,21 +12,37 @@ var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var router_1 = require("@angular/router");
 var device_service_1 = require("../../service/device.service");
+var app_component_1 = require("../../app.component");
+var toast_component_1 = require("../toast/toast.component");
 var DeviceComponent = (function () {
-    function DeviceComponent(location, router, ds) {
+    function DeviceComponent(location, router, ds, toast, lh) {
         this.location = location;
         this.router = router;
         this.ds = ds;
+        this.toast = toast;
+        this.lh = lh;
         this.device = {
-            name: null,
-            id: null
+            name: '',
+            id: ''
+        };
+        this.btnPreDel = {
+            index: -1
         };
         this.devices = ds.devices;
     }
     DeviceComponent.prototype.onAdd = function (e) {
         var _this = this;
         e.preventDefault();
+        this.device.name = this.device.name.replace(/^\s+/, '');
+        this.device.id = this.device.id.replace(/^\s+/, '');
         console.log(this.device);
+        if (!this.device.name || !this.device.id) {
+            this.toast.show({
+                type: 'warning',
+                text: "Имя или Идентификатор не заполнено"
+            });
+            return;
+        }
         this.ds.onAddDevice(this.device)
             .then(function (d) {
             if (d && d.result == 'ok') {
@@ -34,19 +50,33 @@ var DeviceComponent = (function () {
             }
         });
     };
+    DeviceComponent.prototype.onDel = function (e, i) {
+        e.stopPropagation();
+        if (-1 < i) {
+            this.devices.splice(i, 1);
+            this.clearPredel();
+        }
+    };
+    DeviceComponent.prototype.preDel = function (e, i) {
+        e.stopPropagation();
+        this.btnPreDel.index = i;
+    };
+    DeviceComponent.prototype.clearPredel = function () {
+        this.btnPreDel.index = -1;
+    };
     DeviceComponent.prototype.reset = function () {
         this.device = {
-            name: null,
-            id: null
+            name: '',
+            id: ''
         };
     };
-    DeviceComponent.prototype.onOk = function (e) {
-        e.preventDefault();
-        this.router.navigate(['/auth/map']);
-    };
-    DeviceComponent.prototype.onCancel = function (e) {
-        e.preventDefault();
-        this.router.navigate(['/auth/map']);
+    DeviceComponent.prototype.onClose = function () {
+        if (this.lh.is) {
+            this.location.back();
+        }
+        else {
+            this.router.navigate(['/auth/map']);
+        }
     };
     DeviceComponent = __decorate([
         core_1.Component({
@@ -56,7 +86,7 @@ var DeviceComponent = (function () {
                 'device.component.css',
             ]
         }), 
-        __metadata('design:paramtypes', [common_1.Location, router_1.Router, device_service_1.DeviceService])
+        __metadata('design:paramtypes', [common_1.Location, router_1.Router, device_service_1.DeviceService, toast_component_1.ToastService, app_component_1.NavigationHistory])
     ], DeviceComponent);
     return DeviceComponent;
 }());

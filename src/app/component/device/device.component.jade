@@ -1,36 +1,41 @@
 div.content
-    div
-        | Регистрация устройства
+    div((click)="clearPredel()")
+        .close((click)="onClose()") &times;
+        div
+            | Регистрация устройства
 
-    div.row
+        div.row()
 
 
-        table
-            thead
-                tr
-                    td.required Имя
-                    td.required Идентификатор устройства
-                    td Телефон
-                    td
-            tbody
-                tr(*ngFor="let device of devices")
-                    td {{device.name}}
-                    td {{device.id}}
-                    td {{device.phone}}
-                    td
-                tr
-                    td
-                        input(type='text', [(ngModel)]='device.name')
-                    td
-                        input(type='text', [(ngModel)]='device.id')
-                    td
-                        input(type='text', [(ngModel)]='device.phone')
-                    td
-                        button((click)="onAdd($event)") Добавить
+            table()
+                thead
+                    tr
+                        td.required Имя
+                        td.required Идентификатор устройства
+                        td Телефон
+                        td
+                tbody
+                    tr(*ngFor="let device of devices\; let i = index", (click)="preDel($event, i)")
+                        td {{device.name}}
+                        td {{device.id}}
+                        td {{device.phone}}
+                        td.predelCell
+                            //.close((click)="onClose()") &times;
+                            .predel(*ngIf="btnPreDel.index==i", (click)='onDel($event, i)') &times;
+                           // button((click)='onDel($event, i)') {{btnPreDel.index}}
+                    tr
+                        td
+                            input(type='text', [(ngModel)]='device.name')
+                        td
+                            input(type='text', [(ngModel)]='device.id')
+                        td
+                            input(type='text', [(ngModel)]='device.phone')
+                        td
+                            button((click)="onAdd($event)") Добавить
 
-    .border-hidden
-    .button-container
-        div()
-            button( style="float: right", (click)="onOk($event)") Ok
-            button( (click)="onCancel($event)" ) Cancel
-    .border-hidden
+        //.border-hidden
+        //.button-container
+            div()
+                button( style="float: right", (click)="onOk($event)") Ok
+                button( (click)="onCancel($event)" ) Cancel
+        .border-hidden

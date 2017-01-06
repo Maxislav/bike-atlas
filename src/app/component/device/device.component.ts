@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from "@angular/router";
 import {DeviceService, Device} from "../../service/device.service";
+import {NavigationHistory} from "../../app.component";
+import {ToastService} from "../toast/toast.component";
 
 
 @Component({
@@ -15,17 +17,38 @@ export class DeviceComponent{
 
     private device: Device;
     private devices: Array<Device>;
+    public btnPreDel: {index: number};
 
-    constructor(private location: Location, private router:Router, private ds: DeviceService){
+    constructor(private location: Location,
+                private router:Router,
+                private ds: DeviceService,
+                private toast: ToastService,
+                private lh: NavigationHistory){
         this.device = {
-            name: null,
-            id: null
+            name: '',
+            id: ''
+        };
+        this.btnPreDel = {
+            index: -1
         };
         this.devices = ds.devices;
     }
     onAdd(e){
         e.preventDefault();
-        console.log(this.device)
+
+
+        this.device.name = this.device.name.replace(/^\s+/,'');
+        this.device.id = this.device.id.replace(/^\s+/,'');
+
+        console.log(this.device);
+        if(!this.device.name || !this.device.id){
+            this.toast.show({
+                type: 'warning',
+                text: "Имя или Идентификатор не заполнено"
+            });
+            return;
+        }
+
         this.ds.onAddDevice(this.device)
             .then(d=>{
                 if(d && d.result == 'ok'){
@@ -33,21 +56,35 @@ export class DeviceComponent{
                 }
             })
     }
+    onDel(e, i){
+        e.stopPropagation();
+        if(-1<i){
+            this.devices.splice(i,1);
+            this.clearPredel()
+        }
+    }
+    preDel(e, i){
+        e.stopPropagation();
+        this.btnPreDel.index = i
+    }
+    clearPredel(){
+        this.btnPreDel.index = -1
+    }
 
     reset(){
         this.device = {
-            name: null,
-            id: null
+            name: '',
+            id: ''
         };
     }
 
-    onOk(e) {
-        e.preventDefault();
-        this.router.navigate(['/auth/map']);
-    }
-    onCancel(e) {
-        e.preventDefault();
-        this.router.navigate(['/auth/map']);
+
+    onClose(){
+        if(this.lh.is){
+            this.location.back()
+        }else{
+            this.router.navigate(['/auth/map']);
+        }
     }
 
 }
