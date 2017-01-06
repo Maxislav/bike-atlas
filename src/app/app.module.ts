@@ -34,6 +34,8 @@ import {LoginService} from "./service/login.service";
 import {MenuAthleteComponent} from "./component/menu/menu-athlete/menu.athlete.component";
 import {ProfileComponent} from "./component/profile/profile.component";
 import {JournalComponent} from "./component/journal-component/journal.component";
+import {FriendsComponent} from "./component/friends-component/friends-component";
+import {FriendsService} from "./service/friends.service";
 
 @NgModule({
     imports: [
@@ -62,8 +64,8 @@ import {JournalComponent} from "./component/journal-component/journal.component"
         DeviceComponent,
         MenuAthleteComponent,
         ProfileComponent,
-        JournalComponent
-
+        JournalComponent,
+        FriendsComponent
     ],
     bootstrap: [
         AppComponent
@@ -81,7 +83,8 @@ import {JournalComponent} from "./component/journal-component/journal.component"
         LogService,
         MapService,
         MarkerService,
-        LoginService
+        LoginService,
+        FriendsService
     ]
 })
 export class AppModule {

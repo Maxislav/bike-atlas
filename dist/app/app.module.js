@@ -43,6 +43,8 @@ var login_service_1 = require("./service/login.service");
 var menu_athlete_component_1 = require("./component/menu/menu-athlete/menu.athlete.component");
 var profile_component_1 = require("./component/profile/profile.component");
 var journal_component_1 = require("./component/journal-component/journal.component");
+var friends_component_1 = require("./component/friends-component/friends-component");
+var friends_service_1 = require("./service/friends.service");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -74,7 +76,8 @@ var AppModule = (function () {
                 device_component_1.DeviceComponent,
                 menu_athlete_component_1.MenuAthleteComponent,
                 profile_component_1.ProfileComponent,
-                journal_component_1.JournalComponent
+                journal_component_1.JournalComponent,
+                friends_component_1.FriendsComponent
             ],
             bootstrap: [
                 app_component_1.AppComponent
@@ -92,7 +95,8 @@ var AppModule = (function () {
                 log_service_1.LogService,
                 map_service_1.MapService,
                 marker_service_1.MarkerService,
-                login_service_1.LoginService
+                login_service_1.LoginService,
+                friends_service_1.FriendsService
             ]
         }), 
         __metadata('design:paramtypes', [])

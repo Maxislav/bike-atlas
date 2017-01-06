@@ -16,6 +16,7 @@ import {DeviceComponent} from "./component/device/device.component";
 import {AuthService} from "./service/auth.service";
 import {ProfileComponent} from "./component/profile/profile.component";
 import {JournalComponent} from "./component/journal-component/journal.component";
+import {FriendsComponent} from "./component/friends-component/friends-component";
 
 const  appRouters: Routes = [
     {
@@ -56,6 +57,10 @@ const  appRouters: Routes = [
                     {
                         path: 'journal',
                         component: JournalComponent
+                    },
+                    {
+                        path: 'friends',
+                        component: FriendsComponent
                     }
                 ]
             }

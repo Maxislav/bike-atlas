@@ -43,6 +43,7 @@ var AuthService = (function () {
             hash: this.ls.userKey
         }).then(function (d) {
             if (d.result == 'ok') {
+                _this.userId = d.user.id;
                 _this.userImage = d.user.image;
                 _this.userName = d.user.name;
                 _this.setting = d.user.setting || _this.setting;
@@ -81,6 +82,16 @@ var AuthService = (function () {
         },
         set: function (value) {
             this._userImage = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AuthService.prototype, "userId", {
+        get: function () {
+            return this._userId;
+        },
+        set: function (value) {
+            this._userId = value;
         },
         enumerable: true,
         configurable: true

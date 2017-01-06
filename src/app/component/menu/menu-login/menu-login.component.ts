@@ -19,7 +19,7 @@ import {LogService} from "../../../service/log.service";
     //directives: [RouterLink],
     templateUrl: './menu-login.component.html',
     styleUrls: ['./menu-login.css'],
-     providers: [MenuService]
+     //providers: [MenuService]
 })
 export class MenuLoginComponent {
     private name: string;
@@ -74,6 +74,11 @@ export class MenuLoginComponent {
                 }
             })
 
+
+    }
+    goToFriends(){
+        this.ms.menuOpenLogin = false
+        this.router.navigate(['/auth/map/friends']);
 
     }
 

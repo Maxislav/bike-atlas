@@ -15,7 +15,7 @@ var core_1 = require('@angular/core');
 var MenuService = (function () {
     function MenuService() {
         this._menuOpen = false;
-        this._menuOpenLogin = false;
+        this.menuOpenLogin = false;
         this._menuDevice = false;
         this._menuAthlete = false;
     }

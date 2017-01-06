@@ -15,7 +15,7 @@ export class MenuService{
 
     constructor(){
         this._menuOpen = false;
-        this._menuOpenLogin = false;
+        this.menuOpenLogin = false;
         this._menuDevice = false;
         this._menuAthlete = false;
     }

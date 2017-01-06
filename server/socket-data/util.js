@@ -238,6 +238,19 @@ module.exports = {
             })
         })
     },
+    getUsersNotSelf:function (connection, user_id) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT `id`,`name`,`image` from `user` WHERE `id` != ? order by `id` desc limit 150';
+            connection.query(query, [user_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows)
+            })
+        });
+
+    },
     formatDevice: function(d) {
         return {
             id: d.device_key,

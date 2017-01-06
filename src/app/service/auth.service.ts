@@ -15,7 +15,9 @@ export interface Setting{
 export class AuthService implements Resolve<any>{
 
 
+
     socket: any;
+    private _userId: number;
     private _userName: string = null;
     private _userImage: string = null;
     private _setting: Setting;
@@ -45,6 +47,7 @@ export class AuthService implements Resolve<any>{
             hash: this.ls.userKey
         }).then(d => {
             if(d.result =='ok'){
+                this.userId = d.user.id;
                 this.userImage = d.user.image;
                 this.userName = d.user.name;
                 this.setting = d.user.setting || this.setting;
@@ -77,6 +80,13 @@ export class AuthService implements Resolve<any>{
 
     set userImage(value: string) {
         this._userImage = value;
+    }
+    get userId(): number {
+        return this._userId;
+    }
+
+    set userId(value: number) {
+        this._userId = value;
     }
 }
 

@@ -1,0 +1,18 @@
+div.content
+    div
+        .close((click)="onClose()") &times;
+        .row
+            p
+                | Друзья
+        .row
+            .border-hidden
+                div()
+                    button( style="float: right", (click)="getAllUsers($event)") Просмотреть участников
+            .border-hidden
+        .row
+            table
+                tbody
+                    tr(*ngFor="let user of allUsers\; let i = index")
+                        td
+                            img([src]="user.image || 'src/img/no-avatar.gif' ")
+                        td {{user.name}}

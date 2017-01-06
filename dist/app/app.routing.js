@@ -8,6 +8,7 @@ var device_component_1 = require("./component/device/device.component");
 var auth_service_1 = require("./service/auth.service");
 var profile_component_1 = require("./component/profile/profile.component");
 var journal_component_1 = require("./component/journal-component/journal.component");
+var friends_component_1 = require("./component/friends-component/friends-component");
 var appRouters = [
     {
         path: '',
@@ -46,6 +47,10 @@ var appRouters = [
                     {
                         path: 'journal',
                         component: journal_component_1.JournalComponent
+                    },
+                    {
+                        path: 'friends',
+                        component: friends_component_1.FriendsComponent
                     }
                 ]
             }
