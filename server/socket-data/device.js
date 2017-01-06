@@ -7,8 +7,9 @@ class Device{
         this.logger = logger;
         this.socket = socket;
         this.connection = connection;
-        socket.on('getDevice', this.getDevice.bind(this))
-        socket.on('onAddDevice', this.onAddDevice.bind(this))
+        socket.on('getDevice', this.getDevice.bind(this));
+        socket.on('onAddDevice', this.onAddDevice.bind(this));
+        socket.on('onDelDevice', this.onDelDevice.bind(this));
     }
 
     /**
@@ -56,6 +57,27 @@ class Device{
                     message: err
                 });
             })
+    }
+    onDelDevice(device){
+        console.log('onDelDevice->',device)
+
+        util.getUserIdBySocketId(this.connection, this.socket.id)
+            .then(user_id=>{
+                util.delDeviceByUserDeviceKey(this.connection, user_id, device.id)
+                    .then((d)=>{
+                        this.socket.emit('onDelDevice', {
+                            result: 'ok'
+                        })
+                    })
+                    .catch(err=>{
+                        this.socket.emit('onDelDevice', {
+                            result: false,
+                            message: err
+                        });
+                        console.error('Error onDelDevice->', err)
+                    });
+            })
+
     }
 
     emitLastPosition(devices){

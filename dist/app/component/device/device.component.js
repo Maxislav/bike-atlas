@@ -53,7 +53,12 @@ var DeviceComponent = (function () {
     DeviceComponent.prototype.onDel = function (e, i) {
         e.stopPropagation();
         if (-1 < i) {
-            this.devices.splice(i, 1);
+            var delDevice = this.devices.splice(i, 1)[0];
+            //console.log(delDevice)
+            this.ds.onDelDevice(delDevice)
+                .then(function (d) {
+                console.log(d);
+            });
             this.clearPredel();
         }
     };

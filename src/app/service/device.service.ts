@@ -49,6 +49,9 @@ export class DeviceService {
                 })
         })
     }
+    onDelDevice(device: Device){
+       return this.socket.$emit('onDelDevice', device)
+    }
     clearDevice(){
         this._devices.length = 0;
     }

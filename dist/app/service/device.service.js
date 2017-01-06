@@ -45,6 +45,9 @@ var DeviceService = (function () {
             });
         });
     };
+    DeviceService.prototype.onDelDevice = function (device) {
+        return this.socket.$emit('onDelDevice', device);
+    };
     DeviceService.prototype.clearDevice = function () {
         this._devices.length = 0;
     };

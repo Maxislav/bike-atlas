@@ -59,8 +59,15 @@ export class DeviceComponent{
     onDel(e, i){
         e.stopPropagation();
         if(-1<i){
-            this.devices.splice(i,1);
-            this.clearPredel()
+
+            const delDevice = this.devices.splice(i,1)[0];
+            //console.log(delDevice)
+            this.ds.onDelDevice(delDevice)
+                .then(d=>{
+                    console.log(d)
+                });
+
+            this.clearPredel();
         }
     }
     preDel(e, i){

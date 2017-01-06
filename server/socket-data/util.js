@@ -53,6 +53,17 @@ module.exports = {
             })
         })
     },
+    delDeviceByUserDeviceKey: function (connection, user_id, device_key) {
+        return new Promise((resolve, reject) => {
+            connection.query('DELETE FROM `device` WHERE `user_id`=? AND `device_key`=?', [user_id, device_key], (err, result) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(result)
+            })
+        })
+    },
     getDeviceByHash: function (connection, hash) {
         return this.getUserIdByHash(connection, hash)
             .then(user_id => {
@@ -113,6 +124,7 @@ module.exports = {
                 })
             })
     },
+
     insertLog: function (connection, data) {
         return new Promise((resolve, reject)=>{
             connection.query('INSERT INTO `logger` (`id`, `device_key`, `lng`, `lat`, `alt`, `speed`, `azimuth`, `date`, `src`) VALUES (' +
