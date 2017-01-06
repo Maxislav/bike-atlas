@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "_start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
-    "start": "concurrently \"npm run gulpDev\" \"npm run server-dev\"  ",
+    "start": "concurrently  \"npm run gulpDev\" \"npm run server-dev\"  ",
+    "__start": "concurrently \"npm run tsc:w\" \"npm run gulpDev\" \"npm run server-dev\"  ",
     "server": "node server/index.js",
     "server-dev": "node-dev server/index.js",
     "gulpDev": "node_modules/.bin/gulp",

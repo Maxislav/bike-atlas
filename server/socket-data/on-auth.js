@@ -3,9 +3,9 @@ const util = require('./util');
 
 
 class OnAuth {
-    constructor(socket, _connection, logger) {
+    constructor(socket, _connection, chat) {
         this.socket = socket;
-        this.logger = logger;
+        this.chat = chat;
         connection = _connection;
         this.socket.on('onAuth', this.onAuth.bind(this));
     }
@@ -16,6 +16,10 @@ class OnAuth {
             .then(user => {
                 return util.updateSocketIdByHash(connection, data.hash, this.socket.id)
                     .then(d => {
+                        /**
+                         * авторизация в чате
+                         */
+                        this.chat.onAuth(this.socket.id, user.user_id);
                         return util.getUserSettingByUserId(connection, user.user_id)
                             .then(setting => {
                                 this.socket.emit('onAuth', {

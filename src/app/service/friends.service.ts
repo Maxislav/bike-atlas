@@ -61,6 +61,13 @@ export class FriendsService {
             })
     }
 
+    onInvite(inviteId: number){
+        this.socket.$emit('onInvite', {hash: this.ls.userKey, inviteId})
+            .then(d=>{
+                console.log(d)
+            })
+    }
+
     clearUsers(){
         this.users = []
     }

@@ -11,6 +11,7 @@ const Device = require('./socket-data/device');
 const OnRegist = require('./socket-data/on-regist');
 const OnProfile = require('./socket-data/on-profile');
 const OnFriend = require('./socket-data/on-friends');
+const Chat = require('./chat');
 
 const Logger = require('./logger');
 connection.connect((err)=>{
@@ -51,17 +52,21 @@ function onRegist(data) {
 module.exports = (sever, app) => {
     const ioServer = io(sever);
     const logger = new Logger(app, ioServer, connection);
+    const  chat = new Chat(connection);
 
     ioServer.on('connection', function (socket) {
         logger.sockets = ioServer.sockets.connected;
-        const onEnter = new OnEnter(socket, connection, logger);
-        const onAuth = new OnAuth(socket, connection, logger);
+        chat.sockets = ioServer.sockets.connected;
+        const onEnter = new OnEnter(socket, connection, logger, chat);
+        const onAuth = new OnAuth(socket, connection, chat);
+
         const device = new Device(socket, connection, logger);
         const onRegist = new OnRegist(socket, connection, logger);
         const onProfile = new OnProfile(socket, connection, logger);
         const onFriend = new OnFriend(socket, connection, logger);
         socket.on('disconnect',()=>{
-            logger.onDisconnect(socket.id)
+            logger.onDisconnect(socket.id);
+            chat.onDisconnect(socket.id);
         });
 
         socketStream(socket).on('file', function (stream) {

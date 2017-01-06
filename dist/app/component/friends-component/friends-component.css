@@ -34,6 +34,9 @@ button:active {
 * {
   box-sizing: border-box;
 }
+.gray {
+  color: darkgray;
+}
 users-container {
   display: block;
   overflow-y: auto;

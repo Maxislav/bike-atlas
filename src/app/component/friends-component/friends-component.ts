@@ -21,7 +21,9 @@ export class UsersContainer{
         renderer.setElementStyle(el.nativeElement, 'height', y-300+'px');
     }
 }
-
+declare const module:{
+    id: any
+}
 
 @Component({
     //noinspection TypeScriptUnresolvedVariable
@@ -41,4 +43,9 @@ export class FriendsComponent{
     getAllUsers(){
         this.fr.getAllUsers()
     }
+    sendInvite(user){
+        this.fr.onInvite(user.id)
+        //console.log(user.id)
+    }
+
 }

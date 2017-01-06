@@ -137,8 +137,24 @@ function createTable() {
             res(connection);
         })
     });
+    const tableInvite = new Promise((res, rej) => {
+        const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`invite` ' +
+            '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+            '`user_id` INT NOT NULL , ' +
+            '`invite_user_id` INT NOT NULL, ' +
+            '`active` BOOLEAN NOT NULL DEFAULT 0, ' +
+            'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+        connection.query(query, (err) => {
+            if (err) {
+                console.log('Error table invite create');
+                rej(err);
+                return;
+            }
+            res(connection);
+        })
+    });
 
-    return Promise.all([tableUser, tableHash, tableDevice, tableLogger, tableSetting])
+    return Promise.all([tableUser, tableHash, tableDevice, tableLogger, tableSetting, tableInvite])
 
 
 }

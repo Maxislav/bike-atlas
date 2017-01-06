@@ -40,6 +40,12 @@ var FriendsService = (function () {
             }
         });
     };
+    FriendsService.prototype.onInvite = function (inviteId) {
+        this.socket.$emit('onInvite', { hash: this.ls.userKey, inviteId: inviteId })
+            .then(function (d) {
+            console.log(d);
+        });
+    };
     FriendsService.prototype.clearUsers = function () {
         this.users = [];
     };

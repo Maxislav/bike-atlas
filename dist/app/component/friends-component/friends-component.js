@@ -37,6 +37,10 @@ var FriendsComponent = (function () {
     FriendsComponent.prototype.getAllUsers = function () {
         this.fr.getAllUsers();
     };
+    FriendsComponent.prototype.sendInvite = function (user) {
+        this.fr.onInvite(user.id);
+        //console.log(user.id)
+    };
     FriendsComponent = __decorate([
         core_1.Component({
             //noinspection TypeScriptUnresolvedVariable
