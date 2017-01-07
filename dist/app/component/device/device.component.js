@@ -16,11 +16,13 @@ var app_component_1 = require("../../app.component");
 var toast_component_1 = require("../toast/toast.component");
 var main_user_service_1 = require("../../service/main.user.service");
 var IsOwner = (function () {
-    function IsOwner() {
+    function IsOwner(user) {
+        this.user = user;
     }
     IsOwner.prototype.transform = function (value, args) {
+        var _this = this;
         return value.filter(function (item) {
-            return item.ownerId == 1;
+            return item.ownerId == _this.user.user.id;
         });
     };
     IsOwner = __decorate([
@@ -28,7 +30,7 @@ var IsOwner = (function () {
             name: 'isOwner',
             pure: false
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [main_user_service_1.UserService])
     ], IsOwner);
     return IsOwner;
 }());

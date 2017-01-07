@@ -12,11 +12,14 @@ import {UserService} from "../../service/main.user.service";
     pure: false
 })
 export class IsOwner implements PipeTransform  {
+    constructor(private user: UserService){
+
+    }
     transform(value, args?){
 
 
         return value.filter(item=>{
-            return item.ownerId == 1
+            return item.ownerId == this.user.user.id
         })
     }
 }
