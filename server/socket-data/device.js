@@ -17,12 +17,52 @@ class Device{
      * @param {{hash: string}}d
      */
     getDevice(d){
-        util.getDeviceByHash(this.connection, d.hash)
+        util.getUserIdBySocketId(this.connection, this.socket.id)
+            .then(user_id=>{
+                return util.getFriends(this.connection, user_id)
+                    .then(friends=>{
+                        const ids = [user_id];
+                        friends.forEach(friend=>{
+                            ids.push(friend.id)
+                        });
+                        return util.getDeviceByIds(this.connection, ids.join(', '))
+                            .then(rows=>{
+                                console.log('getDevice -> ', rows)
+
+                                rows.forEach(item=>{
+                                    item.id = item.device_key;
+                                    delete    item.device_key;
+                                    item.ownerId = item.user_id;
+                                    delete item.user_id;
+                                });
+                                this.socket.emit('getDevice', {
+                                    result: 'ok',
+                                    devices: rows
+                                } );
+                                this.emitLastPosition(rows)
+                            })
+
+
+                    });
+
+
+                //console.log('user id ->' , user_id);
+
+            })
+            .catch((err)=>{
+                this.socket.emit('getDevice', {
+                    result: false
+                })
+                console.error('error getDevice->',err)
+            });
+
+        /*util.getDeviceByHash(this.connection, d.hash)
             .then(rows=>{
                 const devices = [];
                 rows.forEach(item=>{
                     devices.push({
                         id: item.device_key,
+                        ownerId: item.user_id,
                         name: item.name,
                         phone: item.phone
                     });
@@ -42,7 +82,7 @@ class Device{
                 this.socket.emit('getDevice', {
                     result: false
                 })
-            })
+            })*/
     }
     onAddDevice(device){
         util.addDeviceBySocketId(this.connection, this.socket.id, device)

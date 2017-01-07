@@ -78,6 +78,18 @@ module.exports = {
                 })
             })
     },
+
+    getDeviceByIds: function (connection, ids) {
+        return new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM `device` WHERE `user_id` IN( '+ids+' )', [], function (err, rows) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows)
+            })
+        })
+    },
     getUserByHash: function (connection, hash) {
         return new Promise((resolve, reject) => {
             connection.query('SELECT * FROM `user` INNER JOIN `hash` ON hash.user_id = user.id AND hash.key=?', [hash], (err, rows) => {
