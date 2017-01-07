@@ -80,15 +80,11 @@ export class DeviceComponent{
             })
     }
     onDel(e, device){
-        e.stopPropagation();
         this.ds.onDelDevice(device)
             .then(d=>{
                 console.log(d)
                 this.clearPredel();
             });
-
-
-
     }
     preDel(e, i){
         e.stopPropagation();

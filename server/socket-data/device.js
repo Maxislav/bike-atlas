@@ -32,6 +32,7 @@ class Device{
                                     delete    item.device_key;
                                     item.ownerId = item.user_id;
                                     delete item.user_id;
+                                    this.logger.updateDevice(item.id, this.socket.id)
                                 });
                                 this.socket.emit('getDevice', {
                                     result: 'ok',

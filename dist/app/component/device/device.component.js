@@ -76,7 +76,6 @@ var DeviceComponent = (function () {
     };
     DeviceComponent.prototype.onDel = function (e, device) {
         var _this = this;
-        e.stopPropagation();
         this.ds.onDelDevice(device)
             .then(function (d) {
             console.log(d);
