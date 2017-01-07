@@ -53,16 +53,16 @@ var DeviceService = (function () {
     DeviceService.prototype.onDelDevice = function (device) {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            return _this.socket.$emit('onDelDevice', device)
-                .then(function (d) {
-                if (d.result == 'ok') {
-                    var index = _this.devices.indexOf(device);
-                    if (-1 < index) {
-                        _this._devices.splice(index, 1);
+            return _this.socket.emit('onDelDevice', device);
+            /*.then(d=>{
+                if(d.result=='ok'){
+                    let index = this.devices.indexOf(device)
+                    if(-1<index){
+                        this._devices.splice(index,1)
                     }
                 }
                 return d;
-            });
+            })*/
             /* let index = this.devices.indexOf(device)
              if(-1<index){
                  this._devices.splice(index,1)
