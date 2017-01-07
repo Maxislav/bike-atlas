@@ -1,12 +1,22 @@
 div.content
     div
         .close((click)="onClose()") &times;
-        .row
-            h3
-                | Друзья
+
         users-container
             .row
-                p Запросы
+                h4 Друзья
+                table
+                    tbody
+                        tr(*ngFor="let user of friends\; let i = index")
+                            td
+                                img([src]="user.image || 'src/img/no-avatar.gif' ")
+                            td {{user.name}}
+                            td
+                                .invite((click)="onDelFriend(user)")
+                                    | Удалить
+
+            .row(*ngIf="invites.length")
+                h4 Запросы
                 table
                     tbody
                         tr(*ngFor="let user of invites\; let i = index")
@@ -14,7 +24,7 @@ div.content
                                 img([src]="user.image || 'src/img/no-avatar.gif' ")
                             td {{user.name}}
                             td
-                                .invite((click)="onAccept(user)")
+                                .invite((click)="onAccept(user)", )
                                     | Принять
 
             .row
@@ -23,13 +33,13 @@ div.content
                         button( style="float: right", (click)="getAllUsers($event)") Просмотреть всех участников
                 .border-hidden
             .row(*ngIf="allUsers.length")
-
-                    table
-                        tbody
-                            tr(*ngFor="let user of allUsers\; let i = index")
-                                td
-                                    img([src]="user.image || 'src/img/no-avatar.gif' ")
-                                td {{user.name}}
-                                td
-                                    .invite((click)="sendInvite(user)")
-                                        | Отправть запрос
+                h4 Все участники
+                table
+                    tbody
+                        tr(*ngFor="let user of allUsers\; let i = index")
+                            td
+                                img([src]="user.image || 'src/img/no-avatar.gif' ")
+                            td {{user.name}}
+                            td
+                                .invite((click)="sendInvite(user)", *ngIf="!isFriend(user)")
+                                    | Отправть запрос

@@ -54,6 +54,7 @@ var AuthService = (function () {
                 _this.setting = d.user.setting || _this.setting;
                 _this.ds.updateDevices();
                 _this.friend.getInvites();
+                _this.friend.updateFriends();
             }
             else {
                 _this.userName = null;

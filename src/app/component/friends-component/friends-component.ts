@@ -36,19 +36,23 @@ declare const module:{
 export class FriendsComponent{
     public allUsers: Array<User>;
     public invites: Array<User>;
+    public friends: Array<User>;
     constructor(private location: Location, private friend: FriendsService, private toast: ToastService ){
         this.allUsers = friend.users;
         this.invites = friend.invites;
+        this.friends = friend.friends;
     }
 
-    onAccept(d){
-        console.log(d)
-       this.toast.show({
+    onAccept(friend: User){
+        this.friend.onAcceptInvite(friend)
+    }
+
+    onDelFriend(friend: User){
+        this.toast.show({
             type: 'warning',
-            text: "Функция в рвзработке"
+            text: "в рвзработке.."
         })
     }
-
     onClose(){
         this.location.back()
     }
@@ -57,6 +61,18 @@ export class FriendsComponent{
     }
     sendInvite(user){
         this.friend.onInvite(user.id)
+    }
+    isFriend(user: User){
+        let i = 0;
+
+        while (i<this.friends.length){
+            if(this.friends[i].id == user.id){
+                return true
+            }
+            i++;
+        }
+
+        return false
     }
 
 }

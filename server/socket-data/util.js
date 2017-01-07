@@ -276,6 +276,66 @@ module.exports = {
             })
         });
     },
+    getInviteByOwnerId: function (connection, user_id, friend_id) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * from `invite` WHERE `user_id` = ? AND `invite_user_id`=?  order by `id` desc limit 1';
+            connection.query(query, [friend_id, user_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows)
+            })
+        });
+    },
+    setFriends: function (connection, user_id, friend_id) {
+        const fr1 = new Promise((resolve, reject) => {
+            connection.query('INSERT INTO `friends` ' +
+                '(`id`, `user_id`, `friend_id`) ' +
+                'VALUES (NULL, ?, ?)', [user_id, friend_id], (err, results) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(results);
+            })
+        });
+        const fr2 = new Promise((resolve, reject) => {
+            connection.query('INSERT INTO `friends` ' +
+                '(`id`, `user_id`, `friend_id`) ' +
+                'VALUES (NULL, ?, ?)', [friend_id ,user_id ], (err, results) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(results);
+            })
+        });
+        return Promise.all([fr1, fr2])
+    },
+    delInvite:function (connection, id) {
+        return new Promise((resolve, reject) => {
+            connection.query('DELETE FROM `invite` WHERE `id`=?', [id], (err, result) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(result)
+            })
+        })
+    },
+    getFriends: function (connection, user_id) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT user.id, image, name from `user` INNER JOIN `friends` ON friends.friend_id = user.id AND friends.user_id = ?';
+            connection.query(query, [user_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows)
+            })
+        });
+    },
     formatDevice: function(d) {
         return {
             id: d.device_key,

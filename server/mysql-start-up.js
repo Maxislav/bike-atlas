@@ -154,7 +154,25 @@ function createTable() {
         })
     });
 
-    return Promise.all([tableUser, tableHash, tableDevice, tableLogger, tableSetting, tableInvite])
+
+    const tableFriends = new Promise((res, rej) => {
+        const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`friends` ' +
+            '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+            '`user_id` INT NOT NULL , ' +
+            '`friend_id` INT NOT NULL, ' +
+            'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+        connection.query(query, (err) => {
+            if (err) {
+                console.log('Error table friends create');
+                rej(err);
+                return;
+            }
+            res(connection);
+        })
+    });
+
+
+    return Promise.all([tableUser, tableHash, tableDevice, tableLogger, tableSetting, tableInvite, tableFriends])
 
 
 }

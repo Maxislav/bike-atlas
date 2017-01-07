@@ -42,8 +42,12 @@ users-container {
   overflow-y: auto;
 }
 users-container td {
+  width: 33.3%;
   border-bottom: 1px solid #cfdcef;
   padding: 5px 0;
+}
+h4 {
+  padding: 8px 0;
 }
 .invite {
   font-size: 12px;

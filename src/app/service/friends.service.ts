@@ -5,7 +5,6 @@ import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
 import {Marker} from "./marker.service";
 import {LocalStorage} from "./local-storage.service";
-import {AuthService} from "./auth.service";
 import {UserService} from "./main.user.service";
 
 
@@ -49,7 +48,10 @@ export class FriendsService {
         const hash = this.ls.userKey;
         this.socket.$emit('getFriends', {hash})
             .then(d=>{
-
+                if(d.result == 'ok'){
+                    this.friends = d.friends
+                }
+                console.log(d)
             })
     }
     getInvites(){
@@ -59,6 +61,16 @@ export class FriendsService {
                 console.log(d);
                 this.invites = d;
             })
+    }
+
+    onAcceptInvite(friend: User){
+       const hash = this.ls.userKey;
+       return this.socket.$emit('onAcceptInvite', friend.id)
+            .then(d=>{
+                console.log(d)
+            })
+
+
     }
 
     getAllUsers(){

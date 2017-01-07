@@ -2,12 +2,23 @@
 <div class="content">
   <div>
     <div (click)="onClose()" class="close">&times;</div>
-    <div class="row">
-      <h3>Друзья</h3>
-    </div>
     <users-container>
       <div class="row">
-        <p>Запросы</p>
+        <h4>Друзья</h4>
+        <table>
+          <tbody>
+            <tr *ngFor="let user of friends; let i = index">
+              <td><img [src]="user.image || 'src/img/no-avatar.gif' "/></td>
+              <td>{{user.name}}</td>
+              <td>
+                <div (click)="onDelFriend(user)" class="invite">Удалить</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="invites.length" class="row">
+        <h4>Запросы</h4>
         <table>
           <tbody>
             <tr *ngFor="let user of invites; let i = index">
@@ -29,13 +40,14 @@
         <div class="border-hidden"></div>
       </div>
       <div *ngIf="allUsers.length" class="row">
+        <h4>Все участники</h4>
         <table>
           <tbody>
             <tr *ngFor="let user of allUsers; let i = index">
               <td><img [src]="user.image || 'src/img/no-avatar.gif' "/></td>
               <td>{{user.name}}</td>
               <td>
-                <div (click)="sendInvite(user)" class="invite">Отправть запрос</div>
+                <div (click)="sendInvite(user)" *ngIf="!isFriend(user)" class="invite">Отправть запрос</div>
               </td>
             </tr>
           </tbody>

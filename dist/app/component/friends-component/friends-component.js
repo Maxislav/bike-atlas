@@ -33,12 +33,15 @@ var FriendsComponent = (function () {
         this.toast = toast;
         this.allUsers = friend.users;
         this.invites = friend.invites;
+        this.friends = friend.friends;
     }
-    FriendsComponent.prototype.onAccept = function (d) {
-        console.log(d);
+    FriendsComponent.prototype.onAccept = function (friend) {
+        this.friend.onAcceptInvite(friend);
+    };
+    FriendsComponent.prototype.onDelFriend = function (friend) {
         this.toast.show({
             type: 'warning',
-            text: "Функция в рвзработке"
+            text: "в рвзработке.."
         });
     };
     FriendsComponent.prototype.onClose = function () {
@@ -49,6 +52,16 @@ var FriendsComponent = (function () {
     };
     FriendsComponent.prototype.sendInvite = function (user) {
         this.friend.onInvite(user.id);
+    };
+    FriendsComponent.prototype.isFriend = function (user) {
+        var i = 0;
+        while (i < this.friends.length) {
+            if (this.friends[i].id == user.id) {
+                return true;
+            }
+            i++;
+        }
+        return false;
     };
     FriendsComponent = __decorate([
         core_1.Component({

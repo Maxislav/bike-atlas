@@ -57,7 +57,8 @@ export class AuthService implements Resolve<any>{
                 this.userName = d.user.name;
                 this.setting = d.user.setting || this.setting;
                 this.ds.updateDevices();
-                this.friend.getInvites()
+                this.friend.getInvites();
+                this.friend.updateFriends();
             }else{
                 this.userName = null;
             }

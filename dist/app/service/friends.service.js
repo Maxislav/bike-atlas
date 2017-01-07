@@ -23,9 +23,14 @@ var FriendsService = (function () {
         this.socket = io.socket;
     }
     FriendsService.prototype.updateFriends = function () {
+        var _this = this;
         var hash = this.ls.userKey;
         this.socket.$emit('getFriends', { hash: hash })
             .then(function (d) {
+            if (d.result == 'ok') {
+                _this.friends = d.friends;
+            }
+            console.log(d);
         });
     };
     FriendsService.prototype.getInvites = function () {
@@ -35,6 +40,13 @@ var FriendsService = (function () {
             .then(function (d) {
             console.log(d);
             _this.invites = d;
+        });
+    };
+    FriendsService.prototype.onAcceptInvite = function (friend) {
+        var hash = this.ls.userKey;
+        return this.socket.$emit('onAcceptInvite', friend.id)
+            .then(function (d) {
+            console.log(d);
         });
     };
     FriendsService.prototype.getAllUsers = function () {
