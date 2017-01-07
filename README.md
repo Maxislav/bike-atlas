@@ -1,6 +1,9 @@
 # Atlas-Angular2
-## Install
 
+## Required
+MySql, Node
+
+## Install
 ```
 ~$ npm i
 ```
@@ -12,6 +15,18 @@
 
 ## DataBase create
 
+create file server/mysql.config.json
+```json
+{
+  "mysql": {
+    "host": "localhost",
+    "user": "root",
+    "password": "******",
+    "timezone":"utc"
+  }
+}
+```
+command for tables create
 ```bash
 ~$ node server/mysql-start-up.js
 ```
