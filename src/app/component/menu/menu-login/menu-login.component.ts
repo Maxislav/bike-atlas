@@ -60,25 +60,7 @@ export class MenuLoginComponent {
     }
 
     onExit(e) {
-        this.socket
-            .$emit('onExit', {
-                hash: this.ls.userKey
-            })
-            .then(d => {
-                if (d.result == 'ok') {
-                    this.ls.userKey = null;
-                    this.as.userName = null;
-                    this.as.userImage = null;
-                    this.as.userId = null;
-                    this.friend.clearUsers();
-                    this.logService.clearDevices();
-                    this.ds.clearDevice()
-
-
-                }
-            })
-
-
+        this.loginService.onExit(e);
     }
     goToFriends(){
         this.ms.menuOpenLogin = false

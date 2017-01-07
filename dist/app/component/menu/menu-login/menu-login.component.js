@@ -53,22 +53,7 @@ var MenuLoginComponent = (function () {
         this.ms.menuOpenLogin = false;
     };
     MenuLoginComponent.prototype.onExit = function (e) {
-        var _this = this;
-        this.socket
-            .$emit('onExit', {
-            hash: this.ls.userKey
-        })
-            .then(function (d) {
-            if (d.result == 'ok') {
-                _this.ls.userKey = null;
-                _this.as.userName = null;
-                _this.as.userImage = null;
-                _this.as.userId = null;
-                _this.friend.clearUsers();
-                _this.logService.clearDevices();
-                _this.ds.clearDevice();
-            }
-        });
+        this.loginService.onExit(e);
     };
     MenuLoginComponent.prototype.goToFriends = function () {
         this.ms.menuOpenLogin = false;

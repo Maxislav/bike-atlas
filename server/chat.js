@@ -11,19 +11,23 @@ class Chat{
     onAuth(socketId, userId){
         console.log('chat auth ->', socketId, userId);
         this.user[userId] = this.user[userId] || [];
-        this.user[userId].push(socketId);
+        if(!this.isExist(this.user[userId], socketId)  ){
+            this.user[userId].push(socketId);
+        }
     }
     onEnter(socketId, userId){
         console.log('chat enter ->', socketId, userId);
         this.user[userId] = this.user[userId] || [];
-        this.user[userId].push(socketId);
+        if(!this.isExist(this.user[userId], socketId)  ){
+            this.user[userId].push(socketId);
+        }
     }
     onExit(socketId){
-        console.log('chat exit ->', socketId)
+        console.log('chat exit ->', socketId);
         this.clearSocket(socketId)
     }
     onDisconnect(socketId){
-        console.log('chat disconnect ->', socketId)
+        console.log('chat disconnect ->', socketId);
         this.clearSocket(socketId)
     }
 
@@ -42,6 +46,10 @@ class Chat{
 
     get sockets() {
         return this._sockets;
+    }
+
+    isExist(user,  socketId){
+        return -1<user.indexOf(socketId)
     }
 }
 module.exports = Chat;

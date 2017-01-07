@@ -3,19 +3,33 @@
   <div>
     <div (click)="onClose()" class="close">&times;</div>
     <div class="row">
-      <p>Друзья</p>
+      <h3>Друзья</h3>
     </div>
-    <div class="row">
-      <div class="gray">в разработке</div>
-      <div class="border-hidden">
-        <div>
-          <button style="float: right" (click)="getAllUsers($event)">Просмотреть участников</button>
-        </div>
+    <users-container>
+      <div class="row">
+        <p>Запросы</p>
+        <table>
+          <tbody>
+            <tr *ngFor="let user of invites; let i = index">
+              <td><img [src]="user.image || 'src/img/no-avatar.gif' "/></td>
+              <td>{{user.name}}</td>
+              <td>
+                <div (click)="onAccept(user)" class="invite">Принять</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="border-hidden"></div>
-    </div>
-    <div *ngIf="allUsers.length" class="row">
-      <users-container>
+      <div class="row">
+        <div class="gray">в разработке</div>
+        <div class="border-hidden">
+          <div>
+            <button style="float: right" (click)="getAllUsers($event)">Просмотреть всех участников</button>
+          </div>
+        </div>
+        <div class="border-hidden"></div>
+      </div>
+      <div *ngIf="allUsers.length" class="row">
         <table>
           <tbody>
             <tr *ngFor="let user of allUsers; let i = index">
@@ -27,7 +41,7 @@
             </tr>
           </tbody>
         </table>
-      </users-container>
-    </div>
+      </div>
+    </users-container>
   </div>
 </div>

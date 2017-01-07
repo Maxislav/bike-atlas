@@ -36,6 +36,7 @@ import {ProfileComponent} from "./component/profile/profile.component";
 import {JournalComponent} from "./component/journal-component/journal.component";
 import {FriendsComponent} from "./component/friends-component/friends-component";
 import {FriendsService} from "./service/friends.service";
+import {UserService} from "./service/main.user.service";
 
 @NgModule({
     imports: [
@@ -84,7 +85,8 @@ import {FriendsService} from "./service/friends.service";
         MapService,
         MarkerService,
         LoginService,
-        FriendsService
+        FriendsService,
+        UserService
     ]
 })
 export class AppModule {

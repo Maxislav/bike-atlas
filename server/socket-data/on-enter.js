@@ -43,9 +43,12 @@ class OnEnter {
                             this.socket.emit('onEnter', {
                                 result: 'ok',
                                 hash: hash,
-                                id: user.id,
-                                name: user.name,
-                                image: user.image
+                                user:{
+                                    id: user.id,
+                                    name: user.name,
+                                    image: user.image
+                                }
+
                             });
                             this.chat.onEnter(this.socket.id, user.id)
                         })

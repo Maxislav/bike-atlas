@@ -11,6 +11,7 @@ import {TrackService} from "../../service/track.service";
 import {TrackList} from "./track-list/track-list.component";
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
+import {FriendsService, User} from "../../service/friends.service";
 //import {Track} from "./track";
 
 declare var document: any;
@@ -28,13 +29,22 @@ export class MenuComponent{
 
     public menuOpen: boolean;
     public userName: string;
+    private invites: Array<User>
+
     
     trackList: Array<any>;
 
-    constructor(private ms: MenuService, track: TrackService, public as: AuthService, private router: Router){
+    constructor(
+        private ms: MenuService,
+        track: TrackService,
+        public as: AuthService,
+        private router: Router,
+        private friend: FriendsService){
+        this.invites = friend.invites;
+
+
+
         this.trackList = track.trackList;
-        //this.userName = as.userName;
-        //this.menuOpen = ms.menuOpen
     }
     onOpen(){
         this.ms.menuOpen = !this.ms.menuOpen;

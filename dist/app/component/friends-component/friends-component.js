@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var common_1 = require('@angular/common');
 var friends_service_1 = require("../../service/friends.service");
+var toast_component_1 = require("../toast/toast.component");
 var UsersContainer = (function () {
     function UsersContainer(el, renderer) {
         var w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0], x = w.innerWidth || e.clientWidth || g.clientWidth, y = w.innerHeight || e.clientHeight || g.clientHeight;
@@ -26,20 +27,28 @@ var UsersContainer = (function () {
 }());
 exports.UsersContainer = UsersContainer;
 var FriendsComponent = (function () {
-    function FriendsComponent(location, fr) {
+    function FriendsComponent(location, friend, toast) {
         this.location = location;
-        this.fr = fr;
-        this.allUsers = fr.users;
+        this.friend = friend;
+        this.toast = toast;
+        this.allUsers = friend.users;
+        this.invites = friend.invites;
     }
+    FriendsComponent.prototype.onAccept = function (d) {
+        console.log(d);
+        this.toast.show({
+            type: 'warning',
+            text: "Функция в рвзработке"
+        });
+    };
     FriendsComponent.prototype.onClose = function () {
         this.location.back();
     };
     FriendsComponent.prototype.getAllUsers = function () {
-        this.fr.getAllUsers();
+        this.friend.getAllUsers();
     };
     FriendsComponent.prototype.sendInvite = function (user) {
-        this.fr.onInvite(user.id);
-        //console.log(user.id)
+        this.friend.onInvite(user.id);
     };
     FriendsComponent = __decorate([
         core_1.Component({
@@ -49,7 +58,7 @@ var FriendsComponent = (function () {
             directives: [UsersContainer],
             styleUrls: ['./friends-component.css'],
         }), 
-        __metadata('design:paramtypes', [common_1.Location, friends_service_1.FriendsService])
+        __metadata('design:paramtypes', [common_1.Location, friends_service_1.FriendsService, toast_component_1.ToastService])
     ], FriendsComponent);
     return FriendsComponent;
 }());

@@ -45,6 +45,7 @@ var profile_component_1 = require("./component/profile/profile.component");
 var journal_component_1 = require("./component/journal-component/journal.component");
 var friends_component_1 = require("./component/friends-component/friends-component");
 var friends_service_1 = require("./service/friends.service");
+var main_user_service_1 = require("./service/main.user.service");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -96,7 +97,8 @@ var AppModule = (function () {
                 map_service_1.MapService,
                 marker_service_1.MarkerService,
                 login_service_1.LoginService,
-                friends_service_1.FriendsService
+                friends_service_1.FriendsService,
+                main_user_service_1.UserService
             ]
         }), 
         __metadata('design:paramtypes', [])

@@ -12,12 +12,16 @@ var core_1 = require("@angular/core");
 var socket_oi_service_1 = require("./socket.oi.service");
 var local_storage_service_1 = require("./local-storage.service");
 var device_service_1 = require("./device.service");
+var friends_service_1 = require("./friends.service");
+var main_user_service_1 = require("./main.user.service");
 var AuthService = (function () {
-    function AuthService(io, ls, ds) {
+    function AuthService(io, ls, ds, friend, userService) {
         var _this = this;
         this.io = io;
         this.ls = ls;
         this.ds = ds;
+        this.friend = friend;
+        this.userService = userService;
         this._userName = null;
         this._userImage = null;
         this.socket = io.socket;
@@ -43,11 +47,13 @@ var AuthService = (function () {
             hash: this.ls.userKey
         }).then(function (d) {
             if (d.result == 'ok') {
+                _this.userService.user = d.user;
                 _this.userId = d.user.id;
                 _this.userImage = d.user.image;
                 _this.userName = d.user.name;
                 _this.setting = d.user.setting || _this.setting;
                 _this.ds.updateDevices();
+                _this.friend.getInvites();
             }
             else {
                 _this.userName = null;
@@ -98,7 +104,7 @@ var AuthService = (function () {
     });
     AuthService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, device_service_1.DeviceService])
+        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, device_service_1.DeviceService, friends_service_1.FriendsService, main_user_service_1.UserService])
     ], AuthService);
     return AuthService;
 }());

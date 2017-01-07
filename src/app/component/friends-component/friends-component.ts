@@ -2,6 +2,7 @@
 import {Component, Directive, ElementRef, Renderer} from "@angular/core";
 import {Location} from '@angular/common';
 import {FriendsService, User} from "../../service/friends.service";
+import {ToastService} from "../toast/toast.component";
 
 
 @Directive({
@@ -34,18 +35,28 @@ declare const module:{
 })
 export class FriendsComponent{
     public allUsers: Array<User>;
-    constructor(private location: Location, private fr: FriendsService){
-        this.allUsers = fr.users;
+    public invites: Array<User>;
+    constructor(private location: Location, private friend: FriendsService, private toast: ToastService ){
+        this.allUsers = friend.users;
+        this.invites = friend.invites;
     }
+
+    onAccept(d){
+        console.log(d)
+       this.toast.show({
+            type: 'warning',
+            text: "Функция в рвзработке"
+        })
+    }
+
     onClose(){
         this.location.back()
     }
     getAllUsers(){
-        this.fr.getAllUsers()
+        this.friend.getAllUsers()
     }
     sendInvite(user){
-        this.fr.onInvite(user.id)
-        //console.log(user.id)
+        this.friend.onInvite(user.id)
     }
 
 }

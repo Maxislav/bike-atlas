@@ -2,22 +2,35 @@ div.content
     div
         .close((click)="onClose()") &times;
         .row
-            p
+            h3
                 | Друзья
-        .row
-            .gray в разработке
-            .border-hidden
-                div()
-                    button( style="float: right", (click)="getAllUsers($event)") Просмотреть участников
-            .border-hidden
-        .row(*ngIf="allUsers.length")
-            users-container
+        users-container
+            .row
+                p Запросы
                 table
                     tbody
-                        tr(*ngFor="let user of allUsers\; let i = index")
+                        tr(*ngFor="let user of invites\; let i = index")
                             td
                                 img([src]="user.image || 'src/img/no-avatar.gif' ")
                             td {{user.name}}
                             td
-                                .invite((click)="sendInvite(user)")
-                                    | Отправть запрос
+                                .invite((click)="onAccept(user)")
+                                    | Принять
+
+            .row
+                .gray в разработке
+                .border-hidden
+                    div()
+                        button( style="float: right", (click)="getAllUsers($event)") Просмотреть всех участников
+                .border-hidden
+            .row(*ngIf="allUsers.length")
+
+                    table
+                        tbody
+                            tr(*ngFor="let user of allUsers\; let i = index")
+                                td
+                                    img([src]="user.image || 'src/img/no-avatar.gif' ")
+                                td {{user.name}}
+                                td
+                                    .invite((click)="sendInvite(user)")
+                                        | Отправть запрос

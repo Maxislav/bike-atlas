@@ -18,14 +18,15 @@ var track_service_1 = require("../../service/track.service");
 var track_list_component_1 = require("./track-list/track-list.component");
 var auth_service_1 = require("../../service/auth.service");
 var router_1 = require("@angular/router");
+var friends_service_1 = require("../../service/friends.service");
 var MenuComponent = (function () {
-    function MenuComponent(ms, track, as, router) {
+    function MenuComponent(ms, track, as, router, friend) {
         this.ms = ms;
         this.as = as;
         this.router = router;
+        this.friend = friend;
+        this.invites = friend.invites;
         this.trackList = track.trackList;
-        //this.userName = as.userName;
-        //this.menuOpen = ms.menuOpen
     }
     MenuComponent.prototype.onOpen = function () {
         this.ms.menuOpen = !this.ms.menuOpen;
@@ -49,7 +50,7 @@ var MenuComponent = (function () {
             styleUrls: ['./menu.component.css'],
             providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService, track_list_component_1.TrackList]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, track_service_1.TrackService, auth_service_1.AuthService, router_1.Router])
+        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, track_service_1.TrackService, auth_service_1.AuthService, router_1.Router, friends_service_1.FriendsService])
     ], MenuComponent);
     return MenuComponent;
     var _a;

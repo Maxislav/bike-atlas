@@ -6,6 +6,7 @@ import {Io} from "./socket.oi.service";
 import {Marker} from "./marker.service";
 import {LocalStorage} from "./local-storage.service";
 import {AuthService} from "./auth.service";
+import {UserService} from "./main.user.service";
 
 
 export interface User{
@@ -25,19 +26,22 @@ export interface Friends extends Array<User>{
 
 @Injectable()
 export class FriendsService {
+
     
     private socket: any;
     private _friends: Array<User>;
     private _users: Array<User>;
+    private _invites: Array<User>;
 
 
     constructor(
         private io: Io,
         private ls: LocalStorage,
-        private as: AuthService
+        private userService: UserService
     ){
         this._friends = [];
         this._users = [];
+        this._invites = [];
         this.socket = io.socket;
     }
 
@@ -48,9 +52,17 @@ export class FriendsService {
 
             })
     }
+    getInvites(){
+        const hash = this.ls.userKey;
+        this.socket.$emit('getInvites', {hash})
+            .then((d)=>{
+                console.log(d);
+                this.invites = d;
+            })
+    }
 
     getAllUsers(){
-        this.socket.$emit('getAllUsers', {hash: this.ls.userKey, id: this.as.userId})
+        this.socket.$emit('getAllUsers', {hash: this.ls.userKey, id: this.userService.user.id})
             .then(d=>{
                 console.log(d)
                 if(d && d.result=='ok'){
@@ -69,7 +81,20 @@ export class FriendsService {
     }
 
     clearUsers(){
-        this.users = []
+        this.users = [];
+        this.invites = []
+    }
+
+
+    get invites(): Array<User> {
+        return this._invites;
+    }
+
+    set invites(value: Array<User>) {
+        this._invites.length = 0;
+        value.forEach(item=>{
+            this._invites.push(item)
+        })
     }
 
 

@@ -251,6 +251,31 @@ module.exports = {
         });
 
     },
+    onInviteFromToId: function (connection, user_id, invite_user_id) {
+        return new Promise((resolve, reject) => {
+            connection.query('INSERT INTO `invite` ' +
+                '(`id`, `user_id`, `invite_user_id`, `active`) ' +
+                'VALUES (NULL, ?, ?, ?)', [user_id, invite_user_id, true], (err, results) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(results);
+            })
+        })
+    },
+    getInvites: function (connection, user_id) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT user_id, image, name from `user` INNER JOIN `invite` ON invite.user_id = user.id AND invite.invite_user_id=? ';
+            connection.query(query, [user_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows)
+            })
+        });
+    },
     formatDevice: function(d) {
         return {
             id: d.device_key,

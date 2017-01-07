@@ -45,7 +45,7 @@ users-container td {
   border-bottom: 1px solid #cfdcef;
   padding: 5px 0;
 }
-users-container .invite {
+.invite {
   font-size: 12px;
   float: right;
   cursor: pointer;

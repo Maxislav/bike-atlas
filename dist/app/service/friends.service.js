@@ -11,14 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var socket_oi_service_1 = require("./socket.oi.service");
 var local_storage_service_1 = require("./local-storage.service");
-var auth_service_1 = require("./auth.service");
+var main_user_service_1 = require("./main.user.service");
 var FriendsService = (function () {
-    function FriendsService(io, ls, as) {
+    function FriendsService(io, ls, userService) {
         this.io = io;
         this.ls = ls;
-        this.as = as;
+        this.userService = userService;
         this._friends = [];
         this._users = [];
+        this._invites = [];
         this.socket = io.socket;
     }
     FriendsService.prototype.updateFriends = function () {
@@ -27,9 +28,18 @@ var FriendsService = (function () {
             .then(function (d) {
         });
     };
+    FriendsService.prototype.getInvites = function () {
+        var _this = this;
+        var hash = this.ls.userKey;
+        this.socket.$emit('getInvites', { hash: hash })
+            .then(function (d) {
+            console.log(d);
+            _this.invites = d;
+        });
+    };
     FriendsService.prototype.getAllUsers = function () {
         var _this = this;
-        this.socket.$emit('getAllUsers', { hash: this.ls.userKey, id: this.as.userId })
+        this.socket.$emit('getAllUsers', { hash: this.ls.userKey, id: this.userService.user.id })
             .then(function (d) {
             console.log(d);
             if (d && d.result == 'ok') {
@@ -48,7 +58,22 @@ var FriendsService = (function () {
     };
     FriendsService.prototype.clearUsers = function () {
         this.users = [];
+        this.invites = [];
     };
+    Object.defineProperty(FriendsService.prototype, "invites", {
+        get: function () {
+            return this._invites;
+        },
+        set: function (value) {
+            var _this = this;
+            this._invites.length = 0;
+            value.forEach(function (item) {
+                _this._invites.push(item);
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(FriendsService.prototype, "friends", {
         get: function () {
             return this._friends;
@@ -83,7 +108,7 @@ var FriendsService = (function () {
     });
     FriendsService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, auth_service_1.AuthService])
+        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, main_user_service_1.UserService])
     ], FriendsService);
     return FriendsService;
 }());

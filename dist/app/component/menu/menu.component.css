@@ -64,6 +64,24 @@ table td.icoUser img {
   width: 34px;
   height: 34px;
 }
+table td.bell {
+  padding: 0;
+  width: 50px;
+  background: url("src/img/bell.png") no-repeat center;
+  background-size: 64%;
+  position: relative;
+}
+table td.bell .num {
+  font-size: 10px;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background: greenyellow;
+  padding: 4px;
+  font: 12px/6px sans-serif;
+  text-align: center;
+  border-radius: 50%;
+}
 @media screen and (max-width: 450px) {
   table td.icoUser {
     display: none;

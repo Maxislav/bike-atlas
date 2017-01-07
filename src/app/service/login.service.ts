@@ -4,6 +4,8 @@ import {LocalStorage} from "./local-storage.service";
 import {AuthService} from "./auth.service";
 import {DeviceService} from "./device.service";
 import {ToastService} from "../component/toast/toast.component";
+import {FriendsService} from "./friends.service";
+import {LogService} from "./log.service";
 /**
  * Created by max on 04.01.17.
  */
@@ -14,7 +16,9 @@ export class LoginService{
                  private ls: LocalStorage,
                  public as: AuthService,
                  private ds: DeviceService,
-                 private ts: ToastService){
+                 private ts: ToastService,
+                 private logService: LogService,
+                 private friend: FriendsService,){
         this.socket = io.socket;
     }
     onEnter({name, pass}){
@@ -26,15 +30,35 @@ export class LoginService{
             .then(this.setHashName.bind(this));
 
     }
+
+    onExit(e: Event) {
+        this.socket
+            .$emit('onExit', {
+                hash: this.ls.userKey
+            })
+            .then(d => {
+                if (d.result == 'ok') {
+                    this.ls.userKey = null;
+                    this.as.userName = null;
+                    this.as.userImage = null;
+                    this.as.userId = null;
+                    this.friend.clearUsers();
+                    this.logService.clearDevices();
+                    this.ds.clearDevice()
+                }
+            })
+
+    }
     setHashName(d){
         console.log(d);
         switch (d.result) {
             case 'ok':
                 this.ls.userKey = d.hash;
-                this.as.userName = d.name;
-                this.as.userImage = d.image
-                this.as.userId = d.id;
+                this.as.userName = d.user.name;
+                this.as.userImage = d.user.image;
+                this.as.userId = d.user.id;
                 this.ds.updateDevices();
+                this.friend.getInvites()
                 break;
             case false:
                 this.ts.show({
