@@ -97,7 +97,7 @@ class Device{
             })
     }
     onDelDevice(device){
-        console.log('onDelDevice->',device)
+        console.log('onDelDevice->', device.id)
 
         util.getUserIdBySocketId(this.connection, this.socket.id)
             .then(user_id=>{
