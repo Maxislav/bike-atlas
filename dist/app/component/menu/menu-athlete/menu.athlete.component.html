@@ -4,7 +4,7 @@
     <!--.status(*ngIf="device.marker", [ngClass]="device.marker.status")-->
     <div [ngClass]="device.marker.status" class="status"><img [src]="device.image || 'src/img/no-avatar.gif' "/></div>
     <div class="name">{{device.name}}</div>
-    <div *ngIf="device.marker" class="passed">0 {{device.marker.elapsed}}</div>
+    <div *ngIf="device.marker" class="passed"> {{device.marker.elapsed}}</div>
     <div class="border-hidden"></div>
   </li>
 </ul>
