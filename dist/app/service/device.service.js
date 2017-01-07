@@ -51,7 +51,17 @@ var DeviceService = (function () {
         });
     };
     DeviceService.prototype.onDelDevice = function (device) {
-        return this.socket.$emit('onDelDevice', device);
+        var _this = this;
+        return this.socket.$emit('onDelDevice', device)
+            .then(function (d) {
+            if (d.result == 'ok') {
+                var index = _this.devices.indexOf(device);
+                if (-1 < index) {
+                    _this._devices.splice(index, 1);
+                }
+            }
+            return d;
+        });
     };
     DeviceService.prototype.clearDevice = function () {
         this._devices.length = 0;

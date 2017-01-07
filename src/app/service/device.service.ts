@@ -25,7 +25,8 @@ export class DeviceService {
     constructor(private io: Io,
                 private ls: LocalStorage,
                 private user: UserService,
-                private friend: FriendsService
+                private friend: FriendsService,
+
     ) {
         this.socket = io.socket;
         this._devices = [];
@@ -60,6 +61,15 @@ export class DeviceService {
     }
     onDelDevice(device: Device){
        return this.socket.$emit('onDelDevice', device)
+           .then(d=>{
+               if(d.result=='ok'){
+                   let index = this.devices.indexOf(device)
+                   if(-1<index){
+                       this._devices.splice(index,1)
+                   }
+               }
+               return d;
+           })
     }
     clearDevice(){
         this._devices.length = 0;

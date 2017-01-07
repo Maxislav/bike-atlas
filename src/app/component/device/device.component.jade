@@ -15,13 +15,13 @@ div.content
                         td Телефон
                         td
                 tbody
-                    tr(*ngFor="let device of devices\; let i = index", (click)="preDel($event, i)")
-                        td {{device.name}}
-                        td {{device.id}}
-                        td {{device.phone}}
+                    tr(*ngFor="let dev of devices | isOwner:dev\;  let i = index ", (click)="preDel($event, i)")
+                        td {{dev.name}}
+                        td {{dev.id}}
+                        td {{dev.phone}}
                         td.predelCell
                             //.close((click)="onClose()") &times;
-                            .predel(*ngIf="btnPreDel.index==i", (click)='onDel($event, i)') &times;
+                            .predel(*ngIf="btnPreDel.index==i", (click)='onDel($event, dev)') &times;
                            // button((click)='onDel($event, i)') {{btnPreDel.index}}
                     tr
                         td

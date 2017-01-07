@@ -14,13 +14,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let device of devices; let i = index" (click)="preDel($event, i)">
-            <td>{{device.name}}</td>
-            <td>{{device.id}}</td>
-            <td>{{device.phone}}</td>
+          <tr *ngFor="let dev of devices | isOwner:dev;  let i = index " (click)="preDel($event, i)">
+            <td>{{dev.name}}</td>
+            <td>{{dev.id}}</td>
+            <td>{{dev.phone}}</td>
             <td class="predelCell">
               <!--.close((click)="onClose()") &times;-->
-              <div *ngIf="btnPreDel.index==i" (click)="onDel($event, i)" class="predel">&times;</div>
+              <div *ngIf="btnPreDel.index==i" (click)="onDel($event, dev)" class="predel">&times;</div>
             </td>
             <!-- button((click)='onDel($event, i)') {{btnPreDel.index}}-->
           </tr>

@@ -1,14 +1,31 @@
-import { Component } from '@angular/core';
+import {Component, Pipe, PipeTransform} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from "@angular/router";
 import {DeviceService, Device} from "../../service/device.service";
 import {NavigationHistory} from "../../app.component";
 import {ToastService} from "../toast/toast.component";
+import {UserService} from "../../service/main.user.service";
+
+
+@Pipe({
+    name: 'isOwner',
+    pure: false
+})
+export class IsOwner implements PipeTransform  {
+    transform(value, args?){
+
+
+        return value.filter(item=>{
+            return item.ownerId == 1
+        })
+    }
+}
 
 
 @Component({
     moduleId: module.id,
     templateUrl:'device.component.html',
+    pipes: [IsOwner],
     styleUrls: [
         'device.component.css',
     ]
@@ -21,12 +38,15 @@ export class DeviceComponent{
 
     constructor(private location: Location,
                 private router:Router,
+                private user: UserService,
                 private ds: DeviceService,
                 private toast: ToastService,
                 private lh: NavigationHistory){
         this.device = {
+            ownerId: -1,
             name: '',
-            id: ''
+            id: '',
+            image: ''
         };
         this.btnPreDel = {
             index: -1
@@ -56,19 +76,15 @@ export class DeviceComponent{
                 }
             })
     }
-    onDel(e, i){
+    onDel(e, device){
         e.stopPropagation();
-        if(-1<i){
-
-            const delDevice = this.devices.splice(i,1)[0];
-            //console.log(delDevice)
-            this.ds.onDelDevice(delDevice)
+            this.ds.onDelDevice(device)
                 .then(d=>{
                     console.log(d)
                 });
 
             this.clearPredel();
-        }
+
     }
     preDel(e, i){
         e.stopPropagation();

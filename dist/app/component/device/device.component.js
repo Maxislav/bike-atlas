@@ -14,16 +14,38 @@ var router_1 = require("@angular/router");
 var device_service_1 = require("../../service/device.service");
 var app_component_1 = require("../../app.component");
 var toast_component_1 = require("../toast/toast.component");
+var main_user_service_1 = require("../../service/main.user.service");
+var IsOwner = (function () {
+    function IsOwner() {
+    }
+    IsOwner.prototype.transform = function (value, args) {
+        return value.filter(function (item) {
+            return item.ownerId == 1;
+        });
+    };
+    IsOwner = __decorate([
+        core_1.Pipe({
+            name: 'isOwner',
+            pure: false
+        }), 
+        __metadata('design:paramtypes', [])
+    ], IsOwner);
+    return IsOwner;
+}());
+exports.IsOwner = IsOwner;
 var DeviceComponent = (function () {
-    function DeviceComponent(location, router, ds, toast, lh) {
+    function DeviceComponent(location, router, user, ds, toast, lh) {
         this.location = location;
         this.router = router;
+        this.user = user;
         this.ds = ds;
         this.toast = toast;
         this.lh = lh;
         this.device = {
+            ownerId: -1,
             name: '',
-            id: ''
+            id: '',
+            image: ''
         };
         this.btnPreDel = {
             index: -1
@@ -50,17 +72,13 @@ var DeviceComponent = (function () {
             }
         });
     };
-    DeviceComponent.prototype.onDel = function (e, i) {
+    DeviceComponent.prototype.onDel = function (e, device) {
         e.stopPropagation();
-        if (-1 < i) {
-            var delDevice = this.devices.splice(i, 1)[0];
-            //console.log(delDevice)
-            this.ds.onDelDevice(delDevice)
-                .then(function (d) {
-                console.log(d);
-            });
-            this.clearPredel();
-        }
+        this.ds.onDelDevice(device)
+            .then(function (d) {
+            console.log(d);
+        });
+        this.clearPredel();
     };
     DeviceComponent.prototype.preDel = function (e, i) {
         e.stopPropagation();
@@ -87,11 +105,12 @@ var DeviceComponent = (function () {
         core_1.Component({
             moduleId: module.id,
             templateUrl: 'device.component.html',
+            pipes: [IsOwner],
             styleUrls: [
                 'device.component.css',
             ]
         }), 
-        __metadata('design:paramtypes', [common_1.Location, router_1.Router, device_service_1.DeviceService, toast_component_1.ToastService, app_component_1.NavigationHistory])
+        __metadata('design:paramtypes', [common_1.Location, router_1.Router, main_user_service_1.UserService, device_service_1.DeviceService, toast_component_1.ToastService, app_component_1.NavigationHistory])
     ], DeviceComponent);
     return DeviceComponent;
 }());
