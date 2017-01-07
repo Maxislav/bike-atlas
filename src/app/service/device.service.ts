@@ -61,12 +61,22 @@ export class DeviceService {
     }
     onDelDevice(device: Device){
         return new Promise((resolve, reject)=>{
+            return this.socket.$emit('onDelDevice', device)
+                .then(d=>{
+                    if(d.result=='ok'){
+                        let index = this.devices.indexOf(device)
+                        if(-1<index){
+                            this._devices.splice(index,1)
+                        }
+                    }
+                    return d;
+                })
 
-            let index = this.devices.indexOf(device)
+           /* let index = this.devices.indexOf(device)
             if(-1<index){
                 this._devices.splice(index,1)
             }
-            resolve('ollol');
+            resolve('ollol');*/
         })
 
        /*return this.socket.$emit('onDelDevice', device)
