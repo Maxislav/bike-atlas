@@ -3,6 +3,7 @@ import {Injectable} from "@angular/core";
 import {MapService} from "./map.service";
 import {Point} from "./track.var";
 import {DeviceData} from "./log.service";
+import {TimerService} from "./timer.service";
 
 export interface Marker{
     id: string;
@@ -14,16 +15,21 @@ export interface Marker{
     deviceData: DeviceData,
     timePassed: number,
     status: string | Object;
+    elapsed: string;
+    date: string
 }
+
+
 
 
 @Injectable()
 export class MarkerService{
     private layerIds: Array<string>;
 
-    constructor(private mapService: MapService){
+    constructor(private mapService: MapService, private timer: TimerService){
         this.layerIds = [];
     }
+
 
     marker(deviceData: DeviceData): Marker{
         let point = {
@@ -38,7 +44,7 @@ export class MarkerService{
         let layerId:string = this.getNewLayer(0, 5000000, true)+'';
 
         this.mapService.onLoad.then(()=>{
-            map.addSource(layerId, { type: 'geojson', data: point });
+           /* map.addSource(layerId, { type: 'geojson', data: point });
             map.addLayer({
                 "id": layerId,
                 "type": "symbol",
@@ -47,41 +53,58 @@ export class MarkerService{
                     "icon-image": getIconImage(deviceData),
                     "icon-rotate": point.bearing
                 }
-            });
+            });*/
         });
 
         const mapboxgl = this.mapService.mapboxgl;
 
+        const icoContainer = document.createElement('div');
+        icoContainer.classList.add("user-icon");
+
+        icoContainer.setAttribute('status', getIconImage(deviceData));
+
+
+        const img = new Image();
+        img.src = deviceData.image || 'src/img/no-avatar.gif';
+        icoContainer.appendChild(img);
 
         const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
             .setLngLat(point.coordinates)
             .setHTML('<div>'+deviceData.name+'</div>')
             .addTo(map);
 
+        const iconMarker = new mapboxgl.Marker(icoContainer, {offset:[-20,-20]})
+            .setLngLat(point.coordinates)
+            .addTo(map);
+
 
         let intervalUpdateMarker = null;
+
+       const timer = this.timer;
 
         const marker: Marker = {
             id: layerId,
             popup: popup,
             deviceData: deviceData,
             timePassed: 0,
+            elapsed: '...',
             status: getIconImage(deviceData),
             updateMarker: function(){
                 this.status = getIconImage(this.deviceData);
-                map.setLayoutProperty(layerId, 'icon-image', this.status);
+                icoContainer.setAttribute('status', this.status);
+                this.elapsed = timer.elapse(this.deviceData.date)
             },
             update: function (d: DeviceData) {
                 for (let opt in d){
                     this.deviceData[opt] = d[opt]
                 }
                 point.coordinates = [d.lng, d.lat];
-                if(d.azimuth){
-                    map.setLayoutProperty(layerId, 'icon-rotate', d.azimuth-map.getBearing());
-                }
-                this.updateMarker(d);
                 popup.setLngLat(point.coordinates);
-                map.getSource(layerId).setData(point);
+                iconMarker.setLngLat(point.coordinates);
+                this.status = getIconImage(this.deviceData);
+                icoContainer.setAttribute('status', this.status);
+
+                //map.getSource(layerId).setData(point);
             },
             rotate: function () {
                 map.setLayoutProperty(layerId, 'icon-rotate', point.bearing-map.getBearing());
@@ -92,7 +115,7 @@ export class MarkerService{
                 map.removeSource(layerId);
                 popup.remove();
                 console.log('delete marker id', layerId);
-                map.off('move', move);
+                iconMarker.remove();
                 intervalUpdateMarker && clearInterval(intervalUpdateMarker);
             }
         };
@@ -103,10 +126,14 @@ export class MarkerService{
                 mapBearing = map.getBearing();
             }
         }
-        map.on('move', move);
         intervalUpdateMarker = setInterval(()=>{
             marker.updateMarker();
-        }, 10000);
+            //this.timer.elapse(this.deviceData.date)
+        }, 1000)
+        /*map.on('move', move);
+        intervalUpdateMarker = setInterval(()=>{
+            marker.updateMarker();
+        }, 10000);*/
 
         return marker;
     }

@@ -15,3 +15,23 @@
   font: 12px/12px Geneva, Arial, Helvetica, sans-serif;
   font-size: 14px;
 }
+:host mapbox-gl .user-icon {
+  border-radius: 50%;
+  background: white;
+}
+:host mapbox-gl .user-icon[status=yellow] {
+  background: yellow;
+}
+:host mapbox-gl .user-icon[status=green] {
+  background: #2ff63a;
+}
+:host mapbox-gl .user-icon[status=arrow] {
+  background: #3690f6;
+}
+:host mapbox-gl .user-icon img {
+  display: block;
+  width: 34px;
+  height: 34px;
+  padding: 3px;
+  border-radius: 50%;
+}

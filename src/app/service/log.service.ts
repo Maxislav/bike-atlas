@@ -13,6 +13,7 @@ export interface DeviceData{
     lat: number,
     lng: number,
     speed: number,
+    image: string,
     src: string
 }
 
@@ -36,6 +37,7 @@ export class LogService{
                 return item.id == deviceData.id
             });
             deviceData.name = device.name;
+            deviceData.image = device.image;
             device.marker =  this.devices[deviceData.id] = this.markerService.marker(deviceData)
         }
     }

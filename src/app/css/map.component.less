@@ -14,5 +14,25 @@
       font: 12px/12px  Geneva, Arial, Helvetica, sans-serif;
       font-size: 14px;
     }
+    .user-icon{
+      border-radius: 50%;
+      background: white;
+      &[status=yellow]{
+        background: yellow;
+      }
+      &[status=green]{
+        background: #2ff63a;
+      }
+      &[status=arrow]{
+        background: #3690f6;
+      }
+      img{
+        display: block;
+        width: 34px;
+        height: 34px;
+        padding: 3px;
+        border-radius: 50%;
+      }
+    }
   }
 }

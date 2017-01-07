@@ -62,8 +62,9 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
             center:[localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
             zoom: localStorageCenter.zoom || 8,
             //"sprite": "http://localhost:8080/src/img/milsymbol",
-           // _style: 'mapbox://styles/mapbox/streets-v9',
-            style: {
+            style: 'mapbox://styles/mapbox/streets-v9',
+
+            _style: {
                 "version": 8,
                 "name": "plastun",
                // "sprite": "mapbox://sprites/mapbox/streets-v8",
@@ -78,6 +79,28 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
             position: 'top-right',
             maxWidth: 80
         }));
+
+
+        this.map.on('load', ()=>{
+
+            this.map.addSource('hill',
+                {
+                    "type": "raster",
+                    "tiles":[
+                        "hills/{z}/{x}/{y}.png"
+                    ],
+                    "tileSize": 256
+                });
+
+            this.map.addLayer({
+                'id': 'urban-areas-fill',
+                'type': 'raster',
+                "minzoom": 7,
+                "maxzoom": 14,
+                'source': 'hill'
+
+            })
+        })
 
         this.mapService.setMap(this.map);
 
