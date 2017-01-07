@@ -45,13 +45,18 @@ export class FriendsService {
     }
 
     updateFriends(){
-        const hash = this.ls.userKey;
-        this.socket.$emit('getFriends', {hash})
+       const hash = this.ls.userKey;
+       return this.socket.$emit('getFriends', {hash})
             .then(d=>{
+                console.log(d)
                 if(d.result == 'ok'){
                     this.friends = d.friends
+                    return this.friends;
+                }else{
+                    return null;
                 }
-                console.log(d)
+
+
             })
     }
     getInvites(){

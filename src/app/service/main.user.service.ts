@@ -2,7 +2,7 @@
 import {Injectable} from "@angular/core";
 export interface User{
     name: string;
-    id: string;
+    id: number;
     image: string
 }
 

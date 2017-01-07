@@ -52,9 +52,11 @@ var AuthService = (function () {
                 _this.userImage = d.user.image;
                 _this.userName = d.user.name;
                 _this.setting = d.user.setting || _this.setting;
-                _this.ds.updateDevices();
+                _this.friend.updateFriends()
+                    .then(function (d) {
+                    _this.ds.updateDevices();
+                });
                 _this.friend.getInvites();
-                _this.friend.updateFriends();
             }
             else {
                 _this.userName = null;

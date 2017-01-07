@@ -27,8 +27,6 @@ class Device{
                         });
                         return util.getDeviceByIds(this.connection, ids.join(', '))
                             .then(rows=>{
-                                console.log('getDevice -> ', rows)
-
                                 rows.forEach(item=>{
                                     item.id = item.device_key;
                                     delete    item.device_key;

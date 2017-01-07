@@ -2,10 +2,14 @@ import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
 import {LocalStorage} from "./local-storage.service";
 import {Marker} from "./marker.service";
+import {FriendsService} from "./friends.service";
+import {UserService} from "./main.user.service";
 
 export interface Device {
     id: string;
     name: string;
+    image: string;
+    ownerId: number,
     phone?: string,
     marker?: Marker;
     passed?: string;
@@ -18,7 +22,11 @@ export class DeviceService {
     private _devices: Array<Device>;
     private socket: any;
 
-    constructor(private io: Io, private ls: LocalStorage) {
+    constructor(private io: Io,
+                private ls: LocalStorage,
+                private user: UserService,
+                private friend: FriendsService
+    ) {
         this.socket = io.socket;
         this._devices = [];
     }
@@ -30,7 +38,8 @@ export class DeviceService {
                 if (d && d.result == 'ok') {
                     this.devices = d.devices
                 }
-                console.log(d)
+                console.log(d);
+                return this.devices
             })
             .catch(err => {
                 console.log(err)
@@ -63,6 +72,16 @@ export class DeviceService {
     set devices(devices: Array<Device>) {
         this._devices.length = 0;
         devices.forEach(device => {
+            if(device.ownerId == this.user.user.id){
+                device.image = this.user.user.image
+            }else{
+                const friend = this.friend.friends.find((item)=>{
+                    return device.ownerId == item.id
+                });
+                if(friend){
+                    device.image = friend.image
+                }
+            }
             this._devices.push(device)
         });
     }

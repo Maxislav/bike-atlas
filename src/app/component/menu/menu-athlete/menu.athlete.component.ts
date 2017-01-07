@@ -16,7 +16,14 @@ export class MenuAthleteComponent{
     private devices: Array<Device>;
     private interval: number;
     private passed: Array<number>;
-    constructor(private ds: DeviceService, private  mapServ: MapService, private ls: LogService, private timer: TimerService){
+
+
+    constructor(private ds: DeviceService,
+                private  mapServ: MapService,
+                private ls: LogService,
+                private timer: TimerService){
+
+
         this.devices = ds.devices;
         this.interval = setInterval(()=>{
             this.devices.forEach(device=>{

@@ -11,10 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var socket_oi_service_1 = require("./socket.oi.service");
 var local_storage_service_1 = require("./local-storage.service");
+var friends_service_1 = require("./friends.service");
+var main_user_service_1 = require("./main.user.service");
 var DeviceService = (function () {
-    function DeviceService(io, ls) {
+    function DeviceService(io, ls, user, friend) {
         this.io = io;
         this.ls = ls;
+        this.user = user;
+        this.friend = friend;
         this.socket = io.socket;
         this._devices = [];
     }
@@ -27,6 +31,7 @@ var DeviceService = (function () {
                 _this.devices = d.devices;
             }
             console.log(d);
+            return _this.devices;
         })
             .catch(function (err) {
             console.log(err);
@@ -59,6 +64,17 @@ var DeviceService = (function () {
             var _this = this;
             this._devices.length = 0;
             devices.forEach(function (device) {
+                if (device.ownerId == _this.user.user.id) {
+                    device.image = _this.user.user.image;
+                }
+                else {
+                    var friend = _this.friend.friends.find(function (item) {
+                        return device.ownerId == item.id;
+                    });
+                    if (friend) {
+                        device.image = friend.image;
+                    }
+                }
                 _this._devices.push(device);
             });
         },
@@ -67,7 +83,7 @@ var DeviceService = (function () {
     });
     DeviceService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage])
+        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, main_user_service_1.UserService, friends_service_1.FriendsService])
     ], DeviceService);
     return DeviceService;
 }());

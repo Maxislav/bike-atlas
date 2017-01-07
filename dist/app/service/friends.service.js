@@ -25,12 +25,16 @@ var FriendsService = (function () {
     FriendsService.prototype.updateFriends = function () {
         var _this = this;
         var hash = this.ls.userKey;
-        this.socket.$emit('getFriends', { hash: hash })
+        return this.socket.$emit('getFriends', { hash: hash })
             .then(function (d) {
+            console.log(d);
             if (d.result == 'ok') {
                 _this.friends = d.friends;
+                return _this.friends;
             }
-            console.log(d);
+            else {
+                return null;
+            }
         });
     };
     FriendsService.prototype.getInvites = function () {
