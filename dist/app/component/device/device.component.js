@@ -75,12 +75,13 @@ var DeviceComponent = (function () {
         });
     };
     DeviceComponent.prototype.onDel = function (e, device) {
+        var _this = this;
         e.stopPropagation();
         this.ds.onDelDevice(device)
             .then(function (d) {
             console.log(d);
+            _this.clearPredel();
         });
-        this.clearPredel();
     };
     DeviceComponent.prototype.preDel = function (e, i) {
         e.stopPropagation();
