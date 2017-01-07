@@ -4,7 +4,7 @@
     <td (click)="onOpenAthlete()" class="button menu">Участники</td>
     <td (click)="onOpen()" class="button menu">Маршруты</td>
     <td></td>
-    <td class="bell">
+    <td (click)="goToFriends()" class="bell">
       <div *ngIf="invites.length" class="num">{{invites.length}}</div>
     </td>
     <td class="icoUser"><img [src]="as.userImage || 'src/img/no-avatar.gif' " (click)="goToProfile()"/></td>
@@ -17,4 +17,3 @@
 <track-list *ngIf="trackList.length" [style.top]="ms.menuOpen ?  '150px' : '100%' "></track-list>
 <menu-login *ngIf="ms.menuOpenLogin"></menu-login>
 <device-list></device-list>
-<!--track-list-->

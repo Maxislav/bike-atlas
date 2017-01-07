@@ -42,6 +42,9 @@ var MenuComponent = (function () {
             this.router.navigate(['/auth/map/profile']);
         }
     };
+    MenuComponent.prototype.goToFriends = function () {
+        this.router.navigate(['/auth/map/friends']);
+    };
     MenuComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

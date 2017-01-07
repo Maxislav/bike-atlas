@@ -3,9 +3,9 @@ table
         td.button.menu((click)="onOpenAthlete()") Участники
         td.button.menu( (click)="onOpen()" ) Маршруты
         td
-        td.bell
+        td.bell((click)="goToFriends()")
             .num(*ngIf="invites.length") {{invites.length}}
-        td.icoUser
+        td.icoUser()
             img([src]="as.userImage || 'src/img/no-avatar.gif' ", (click)="goToProfile()")
         td.button.enter( (click)="onOpenLogin()")
             |{{as.userName || 'Войти' }}
@@ -15,5 +15,3 @@ menu-track-load(*ngIf="ms.menuLoadOpen")
 track-list(*ngIf="trackList.length", [style.top]="ms.menuOpen ?  '150px' : '100%' ")
 menu-login(*ngIf="ms.menuOpenLogin")
 device-list()
-
-//track-list

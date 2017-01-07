@@ -60,4 +60,7 @@ export class MenuComponent{
             this.router.navigate(['/auth/map/profile']);
         }
     }
+    goToFriends(){
+        this.router.navigate(['/auth/map/friends']);
+    }
 }
