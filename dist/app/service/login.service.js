@@ -16,17 +16,19 @@ var device_service_1 = require("./device.service");
 var toast_component_1 = require("../component/toast/toast.component");
 var friends_service_1 = require("./friends.service");
 var log_service_1 = require("./log.service");
+var main_user_service_1 = require("./main.user.service");
 /**
  * Created by max on 04.01.17.
  */
 var LoginService = (function () {
-    function LoginService(io, ls, as, ds, ts, logService, friend) {
+    function LoginService(io, ls, as, ds, ts, logService, userService, friend) {
         this.io = io;
         this.ls = ls;
         this.as = as;
         this.ds = ds;
         this.ts = ts;
         this.logService = logService;
+        this.userService = userService;
         this.friend = friend;
         this.socket = io.socket;
     }
@@ -58,15 +60,30 @@ var LoginService = (function () {
         });
     };
     LoginService.prototype.setHashName = function (d) {
+        var _this = this;
         console.log(d);
         switch (d.result) {
             case 'ok':
                 this.ls.userKey = d.hash;
+                this.userService.user = d.user;
+                // this.userId = d.user.id;
+                // this.userImage = d.user.image;
+                // this.userName = d.user.name;
+                //this.setting = d.user.setting || this.setting;
+                this.friend.updateFriends()
+                    .then(function (d) {
+                    _this.ds.updateDevices()
+                        .then(function (d) {
+                        _this.logService.getLastPosition();
+                    });
+                });
+                this.friend.getInvites();
+                /*this.ls.userKey = d.hash;
                 this.as.userName = d.user.name;
                 this.as.userImage = d.user.image;
                 this.as.userId = d.user.id;
                 this.ds.updateDevices();
-                this.friend.getInvites();
+                this.friend.getInvites();*/
                 break;
             case false:
                 this.ts.show({
@@ -77,7 +94,7 @@ var LoginService = (function () {
     };
     LoginService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, auth_service_1.AuthService, device_service_1.DeviceService, toast_component_1.ToastService, log_service_1.LogService, friends_service_1.FriendsService])
+        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, auth_service_1.AuthService, device_service_1.DeviceService, toast_component_1.ToastService, log_service_1.LogService, main_user_service_1.UserService, friends_service_1.FriendsService])
     ], LoginService);
     return LoginService;
 }());

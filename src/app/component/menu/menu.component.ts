@@ -12,6 +12,7 @@ import {TrackList} from "./track-list/track-list.component";
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
 import {FriendsService, User} from "../../service/friends.service";
+import {UserService} from "../../service/main.user.service";
 //import {Track} from "./track";
 
 declare var document: any;
@@ -39,11 +40,11 @@ export class MenuComponent{
         track: TrackService,
         public as: AuthService,
         private router: Router,
-        private friend: FriendsService){
+        private friend: FriendsService,
+        private user: UserService){
+
+        this.user = user;
         this.invites = friend.invites;
-
-
-
         this.trackList = track.trackList;
     }
     onOpen(){

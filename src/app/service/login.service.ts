@@ -6,6 +6,7 @@ import {DeviceService} from "./device.service";
 import {ToastService} from "../component/toast/toast.component";
 import {FriendsService} from "./friends.service";
 import {LogService} from "./log.service";
+import {UserService} from "./main.user.service";
 /**
  * Created by max on 04.01.17.
  */
@@ -18,6 +19,7 @@ export class LoginService{
                  private ds: DeviceService,
                  private ts: ToastService,
                  private logService: LogService,
+                 private userService: UserService,
                  private friend: FriendsService,){
         this.socket = io.socket;
     }
@@ -54,11 +56,28 @@ export class LoginService{
         switch (d.result) {
             case 'ok':
                 this.ls.userKey = d.hash;
+                this.userService.user = d.user;
+               // this.userId = d.user.id;
+               // this.userImage = d.user.image;
+               // this.userName = d.user.name;
+                //this.setting = d.user.setting || this.setting;
+                this.friend.updateFriends()
+                    .then(d=>{
+                        this.ds.updateDevices()
+                            .then(d=>{
+                                this.logService.getLastPosition()
+                            })
+                    });
+                this.friend.getInvites();
+
+                /*this.ls.userKey = d.hash;
                 this.as.userName = d.user.name;
                 this.as.userImage = d.user.image;
                 this.as.userId = d.user.id;
                 this.ds.updateDevices();
-                this.friend.getInvites()
+                this.friend.getInvites();*/
+
+
                 break;
             case false:
                 this.ts.show({

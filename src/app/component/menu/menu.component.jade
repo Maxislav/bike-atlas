@@ -6,7 +6,7 @@ table
         td.bell((click)="goToFriends()")
             .num(*ngIf="invites.length") {{invites.length}}
         td.icoUser()
-            img([src]="as.userImage || 'src/img/no-avatar.gif' ", (click)="goToProfile()")
+            img([src]="user.user.image || 'src/img/no-avatar.gif' ", (click)="goToProfile()")
         td.button.enter( (click)="onOpenLogin()")
             |{{as.userName || 'Войти' }}
 menu-athlete(*ngIf="ms.menuAthlete")

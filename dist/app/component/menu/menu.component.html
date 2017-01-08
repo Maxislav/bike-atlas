@@ -7,7 +7,7 @@
     <td (click)="goToFriends()" class="bell">
       <div *ngIf="invites.length" class="num">{{invites.length}}</div>
     </td>
-    <td class="icoUser"><img [src]="as.userImage || 'src/img/no-avatar.gif' " (click)="goToProfile()"/></td>
+    <td class="icoUser"><img [src]="user.user.image || 'src/img/no-avatar.gif' " (click)="goToProfile()"/></td>
     <td (click)="onOpenLogin()" class="button enter">{{as.userName || 'Войти' }}</td>
   </tr>
 </table>
