@@ -37,13 +37,14 @@ var IsOwner = (function () {
 }());
 exports.IsOwner = IsOwner;
 var DeviceComponent = (function () {
-    function DeviceComponent(location, router, user, ds, toast, lh, _template, _viewContainer) {
+    function DeviceComponent(location, router, userService, ds, toast, lh) {
         this.location = location;
         this.router = router;
-        this.user = user;
+        this.userService = userService;
         this.ds = ds;
         this.toast = toast;
         this.lh = lh;
+        this.user = userService.user;
         this.device = {
             ownerId: -1,
             name: '',
@@ -113,7 +114,7 @@ var DeviceComponent = (function () {
                 'device.component.css',
             ]
         }), 
-        __metadata('design:paramtypes', [common_1.Location, router_1.Router, main_user_service_1.UserService, device_service_1.DeviceService, toast_component_1.ToastService, app_component_1.NavigationHistory, core_1.TemplateRef, core_1.ViewContainerRef])
+        __metadata('design:paramtypes', [common_1.Location, router_1.Router, main_user_service_1.UserService, device_service_1.DeviceService, toast_component_1.ToastService, app_component_1.NavigationHistory])
     ], DeviceComponent);
     return DeviceComponent;
 }());

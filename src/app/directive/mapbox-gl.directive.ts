@@ -49,7 +49,7 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
     private mapService;
     private _mapboxgl: any;
     private  styleSource: any;
-    private layers: Array<{}>
+    private layers: Array<{}>;
     ngAfterViewInit():void {
 
         var localStorageCenter = this.ls.mapCenter;
@@ -61,14 +61,11 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
             container: el.nativeElement,
             center:[localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
             zoom: localStorageCenter.zoom || 8,
-            //"sprite": "http://localhost:8080/src/img/milsymbol",
             style: 'mapbox://styles/mapbox/streets-v9',
 
             _style: {
                 "version": 8,
                 "name": "plastun",
-               // "sprite": "mapbox://sprites/mapbox/streets-v8",
-               // "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
                 "sprite": "http://"+window.location.hostname+"/src/sprite/sprite",
                 "sources": this.styleSource,
                 "layers": this.layers
@@ -82,8 +79,7 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
 
 
         this.map.on('load', ()=>{
-
-            this.map.addSource('hill',
+            /*this.map.addSource('hill',
                 {
                     "type": "raster",
                     "tiles":[
@@ -99,7 +95,7 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
                 "maxzoom": 14,
                 'source': 'hill'
 
-            })
+            })*/
         })
 
         this.mapService.setMap(this.map);

@@ -25,8 +25,7 @@ var FriendsService = (function () {
     }
     FriendsService.prototype.updateFriends = function () {
         var _this = this;
-        var hash = this.ls.userKey;
-        return this.socket.$emit('getFriends', { hash: hash })
+        return this.socket.$emit('getFriends')
             .then(function (d) {
             console.log(d);
             if (d.result == 'ok') {
@@ -39,6 +38,14 @@ var FriendsService = (function () {
             }
         });
     };
+    FriendsService.prototype.onDelFriend = function (id) {
+        var _this = this;
+        this.socket.$emit('onDelFriend', id)
+            .then(function (d) {
+            console.log(d);
+            _this.updateFriends();
+        });
+    };
     FriendsService.prototype.getInvites = function () {
         var _this = this;
         var hash = this.ls.userKey;
@@ -49,10 +56,11 @@ var FriendsService = (function () {
         });
     };
     FriendsService.prototype.onAcceptInvite = function (friend) {
-        var hash = this.ls.userKey;
+        var _this = this;
         return this.socket.$emit('onAcceptInvite', friend.id)
             .then(function (d) {
-            console.log(d);
+            _this.updateFriends();
+            _this.getInvites();
         });
     };
     FriendsService.prototype.getAllUsers = function () {
@@ -69,9 +77,11 @@ var FriendsService = (function () {
         });
     };
     FriendsService.prototype.onInvite = function (inviteId) {
+        var _this = this;
         this.socket.$emit('onInvite', { hash: this.ls.userKey, inviteId: inviteId })
             .then(function (d) {
             console.log(d);
+            _this.updateFriends();
         });
     };
     FriendsService.prototype.clearUsers = function () {

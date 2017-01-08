@@ -300,6 +300,29 @@ module.exports = {
             })
         });
     },
+    delFriend(connection, user_id, friend_id){
+       const fr1 = new Promise((resolve, reject) => {
+            const query = 'DELETE from `friends` WHERE `user_id` = ? AND `friend_id`= ?';
+            connection.query(query, [user_id, friend_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows)
+            })
+        });
+       const fr2 = new Promise((resolve, reject) => {
+            const query = 'DELETE from `friends` WHERE `user_id` = ? AND `friend_id`= ?';
+            connection.query(query, [friend_id, user_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows)
+            })
+        });
+       return Promise.all([fr1, fr2])
+    },
 
     getInviteByOwnerId: function (connection, user_id, friend_id) {
         return new Promise((resolve, reject) => {

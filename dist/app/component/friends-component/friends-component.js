@@ -15,7 +15,7 @@ var toast_component_1 = require("../toast/toast.component");
 var UsersContainer = (function () {
     function UsersContainer(el, renderer) {
         var w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0], x = w.innerWidth || e.clientWidth || g.clientWidth, y = w.innerHeight || e.clientHeight || g.clientHeight;
-        renderer.setElementStyle(el.nativeElement, 'height', y - 300 + 'px');
+        renderer.setElementStyle(el.nativeElement, 'height', y - 160 + 'px');
     }
     UsersContainer = __decorate([
         core_1.Directive({
@@ -40,10 +40,7 @@ var FriendsComponent = (function () {
         this.friend.onAcceptInvite(friend);
     };
     FriendsComponent.prototype.onDelFriend = function (friend) {
-        this.toast.show({
-            type: 'warning',
-            text: "в рвзработке.."
-        });
+        this.friend.onDelFriend(friend.id);
     };
     FriendsComponent.prototype.onClose = function () {
         this.location.back();

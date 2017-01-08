@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {DeviceService, Device} from "../../service/device.service";
 import {NavigationHistory} from "../../app.component";
 import {ToastService} from "../toast/toast.component";
-import {UserService} from "../../service/main.user.service";
+import {UserService, User} from "../../service/main.user.service";
 
 
 @Pipe({
@@ -38,15 +38,18 @@ export class DeviceComponent{
     private device: Device;
     private devices: Array<Device>;
     public btnPreDel: {index: number};
+    private user: User;
 
     constructor(private location: Location,
                 private router:Router,
-                private user: UserService,
+                private userService: UserService,
                 private ds: DeviceService,
                 private toast: ToastService,
                 private lh: NavigationHistory,
-                _template: TemplateRef<Object>,
-                _viewContainer: ViewContainerRef){
+){
+
+        this.user = userService.user;
+
         this.device = {
             ownerId: -1,
             name: '',

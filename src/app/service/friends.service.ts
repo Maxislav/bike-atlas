@@ -48,8 +48,7 @@ export class FriendsService {
     }
 
     updateFriends(){
-       const hash = this.ls.userKey;
-       return this.socket.$emit('getFriends', {hash})
+       return this.socket.$emit('getFriends')
             .then(d=>{
                 console.log(d);
                 if(d.result == 'ok'){
@@ -60,9 +59,17 @@ export class FriendsService {
                     return null;
                 }
 
-
             })
     }
+    onDelFriend(id: number){
+        this.socket.$emit('onDelFriend', id)
+            .then((d)=>{
+                console.log(d);
+                this.updateFriends()
+
+            });
+    }
+
     getInvites(){
         const hash = this.ls.userKey;
         this.socket.$emit('getInvites', {hash})
@@ -74,10 +81,10 @@ export class FriendsService {
     }
 
     onAcceptInvite(friend: User){
-       const hash = this.ls.userKey;
        return this.socket.$emit('onAcceptInvite', friend.id)
             .then(d=>{
-                console.log(d)
+                this.updateFriends();
+                this.getInvites()
             })
 
 
@@ -99,6 +106,7 @@ export class FriendsService {
         this.socket.$emit('onInvite', {hash: this.ls.userKey, inviteId})
             .then(d=>{
                 console.log(d)
+                this.updateFriends()
             })
     }
 

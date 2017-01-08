@@ -14,7 +14,11 @@ class OnFriend {
         this.socket.on('onDelFriend', this.onDelFriend.bind(this));
     }
 
-    getFriends() {
+    /**
+     *
+     * @param {boolean}isOnDelFriend
+     */
+    getFriends(isOnDelFriend) {
         const friends = util.getUserIdBySocketId(this.connection, this.socket.id)
             .then(user_id => {
                 return util.getFriends(this.connection, user_id)
@@ -25,22 +29,28 @@ class OnFriend {
                 return util.getMyInvites(this.connection, user_id)
             });
 
-        Promise.all([friends, myInvites])
+        return Promise.all([friends, myInvites])
             .then(d => {
                 const rows = d[0];
                 const invites = d[1];
-                this.socket.emit('getFriends', {
-                    result: 'ok',
-                    friends: rows,
-                    invites: invites
-                })
-
+                if (!isOnDelFriend) {
+                    this.socket.emit('getFriends', {
+                        result: 'ok',
+                        friends: rows,
+                        invites: invites
+                    })
+                } else {
+                    return d[0]
+                }
             })
             .catch(err => {
-                this.socket.emit('getFriends', {
-                    result: false,
-                    message: err
-                });
+                if (!isOnDelFriend) {
+                    this.socket.emit('getFriends', {
+                        result: false,
+                        message: err
+                    });
+                }
+
                 console.error('error getFriends -> ', err)
             });
 
@@ -65,7 +75,28 @@ class OnFriend {
 
     }
 
-    onDelFriend(friend_id){
+    onDelFriend(friend_id) {
+        util.getUserIdBySocketId(this.connection, this.socket.id)
+            .then(user_id => {
+                return this.getFriends(true)
+                    .then(friends => {
+                        const friend = friends.find(item => {
+                            return item.id == friend_id;
+                        });
+                        if (friend) {
+                            return util.delFriend(this.connection, user_id, friend_id)
+                                .then(d => {
+                                    this.socket.emit('onDelFriend', {
+                                        user_id,
+                                        friend_id
+                                    })
+                                })
+                        }
+                    })
+            })
+            .catch(err=>{
+                console.error('Error onDelFriend ->', err)
+            })
 
     }
 

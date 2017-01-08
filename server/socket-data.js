@@ -22,6 +22,8 @@ connection.connect((err)=>{
     console.log('connected as id ' + connection.threadId);
 });
 
+
+
 function onRegist(data) {
   const tepmlate = ['name', 'pass'];
   const arrData = [];

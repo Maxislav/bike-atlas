@@ -19,7 +19,7 @@ export class UsersContainer{
             y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
 
-        renderer.setElementStyle(el.nativeElement, 'height', y-300+'px');
+        renderer.setElementStyle(el.nativeElement, 'height', y-160+'px');
     }
 }
 declare const module:{
@@ -50,10 +50,9 @@ export class FriendsComponent{
     }
 
     onDelFriend(friend: User){
-        this.toast.show({
-            type: 'warning',
-            text: "в рвзработке.."
-        })
+
+        this.friend.onDelFriend(friend.id)
+
     }
     onClose(){
         this.location.back()

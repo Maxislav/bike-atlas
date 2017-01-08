@@ -113,7 +113,6 @@ var MapboxGlDirective = (function () {
         configurable: true
     });
     MapboxGlDirective.prototype.ngAfterViewInit = function () {
-        var _this = this;
         var localStorageCenter = this.ls.mapCenter;
         var el = this.el;
         el.nativeElement.innerHTML = '';
@@ -122,13 +121,10 @@ var MapboxGlDirective = (function () {
             container: el.nativeElement,
             center: [localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
             zoom: localStorageCenter.zoom || 8,
-            //"sprite": "http://localhost:8080/src/img/milsymbol",
             style: 'mapbox://styles/mapbox/streets-v9',
             _style: {
                 "version": 8,
                 "name": "plastun",
-                // "sprite": "mapbox://sprites/mapbox/streets-v8",
-                // "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
                 "sprite": "http://" + window.location.hostname + "/src/sprite/sprite",
                 "sources": this.styleSource,
                 "layers": this.layers
@@ -139,20 +135,23 @@ var MapboxGlDirective = (function () {
             maxWidth: 80
         }));
         this.map.on('load', function () {
-            _this.map.addSource('hill', {
-                "type": "raster",
-                "tiles": [
-                    "hills/{z}/{x}/{y}.png"
-                ],
-                "tileSize": 256
-            });
-            _this.map.addLayer({
+            /*this.map.addSource('hill',
+                {
+                    "type": "raster",
+                    "tiles":[
+                        "hills/{z}/{x}/{y}.png"
+                    ],
+                    "tileSize": 256
+                });
+
+            this.map.addLayer({
                 'id': 'urban-areas-fill',
                 'type': 'raster',
                 "minzoom": 7,
                 "maxzoom": 14,
                 'source': 'hill'
-            });
+
+            })*/
         });
         this.mapService.setMap(this.map);
     };
