@@ -49,6 +49,11 @@ let kNM = 0;
 /**
  * tiler proxy
  */
+app.get('/server*',(req, res, next)=>{
+  res.setStatus = 500;
+  res.send('<h4 style="color: darkred; padding: 10px; text-align: center">Permission denied</h4>');
+
+} );
 app.get('*/hills/:z/:x/:y', tileProxy);
 
 app.post('/import/kml-data',kmlData);
