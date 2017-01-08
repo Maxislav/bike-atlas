@@ -11,18 +11,29 @@ class OnFriend {
         this.socket.on('onInvite', this.onInvite.bind(this));
         this.socket.on('onAcceptInvite', this.onAcceptInvite.bind(this));
         this.socket.on('getFriends', this.getFriends.bind(this));
+        this.socket.on('onDelFriend', this.onDelFriend.bind(this));
     }
 
-    getFriends(){
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+    getFriends() {
+        const friends = util.getUserIdBySocketId(this.connection, this.socket.id)
             .then(user_id => {
-              return  util.getFriends(this.connection, user_id)
-                        .then(rows=>{
-                            this.socket.emit('getFriends', {
-                                result: 'ok',
-                                friends: rows
-                            })
-                        })
+                return util.getFriends(this.connection, user_id)
+            });
+
+        const myInvites = util.getUserIdBySocketId(this.connection, this.socket.id)
+            .then(user_id => {
+                return util.getMyInvites(this.connection, user_id)
+            });
+
+        Promise.all([friends, myInvites])
+            .then(d => {
+                const rows = d[0];
+                const invites = d[1];
+                this.socket.emit('getFriends', {
+                    result: 'ok',
+                    friends: rows,
+                    invites: invites
+                })
 
             })
             .catch(err => {
@@ -31,7 +42,7 @@ class OnFriend {
                     message: err
                 });
                 console.error('error getFriends -> ', err)
-            })
+            });
 
     }
 
@@ -51,6 +62,10 @@ class OnFriend {
                 });
                 console.error('error getAllUsers -> ', err)
             })
+
+    }
+
+    onDelFriend(friend_id){
 
     }
 
@@ -77,14 +92,15 @@ class OnFriend {
 
     }
 
+
     onAcceptInvite(friendId) {
         util.getUserIdBySocketId(this.connection, this.socket.id)
             .then(userId => {
                 return util.getInviteByOwnerId(this.connection, userId, friendId)
                     .then(rows => {
                         if (rows.length) {
-                            return util.setFriends(this.connection, userId, friendId )
-                                .then(d=>{
+                            return util.setFriends(this.connection, userId, friendId)
+                                .then(d => {
                                     this.socket.emit('onAcceptInvite', {
                                         result: 'ok',
                                     });

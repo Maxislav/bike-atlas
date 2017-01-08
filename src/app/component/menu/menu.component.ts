@@ -5,14 +5,14 @@ import { Component} from '@angular/core';
 
 import {MenuTrackComponent} from './menu-track/menu-track.component'
 
-import any = jasmine.any;
+//import any = jasmine.any;
 import {MenuService} from "app/service/menu.service";
 import {TrackService} from "../../service/track.service";
 import {TrackList} from "./track-list/track-list.component";
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
-import {FriendsService, User} from "../../service/friends.service";
-import {UserService} from "../../service/main.user.service";
+import {FriendsService} from "../../service/friends.service";
+import {UserService, User} from "../../service/main.user.service";
 //import {Track} from "./track";
 
 declare var document: any;
@@ -31,9 +31,8 @@ export class MenuComponent{
     public menuOpen: boolean;
     public userName: string;
     private invites: Array<User>
-
-    
     trackList: Array<any>;
+    private user: User;
 
     constructor(
         private ms: MenuService,
@@ -41,9 +40,8 @@ export class MenuComponent{
         public as: AuthService,
         private router: Router,
         private friend: FriendsService,
-        private user: UserService){
-
-        this.user = user;
+        userService: UserService){
+        this.user = userService.user;
         this.invites = friend.invites;
         this.trackList = track.trackList;
     }

@@ -21,6 +21,7 @@ var IsOwner = (function () {
     }
     IsOwner.prototype.transform = function (value, args) {
         var _this = this;
+        // console.log('fds')
         return value.filter(function (item) {
             return item.ownerId == _this.user.user.id;
         });
@@ -36,7 +37,7 @@ var IsOwner = (function () {
 }());
 exports.IsOwner = IsOwner;
 var DeviceComponent = (function () {
-    function DeviceComponent(location, router, user, ds, toast, lh) {
+    function DeviceComponent(location, router, user, ds, toast, lh, _template, _viewContainer) {
         this.location = location;
         this.router = router;
         this.user = user;
@@ -112,7 +113,7 @@ var DeviceComponent = (function () {
                 'device.component.css',
             ]
         }), 
-        __metadata('design:paramtypes', [common_1.Location, router_1.Router, main_user_service_1.UserService, device_service_1.DeviceService, toast_component_1.ToastService, app_component_1.NavigationHistory])
+        __metadata('design:paramtypes', [common_1.Location, router_1.Router, main_user_service_1.UserService, device_service_1.DeviceService, toast_component_1.ToastService, app_component_1.NavigationHistory, core_1.TemplateRef, core_1.ViewContainerRef])
     ], DeviceComponent);
     return DeviceComponent;
 }());

@@ -9,7 +9,7 @@ import {UserService} from "./main.user.service";
 
 
 export interface User{
-    id: string;
+    id: number;
     name: string;
     phone?: string;
     image: string;
@@ -26,11 +26,13 @@ export interface Friends extends Array<User>{
 @Injectable()
 export class FriendsService {
 
+
     
     private socket: any;
     private _friends: Array<User>;
     private _users: Array<User>;
     private _invites: Array<User>;
+    private _myInvites: Array<User>;
 
 
     constructor(
@@ -39,6 +41,7 @@ export class FriendsService {
         private userService: UserService
     ){
         this._friends = [];
+        this._myInvites = [];
         this._users = [];
         this._invites = [];
         this.socket = io.socket;
@@ -48,9 +51,10 @@ export class FriendsService {
        const hash = this.ls.userKey;
        return this.socket.$emit('getFriends', {hash})
             .then(d=>{
-                console.log(d)
+                console.log(d);
                 if(d.result == 'ok'){
-                    this.friends = d.friends
+                    this.friends = d.friends;
+                    this.myInvites = d.invites;
                     return this.friends;
                 }else{
                     return null;
@@ -65,7 +69,8 @@ export class FriendsService {
             .then((d)=>{
                 console.log(d);
                 this.invites = d;
-            })
+            });
+
     }
 
     onAcceptInvite(friend: User){
@@ -111,6 +116,16 @@ export class FriendsService {
         this._invites.length = 0;
         value.forEach(item=>{
             this._invites.push(item)
+        })
+    }
+    get myInvites(): Array<User> {
+        return this._myInvites;
+    }
+
+    set myInvites(value: Array<User>) {
+        this._myInvites.length = 0;
+        value.forEach(item=>{
+            this._myInvites.push(item)
         })
     }
 

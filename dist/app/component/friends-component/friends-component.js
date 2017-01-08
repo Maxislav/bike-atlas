@@ -34,6 +34,7 @@ var FriendsComponent = (function () {
         this.allUsers = friend.users;
         this.invites = friend.invites;
         this.friends = friend.friends;
+        this.myInvites = friend.myInvites;
     }
     FriendsComponent.prototype.onAccept = function (friend) {
         this.friend.onAcceptInvite(friend);
@@ -52,6 +53,16 @@ var FriendsComponent = (function () {
     };
     FriendsComponent.prototype.sendInvite = function (user) {
         this.friend.onInvite(user.id);
+    };
+    FriendsComponent.prototype.isInviteActive = function (user) {
+        var i = 0;
+        while (i < this.myInvites.length) {
+            if (this.myInvites[i].invite_user_id == user.id) {
+                return true;
+            }
+            i++;
+        }
+        return false;
     };
     FriendsComponent.prototype.isFriend = function (user) {
         var i = 0;

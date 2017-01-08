@@ -18,6 +18,7 @@ var FriendsService = (function () {
         this.ls = ls;
         this.userService = userService;
         this._friends = [];
+        this._myInvites = [];
         this._users = [];
         this._invites = [];
         this.socket = io.socket;
@@ -30,6 +31,7 @@ var FriendsService = (function () {
             console.log(d);
             if (d.result == 'ok') {
                 _this.friends = d.friends;
+                _this.myInvites = d.invites;
                 return _this.friends;
             }
             else {
@@ -85,6 +87,20 @@ var FriendsService = (function () {
             this._invites.length = 0;
             value.forEach(function (item) {
                 _this._invites.push(item);
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FriendsService.prototype, "myInvites", {
+        get: function () {
+            return this._myInvites;
+        },
+        set: function (value) {
+            var _this = this;
+            this._myInvites.length = 0;
+            value.forEach(function (item) {
+                _this._myInvites.push(item);
             });
         },
         enumerable: true,

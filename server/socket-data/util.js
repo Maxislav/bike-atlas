@@ -288,6 +288,19 @@ module.exports = {
             })
         });
     },
+    getMyInvites: function (connection, user_id) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * from `invite` WHERE `user_id` = ?  order by `id` desc limit 150';
+            connection.query(query, [user_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows)
+            })
+        });
+    },
+
     getInviteByOwnerId: function (connection, user_id, friend_id) {
         return new Promise((resolve, reject) => {
             const query = 'SELECT * from `invite` WHERE `user_id` = ? AND `invite_user_id`=?  order by `id` desc limit 1';

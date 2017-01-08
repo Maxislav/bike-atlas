@@ -7,8 +7,8 @@
     <td (click)="goToFriends()" class="bell">
       <div *ngIf="invites.length" class="num">{{invites.length}}</div>
     </td>
-    <td class="icoUser"><img [src]="user.user.image || 'src/img/no-avatar.gif' " (click)="goToProfile()"/></td>
-    <td (click)="onOpenLogin()" class="button enter">{{as.userName || 'Войти' }}</td>
+    <td class="icoUser"><img [src]="user.image || 'src/img/no-avatar.gif' " (click)="goToProfile()"/></td>
+    <td (click)="onOpenLogin()" class="button enter">{{user.name || 'Войти' }}</td>
   </tr>
 </table>
 <menu-athlete *ngIf="ms.menuAthlete"></menu-athlete>

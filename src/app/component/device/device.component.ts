@@ -1,4 +1,4 @@
-import {Component, Pipe, PipeTransform} from '@angular/core';
+import {Component, Pipe, PipeTransform, TemplateRef, ViewContainerRef} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from "@angular/router";
 import {DeviceService, Device} from "../../service/device.service";
@@ -17,7 +17,7 @@ export class IsOwner implements PipeTransform  {
     }
     transform(value, args?){
 
-
+       // console.log('fds')
         return value.filter(item=>{
             return item.ownerId == this.user.user.id
         })
@@ -44,7 +44,9 @@ export class DeviceComponent{
                 private user: UserService,
                 private ds: DeviceService,
                 private toast: ToastService,
-                private lh: NavigationHistory){
+                private lh: NavigationHistory,
+                _template: TemplateRef<Object>,
+                _viewContainer: ViewContainerRef){
         this.device = {
             ownerId: -1,
             name: '',

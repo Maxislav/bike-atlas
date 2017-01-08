@@ -13,6 +13,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var menu_track_component_1 = require('./menu-track/menu-track.component');
+//import any = jasmine.any;
 var menu_service_1 = require("app/service/menu.service");
 var track_service_1 = require("../../service/track.service");
 var track_list_component_1 = require("./track-list/track-list.component");
@@ -21,13 +22,12 @@ var router_1 = require("@angular/router");
 var friends_service_1 = require("../../service/friends.service");
 var main_user_service_1 = require("../../service/main.user.service");
 var MenuComponent = (function () {
-    function MenuComponent(ms, track, as, router, friend, user) {
+    function MenuComponent(ms, track, as, router, friend, userService) {
         this.ms = ms;
         this.as = as;
         this.router = router;
         this.friend = friend;
-        this.user = user;
-        this.user = user;
+        this.user = userService.user;
         this.invites = friend.invites;
         this.trackList = track.trackList;
     }

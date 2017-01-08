@@ -37,10 +37,12 @@ export class FriendsComponent{
     public allUsers: Array<User>;
     public invites: Array<User>;
     public friends: Array<User>;
+    private myInvites: Array<any>;
     constructor(private location: Location, private friend: FriendsService, private toast: ToastService ){
         this.allUsers = friend.users;
         this.invites = friend.invites;
         this.friends = friend.friends;
+        this.myInvites = friend.myInvites;
     }
 
     onAccept(friend: User){
@@ -62,6 +64,23 @@ export class FriendsComponent{
     sendInvite(user){
         this.friend.onInvite(user.id)
     }
+
+    isInviteActive(user: User){
+
+        let i = 0;
+
+        while (i<this.myInvites.length){
+            if( this.myInvites[i].invite_user_id == user.id){
+                return true
+            }
+
+
+            i++;
+
+        }
+        return false
+    }
+
     isFriend(user: User){
         let i = 0;
 

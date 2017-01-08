@@ -41,5 +41,7 @@ div.content
                                 img([src]="user.image || 'src/img/no-avatar.gif' ")
                             td {{user.name}}
                             td
-                                .invite((click)="sendInvite(user)", *ngIf="!isFriend(user)")
-                                    | Отправть запрос
+                                .invite( *ngIf="!isFriend(user)")
+                                    template([ngIf]="!isInviteActive(user)", )
+                                        div((click)="sendInvite(user)") Отправть запрос
+                                    template([ngIf]="isInviteActive(user)") Запрос отправлен

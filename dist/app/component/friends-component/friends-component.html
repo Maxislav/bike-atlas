@@ -47,7 +47,12 @@
               <td><img [src]="user.image || 'src/img/no-avatar.gif' "/></td>
               <td>{{user.name}}</td>
               <td>
-                <div (click)="sendInvite(user)" *ngIf="!isFriend(user)" class="invite">Отправть запрос</div>
+                <div *ngIf="!isFriend(user)" class="invite">
+                  <template [ngIf]="!isInviteActive(user)">
+                    <div (click)="sendInvite(user)">Отправть запрос</div>
+                  </template>
+                  <template [ngIf]="isInviteActive(user)">Запрос отправлен</template>
+                </div>
               </td>
             </tr>
           </tbody>
