@@ -1,5 +1,5 @@
 div((click)="$event.stopPropagation();$event.preventDefault()" )
-    div(*ngIf="!as.userName")
+    div(*ngIf="!user.name")
         ul()
             li
                 label Имя
@@ -12,7 +12,7 @@ div((click)="$event.stopPropagation();$event.preventDefault()" )
             li
                 a((click)="goToReg()") Регистрация
     .border-hidden
-    ul(*ngIf="as.userName")
+    ul(*ngIf="user.name")
         li
             div((click)="goToProfile()") Профиль
         li

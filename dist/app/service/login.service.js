@@ -50,9 +50,7 @@ var LoginService = (function () {
             .then(function (d) {
             if (d.result == 'ok') {
                 _this.ls.userKey = null;
-                _this.as.userName = null;
-                _this.as.userImage = null;
-                _this.as.userId = null;
+                _this.userService.clearUser();
                 _this.friend.clearUsers();
                 _this.logService.clearDevices();
                 _this.ds.clearDevice();
@@ -66,10 +64,6 @@ var LoginService = (function () {
             case 'ok':
                 this.ls.userKey = d.hash;
                 this.userService.user = d.user;
-                // this.userId = d.user.id;
-                // this.userImage = d.user.image;
-                // this.userName = d.user.name;
-                //this.setting = d.user.setting || this.setting;
                 this.friend.updateFriends()
                     .then(function (d) {
                     _this.ds.updateDevices()

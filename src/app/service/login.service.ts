@@ -40,10 +40,9 @@ export class LoginService{
             })
             .then(d => {
                 if (d.result == 'ok') {
+
                     this.ls.userKey = null;
-                    this.as.userName = null;
-                    this.as.userImage = null;
-                    this.as.userId = null;
+                    this.userService.clearUser();
                     this.friend.clearUsers();
                     this.logService.clearDevices();
                     this.ds.clearDevice()
@@ -57,10 +56,6 @@ export class LoginService{
             case 'ok':
                 this.ls.userKey = d.hash;
                 this.userService.user = d.user;
-               // this.userId = d.user.id;
-               // this.userImage = d.user.image;
-               // this.userName = d.user.name;
-                //this.setting = d.user.setting || this.setting;
                 this.friend.updateFriends()
                     .then(d=>{
                         this.ds.updateDevices()

@@ -1,6 +1,6 @@
 
 <div (click)="$event.stopPropagation();$event.preventDefault()">
-  <div *ngIf="!as.userName">
+  <div *ngIf="!user.name">
     <ul>
       <li>
         <label>Имя</label>
@@ -17,7 +17,7 @@
     </ul>
   </div>
   <div class="border-hidden"></div>
-  <ul *ngIf="as.userName">
+  <ul *ngIf="user.name">
     <li>
       <div (click)="goToProfile()">Профиль</div>
     </li>

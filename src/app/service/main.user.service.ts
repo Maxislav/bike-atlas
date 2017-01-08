@@ -18,6 +18,12 @@ export class UserService{
         }
     }
 
+    clearUser(){
+       for (let opt in this._user){
+           this._user[opt] = null
+       }
+    }
+
     get user(): User {
         return this._user;
     }

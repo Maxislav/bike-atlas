@@ -17,6 +17,11 @@ var UserService = (function () {
             image: null
         };
     }
+    UserService.prototype.clearUser = function () {
+        for (var opt in this._user) {
+            this._user[opt] = null;
+        }
+    };
     Object.defineProperty(UserService.prototype, "user", {
         get: function () {
             return this._user;

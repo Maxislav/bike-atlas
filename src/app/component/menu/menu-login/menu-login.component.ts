@@ -11,6 +11,7 @@ import {DeviceService} from "../../../service/device.service";
 import {LoginService} from "../../../service/login.service";
 import {LogService} from "../../../service/log.service";
 import {FriendsService} from "../../../service/friends.service";
+import {UserService, User} from "../../../service/main.user.service";
 //import {RouterLink} from "@angular/router-deprecated";
 
 
@@ -26,6 +27,7 @@ export class MenuLoginComponent {
     private name: string;
     private pass: string;
     private socket;
+    private user: User;
 
     constructor(private router: Router,
                 private ms: MenuService,
@@ -37,7 +39,10 @@ export class MenuLoginComponent {
                 private ts: ToastService,
                 private logService: LogService,
                 private friend: FriendsService,
-                private loginService: LoginService) {
+                private loginService: LoginService,
+            private userService: UserService
+    ) {
+        this.user = userService.user;
         this.socket = io.socket;
     }
 
