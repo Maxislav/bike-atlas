@@ -5,6 +5,7 @@ import {DeviceService} from "./device.service";
 import {Resolve} from "@angular/router";
 import {FriendsService} from "./friends.service";
 import {UserService} from "./main.user.service";
+import {LogService} from "./log.service";
 
 export interface Setting{
     hill?: boolean;
@@ -12,6 +13,8 @@ export interface Setting{
     map?: string;
     lock?: boolean;
 }
+
+
 
 @Injectable()
 export class AuthService implements Resolve<any>{
@@ -24,7 +27,8 @@ export class AuthService implements Resolve<any>{
     private resolveAuth: Function;
     constructor(
         private io: Io,
-        private  ls: LocalStorage,
+        private ls: LocalStorage,
+        private log: LogService,
         private ds: DeviceService,
         private friend: FriendsService,
         private userService: UserService) {
@@ -33,7 +37,7 @@ export class AuthService implements Resolve<any>{
         this.socket.on('connect', this.onConnect.bind(this));
         this.socket.on('disconnect', (d) => {
             console.log('disconnect');
-            this.userName = null;
+           // this.userName = null;
         });
     }
     resolve(): Promise<any> {
@@ -59,9 +63,10 @@ export class AuthService implements Resolve<any>{
                 this.friend.updateFriends()
                     .then(d=>{
                         this.ds.updateDevices()
-                    })
-
-                ;
+                            .then(d=>{
+                                this.log.getLastPosition()
+                            })
+                    });
                 this.friend.getInvites();
 
             }else{

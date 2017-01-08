@@ -40,6 +40,16 @@ var LogService = (function () {
             delete this.devices[opt];
         }
     };
+    LogService.prototype.getLastPosition = function () {
+        var _this = this;
+        this.socket.$emit('getLastPosition')
+            .then(function (rows) {
+            _this.clearDevices();
+            rows.forEach(function (deviceData) {
+                _this.log(deviceData);
+            });
+        });
+    };
     LogService.prototype.getDeviceData = function (id) {
         if (this.devices[id]) {
             return this.devices[id].deviceData;

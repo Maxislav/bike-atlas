@@ -1,7 +1,7 @@
 ul((click)="$event.stopPropagation()")
     li(*ngFor="let device of devices\; let i = index", (click)="selectDevice(device)")
         //.status(*ngIf="device.marker", [ngClass]="device.marker.status")
-        .status([ngClass]="device.marker.status")
+        .status([ngClass]="device.marker ? device.marker.status : null")
             img([src]="device.image || 'src/img/no-avatar.gif' ", )
         div.name {{device.name}}
         div.passed(*ngIf="device.marker")  {{device.marker.elapsed}}

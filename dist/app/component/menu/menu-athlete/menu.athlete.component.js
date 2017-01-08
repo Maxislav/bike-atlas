@@ -18,15 +18,6 @@ var MenuAthleteComponent = (function () {
         this.mapServ = mapServ;
         this.ls = ls;
         this.devices = ds.devices;
-        /*this.interval = setInterval(()=>{
-            this.devices.forEach(device=>{
-                const deviceData  = this.ls.getDeviceData(device.id)
-                if(deviceData){
-                    let date =  deviceData.date;
-                    device.passed = this.timer.elapse(date)
-                }
-            })
-        }, 1000)*/
     }
     MenuAthleteComponent.prototype.selectDevice = function (device) {
         var deviceData = this.ls.getDeviceData(device.id);

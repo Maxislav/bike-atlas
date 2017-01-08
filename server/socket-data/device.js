@@ -10,14 +10,16 @@ class Device{
         socket.on('getDevice', this.getDevice.bind(this));
         socket.on('onAddDevice', this.onAddDevice.bind(this));
         socket.on('onDelDevice', this.onDelDevice.bind(this));
+        socket.on('getLastPosition', this.getLastPosition.bind(this));
     }
 
     /**
      *
-     * @param {{hash: string}}d
+     * @param {boolean} isLastPosition
+     * @returns {Promise<R>}
      */
-    getDevice(d){
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+    getDevice(isLastPosition){
+       return util.getUserIdBySocketId(this.connection, this.socket.id)
             .then(user_id=>{
                 return util.getFriends(this.connection, user_id)
                     .then(friends=>{
@@ -34,55 +36,31 @@ class Device{
                                     delete item.user_id;
                                     this.logger.updateDevice(item.id, this.socket.id)
                                 });
-                                this.socket.emit('getDevice', {
-                                    result: 'ok',
-                                    devices: rows
-                                } );
-                                this.emitLastPosition(rows)
+                                if(!isLastPosition){
+                                    this.socket.emit('getDevice', {
+                                        result: 'ok',
+                                        devices: rows
+                                    } );
+                                }else{
+                                    return rows
+                                }
                             })
-
-
                     });
-
-
-                //console.log('user id ->' , user_id);
 
             })
             .catch((err)=>{
                 this.socket.emit('getDevice', {
                     result: false
-                })
+                });
                 console.error('error getDevice->',err)
             });
 
-        /*util.getDeviceByHash(this.connection, d.hash)
-            .then(rows=>{
-                const devices = [];
-                rows.forEach(item=>{
-                    devices.push({
-                        id: item.device_key,
-                        ownerId: item.user_id,
-                        name: item.name,
-                        phone: item.phone
-                    });
-                    this.logger.updateDevice(item.device_key, this.socket.id)
-                });
-                this.emitLastPosition(devices);
-
-
-               // this.logger.sockets[this.socket.id]
-
-                this.socket.emit('getDevice', {
-                    result: 'ok',
-                    devices: devices
-                } )
-            })
-            .catch((err)=>{
-                this.socket.emit('getDevice', {
-                    result: false
-                })
-            })*/
     }
+
+   /* getLastPosition(){
+
+
+    }*/
     onAddDevice(device){
         util.addDeviceBySocketId(this.connection, this.socket.id, device)
             .then(d=>{
@@ -119,26 +97,30 @@ class Device{
 
     }
 
-    emitLastPosition(devices){
-        const arrPromise = [];
-        devices.forEach(device=>{
-            arrPromise.push(util.getLastPosition(this.connection, device));
-        });
-
-        Promise.all(arrPromise)
+    getLastPosition(){
+        this.getDevice(true)
             .then(devices=>{
-                devices.forEach(rows=>{
-                    if(rows && rows.length){
-                        console.log('emitLastPosition ->', rows[0])
-                        this.socket.emit('log', util.formatDevice(rows[0]))
-                    }
-
+                const arrPromise = [];
+                devices.forEach(device=>{
+                    arrPromise.push(util.getLastPosition(this.connection, device));
                 });
-            })
-            .catch(err=>{
-                console.error('Error emitLastPosition->', err)
-            })
+                Promise.all(arrPromise)
+                    .then(devices=>{
+                        const devi = [];
+                        devices.forEach(rows=>{
 
+                            if(rows && rows.length){
+                                devi.push(util.formatDevice(rows[0]));
+                            }
+
+                        });
+                        this.socket.emit('getLastPosition', devi)
+
+                    })
+                    .catch(err=>{
+                        console.error('Error emitLastPosition->', err)
+                    })
+            })
     }
 }
 

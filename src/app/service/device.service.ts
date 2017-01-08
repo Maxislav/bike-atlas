@@ -33,8 +33,7 @@ export class DeviceService {
     }
 
     updateDevices() {
-        const hash = this.ls.userKey;
-        this.socket.$emit('getDevice', {hash})
+       return this.socket.$emit('getDevice')
             .then(d => {
                 if (d && d.result == 'ok') {
                     this.devices = d.devices
@@ -60,8 +59,6 @@ export class DeviceService {
         })
     }
     onDelDevice(device: Device){
-
-
        return this.socket.$emit('onDelDevice', device)
            .then(d=>{
                if(d.result=='ok'){

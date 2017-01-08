@@ -4,7 +4,7 @@ import {DeviceService, Device} from "./device.service";
 import {MarkerService, Marker} from "./marker.service";
 //import {MarkerService} from "./marker.service";
 
-export interface DeviceData{
+export interface DeviceData {
     id: string;
     alt: number;
     name: string;
@@ -18,43 +18,53 @@ export interface DeviceData{
 }
 
 
-
 @Injectable()
-export class LogService{
+export class LogService {
     private socket: any;
     private devices: {};//Object<DeviceService>
-    constructor(io: Io, private ds: DeviceService, private markerService: MarkerService){
+    constructor(io: Io, private ds: DeviceService, private markerService: MarkerService) {
         this.socket = io.socket;
-        this.socket.on('log',this.log.bind(this));
+        this.socket.on('log', this.log.bind(this));
         this.devices = {};
     }
-    log(deviceData: DeviceData){
+
+    log(deviceData: DeviceData) {
         console.log(deviceData);
-        if( this.devices[deviceData.id] ){
+        if (this.devices[deviceData.id]) {
             this.devices[deviceData.id].update(deviceData);
-        }else{
-            let device : Device = this.ds.devices.find(item=>{
+        } else {
+            let device: Device = this.ds.devices.find(item => {
                 return item.id == deviceData.id
             });
             deviceData.name = device.name;
             deviceData.image = device.image;
-            device.marker =  this.devices[deviceData.id] = this.markerService.marker(deviceData)
+            device.marker = this.devices[deviceData.id] = this.markerService.marker(deviceData)
         }
     }
-    clearDevices(){
-        for(let opt in this.devices){
+
+    clearDevices() {
+        for (let opt in this.devices) {
             this.devices[opt].hide();
             delete this.devices[opt];
         }
     }
-    getDeviceData(id: string) : DeviceData{
-        if(this.devices[id]){
+
+    getLastPosition() {
+        this.socket.$emit('getLastPosition')
+            .then(rows => {
+                this.clearDevices();
+                rows.forEach(deviceData=>{
+                    this.log(deviceData);
+                });
+            })
+    }
+
+    getDeviceData(id: string): DeviceData {
+        if (this.devices[id]) {
             return this.devices[id].deviceData
         }
         return null;
     }
-
-
 
 }
 

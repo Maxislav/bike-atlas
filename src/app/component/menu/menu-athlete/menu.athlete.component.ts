@@ -21,17 +21,7 @@ export class MenuAthleteComponent{
                 private ls: LogService
                ){
 
-
         this.devices = ds.devices;
-        /*this.interval = setInterval(()=>{
-            this.devices.forEach(device=>{
-                const deviceData  = this.ls.getDeviceData(device.id)
-                if(deviceData){
-                    let date =  deviceData.date;
-                    device.passed = this.timer.elapse(date)
-                }
-            })
-        }, 1000)*/
     }
 
     selectDevice(device){

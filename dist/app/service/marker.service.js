@@ -83,8 +83,8 @@ var MarkerService = (function () {
                 map.getSource(layerId).setData(point);
             },
             hide: function () {
-                map.removeLayer(layerId);
-                map.removeSource(layerId);
+                //map.removeLayer(layerId);
+                //map.removeSource(layerId);
                 popup.remove();
                 console.log('delete marker id', layerId);
                 iconMarker.remove();

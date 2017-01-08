@@ -14,11 +14,12 @@ var local_storage_service_1 = require("./local-storage.service");
 var device_service_1 = require("./device.service");
 var friends_service_1 = require("./friends.service");
 var main_user_service_1 = require("./main.user.service");
+var log_service_1 = require("./log.service");
 var AuthService = (function () {
-    function AuthService(io, ls, ds, friend, userService) {
-        var _this = this;
+    function AuthService(io, ls, log, ds, friend, userService) {
         this.io = io;
         this.ls = ls;
+        this.log = log;
         this.ds = ds;
         this.friend = friend;
         this.userService = userService;
@@ -29,7 +30,7 @@ var AuthService = (function () {
         this.socket.on('connect', this.onConnect.bind(this));
         this.socket.on('disconnect', function (d) {
             console.log('disconnect');
-            _this.userName = null;
+            // this.userName = null;
         });
     }
     AuthService.prototype.resolve = function () {
@@ -54,7 +55,10 @@ var AuthService = (function () {
                 _this.setting = d.user.setting || _this.setting;
                 _this.friend.updateFriends()
                     .then(function (d) {
-                    _this.ds.updateDevices();
+                    _this.ds.updateDevices()
+                        .then(function (d) {
+                        _this.log.getLastPosition();
+                    });
                 });
                 _this.friend.getInvites();
             }
@@ -107,7 +111,7 @@ var AuthService = (function () {
     });
     AuthService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, device_service_1.DeviceService, friends_service_1.FriendsService, main_user_service_1.UserService])
+        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, log_service_1.LogService, device_service_1.DeviceService, friends_service_1.FriendsService, main_user_service_1.UserService])
     ], AuthService);
     return AuthService;
 }());

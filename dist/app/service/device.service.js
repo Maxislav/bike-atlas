@@ -24,8 +24,7 @@ var DeviceService = (function () {
     }
     DeviceService.prototype.updateDevices = function () {
         var _this = this;
-        var hash = this.ls.userKey;
-        this.socket.$emit('getDevice', { hash: hash })
+        return this.socket.$emit('getDevice')
             .then(function (d) {
             if (d && d.result == 'ok') {
                 _this.devices = d.devices;
