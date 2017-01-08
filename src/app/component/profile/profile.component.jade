@@ -6,8 +6,8 @@ div.content
                 | Профиль
         .row
             load-img
-                img([src]="imageurl || 'src/img/no-avatar.gif' ", (click)="onOpenImage()")
-                .row {{name}}
+                img([src]="user.image || 'src/img/no-avatar.gif' ", (click)="onOpenImage()")
+                .row {{user.name}}
 
                 input(type="file" id="files" name="files[]" multiple="", style="display: none")
         .border-hidden

@@ -15,8 +15,9 @@ var router_1 = require("@angular/router");
 var app_component_1 = require("../../app.component");
 var socket_oi_service_1 = require("../../service/socket.oi.service");
 var toast_component_1 = require("../toast/toast.component");
+var main_user_service_1 = require("../../service/main.user.service");
 var ProfileComponent = (function () {
-    function ProfileComponent(location, elRef, as, router, lh, io, toast) {
+    function ProfileComponent(location, elRef, as, router, lh, io, toast, userService) {
         this.location = location;
         this.elRef = elRef;
         this.as = as;
@@ -24,6 +25,7 @@ var ProfileComponent = (function () {
         this.lh = lh;
         this.io = io;
         this.toast = toast;
+        this.user = userService.user;
         this.imageurl = as.userImage;
         this.name = as.userName;
         this.socket = io.socket;
@@ -60,7 +62,7 @@ var ProfileComponent = (function () {
             context.clip();
             context.drawImage(myImage, 0, 0, 100, 100);
             context.restore();
-            $this.imageurl = elCanvas.toDataURL();
+            $this.user.image = elCanvas.toDataURL();
             imageObj.parentElement.removeChild(imageObj);
         }
         ;
@@ -83,18 +85,28 @@ var ProfileComponent = (function () {
     };
     ProfileComponent.prototype.onSave = function () {
         var _this = this;
-        if (!this.imageurl) {
+        if (!this.user.name) {
+            this.toast.show({
+                type: 'warning',
+                text: 'Войдите под своим пользователем'
+            });
+            return;
+        }
+        if (!this.user.image) {
             this.toast.show({
                 type: 'warning',
                 text: 'Пустое изображение'
             });
             return;
         }
-        this.socket.$emit('onImage', this.imageurl)
+        this.socket.$emit('onImage', this.user.image)
             .then(function (d) {
             console.log(d);
             if (d && d.result == 'ok') {
-                _this.as.userImage = _this.imageurl;
+                _this.toast.show({
+                    type: 'success',
+                    text: 'Профиль сохранен'
+                });
             }
         });
     };
@@ -104,7 +116,7 @@ var ProfileComponent = (function () {
             templateUrl: './profile.component.html',
             styleUrls: ['./profile.component.css'],
         }), 
-        __metadata('design:paramtypes', [common_1.Location, core_1.ElementRef, auth_service_1.AuthService, router_1.Router, app_component_1.NavigationHistory, socket_oi_service_1.Io, toast_component_1.ToastService])
+        __metadata('design:paramtypes', [common_1.Location, core_1.ElementRef, auth_service_1.AuthService, router_1.Router, app_component_1.NavigationHistory, socket_oi_service_1.Io, toast_component_1.ToastService, main_user_service_1.UserService])
     ], ProfileComponent);
     return ProfileComponent;
 }());

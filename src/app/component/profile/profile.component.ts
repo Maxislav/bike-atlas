@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {NavigationHistory} from "../../app.component";
 import {Io} from "../../service/socket.oi.service";
 import {ToastService} from "../toast/toast.component";
+import {UserService, User} from "../../service/main.user.service";
 
 
 
@@ -18,14 +19,17 @@ export class ProfileComponent implements AfterViewInit{
     private inputEl: Element;
     private name: string;
     private socket: any;
+    private user: User;
     constructor(private location: Location,
                 private elRef: ElementRef,
                 private as: AuthService,
                 private router:Router,
                 private lh: NavigationHistory,
                 private io : Io,
-                private toast: ToastService
+                private toast: ToastService,
+                userService: UserService
     ){
+        this.user = userService.user;
         this.imageurl = as.userImage;
         this.name = as.userName;
         this.socket = io.socket;
@@ -62,7 +66,7 @@ export class ProfileComponent implements AfterViewInit{
             context.clip();
             context.drawImage(myImage, 0, 0, 100, 100);
             context.restore();
-            $this.imageurl =   elCanvas.toDataURL()
+            $this.user.image =   elCanvas.toDataURL()
             imageObj.parentElement.removeChild(imageObj)
         };
         imageObj.onload = function () {
@@ -84,7 +88,16 @@ export class ProfileComponent implements AfterViewInit{
         this.inputEl.click()
     }
     onSave(){
-        if(!this.imageurl){
+
+        if(!this.user.name){
+            this.toast.show({
+                type: 'warning',
+                text: 'Войдите под своим пользователем'
+            });
+            return
+        }
+
+        if(!this.user.image){
             this.toast.show({
                 type: 'warning',
                 text: 'Пустое изображение'
@@ -92,11 +105,15 @@ export class ProfileComponent implements AfterViewInit{
             return;
         }
 
-        this.socket.$emit('onImage', this.imageurl)
+        this.socket.$emit('onImage', this.user.image)
             .then(d=>{
                 console.log(d)
                 if(d && d.result == 'ok'){
-                    this.as.userImage = this.imageurl
+                    this.toast.show({
+                        type: 'success',
+                        text: 'Профиль сохранен'
+                    });
+                    //this.user.image = this.i
                 }
             })
     }
