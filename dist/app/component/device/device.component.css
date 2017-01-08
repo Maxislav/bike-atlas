@@ -119,9 +119,18 @@ help-container {
   font-size: 12px;
   width: 100%;
 }
-help-container img {
+help-container * {
+  box-sizing: border-box;
+}
+help-container table img {
   width: 120px;
   height: 200px;
+}
+help-container img.ico {
+  width: 60px;
+  height: 60px;
+  float: left;
+  margin-right: 10px;
 }
 help-container td:nth-child(3) {
   width: 30%;

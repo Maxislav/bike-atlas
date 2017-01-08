@@ -39,6 +39,11 @@ div.content
             .bnt-help((click)="onShowHelp()") &#9660; ?
             help-container(*ngIf="showHelp")
                 .help
+                    .row
+                        div
+                            a(href='https://play.google.com/store/apps/details?id=com.mendhak.gpslogger', target="_blank")
+                                img.ico(src="src/img/help/ico.webp")
+                            a(href='https://play.google.com/store/apps/details?id=com.mendhak.gpslogger' , target="_blank") GPS-логгер (GPS Logger)
                     table
                         tbody
                             tr
