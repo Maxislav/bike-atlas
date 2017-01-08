@@ -1,10 +1,36 @@
-import {Component, Pipe, PipeTransform, TemplateRef, ViewContainerRef} from '@angular/core';
+import {
+    Component, Pipe, PipeTransform, TemplateRef, ViewContainerRef, Directive, ElementRef,
+    Renderer
+} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from "@angular/router";
 import {DeviceService, Device} from "../../service/device.service";
 import {NavigationHistory} from "../../app.component";
 import {ToastService} from "../toast/toast.component";
 import {UserService, User} from "../../service/main.user.service";
+
+
+@Directive({
+    selector: 'help-container',
+})
+export class HelpContainer{
+    constructor(el: ElementRef, renderer: Renderer){
+
+        let w = window,
+            d = document,
+            e = d.documentElement,
+            g = d.getElementsByTagName('body')[0],
+            x = w.innerWidth || e.clientWidth || g.clientWidth,
+            y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+
+        renderer.setElementStyle(el.nativeElement, 'height', y-300+'px');
+    }
+}
+declare const module:{
+    id: any
+}
+
 
 
 @Pipe({
@@ -29,6 +55,7 @@ export class IsOwner implements PipeTransform  {
     moduleId: module.id,
     templateUrl:'device.component.html',
     pipes: [IsOwner],
+    directives: [HelpContainer],
     styleUrls: [
         'device.component.css',
     ]
@@ -39,6 +66,8 @@ export class DeviceComponent{
     private devices: Array<Device>;
     public btnPreDel: {index: number};
     private user: User;
+    private showHelp: boolean = false;
+
 
     constructor(private location: Location,
                 private router:Router,
@@ -60,6 +89,9 @@ export class DeviceComponent{
             index: -1
         };
         this.devices = ds.devices;
+    }
+    onShowHelp(){
+        this.showHelp = !this.showHelp
     }
     onAdd(e){
         e.preventDefault();
@@ -87,7 +119,7 @@ export class DeviceComponent{
     onDel(e, device){
         this.ds.onDelDevice(device)
             .then(d=>{
-                console.log(d)
+                console.log(d);
                 this.clearPredel();
             });
     }

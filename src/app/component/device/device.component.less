@@ -10,6 +10,7 @@
   position: absolute;
   background: rgba(255, 255, 255, 0.9);
   min-width: 600px;
+  max-width: 600px;
   margin-left: -300px;
   padding: 0;
   left: 50%;
@@ -89,4 +90,28 @@ td{
   padding: 5px;
   font-size: 20px;
   font: 30px/15px bold;
+}
+help-container{
+  display: block;
+  overflow: auto;
+  font-size: 12px;
+  width: 100%;
+  img{
+    width: 120px;
+    height: 200px;
+  }
+  td:nth-child(3){
+    width: 30%;
+  }
+
+  span{
+    white-space: nowrap;
+    margin: 05px;
+    color: dodgerblue;
+  }
+}
+.bnt-help{
+  float: right;
+  padding: 5px;
+  cursor: pointer;
 }

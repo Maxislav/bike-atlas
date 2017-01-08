@@ -33,9 +33,48 @@ div.content
                         td
                             button((click)="onAdd($event)") Добавить
 
-        //.border-hidden
-        //.button-container
-            div()
-                button( style="float: right", (click)="onOk($event)") Ok
-                button( (click)="onCancel($event)" ) Cancel
+
         .border-hidden
+        .row
+            .bnt-help((click)="onShowHelp()") &#9660; ?
+            help-container(*ngIf="showHelp")
+                .help
+                    table
+                        tbody
+                            tr
+                                td Настройка записи лога
+                                td Отправлять коордиты на сервер OpenGTS
+                                td
+                                    p
+                                        | Сервер Имя хоста или IP
+                                        span  178.62.44.54
+                                    p
+                                        | Порт
+                                        span 80
+                                    p
+                                        |  Способ связи
+                                        span HTTP
+                                    p
+                                        | Путь на сервере
+                                        span log
+
+                                td
+                                    p
+                                        | Иденификато
+                                        span  12 цифр
+                            tr
+                                td
+                                    img(src="src/img/help/01.png")
+                                td
+                                    img(src="src/img/help/02.png")
+                                td
+                                    img(src="src/img/help/03.png")
+                                td
+                                    img(src="src/img/help/04.png")
+
+
+
+
+
+
+

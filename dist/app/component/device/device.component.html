@@ -41,12 +41,36 @@
         </tbody>
       </table>
     </div>
-    <!--.border-hidden-->
-    <!--.button-container
-    div()
-        button( style="float: right", (click)="onOk($event)") Ok
-        button( (click)="onCancel($event)" ) Cancel
-    -->
     <div class="border-hidden"></div>
+    <div class="row">
+      <div (click)="onShowHelp()" class="bnt-help">&#9660; ?</div>
+      <help-container *ngIf="showHelp">
+        <div class="help">
+          <table>
+            <tbody>
+              <tr>
+                <td>Настройка записи лога</td>
+                <td>Отправлять коордиты на сервер OpenGTS</td>
+                <td>
+                  <p>Сервер Имя хоста или IP<span> 178.62.44.54</span></p>
+                  <p>Порт<span>80</span></p>
+                  <p> Способ связи<span>HTTP</span></p>
+                  <p>Путь на сервере<span>log</span></p>
+                </td>
+                <td>
+                  <p>Иденификато<span> 12 цифр</span></p>
+                </td>
+              </tr>
+              <tr>
+                <td><img src="src/img/help/01.png"/></td>
+                <td><img src="src/img/help/02.png"/></td>
+                <td><img src="src/img/help/03.png"/></td>
+                <td><img src="src/img/help/04.png"/></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </help-container>
+    </div>
   </div>
 </div>

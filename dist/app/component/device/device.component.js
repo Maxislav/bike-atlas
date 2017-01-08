@@ -15,6 +15,20 @@ var device_service_1 = require("../../service/device.service");
 var app_component_1 = require("../../app.component");
 var toast_component_1 = require("../toast/toast.component");
 var main_user_service_1 = require("../../service/main.user.service");
+var HelpContainer = (function () {
+    function HelpContainer(el, renderer) {
+        var w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0], x = w.innerWidth || e.clientWidth || g.clientWidth, y = w.innerHeight || e.clientHeight || g.clientHeight;
+        renderer.setElementStyle(el.nativeElement, 'height', y - 300 + 'px');
+    }
+    HelpContainer = __decorate([
+        core_1.Directive({
+            selector: 'help-container',
+        }), 
+        __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer])
+    ], HelpContainer);
+    return HelpContainer;
+}());
+exports.HelpContainer = HelpContainer;
 var IsOwner = (function () {
     function IsOwner(user) {
         this.user = user;
@@ -44,6 +58,7 @@ var DeviceComponent = (function () {
         this.ds = ds;
         this.toast = toast;
         this.lh = lh;
+        this.showHelp = false;
         this.user = userService.user;
         this.device = {
             ownerId: -1,
@@ -56,6 +71,9 @@ var DeviceComponent = (function () {
         };
         this.devices = ds.devices;
     }
+    DeviceComponent.prototype.onShowHelp = function () {
+        this.showHelp = !this.showHelp;
+    };
     DeviceComponent.prototype.onAdd = function (e) {
         var _this = this;
         e.preventDefault();
@@ -110,6 +128,7 @@ var DeviceComponent = (function () {
             moduleId: module.id,
             templateUrl: 'device.component.html',
             pipes: [IsOwner],
+            directives: [HelpContainer],
             styleUrls: [
                 'device.component.css',
             ]
