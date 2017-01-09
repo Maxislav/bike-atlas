@@ -50,8 +50,9 @@ export class MenuLoginComponent {
         this.router.navigate(['/auth/map/registration']);
         this.ms.menuOpenLogin = false
     }
-    goPrivateArea(){
-        
+    goToPrivateArea(){
+        this.router.navigate(['/auth/map/privatearea']);
+        this.ms.menuOpenLogin = false
     }
 
 

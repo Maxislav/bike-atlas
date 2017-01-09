@@ -74,7 +74,7 @@ export class DeviceComponent{
                 private userService: UserService,
                 private ds: DeviceService,
                 private toast: ToastService,
-                private lh: NavigationHistory,
+                private lh: NavigationHistory
 ){
 
         this.user = userService.user;

@@ -44,7 +44,9 @@ var MenuLoginComponent = (function () {
         this.router.navigate(['/auth/map/registration']);
         this.ms.menuOpenLogin = false;
     };
-    MenuLoginComponent.prototype.goPrivateArea = function () {
+    MenuLoginComponent.prototype.goToPrivateArea = function () {
+        this.router.navigate(['/auth/map/privatearea']);
+        this.ms.menuOpenLogin = false;
     };
     MenuLoginComponent.prototype.onEnter = function (e) {
         this.loginService
