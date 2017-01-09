@@ -1,25 +1,31 @@
 div((click)="$event.stopPropagation();$event.preventDefault()" )
     div(*ngIf="!user.name")
-        ul()
+        ul
             li
                 label Имя
                 input(type="text", [(ngModel)]="name")
             li
                 label Пароль
                 input( type="password", [(ngModel)]="pass")
-            li
-                div((click)="onEnter($event)") Вход
+            li((click)="onEnter($event)")
+                div() Вход
             li
                 a((click)="goToReg()") Регистрация
     .border-hidden
-    ul(*ngIf="user.name")
-        li((click)="goToProfile()")
-            div() Профиль
-        li((click)="goToFriends()")
-            div() Друзья
-        li((click)="goDevice()")
-            div Устройства
-        li
-            div((click)="onExit($event)") Выйти
+    template([ngIf]="user.name")
+        ul
+            li((click)="goToProfile()")
+                div() Профиль
+
+            li((click)="goToFriends()")
+                div Друзья
+
+            li((click)="goPrivatZone()")
+                div Приватные зоны
+
+            li((click)="goDevice()")
+                div Устройства
+            li
+                div((click)="onExit($event)") Выйти
 
 

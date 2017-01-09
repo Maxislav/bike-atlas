@@ -10,25 +10,30 @@
         <label>Пароль</label>
         <input type="password" [(ngModel)]="pass"/>
       </li>
-      <li>
-        <div (click)="onEnter($event)">Вход</div>
+      <li (click)="onEnter($event)">
+        <div>Вход</div>
       </li>
       <li><a (click)="goToReg()">Регистрация</a></li>
     </ul>
   </div>
   <div class="border-hidden"></div>
-  <ul *ngIf="user.name">
-    <li (click)="goToProfile()">
-      <div>Профиль</div>
-    </li>
-    <li (click)="goToFriends()">
-      <div>Друзья</div>
-    </li>
-    <li (click)="goDevice()">
-      <div>Устройства</div>
-    </li>
-    <li>
-      <div (click)="onExit($event)">Выйти</div>
-    </li>
-  </ul>
+  <template [ngIf]="user.name">
+    <ul>
+      <li (click)="goToProfile()">
+        <div>Профиль</div>
+      </li>
+      <li (click)="goToFriends()">
+        <div>Друзья</div>
+      </li>
+      <li (click)="goPrivatZone()">
+        <div>Приватные зоны</div>
+      </li>
+      <li (click)="goDevice()">
+        <div>Устройства</div>
+      </li>
+      <li>
+        <div (click)="onExit($event)">Выйти</div>
+      </li>
+    </ul>
+  </template>
 </div>
