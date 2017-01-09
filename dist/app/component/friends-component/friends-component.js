@@ -51,6 +51,9 @@ var FriendsComponent = (function () {
     FriendsComponent.prototype.sendInvite = function (user) {
         this.friend.onInvite(user.id);
     };
+    FriendsComponent.prototype.onReject = function (user) {
+        this.friend.onRejectInvite(user.id);
+    };
     FriendsComponent.prototype.isInviteActive = function (user) {
         var i = 0;
         while (i < this.myInvites.length) {

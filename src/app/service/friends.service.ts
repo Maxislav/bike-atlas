@@ -109,6 +109,14 @@ export class FriendsService {
                 this.updateFriends()
             })
     }
+    onRejectInvite(enemy_id: number){
+        
+        this.socket.$emit('onRejectInvite', enemy_id)
+            .then(rows=>{
+                this.updateFriends()
+                this.getInvites()
+            })
+    }
 
     clearUsers(){
         this.users = [];

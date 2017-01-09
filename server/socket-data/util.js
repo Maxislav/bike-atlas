@@ -1,5 +1,6 @@
 const dateFormat = require('dateformat');
 
+
 module.exports = {
     getUserIdByHash: function (connection, hash) {
         return new Promise((resolve, reject) => {
@@ -300,6 +301,7 @@ module.exports = {
             })
         });
     },
+    
     delFriend(connection, user_id, friend_id){
        const fr1 = new Promise((resolve, reject) => {
             const query = 'DELETE from `friends` WHERE `user_id` = ? AND `friend_id`= ?';
@@ -364,6 +366,17 @@ module.exports = {
     delInvite:function (connection, id) {
         return new Promise((resolve, reject) => {
             connection.query('DELETE FROM `invite` WHERE `id`=?', [id], (err, result) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(result)
+            })
+        })
+    },
+    delInviteByUserId:function (connection, id) {
+        return new Promise((resolve, reject) => {
+            connection.query('DELETE FROM `invite` WHERE `user_id`=?', [id], (err, result) => {
                 if (err) {
                     reject(err);
                     return;

@@ -63,19 +63,17 @@ export class FriendsComponent{
     sendInvite(user){
         this.friend.onInvite(user.id)
     }
+    onReject(user){
+        this.friend.onRejectInvite(user.id)
+    }
 
     isInviteActive(user: User){
-
         let i = 0;
-
         while (i<this.myInvites.length){
             if( this.myInvites[i].invite_user_id == user.id){
                 return true
             }
-
-
             i++;
-
         }
         return false
     }

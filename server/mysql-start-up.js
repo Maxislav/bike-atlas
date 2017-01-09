@@ -72,7 +72,11 @@ function createTable() {
 
     const tableHash = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`hash` ' +
-            '( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `socket_id` VARCHAR(32) NOT NULL, `key` VARCHAR(32) NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+            '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+          '`user_id` INT NOT NULL, ' +
+          '`socket_id` VARCHAR(32) NOT NULL, ' +
+          '`key` VARCHAR(32) NULL,' +
+          ' PRIMARY KEY (`id`)) ENGINE = InnoDB;';
 
         connection.query(query, (err) => {
             if (err) {
@@ -173,6 +177,7 @@ function createTable() {
 
 
     return Promise.all([tableUser, tableHash, tableDevice, tableLogger, tableSetting, tableInvite, tableFriends])
+    //return Promise.all([tableHash])
 
 
 }

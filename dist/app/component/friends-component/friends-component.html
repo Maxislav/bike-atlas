@@ -25,7 +25,8 @@
               <td><img [src]="user.image || 'src/img/no-avatar.gif' "/></td>
               <td>{{user.name}}</td>
               <td>
-                <div (click)="onAccept(user)" class="invite">Принять</div>
+                <div (click)="onAccept(user)" class="invite accept">Принять</div>
+                <div (click)="onReject(user)" class="invite reject">Отклонить</div>
               </td>
             </tr>
           </tbody>

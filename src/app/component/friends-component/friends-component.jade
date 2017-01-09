@@ -24,8 +24,10 @@ div.content
                                 img([src]="user.image || 'src/img/no-avatar.gif' ")
                             td {{user.name}}
                             td
-                                .invite((click)="onAccept(user)", )
+                                .invite.accept((click)="onAccept(user)")
                                     | Принять
+                                .invite.reject((click)="onReject(user)")
+                                    | Отклонить
 
             .row
                 .border-hidden

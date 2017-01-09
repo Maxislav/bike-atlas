@@ -1,5 +1,5 @@
 const util = require('./util');
-
+const R = require('ramda');
 
 class OnFriend {
     constructor(socket, connection, logger) {
@@ -12,14 +12,48 @@ class OnFriend {
         this.socket.on('onAcceptInvite', this.onAcceptInvite.bind(this));
         this.socket.on('getFriends', this.getFriends.bind(this));
         this.socket.on('onDelFriend', this.onDelFriend.bind(this));
+        this.socket.on('onRejectInvite', this.onRejectInvite.bind(this));
     }
 
+
+
+    onRejectInvite(enemy_id){
+
+      return  util.getUserIdBySocketId(this.connection, this.socket.id)
+        .then(user_id => {
+          return util.getInvites(this.connection, user_id)
+            .then((rows)=>{
+            const enemy =  R.find(item=>{
+               return item.user_id == enemy_id
+              })(rows);
+              
+              if(enemy){
+                util.delInviteByUserId(this.connection, enemy.user_id)
+                  .then(d=>{
+                    this.socket.emit('onRejectInvite', {
+                      result: 'ok'
+                    })
+                  })
+              }
+            })
+         
+        })
+        .catch(err => {
+            this.socket.emit('onRejectInvite', {
+              result: false,
+              message: err
+            });
+
+          console.error('error onRejectInvite -> ', err)
+        });
+
+    }
     /**
      *
      * @param {boolean}isOnDelFriend
      */
     getFriends(isOnDelFriend) {
-        const friends = util.getUserIdBySocketId(this.connection, this.socket.id)
+        const user = util.getUserIdBySocketId(this.connection, this.socket.id)
             .then(user_id => {
                 return util.getFriends(this.connection, user_id)
             });
@@ -29,7 +63,7 @@ class OnFriend {
                 return util.getMyInvites(this.connection, user_id)
             });
 
-        return Promise.all([friends, myInvites])
+        return Promise.all([user, myInvites])
             .then(d => {
                 const rows = d[0];
                 const invites = d[1];

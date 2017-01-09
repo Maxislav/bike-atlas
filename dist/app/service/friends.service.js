@@ -84,6 +84,14 @@ var FriendsService = (function () {
             _this.updateFriends();
         });
     };
+    FriendsService.prototype.onRejectInvite = function (enemy_id) {
+        var _this = this;
+        this.socket.$emit('onRejectInvite', enemy_id)
+            .then(function (rows) {
+            _this.updateFriends();
+            _this.getInvites();
+        });
+    };
     FriendsService.prototype.clearUsers = function () {
         this.users = [];
         this.invites = [];
