@@ -2,6 +2,7 @@ import {Component} from "@angular/core";
 import {Router} from "@angular/router";
 import {NavigationHistory} from "../../app.component";
 import {Location} from '@angular/common';
+import {PrivateAreaService} from "../../service/private.area.service";
 
 
 
@@ -13,7 +14,14 @@ import {Location} from '@angular/common';
 })
 export class PrivateArea{
 
-    constructor( private lh: NavigationHistory , private location: Location,private router:Router){
+    constructor(
+        private lh: NavigationHistory ,
+        private location: Location,
+        private router:Router,
+        private ps:PrivateAreaService
+
+        //private  area: PrivateArea
+    ){
 
     }
 

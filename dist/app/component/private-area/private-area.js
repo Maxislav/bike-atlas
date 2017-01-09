@@ -12,11 +12,13 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var app_component_1 = require("../../app.component");
 var common_1 = require('@angular/common');
+var private_area_service_1 = require("../../service/private.area.service");
 var PrivateArea = (function () {
-    function PrivateArea(lh, location, router) {
+    function PrivateArea(lh, location, router, ps) {
         this.lh = lh;
         this.location = location;
         this.router = router;
+        this.ps = ps;
     }
     PrivateArea.prototype.onClose = function () {
         if (this.lh.is) {
@@ -33,7 +35,7 @@ var PrivateArea = (function () {
             templateUrl: './private-area.html',
             styleUrls: ['./private-area.css']
         }), 
-        __metadata('design:paramtypes', [app_component_1.NavigationHistory, common_1.Location, router_1.Router])
+        __metadata('design:paramtypes', [app_component_1.NavigationHistory, common_1.Location, router_1.Router, private_area_service_1.PrivateAreaService])
     ], PrivateArea);
     return PrivateArea;
 }());

@@ -40,6 +40,7 @@ import {UserService} from "./service/main.user.service";
 import {TimerService} from "./service/timer.service";
 import {PrivateArea} from "./component/private-area/private-area";
 import {MapResolver} from "./directive/mapbox-gl.directive";
+import {PrivateAreaService} from "./service/private.area.service";
 
 @NgModule({
     imports: [
@@ -92,7 +93,8 @@ import {MapResolver} from "./directive/mapbox-gl.directive";
         FriendsService,
         UserService,
         TimerService,
-        MapResolver
+        MapResolver,
+        PrivateAreaService
     ]
 })
 export class AppModule {

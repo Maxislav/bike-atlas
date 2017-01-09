@@ -10,31 +10,8 @@ import {TrackService} from "./track.service";
 @Injectable()
 export class MapService {
 
-    get onLoad(): Promise<_map> {
-        return this._onLoad;
-    }
-    get mapboxgl(): any {
-        return this._mapboxgl;
-    }
-
-    set mapboxgl(value: any) {
-        this._mapboxgl = value;
-    }
-
-
-
-    get map(): any {
-       return this._map;
-    }
-
-    set map(value: any) {
-        this._map = value;
-    }
-
-    public events:{
-        load:Function[]
-    };
-    private _map:any;
+  
+    public _map:any;
     public lat:number;
     public lng:number;
     public lngMap:number;
@@ -122,6 +99,31 @@ export class MapService {
     onTrack(arr:Array<Object>) {
 
     }
+
+    get onLoad(): Promise<_map> {
+        return this._onLoad;
+    }
+    get mapboxgl(): any {
+        return this._mapboxgl;
+    }
+
+    set mapboxgl(value: any) {
+        this._mapboxgl = value;
+    }
+
+
+
+    get map(): any {
+        return this._map;
+    }
+
+    set map(value: any) {
+        this._map = value;
+    }
+
+    public events:{
+        load:Function[]
+    };
 
 
 }

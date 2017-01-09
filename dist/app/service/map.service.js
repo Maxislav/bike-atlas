@@ -29,33 +29,6 @@ var MapService = (function () {
             _this._resolve = resolve;
         });
     }
-    Object.defineProperty(MapService.prototype, "onLoad", {
-        get: function () {
-            return this._onLoad;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MapService.prototype, "mapboxgl", {
-        get: function () {
-            return this._mapboxgl;
-        },
-        set: function (value) {
-            this._mapboxgl = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MapService.prototype, "map", {
-        get: function () {
-            return this._map;
-        },
-        set: function (value) {
-            this._map = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
     MapService.prototype.setMap = function (map) {
         var _this = this;
         this.map = map;
@@ -102,6 +75,33 @@ var MapService = (function () {
     };
     MapService.prototype.onTrack = function (arr) {
     };
+    Object.defineProperty(MapService.prototype, "onLoad", {
+        get: function () {
+            return this._onLoad;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MapService.prototype, "mapboxgl", {
+        get: function () {
+            return this._mapboxgl;
+        },
+        set: function (value) {
+            this._mapboxgl = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MapService.prototype, "map", {
+        get: function () {
+            return this._map;
+        },
+        set: function (value) {
+            this._map = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     MapService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [core_1.ApplicationRef, local_storage_service_1.LocalStorage, track_service_1.TrackService])

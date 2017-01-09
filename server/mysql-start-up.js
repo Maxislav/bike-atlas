@@ -174,9 +174,34 @@ function createTable() {
             res(connection);
         })
     });
+    const tablePrivateArea = new Promise((res, rej) => {
+        const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`private_area` ' +
+            '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+            '`user_id` INT NOT NULL , ' +
+            '`lng` FLOAT(10,8) NOT NULL, ' +
+            '`lat` FLOAT(10,8) NOT NULL  , ' +
+            '`radius` INT NOT NULL, ' +
+            'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+        connection.query(query, (err) => {
+            if (err) {
+                console.log('Error table friends create');
+                rej(err);
+                return;
+            }
+            res(connection);
+        })
+    });
 
 
-    return Promise.all([tableUser, tableHash, tableDevice, tableLogger, tableSetting, tableInvite, tableFriends])
+    return Promise.all([
+        tableUser, 
+        tableHash, 
+        tableDevice, 
+        tableLogger, 
+        tableSetting, 
+        tableInvite, 
+        tableFriends,
+        tablePrivateArea])
     //return Promise.all([tableHash])
 
 

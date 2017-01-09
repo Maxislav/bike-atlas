@@ -49,6 +49,7 @@ var main_user_service_1 = require("./service/main.user.service");
 var timer_service_1 = require("./service/timer.service");
 var private_area_1 = require("./component/private-area/private-area");
 var mapbox_gl_directive_1 = require("./directive/mapbox-gl.directive");
+var private_area_service_1 = require("./service/private.area.service");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -104,7 +105,8 @@ var AppModule = (function () {
                 friends_service_1.FriendsService,
                 main_user_service_1.UserService,
                 timer_service_1.TimerService,
-                mapbox_gl_directive_1.MapResolver
+                mapbox_gl_directive_1.MapResolver,
+                private_area_service_1.PrivateAreaService
             ]
         }), 
         __metadata('design:paramtypes', [])
