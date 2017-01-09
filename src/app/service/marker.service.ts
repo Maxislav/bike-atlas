@@ -16,7 +16,7 @@ export interface Marker{
     timePassed: number,
     status: string | Object;
     elapsed: string;
-    date: string
+   // date: string
 }
 
 

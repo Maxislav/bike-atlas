@@ -14,12 +14,26 @@ var app_component_1 = require("../../app.component");
 var common_1 = require('@angular/common');
 var private_area_service_1 = require("../../service/private.area.service");
 var PrivateArea = (function () {
-    function PrivateArea(lh, location, router, ps) {
+    function PrivateArea(lh, location, router, areaService) {
         this.lh = lh;
         this.location = location;
         this.router = router;
-        this.ps = ps;
+        this.areaService = areaService;
+        this.areaService.onLoadMap
+            .then(function (map) {
+        });
     }
+    PrivateArea.prototype.onDrawArea = function () {
+        var _this = this;
+        var click = function (e) {
+            console.log(e.lngLat);
+            _this.areaService.createArea([e.lngLat.lng, e.lngLat.lat]);
+        };
+        this.areaService.onLoadMap
+            .then(function (map) {
+            map.on('click', click);
+        });
+    };
     PrivateArea.prototype.onClose = function () {
         if (this.lh.is) {
             this.location.back();
@@ -27,6 +41,8 @@ var PrivateArea = (function () {
         else {
             this.router.navigate(['/auth/map']);
         }
+    };
+    PrivateArea.prototype.ngOnDestroy = function () {
     };
     PrivateArea = __decorate([
         core_1.Component({

@@ -2,7 +2,8 @@ import {Component} from "@angular/core";
 import {Router} from "@angular/router";
 import {NavigationHistory} from "../../app.component";
 import {Location} from '@angular/common';
-import {PrivateAreaService} from "../../service/private.area.service";
+import {PrivateAreaService, Area} from "../../service/private.area.service";
+
 
 
 
@@ -14,14 +15,37 @@ import {PrivateAreaService} from "../../service/private.area.service";
 })
 export class PrivateArea{
 
+    private myArea: Area;
+
     constructor(
         private lh: NavigationHistory ,
         private location: Location,
         private router:Router,
-        private ps:PrivateAreaService
+        private areaService:PrivateAreaService
 
-        //private  area: PrivateArea
     ){
+        this.areaService.onLoadMap
+            .then(map=>{
+
+            });
+
+
+
+    }
+
+    onDrawArea(){
+
+
+
+        const click = (e)=>{
+            console.log(e.lngLat);
+            this.areaService.createArea([e.lngLat.lng, e.lngLat.lat])
+        };
+        this.areaService.onLoadMap
+            .then(map=>{
+                map.on('click', click)
+            })
+
 
     }
 
@@ -31,5 +55,11 @@ export class PrivateArea{
         }else{
             this.router.navigate(['/auth/map']);
         }
+    }
+
+
+
+    ngOnDestroy(){
+
     }
 }

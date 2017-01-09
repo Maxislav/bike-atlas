@@ -14,11 +14,79 @@ var PrivateAreaService = (function () {
     function PrivateAreaService(mapService) {
         var _this = this;
         this.mapService = mapService;
+        this.layerIds = [];
+        this.onLoadMap = mapService.onLoad;
         mapService.onLoad.then(function (_map) {
-            console.log(_map);
             _this.map = _map;
         });
     }
+    PrivateAreaService.prototype.createArea = function (_a) {
+        var lng = _a[0], lat = _a[1];
+        var id = this.getNewLayerId();
+        var radius = 0.5;
+        this.map.addSource(id, createGeoJSONCircle([lng, lat], radius));
+        this.map.addLayer({
+            "id": id,
+            "type": "fill",
+            "source": id,
+            "layout": {},
+            "paint": {
+                "fill-color": "blue",
+                "fill-opacity": 0.6
+            }
+        });
+        function createGeoJSONCircle(center, radiusInKm, points) {
+            if (!points)
+                points = 64;
+            var coords = {
+                latitude: center[1],
+                longitude: center[0]
+            };
+            var km = radiusInKm;
+            var ret = [];
+            var distanceX = km / (111.320 * Math.cos(coords.latitude * Math.PI / 180));
+            var distanceY = km / 110.574;
+            var theta, x, y;
+            for (var i = 0; i < points; i++) {
+                theta = (i / points) * (2 * Math.PI);
+                x = distanceX * Math.cos(theta);
+                y = distanceY * Math.sin(theta);
+                ret.push([coords.longitude + x, coords.latitude + y]);
+            }
+            ret.push(ret[0]);
+            return {
+                "type": "geojson",
+                "data": {
+                    "type": "FeatureCollection",
+                    "features": [{
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "Polygon",
+                                "coordinates": [ret]
+                            }
+                        }]
+                }
+            };
+        }
+        ;
+        return {
+            id: id,
+            lng: lng,
+            lat: lat
+        };
+    };
+    PrivateAreaService.prototype.getNewLayerId = function () {
+        var min = 0, max = 10000;
+        var rand = (min + Math.random() * (max - min));
+        var newId = ('area' + Math.round(rand)).toString();
+        if (-1 < this.layerIds.indexOf(newId)) {
+            return this.getNewLayerId();
+        }
+        else {
+            this.layerIds.push(newId);
+            return newId;
+        }
+    };
     PrivateAreaService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [map_service_1.MapService])
