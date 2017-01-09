@@ -66,6 +66,7 @@ app.get("*", function (req, res, next) {
   }else{
     reqUrl+=req.url
   }
+
   req.url = reqUrl;
   next()
 });
@@ -79,6 +80,7 @@ app.use((req, res, next)=>{
   if(/sprite/.test(req.url)){
     console.log('sprite', req.url)
   }
+  console.log('req.url ->', req.url)
   if(/\..{1,4}$/.test(req.url)){
     
     switch (true){
@@ -86,7 +88,6 @@ app.use((req, res, next)=>{
       case /^\/src.+\.js$/.test(req.url):
       case /node_modules/.test(req.url):
         req.url = path.normalize(req.url)
-       // console.log('files', req.url);
         res.sendFile(dirname +req.url);
         break;
       default:
@@ -94,9 +95,9 @@ app.use((req, res, next)=>{
     }
     timeout && clearTimeout(timeout);
     timeout = setTimeout(()=>{
-      console.info('Scripts src ->', kMyJs );
-      console.info('Scripts node_module ->', kNM );
-      console.info('Styles css ->', kCss );
+     // console.info('Scripts src ->', kMyJs );
+     // console.info('Scripts node_module ->', kNM );
+     // console.info('Styles css ->', kCss );
       k=0;
       kMyJs = 0;
       kNM = 0;
