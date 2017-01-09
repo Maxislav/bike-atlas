@@ -1,55 +1,74 @@
-
-import {Component, AfterViewInit} from '@angular/core';
-import { Directive, ElementRef, Input, Renderer } from '@angular/core';
+import {Component, AfterViewInit, Injectable} from '@angular/core';
+import {Directive, ElementRef, Input, Renderer} from '@angular/core';
 //import any = jasmine.any;
 import {MapService} from "../service/map.service";
 import {PositionSize} from "../service/position-size.service";
-import { LocalStorage } from '../service/local-storage.service';
+import {LocalStorage} from '../service/local-storage.service';
 import * as mapboxgl from "@lib/mapbox-gl/mapbox-gl.js";
 import {Resolve} from "@angular/router";
 import {AuthService, Setting} from "../service/auth.service";
 
 
-
-declare var L: any;
+declare var L:any;
 declare var gl:any;
 declare var mapboxgl:any;
-class MyEl extends HTMLElement{
-    constructor(id: string){
-        super()
+
+@Injectable()
+export class MapResolver implements Resolve<any> {
+    private _resolver:Function;
+    private _resPromise: Promise<any>;
+
+    constructor() {
+        this._resolver = null;
+        this._resPromise =   new Promise((resolve, reject)=> {
+            this._resolver = resolve;
+        })
     }
-    type: string
+
+    get onLoad() {
+        return this._resolver
+    }
+
+
+    resolve():Promise<any> {
+       return this._resPromise
+    }
 }
+;
 
 @Directive({
     selector: 'mapbox-gl',
 })
 export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
-    private setting: Setting | {};
-    resolve(): Promise<any> {
-        return new Promise((resolve, reject)=>{
+    private setting:Setting | {};
 
-            setTimeout(()=>{
+    resolve():Promise<any> {
+        return new Promise((resolve, reject)=> {
+
+            setTimeout(()=> {
                 resolve()
             }, 5000)
         });
     }
-    get mapboxgl(): any {
+
+    get mapboxgl():any {
         return this._mapboxgl;
     }
 
-    set mapboxgl(value: any) {
+    set mapboxgl(value:any) {
         this._mapboxgl = value;
     }
+
     renderer:Renderer;
     el:ElementRef;
     nativeElement:any;
-    map: any;
-    private center: number[];
+    map:any;
+    private center:number[];
     private mapService;
-    private _mapboxgl: any;
-    private  styleSource: any;
-    private layers: Array<{}>;
+    private _mapboxgl:any;
+    private styleSource:any;
+    private layers:Array<{}>;
+
     ngAfterViewInit():void {
 
         var localStorageCenter = this.ls.mapCenter;
@@ -59,14 +78,14 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
         mapboxgl.accessToken = "pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA";
         this.map = new mapboxgl.Map({
             container: el.nativeElement,
-            center:[localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
+            center: [localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
             zoom: localStorageCenter.zoom || 8,
             style: 'mapbox://styles/mapbox/streets-v9',
 
             _style: {
                 "version": 8,
                 "name": "plastun",
-                "sprite": "http://"+window.location.hostname+"/src/sprite/sprite",
+                "sprite": "http://" + window.location.hostname + "/src/sprite/sprite",
                 "sources": this.styleSource,
                 "layers": this.layers
             }
@@ -78,11 +97,12 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
         }));
 
 
-        this.map.on('load', ()=>{
-            /*this.map.addSource('hill',
+        this.map.on('load', ()=> {
+            this.mapResolver.onLoad(this.map);
+            this.map.addSource('hill',
                 {
                     "type": "raster",
-                    "tiles":[
+                    "tiles": [
                         "hills/{z}/{x}/{y}.png"
                     ],
                     "tileSize": 256
@@ -95,16 +115,22 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
                 "maxzoom": 14,
                 'source': 'hill'
 
-            })*/
-        })
+            })
+        });
 
         this.mapService.setMap(this.map);
 
     };
 
 
+    constructor(el:ElementRef,
+                renderer:Renderer,
+                mapService:MapService,
+                positionSiz:PositionSize,
+                private ls:LocalStorage,
+                private as:AuthService,
+                private mapResolver : MapResolver) {
 
-    constructor(el: ElementRef, renderer: Renderer, mapService: MapService, positionSiz: PositionSize, private ls: LocalStorage, private as: AuthService) {
         this.setting = as.setting;
         this.center = [30.5, 50.5];
         this.el = el;
@@ -115,21 +141,21 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
         this.styleSource = {
             "google-default": {
                 "type": "raster",
-                "tiles":[
+                "tiles": [
                     "http://mt0.googleapis.com/vt/lyrs=m@207000000&hl=ru&src=api&x={x}&y={y}&z={z}&s=Galile",
                 ],
                 "tileSize": 256
             },
             "hills": {
                 "type": "raster",
-                "tiles":[
+                "tiles": [
                     "hills/{z}/{x}/{y}.png"
                 ],
                 "tileSize": 256
             },
             "osm": {
                 "type": "raster",
-                "tiles":[
+                "tiles": [
                     "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png",
                     "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
                     "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -160,32 +186,24 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
 
         console.log(as.setting)
         this.layers = [];
-        if(!as.setting.map || as.setting.map == 'ggl' ){
+        if (!as.setting.map || as.setting.map == 'ggl') {
             this.layers.push(layers.ggl)
         }
-        if(as.setting.hill){
+        if (as.setting.hill) {
             this.layers.push(layers.hill)
         }
 
 
-
         renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'rgba(200,200,200, 1)');
         //renderer.setElementStyle(el.nativeElement, 'color', 'white');
-       // renderer.setElementStyle(el.nativeElement, 'width', '100%');
+        // renderer.setElementStyle(el.nativeElement, 'width', '100%');
         //renderer.setElementStyle(el.nativeElement, 'height', '100%');
-
-
-
 
 
         renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'gray');
 
 
-
     }
-
-
-
 
 
 }

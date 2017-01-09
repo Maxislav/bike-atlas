@@ -47,6 +47,8 @@ var friends_component_1 = require("./component/friends-component/friends-compone
 var friends_service_1 = require("./service/friends.service");
 var main_user_service_1 = require("./service/main.user.service");
 var timer_service_1 = require("./service/timer.service");
+var private_area_1 = require("./component/private-area/private-area");
+var mapbox_gl_directive_1 = require("./directive/mapbox-gl.directive");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -79,7 +81,8 @@ var AppModule = (function () {
                 menu_athlete_component_1.MenuAthleteComponent,
                 profile_component_1.ProfileComponent,
                 journal_component_1.JournalComponent,
-                friends_component_1.FriendsComponent
+                friends_component_1.FriendsComponent,
+                private_area_1.PrivateArea
             ],
             bootstrap: [
                 app_component_1.AppComponent
@@ -100,7 +103,8 @@ var AppModule = (function () {
                 login_service_1.LoginService,
                 friends_service_1.FriendsService,
                 main_user_service_1.UserService,
-                timer_service_1.TimerService
+                timer_service_1.TimerService,
+                mapbox_gl_directive_1.MapResolver
             ]
         }), 
         __metadata('design:paramtypes', [])

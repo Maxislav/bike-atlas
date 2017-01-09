@@ -1,9 +1,4 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -14,23 +9,44 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var core_2 = require('@angular/core');
 //import any = jasmine.any;
 var map_service_1 = require("../service/map.service");
 var position_size_service_1 = require("../service/position-size.service");
 var local_storage_service_1 = require('../service/local-storage.service');
 var mapboxgl = require("@lib/mapbox-gl/mapbox-gl.js");
 var auth_service_1 = require("../service/auth.service");
-var MyEl = (function (_super) {
-    __extends(MyEl, _super);
-    function MyEl(id) {
-        _super.call(this);
+var MapResolver = (function () {
+    function MapResolver() {
+        var _this = this;
+        this._resolver = null;
+        this._resPromise = new Promise(function (resolve, reject) {
+            _this._resolver = resolve;
+        });
     }
-    return MyEl;
-}(HTMLElement));
+    Object.defineProperty(MapResolver.prototype, "onLoad", {
+        get: function () {
+            return this._resolver;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MapResolver.prototype.resolve = function () {
+        return this._resPromise;
+    };
+    MapResolver = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [])
+    ], MapResolver);
+    return MapResolver;
+}());
+exports.MapResolver = MapResolver;
+;
 var MapboxGlDirective = (function () {
-    function MapboxGlDirective(el, renderer, mapService, positionSiz, ls, as) {
+    function MapboxGlDirective(el, renderer, mapService, positionSiz, ls, as, mapResolver) {
         this.ls = ls;
         this.as = as;
+        this.mapResolver = mapResolver;
         this.setting = as.setting;
         this.center = [30.5, 50.5];
         this.el = el;
@@ -113,6 +129,7 @@ var MapboxGlDirective = (function () {
         configurable: true
     });
     MapboxGlDirective.prototype.ngAfterViewInit = function () {
+        var _this = this;
         var localStorageCenter = this.ls.mapCenter;
         var el = this.el;
         el.nativeElement.innerHTML = '';
@@ -135,32 +152,30 @@ var MapboxGlDirective = (function () {
             maxWidth: 80
         }));
         this.map.on('load', function () {
-            /*this.map.addSource('hill',
-                {
-                    "type": "raster",
-                    "tiles":[
-                        "hills/{z}/{x}/{y}.png"
-                    ],
-                    "tileSize": 256
-                });
-
-            this.map.addLayer({
+            _this.mapResolver.onLoad(_this.map);
+            _this.map.addSource('hill', {
+                "type": "raster",
+                "tiles": [
+                    "hills/{z}/{x}/{y}.png"
+                ],
+                "tileSize": 256
+            });
+            _this.map.addLayer({
                 'id': 'urban-areas-fill',
                 'type': 'raster',
                 "minzoom": 7,
                 "maxzoom": 14,
                 'source': 'hill'
-
-            })*/
+            });
         });
         this.mapService.setMap(this.map);
     };
     ;
     MapboxGlDirective = __decorate([
-        core_1.Directive({
+        core_2.Directive({
             selector: 'mapbox-gl',
         }), 
-        __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer, map_service_1.MapService, position_size_service_1.PositionSize, local_storage_service_1.LocalStorage, auth_service_1.AuthService])
+        __metadata('design:paramtypes', [core_2.ElementRef, core_2.Renderer, map_service_1.MapService, position_size_service_1.PositionSize, local_storage_service_1.LocalStorage, auth_service_1.AuthService, MapResolver])
     ], MapboxGlDirective);
     return MapboxGlDirective;
 }());

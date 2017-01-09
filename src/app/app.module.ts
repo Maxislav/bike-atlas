@@ -38,6 +38,8 @@ import {FriendsComponent} from "./component/friends-component/friends-component"
 import {FriendsService} from "./service/friends.service";
 import {UserService} from "./service/main.user.service";
 import {TimerService} from "./service/timer.service";
+import {PrivateArea} from "./component/private-area/private-area";
+import {MapResolver} from "./directive/mapbox-gl.directive";
 
 @NgModule({
     imports: [
@@ -67,7 +69,8 @@ import {TimerService} from "./service/timer.service";
         MenuAthleteComponent,
         ProfileComponent,
         JournalComponent,
-        FriendsComponent
+        FriendsComponent,
+        PrivateArea
     ],
     bootstrap: [
         AppComponent
@@ -88,7 +91,8 @@ import {TimerService} from "./service/timer.service";
         LoginService,
         FriendsService,
         UserService,
-        TimerService
+        TimerService,
+        MapResolver
     ]
 })
 export class AppModule {

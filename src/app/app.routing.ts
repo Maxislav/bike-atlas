@@ -17,6 +17,8 @@ import {AuthService} from "./service/auth.service";
 import {ProfileComponent} from "./component/profile/profile.component";
 import {JournalComponent} from "./component/journal-component/journal.component";
 import {FriendsComponent} from "./component/friends-component/friends-component";
+import {PrivateArea} from "./component/private-area/private-area";
+import {MapResolver} from "./directive/mapbox-gl.directive";
 
 const  appRouters: Routes = [
     {
@@ -61,6 +63,11 @@ const  appRouters: Routes = [
                     {
                         path: 'friends',
                         component: FriendsComponent
+                    },
+                    {
+                        path: 'privatearea',
+                        component: PrivateArea,
+
                     }
                 ]
             }

@@ -9,6 +9,7 @@ var auth_service_1 = require("./service/auth.service");
 var profile_component_1 = require("./component/profile/profile.component");
 var journal_component_1 = require("./component/journal-component/journal.component");
 var friends_component_1 = require("./component/friends-component/friends-component");
+var private_area_1 = require("./component/private-area/private-area");
 var appRouters = [
     {
         path: '',
@@ -51,6 +52,10 @@ var appRouters = [
                     {
                         path: 'friends',
                         component: friends_component_1.FriendsComponent
+                    },
+                    {
+                        path: 'privatearea',
+                        component: private_area_1.PrivateArea,
                     }
                 ]
             }
