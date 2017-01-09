@@ -13,12 +13,12 @@ div((click)="$event.stopPropagation();$event.preventDefault()" )
                 a((click)="goToReg()") Регистрация
     .border-hidden
     ul(*ngIf="user.name")
-        li
-            div((click)="goToProfile()") Профиль
-        li
-            div((click)="goToFriends()") Друзья
-        li
-            div((click)="goDevice()") Устройства
+        li((click)="goToProfile()")
+            div() Профиль
+        li((click)="goToFriends()")
+            div() Друзья
+        li((click)="goDevice()")
+            div Устройства
         li
             div((click)="onExit($event)") Выйти
 

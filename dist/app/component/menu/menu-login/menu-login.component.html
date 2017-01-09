@@ -18,14 +18,14 @@
   </div>
   <div class="border-hidden"></div>
   <ul *ngIf="user.name">
-    <li>
-      <div (click)="goToProfile()">Профиль</div>
+    <li (click)="goToProfile()">
+      <div>Профиль</div>
     </li>
-    <li>
-      <div (click)="goToFriends()">Друзья</div>
+    <li (click)="goToFriends()">
+      <div>Друзья</div>
     </li>
-    <li>
-      <div (click)="goDevice()">Устройства</div>
+    <li (click)="goDevice()">
+      <div>Устройства</div>
     </li>
     <li>
       <div (click)="onExit($event)">Выйти</div>
