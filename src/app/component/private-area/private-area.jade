@@ -4,6 +4,28 @@ div.content
         users-container
             .row
                 p Приватные зоны (в разработке..)
-            .row
-                div.button.add((click)="onDrawArea()") Добавить
+            .table.saves-area(*ngFor="let area of areas\; let i = index", (mouseover)="onOver(area)")
+                .cell
+                    |{{area.lng}}
+                .cell
+                    |{{area.lat}}
+                .cell
+                    |{{area.radius}}
+                .cell.del
+                      div((click)="onDel(area)") &times;
+
+            .table
+                .cell
+                    |{{lng}}
+                .cell
+                    |{{lat}}
+                .cell
+                    |{{rad}}
+                .cell
+                    div(*ngIf="clickCount==0")
+                        .button.add((click)="onDrawArea()") Добавить
+                    div(*ngIf="clickCount!=0")
+                        .button.add((click)="onFinish()") Сохранить
+
+
             .border-hidden

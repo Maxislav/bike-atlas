@@ -216,6 +216,44 @@ module.exports = {
             })
         })
     },
+    getPrivateArea: function (connection, user_id) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * from `private_area` WHERE `user_id`=? order by `id` desc limit 150';
+            connection.query(query, [user_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows)
+            })
+        })
+    },
+    removePrivateArea: function (connection, area_id) {
+
+        return new Promise((resolve, reject) => {
+            const query = 'DELETE from `private_area` WHERE `id` = ?';
+            connection.query(query, [area_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows)
+            })
+        });
+    },
+    addPrivateArea: function (connection, user_id, area) {
+        return new Promise((resolve, reject) => {
+            connection.query('INSERT INTO `private_area` ' +
+              '(`id`, `user_id`, `lng`, `lat`, `radius`) VALUES (NULL, ?, ?, ?, ?)', [user_id, area.lng, area.lat, area.radius], (err, results) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                console.log('results ->', results);
+                resolve(results);
+            })
+        })
+    },
     addSettingUser: function (connection, user_id) {
         return new Promise((resolve, reject) => {
             connection.query('INSERT INTO `setting` ' +

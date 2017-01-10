@@ -23,16 +23,46 @@ var PrivateArea = (function () {
         this.distance = distance;
         this.areaService = areaService;
         this.clickCount = 0;
+        this.myArea = {
+            layerId: null,
+            lng: null,
+            lat: null,
+            radius: null,
+            update: null,
+            remove: null
+        };
+        this.areas = areaService.areas;
         this.areaService.onLoadMap
             .then(function (map) {
             _this.map = map;
+            _this.areaService.showArea();
         });
     }
+    Object.defineProperty(PrivateArea.prototype, "lng", {
+        get: function () {
+            return this.myArea.lng ? parseFloat(this.myArea.lng.toFixed(5)) : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PrivateArea.prototype, "lat", {
+        get: function () {
+            return this.myArea.lat ? parseFloat(this.myArea.lat.toFixed(5)) : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PrivateArea.prototype, "rad", {
+        get: function () {
+            return this.myArea.radius ? parseFloat(this.myArea.radius.toFixed(5)) : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
     PrivateArea.prototype.onDrawArea = function () {
         var _this = this;
         this.clickCount++;
         var move = function (e) {
-            //console.log(e.lngLat)
             var dist = _this.distance.distance([
                 _this.myArea.lng,
                 _this.myArea.lat,
@@ -40,14 +70,16 @@ var PrivateArea = (function () {
                 e.lngLat.lng,
                 e.lngLat.lat
             ]);
-            _this.myArea.update([_this.myArea.lng, _this.myArea.lat], dist);
+            _this.myArea.update([_this.myArea.lng, _this.myArea.lat], _this.myArea.radius = dist);
         };
         var click = function (e) {
             if (_this.clickCount == 1) {
-                if (_this.myArea) {
+                if (_this.myArea.layerId) {
                     _this.myArea.remove();
                 }
-                _this.myArea = _this.areaService.createArea([e.lngLat.lng, e.lngLat.lat]);
+                _this.myArea.lng = e.lngLat.lng;
+                _this.myArea.lat = e.lngLat.lat;
+                _this.myArea = _this.areaService.createArea(_this.myArea);
                 _this.map.on('mousemove', move);
                 _this.clickCount++;
             }
@@ -55,12 +87,45 @@ var PrivateArea = (function () {
                 console.log('dsd');
                 _this.map.off('mousemove', move);
                 _this.clickCount = 1;
+                _this.onFinish = function () {
+                    _this.map.off('click', click);
+                    _this.clickCount = 0;
+                    _this.onSave();
+                };
             }
         };
         if (this.clickCount == 1) {
             this.areaService.onLoadMap
                 .then(function (map) {
                 map.on('click', click);
+            });
+        }
+    };
+    PrivateArea.prototype.onFinish = function () {
+    };
+    PrivateArea.prototype.onDel = function (area) {
+        console.log(area);
+        this.areaService.removeArea(area.id);
+    };
+    PrivateArea.prototype.onOver = function (area) {
+        this.map.panTo([area.lng, area.lat]);
+    };
+    PrivateArea.prototype.onSave = function () {
+        var _this = this;
+        if (this.myArea.layerId) {
+            this.areaService.onSave(this.myArea)
+                .then(function (d) {
+                if (d) {
+                    _this.myArea.remove();
+                    _this.myArea = {
+                        layerId: null,
+                        lng: null,
+                        lat: null,
+                        radius: null,
+                        update: null,
+                        remove: null
+                    };
+                }
             });
         }
     };
@@ -73,6 +138,10 @@ var PrivateArea = (function () {
         }
     };
     PrivateArea.prototype.ngOnDestroy = function () {
+        if (this.myArea.layerId) {
+            this.myArea.remove();
+        }
+        this.areaService.hideArea();
     };
     PrivateArea = __decorate([
         core_1.Component({

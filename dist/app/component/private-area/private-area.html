@@ -6,8 +6,26 @@
       <div class="row">
         <p>Приватные зоны (в разработке..)</p>
       </div>
-      <div class="row">
-        <div (click)="onDrawArea()" class="button add">Добавить</div>
+      <div *ngFor="let area of areas; let i = index" (mouseover)="onOver(area)" class="table saves-area">
+        <div class="cell">{{area.lng}}</div>
+        <div class="cell">{{area.lat}}</div>
+        <div class="cell">{{area.radius}}</div>
+        <div class="cell del">
+          <div (click)="onDel(area)">&times;</div>
+        </div>
+      </div>
+      <div class="table">
+        <div class="cell">{{lng}}</div>
+        <div class="cell">{{lat}}</div>
+        <div class="cell">{{rad}}</div>
+        <div class="cell">
+          <div *ngIf="clickCount==0">
+            <div (click)="onDrawArea()" class="button add">Добавить</div>
+          </div>
+          <div *ngIf="clickCount!=0">
+            <div (click)="onFinish()" class="button add">Сохранить</div>
+          </div>
+        </div>
       </div>
       <div class="border-hidden"></div>
     </users-container>

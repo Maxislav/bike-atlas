@@ -11,6 +11,7 @@ const Device = require('./socket-data/device');
 const OnRegist = require('./socket-data/on-regist');
 const OnProfile = require('./socket-data/on-profile');
 const OnFriend = require('./socket-data/on-friends');
+const OnPrivateArea = require('./socket-data/on-private-area');
 const Chat = require('./chat');
 
 const Logger = require('./logger');
@@ -61,11 +62,11 @@ module.exports = (sever, app) => {
         chat.sockets = ioServer.sockets.connected;
         const onEnter = new OnEnter(socket, connection, logger, chat);
         const onAuth = new OnAuth(socket, connection, chat);
-
         const device = new Device(socket, connection, logger);
         const onRegist = new OnRegist(socket, connection, logger);
         const onProfile = new OnProfile(socket, connection, logger);
         const onFriend = new OnFriend(socket, connection, logger);
+        const onPrivateArea = new OnPrivateArea(socket, connection);
         socket.on('disconnect',()=>{
             logger.onDisconnect(socket.id);
             chat.onDisconnect(socket.id);

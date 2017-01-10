@@ -10,24 +10,80 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var map_service_1 = require("./map.service");
+var socket_oi_service_1 = require("./socket.oi.service");
 var PrivateAreaService = (function () {
-    function PrivateAreaService(mapService) {
+    function PrivateAreaService(mapService, io) {
         var _this = this;
         this.mapService = mapService;
+        this.io = io;
+        this._areas = [];
+        this.socket = io.socket;
         this.layerIds = [];
         this.onLoadMap = mapService.onLoad;
         mapService.onLoad.then(function (_map) {
             _this.map = _map;
         });
     }
-    PrivateAreaService.prototype.createArea = function (_a, r) {
-        var lng = _a[0], lat = _a[1];
+    PrivateAreaService.prototype.onSave = function (area) {
+        var _this = this;
+        return this.socket.$emit('savePrivateArea', area)
+            .then(function (d) {
+            if (d && d.result == 'ok') {
+                _this.showArea();
+                return true;
+            }
+            return false;
+        });
+    };
+    PrivateAreaService.prototype.showArea = function () {
+        var _this = this;
+        return this.socket.$emit('getPrivateArea')
+            .then(function (d) {
+            return _this.areas = d.areas;
+        });
+    };
+    PrivateAreaService.prototype.hideArea = function () {
+        while (this._areas.length) {
+            this._areas.shift().remove();
+        }
+    };
+    PrivateAreaService.prototype.removeArea = function (id) {
+        var _this = this;
+        this.socket.$emit('removeArea', id)
+            .then(function (d) {
+            if (d && d.result == 'ok') {
+                _this.showArea();
+            }
+            else {
+                console.error(d);
+            }
+        });
+    };
+    Object.defineProperty(PrivateAreaService.prototype, "areas", {
+        get: function () {
+            return this._areas;
+        },
+        set: function (value) {
+            var _this = this;
+            while (this._areas.length) {
+                this._areas.shift().remove();
+            }
+            this._areas.length = 0;
+            value.forEach(function (ar) {
+                var area = _this.createArea(ar);
+                _this._areas.push(area);
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    PrivateAreaService.prototype.createArea = function (area) {
         var layerId = this.getNewLayerId();
-        var radius = r || 0.5;
+        var radius = area.radius || 0.5;
         var map = this.map;
         this.map.addSource(layerId, {
             type: "geojson",
-            data: createGeoJSONCircle([lng, lat], radius)
+            data: createGeoJSONCircle([area.lng, area.lat], radius)
         });
         this.map.addLayer({
             "id": layerId,
@@ -71,9 +127,10 @@ var PrivateAreaService = (function () {
         }
         ;
         return {
-            id: layerId,
-            lng: lng,
-            lat: lat,
+            id: area.id || null,
+            layerId: layerId,
+            lng: area.lng,
+            lat: area.lat,
             radius: radius,
             update: function (_a, r) {
                 var lng = _a[0], lat = _a[1];
@@ -102,7 +159,7 @@ var PrivateAreaService = (function () {
     };
     PrivateAreaService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [map_service_1.MapService])
+        __metadata('design:paramtypes', [map_service_1.MapService, socket_oi_service_1.Io])
     ], PrivateAreaService);
     return PrivateAreaService;
 }());

@@ -1,10 +1,12 @@
 import {Injectable} from "@angular/core";
 import {MapService} from "./map.service";
+import {Io} from "./socket.oi.service";
 
 export  interface Area{
+    id?: number;
     lng: number;
     lat: number;
-    id: string;
+    layerId: string,
     radius: number;
     update: Function;
     remove: Function;
@@ -12,13 +14,20 @@ export  interface Area{
 
 @Injectable()
 export class PrivateAreaService{
+
     public map : any;
-    public areas: Array<Area>;
+    private _areas: Array<Area>;
     public onLoadMap: any;
     private layerIds: Array<string>;
+    private socket;
 
 
-    constructor(private mapService: MapService){
+    constructor(
+        private mapService: MapService,
+        private io : Io
+    ){
+        this._areas = [];
+        this.socket = io.socket;
         this.layerIds = [];
         this.onLoadMap =  mapService.onLoad;
         mapService.onLoad.then(_map=>{
@@ -26,18 +35,66 @@ export class PrivateAreaService{
         })
     }
 
+    onSave(area: Area){
+       return this.socket.$emit('savePrivateArea', area)
+            .then(d=>{
+                if(d && d.result == 'ok'){
+                    this.showArea();
+                    return true
+                }
+                return false
+            })
+    }
+
+    showArea(){
+       return this.socket.$emit('getPrivateArea')
+            .then(d=>{
+               return this.areas = d.areas
+            })
+    }
+    
+    hideArea(){
+        while ( this._areas.length){
+            this._areas.shift().remove()
+        } 
+    }
+    
+    removeArea(id: number){
+        this.socket.$emit('removeArea', id)
+            .then(d=>{
+                if(d && d.result == 'ok'){
+                    this.showArea()
+                }else{
+                    console.error(d)
+                }
+            })
+    }
 
 
-    createArea([lng, lat], r?: number): Area{
+    get areas():Array<Area> {
+        return this._areas;
+    }
 
+    set areas(value:Array<Area>) {
+        while ( this._areas.length){
+            this._areas.shift().remove()
+        }
+        this._areas.length = 0;
+        value.forEach(ar=>{
+            const area = this.createArea(ar)
+            this._areas.push(area)
+        })
+    }
+
+    createArea(area: Area): Area{
         const layerId = this.getNewLayerId();
-        const radius = r || 0.5;
+        const radius = area.radius || 0.5;
         const map = this.map;
 
         this.map.addSource(layerId,
             {
                 type: "geojson",
-                data:  createGeoJSONCircle([lng, lat], radius)
+                data:  createGeoJSONCircle([area.lng, area.lat], radius)
             });
 
         this.map.addLayer({
@@ -86,10 +143,12 @@ export class PrivateAreaService{
             };
         };
 
+
         return {
-            id: layerId,
-            lng: lng,
-            lat: lat,
+            id: area.id || null,
+            layerId: layerId,
+            lng: area.lng,
+            lat: area.lat,
             radius:radius,
             update: function ([lng, lat], r?: number) {
                 this.lng = lng;

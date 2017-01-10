@@ -11,6 +11,12 @@
 .row {
   margin-bottom: 15px;
 }
+.table {
+  display: table;
+}
+.table .cell {
+  display: table-cell;
+}
 button {
   padding: 8px 15px;
   border: none;

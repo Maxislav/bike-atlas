@@ -11,6 +11,12 @@
 .row {
   margin-bottom: 15px;
 }
+.table {
+  display: table;
+}
+.table .cell {
+  display: table-cell;
+}
 button {
   padding: 8px 15px;
   border: none;
@@ -59,4 +65,32 @@ button:active {
   padding: 15px;
   font-size: 20px;
   font: 30px/15px bold;
+}
+.table {
+  width: 100%;
+}
+.table .cell {
+  width: 25%;
+  padding: 8px 0;
+  vertical-align: middle;
+}
+.table .del {
+  padding: 0;
+}
+.table .del > div {
+  float: right;
+  cursor: pointer;
+  padding: 8px;
+}
+.saves-area:hover {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+@media screen and (max-width: 600px) {
+  .content {
+    position: relative;
+    width: 100%;
+    min-width: inherit;
+    left: 0;
+    margin-left: 0;
+  }
 }
