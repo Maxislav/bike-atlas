@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {NavigationHistory} from "../../app.component";
 import {Location} from '@angular/common';
 import {PrivateAreaService, Area} from "../../service/private.area.service";
+import {Distance} from "../../service/distance";
 
 
 
@@ -11,22 +12,26 @@ import {PrivateAreaService, Area} from "../../service/private.area.service";
     //noinspection TypeScriptUnresolvedVariable
     moduleId: module.id,
     templateUrl: './private-area.html',
+    providers: [Distance],
     styleUrls: ['./private-area.css']
 })
 export class PrivateArea{
 
     private myArea: Area;
+    private clickCount: number = 0;
+    private map: any
 
     constructor(
         private lh: NavigationHistory ,
         private location: Location,
         private router:Router,
+        private distance: Distance,
         private areaService:PrivateAreaService
 
     ){
         this.areaService.onLoadMap
             .then(map=>{
-
+                this.map = map
             });
 
 
@@ -35,18 +40,45 @@ export class PrivateArea{
 
     onDrawArea(){
 
+        this.clickCount++;
 
+        const move = (e)=>{
+            //console.log(e.lngLat)
+
+            const dist = this.distance.distance([
+                this.myArea.lng,
+                this.myArea.lat,
+            ],[
+                e.lngLat.lng,
+                e.lngLat.lat
+            ]);
+
+            this.myArea.update([ this.myArea.lng,  this.myArea.lat], dist);
+            
+        };
 
         const click = (e)=>{
-            console.log(e.lngLat);
-            this.areaService.createArea([e.lngLat.lng, e.lngLat.lat])
+            if(this.clickCount==1){
+                if(this.myArea){
+                    this.myArea.remove();
+                }
+                this.myArea = this.areaService.createArea([e.lngLat.lng, e.lngLat.lat]);
+                this.map.on('mousemove', move);
+                this.clickCount++;
+            }else {
+                console.log('dsd');
+                this.map.off('mousemove', move);
+                this.clickCount = 1
+            }
+
         };
-        this.areaService.onLoadMap
-            .then(map=>{
-                map.on('click', click)
-            })
 
-
+        if(this.clickCount==1){
+            this.areaService.onLoadMap
+                .then(map=>{
+                    map.on('click', click)
+                })
+        }
     }
 
     onClose(){

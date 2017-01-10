@@ -20,19 +20,23 @@ var PrivateAreaService = (function () {
             _this.map = _map;
         });
     }
-    PrivateAreaService.prototype.createArea = function (_a) {
+    PrivateAreaService.prototype.createArea = function (_a, r) {
         var lng = _a[0], lat = _a[1];
-        var id = this.getNewLayerId();
-        var radius = 0.5;
-        this.map.addSource(id, createGeoJSONCircle([lng, lat], radius));
+        var layerId = this.getNewLayerId();
+        var radius = r || 0.5;
+        var map = this.map;
+        this.map.addSource(layerId, {
+            type: "geojson",
+            data: createGeoJSONCircle([lng, lat], radius)
+        });
         this.map.addLayer({
-            "id": id,
+            "id": layerId,
             "type": "fill",
-            "source": id,
+            "source": layerId,
             "layout": {},
             "paint": {
-                "fill-color": "blue",
-                "fill-opacity": 0.6
+                "fill-color": "red",
+                "fill-opacity": 0.3
             }
         });
         function createGeoJSONCircle(center, radiusInKm, points) {
@@ -55,24 +59,33 @@ var PrivateAreaService = (function () {
             }
             ret.push(ret[0]);
             return {
-                "type": "geojson",
-                "data": {
-                    "type": "FeatureCollection",
-                    "features": [{
-                            "type": "Feature",
-                            "geometry": {
-                                "type": "Polygon",
-                                "coordinates": [ret]
-                            }
-                        }]
-                }
+                "type": "FeatureCollection",
+                "features": [{
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Polygon",
+                            "coordinates": [ret]
+                        }
+                    }]
             };
         }
         ;
         return {
-            id: id,
+            id: layerId,
             lng: lng,
-            lat: lat
+            lat: lat,
+            radius: radius,
+            update: function (_a, r) {
+                var lng = _a[0], lat = _a[1];
+                this.lng = lng;
+                this.lat = lat;
+                map.getSource(layerId)
+                    .setData(createGeoJSONCircle([lng, lat], r));
+            },
+            remove: function () {
+                map.removeLayer(layerId);
+                map.removeSource(layerId);
+            }
         };
     };
     PrivateAreaService.prototype.getNewLayerId = function () {

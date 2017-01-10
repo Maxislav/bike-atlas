@@ -4,8 +4,10 @@ import {MapService} from "./map.service";
 export  interface Area{
     lng: number;
     lat: number;
-    id: number
-    radius: number
+    id: string;
+    radius: number;
+    update: Function;
+    remove: Function;
 }
 
 @Injectable()
@@ -26,20 +28,26 @@ export class PrivateAreaService{
 
 
 
-    createArea([lng, lat]){
+    createArea([lng, lat], r?: number): Area{
 
-        const id = this.getNewLayerId();
-        const radius = 0.5;
-        this.map.addSource(id, createGeoJSONCircle([lng, lat], radius));
+        const layerId = this.getNewLayerId();
+        const radius = r || 0.5;
+        const map = this.map;
+
+        this.map.addSource(layerId,
+            {
+                type: "geojson",
+                data:  createGeoJSONCircle([lng, lat], radius)
+            });
 
         this.map.addLayer({
-            "id": id,
+            "id": layerId,
             "type": "fill",
-            "source": id,
+            "source": layerId,
             "layout": {},
             "paint": {
-                "fill-color": "blue",
-                "fill-opacity": 0.6
+                "fill-color": "red",
+                "fill-opacity": 0.3
             }
         });
 
@@ -62,14 +70,11 @@ export class PrivateAreaService{
                 theta = (i/points)*(2*Math.PI);
                 x = distanceX*Math.cos(theta);
                 y = distanceY*Math.sin(theta);
-
                 ret.push([coords.longitude+x, coords.latitude+y]);
             }
             ret.push(ret[0]);
 
-            return {
-                "type": "geojson",
-                "data": {
+            return  {
                     "type": "FeatureCollection",
                     "features": [{
                         "type": "Feature",
@@ -78,17 +83,28 @@ export class PrivateAreaService{
                             "coordinates": [ret]
                         }
                     }]
-                }
             };
         };
+
         return {
-            id: id,
+            id: layerId,
             lng: lng,
-            lat: lat
+            lat: lat,
+            radius:radius,
+            update: function ([lng, lat], r?: number) {
+                this.lng = lng;
+                this.lat = lat;
+                map.getSource(layerId)
+                    .setData(createGeoJSONCircle([lng, lat], r))
+            },
+            remove: function () {
+                map.removeLayer(layerId);
+                map.removeSource(layerId)
+            }
         }
     }
 
-    getNewLayerId(): String {
+    getNewLayerId(): string {
         const min=0, max=10000;
         let rand = (min + Math.random() * (max - min));
         const  newId =('area'+ Math.round(rand)).toString();
