@@ -11,6 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var UserService = (function () {
     function UserService() {
+        this._friends = [];
+        this._other = [];
         this._user = {
             name: null,
             id: null,
@@ -22,12 +24,28 @@ var UserService = (function () {
             this._user[opt] = null;
         }
     };
+    Object.defineProperty(UserService.prototype, "friends", {
+        get: function () {
+            return this._friends;
+        },
+        set: function (friends) {
+            var _this = this;
+            if (!friends)
+                return;
+            this._friends.length = 0;
+            friends.forEach(function (friend) {
+                _this._friends.push(friend);
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(UserService.prototype, "user", {
         get: function () {
             return this._user;
         },
         set: function (value) {
-            for (var opt in this._user) {
+            for (var opt in value) {
                 this._user[opt] = value[opt];
             }
         },

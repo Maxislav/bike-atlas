@@ -16,9 +16,9 @@ export interface Marker {
     elapsed:string;
     speed: number;
     date: string;
+    device_key?:string;
     updateMarker:Function;
     deviceData:DeviceData;
-    
     hide:Function;
     rotate:Function;
     update:Function;

@@ -49,18 +49,8 @@ var AuthService = (function () {
         }).then(function (d) {
             if (d.result == 'ok') {
                 _this.userService.user = d.user;
-                _this.userId = d.user.id;
-                _this.userImage = d.user.image;
-                _this.userName = d.user.name;
-                _this.setting = d.user.setting || _this.setting;
-                _this.friend.updateFriends()
-                    .then(function (d) {
-                    _this.ds.updateDevices()
-                        .then(function (d) {
-                        _this.log.getLastPosition();
-                    });
-                });
-                _this.friend.getInvites();
+                _this.userService.friends = d.user.friends;
+                _this.socket.emit(d.user.hash);
             }
             else {
                 _this.userName = null;

@@ -10,27 +10,50 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var socket_oi_service_1 = require("./socket.oi.service");
-var device_service_1 = require("./device.service");
 var marker_service_1 = require("./marker.service");
+var main_user_service_1 = require("./main.user.service");
 var LogService = (function () {
-    function LogService(io, ds, markerService) {
-        this.ds = ds;
+    function LogService(io, user, markerService) {
+        this.user = user;
         this.markerService = markerService;
         this.socket = io.socket;
         this.socket.on('log', this.log.bind(this));
         this.devices = {};
     }
     LogService.prototype.log = function (marker) {
-        var device = this.ds.devices.find(function (item) {
-            return item.id == marker.id;
+        var device = this.user.user.devices.find(function (item) {
+            return item.device_key == marker.device_key;
         });
-        if (!device)
-            return;
-        if (device.marker) {
+        if (device) {
+            marker.image = this.user.user.image;
         }
-        else {
+        if (!device) {
+            this.user.friends.forEach(function (friend) {
+                var image = '';
+                device = friend.devices.find(function (item) {
+                    return item.device_key == marker.device_key;
+                });
+                if (device) {
+                    marker.image = friend.image;
+                }
+            });
+        }
+        console.log(device);
+        if (device && !device.marker) {
+            marker.name = device.name;
             device.marker = this.markerService.marker(marker);
         }
+        /* const device: Device = this.ds.devices.find(item => {
+             return item.id == marker.id
+         });
+         
+         if(!device) return;
+         
+         if(device.marker){
+             
+         }else{
+             device.marker = this.markerService.marker(marker)
+         }*/
         /*console.log(deviceData);
         if (this.devices[deviceData.id]) {
             this.devices[deviceData.id].update(deviceData);
@@ -67,7 +90,7 @@ var LogService = (function () {
     };
     LogService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_oi_service_1.Io, device_service_1.DeviceService, marker_service_1.MarkerService])
+        __metadata('design:paramtypes', [socket_oi_service_1.Io, main_user_service_1.UserService, marker_service_1.MarkerService])
     ], LogService);
     return LogService;
 }());

@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
 import {DeviceService, Device} from "./device.service";
 import {MarkerService, Marker} from "./marker.service";
+import {UserService} from "./main.user.service";
 //import {MarkerService} from "./marker.service";
 
 export interface DeviceData {
@@ -14,6 +15,7 @@ export interface DeviceData {
     lng: number,
     speed: number,
     image: string,
+    device_key?: string
     src: string
 }
 
@@ -22,15 +24,43 @@ export interface DeviceData {
 export class LogService {
     private socket: any;
     private devices: {};//Object<DeviceService>
-    constructor(io: Io, private ds: DeviceService, private markerService: MarkerService) {
+    constructor(io: Io, private user: UserService, private markerService: MarkerService) {
         this.socket = io.socket;
         this.socket.on('log', this.log.bind(this));
         this.devices = {};
+
     }
 
     log(marker: Marker) {
 
-        const device: Device = this.ds.devices.find(item => {
+        let device: Device = this.user.user.devices.find(item => {
+            return item.device_key == marker.device_key
+        });
+        if(device){
+            marker.image = this.user.user.image
+        }
+
+        if(!device){
+            this.user.friends.forEach(friend=>{
+                let image = '';
+
+                device = friend.devices.find(item=>{
+                        return item.device_key == marker.device_key
+                    })
+                if(device){
+                    marker.image = friend.image
+                }
+            })
+        }
+
+        console.log(device)
+
+        if(device && !device.marker){
+            marker.name = device.name;
+            device.marker = this.markerService.marker(marker)
+        }
+
+       /* const device: Device = this.ds.devices.find(item => {
             return item.id == marker.id
         });
         
@@ -40,7 +70,7 @@ export class LogService {
             
         }else{
             device.marker = this.markerService.marker(marker)
-        }
+        }*/
         
         
         /*console.log(deviceData);

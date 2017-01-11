@@ -1,6 +1,6 @@
 const dateFormat = require('dateformat');
 
-
+const hashKeys = [];
 module.exports = {
     getUserIdByHash: function (connection, hash) {
         return new Promise((resolve, reject) => {
@@ -91,6 +91,17 @@ module.exports = {
             })
         })
     },
+    getDeviceByUserId: function (connection, user_id) {
+            return new Promise((resolve, reject) => {
+                connection.query('SELECT * FROM `device` WHERE `user_id`=?', [user_id], function (err, rows) {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(rows)
+                })
+            })
+    },
     getUserByHash: function (connection, hash) {
         return new Promise((resolve, reject) => {
             connection.query('SELECT * FROM `user` INNER JOIN `hash` ON hash.user_id = user.id AND hash.key=?', [hash], (err, rows) => {
@@ -153,14 +164,14 @@ module.exports = {
             } )
         })
     },
-    getLastPosition: function (connection, device) {
+    getLastPosition: function (connection, device_key) {
         return new Promise((resolve, reject)=>{
-            connection.query('SELECT * FROM `logger` WHERE `device_key`=? ORDER BY `date` DESC LIMIT 1 ', [device.id], (err, rows) => {
+            connection.query('SELECT * FROM `logger` WHERE `device_key`=? ORDER BY `date` DESC LIMIT 1 ', [device_key], (err, rows) => {
                 if(err){
                     reject(err);
                     return;
                 }
-                rows[0].name = device.name;
+               // rows[0].name = device.name;
                 resolve (rows[0])
 
             })
@@ -448,6 +459,28 @@ module.exports = {
             src: d.src,
             name: d.name
         }
+    },
+    getHash : function () {
+
+        const $possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let hash = '';
+        for (let i = 0; i < 32; i++) {
+            hash += '' + $possible[getRandom(0, 61, true)];
+        }
+        if (-1 < hashKeys.indexOf[hash]) {
+            return this.getHash()
+        } else {
+            return hash;
+        }
     }
 
 };
+
+
+function getRandom(min, max, int) {
+    var rand = min + Math.random() * (max - min);
+    if (int) {
+        rand = Math.round(rand)
+    }
+    return rand;
+}

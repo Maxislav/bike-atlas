@@ -56,19 +56,8 @@ export class AuthService implements Resolve<any>{
         }).then(d => {
             if(d.result =='ok'){
                 this.userService.user = d.user;
-                this.userId = d.user.id;
-                this.userImage = d.user.image;
-                this.userName = d.user.name;
-                this.setting = d.user.setting || this.setting;
-                this.friend.updateFriends()
-                    .then(d=>{
-                        this.ds.updateDevices()
-                            .then(d=>{
-                                this.log.getLastPosition()
-                            })
-                    });
-                this.friend.getInvites();
-
+                this.userService.friends = d.user.friends;
+                this.socket.emit(d.user.hash)
             }else{
                 this.userName = null;
             }
