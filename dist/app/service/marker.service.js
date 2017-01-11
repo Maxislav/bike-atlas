@@ -17,70 +17,52 @@ var MarkerService = (function () {
         this.timer = timer;
         this.layerIds = [];
     }
-    MarkerService.prototype.marker = function (deviceData) {
-        var point = {
-            "type": "Point",
-            "coordinates": [deviceData.lng, deviceData.lat],
-            "bearing": deviceData.azimuth
-        };
+    MarkerService.prototype.marker = function (marker2) {
         var map = this.mapService.map;
-        var mapBearing = map.getBearing();
-        var F = parseFloat;
         var layerId = this.getNewLayer(0, 5000000, true) + '';
-        this.mapService.onLoad.then(function () {
-            /* map.addSource(layerId, { type: 'geojson', data: point });
-             map.addLayer({
-                 "id": layerId,
-                 "type": "symbol",
-                 "source": layerId,
-                 "layout": {
-                     "icon-image": getIconImage(deviceData),
-                     "icon-rotate": point.bearing
-                 }
-             });*/
-        });
         var mapboxgl = this.mapService.mapboxgl;
+        var mapBearing = map.getBearing();
         var icoContainer = document.createElement('div');
         icoContainer.classList.add("user-icon");
-        icoContainer.setAttribute('status', getIconImage(deviceData));
+        icoContainer.setAttribute('status', getIconImage(marker2));
         var img = new Image();
-        img.src = deviceData.image || 'src/img/no-avatar.gif';
+        img.src = marker2.image || 'src/img/no-avatar.gif';
         icoContainer.appendChild(img);
         var popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15], closeButton: false })
-            .setLngLat(point.coordinates)
-            .setHTML('<div>' + deviceData.name + '</div>')
+            .setLngLat([marker2.lng, marker2.lat])
+            .setHTML('<div>' + marker2.name + '</div>')
             .addTo(map);
         var iconMarker = new mapboxgl.Marker(icoContainer, { offset: [-20, -20] })
-            .setLngLat(point.coordinates)
+            .setLngLat([marker2.lng, marker2.lat])
             .addTo(map);
         var intervalUpdateMarker = null;
         var timer = this.timer;
-        var marker = {
+        /*const marker:Marker = {
             id: layerId,
             popup: popup,
-            deviceData: deviceData,
-            timePassed: 0,
+            deviceData: marker2,
             elapsed: '...',
-            status: getIconImage(deviceData),
+            status: getIconImage(marker2),
             updateMarker: function () {
                 this.status = getIconImage(this.deviceData);
                 icoContainer.setAttribute('status', this.status);
-                this.elapsed = timer.elapse(this.deviceData.date);
+                this.elapsed = timer.elapse(this.deviceData.date)
             },
-            update: function (d) {
-                for (var opt in d) {
-                    this.deviceData[opt] = d[opt];
+            update: function (d:DeviceData) {
+                for (let opt in d) {
+                    this.deviceData[opt] = d[opt]
                 }
                 point.coordinates = [d.lng, d.lat];
                 popup.setLngLat(point.coordinates);
                 iconMarker.setLngLat(point.coordinates);
                 this.status = getIconImage(this.deviceData);
                 icoContainer.setAttribute('status', this.status);
+
                 //map.getSource(layerId).setData(point);
             },
             rotate: function () {
                 map.setLayoutProperty(layerId, 'icon-rotate', point.bearing - map.getBearing());
-                map.getSource(layerId).setData(point);
+                map.getSource(layerId).setData(point)
             },
             hide: function () {
                 //map.removeLayer(layerId);
@@ -90,22 +72,37 @@ var MarkerService = (function () {
                 iconMarker.remove();
                 intervalUpdateMarker && clearInterval(intervalUpdateMarker);
             }
-        };
-        function move() {
+        };*/
+        /*function move() {
             if (map.getBearing() != mapBearing) {
                 marker.rotate();
                 mapBearing = map.getBearing();
             }
-        }
+        }*/
+        marker2.update = function (d) {
+            for (var opt in d) {
+                this.marker2[opt] = d[opt];
+            }
+            popup.setLngLat([this.lng, this.lat]);
+            iconMarker.setLngLat([this.lng, this.lat]);
+            this.status = getIconImage(this);
+            icoContainer.setAttribute('status', this.status);
+        };
+        marker2.updateMarker = function () {
+            this.status = getIconImage(this);
+            icoContainer.setAttribute('status', this.status);
+            this.elapsed = timer.elapse(this.date);
+        };
+        marker2.remove = function () {
+            popup.remove();
+            console.log('delete marker id', layerId);
+            iconMarker.remove();
+            intervalUpdateMarker && clearInterval(intervalUpdateMarker);
+        };
         intervalUpdateMarker = setInterval(function () {
-            marker.updateMarker();
-            //this.timer.elapse(this.deviceData.date)
+            marker2.updateMarker();
         }, 1000);
-        /*map.on('move', move);
-        intervalUpdateMarker = setInterval(()=>{
-            marker.updateMarker();
-        }, 10000);*/
-        return marker;
+        return marker2;
     };
     MarkerService.prototype.getNewLayer = function (min, max, int) {
         var rand = min + Math.random() * (max - min);

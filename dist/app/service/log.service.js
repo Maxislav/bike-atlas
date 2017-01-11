@@ -20,19 +20,28 @@ var LogService = (function () {
         this.socket.on('log', this.log.bind(this));
         this.devices = {};
     }
-    LogService.prototype.log = function (deviceData) {
-        console.log(deviceData);
-        if (this.devices[deviceData.id]) {
-            this.devices[deviceData.id].update(deviceData);
+    LogService.prototype.log = function (marker) {
+        var device = this.ds.devices.find(function (item) {
+            return item.id == marker.id;
+        });
+        if (!device)
+            return;
+        if (device.marker) {
         }
         else {
-            var device = this.ds.devices.find(function (item) {
-                return item.id == deviceData.id;
+            device.marker = this.markerService.marker(marker);
+        }
+        /*console.log(deviceData);
+        if (this.devices[deviceData.id]) {
+            this.devices[deviceData.id].update(deviceData);
+        } else {
+            let device: Device = this.ds.devices.find(item => {
+                return item.id == deviceData.id
             });
             deviceData.name = device.name;
             deviceData.image = device.image;
-            device.marker = this.devices[deviceData.id] = this.markerService.marker(deviceData);
-        }
+            device.marker = this.devices[deviceData.id] = this.markerService.marker(deviceData)
+        }*/
     };
     LogService.prototype.clearDevices = function () {
         for (var opt in this.devices) {

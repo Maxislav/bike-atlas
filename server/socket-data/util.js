@@ -157,10 +157,11 @@ module.exports = {
         return new Promise((resolve, reject)=>{
             connection.query('SELECT * FROM `logger` WHERE `device_key`=? ORDER BY `date` DESC LIMIT 1 ', [device.id], (err, rows) => {
                 if(err){
-                    reject(err)
+                    reject(err);
                     return;
                 }
-                resolve (rows)
+                rows[0].name = device.name;
+                resolve (rows[0])
 
             })
         })
@@ -444,7 +445,8 @@ module.exports = {
             lat: d.lat,
             lng: d.lng,
             speed: d.speed,
-            src: d.src
+            src: d.src,
+            name: d.name
         }
     }
 

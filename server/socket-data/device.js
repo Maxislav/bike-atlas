@@ -107,15 +107,12 @@ class Device{
                 Promise.all(arrPromise)
                     .then(devices=>{
                         const devi = [];
-                        devices.forEach(rows=>{
-
-                            if(rows && rows.length){
-                                devi.push(util.formatDevice(rows[0]));
+                        devices.forEach(row=>{
+                            if(row){
+                                devi.push(util.formatDevice(row));
                             }
-
                         });
                         this.socket.emit('getLastPosition', devi)
-
                     })
                     .catch(err=>{
                         console.error('Error emitLastPosition->', err)

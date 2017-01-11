@@ -28,8 +28,22 @@ export class LogService {
         this.devices = {};
     }
 
-    log(deviceData: DeviceData) {
-        console.log(deviceData);
+    log(marker: Marker) {
+
+        const device: Device = this.ds.devices.find(item => {
+            return item.id == marker.id
+        });
+        
+        if(!device) return;
+        
+        if(device.marker){
+            
+        }else{
+            device.marker = this.markerService.marker(marker)
+        }
+        
+        
+        /*console.log(deviceData);
         if (this.devices[deviceData.id]) {
             this.devices[deviceData.id].update(deviceData);
         } else {
@@ -39,7 +53,7 @@ export class LogService {
             deviceData.name = device.name;
             deviceData.image = device.image;
             device.marker = this.devices[deviceData.id] = this.markerService.marker(deviceData)
-        }
+        }*/
     }
 
     clearDevices() {
