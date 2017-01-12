@@ -21,7 +21,7 @@ var DeviceService = (function () {
         this.friend = friend;
         this._devices = [];
         this.socket = io.socket;
-        this.devices = user.user.devices;
+        //this.devices = user.user.devices;
     }
     DeviceService.prototype.updateDevices = function () {
         var _this = this;
@@ -63,7 +63,7 @@ var DeviceService = (function () {
             return d;
         });
     };
-    DeviceService.prototype.clearDevice = function () {
+    DeviceService.prototype.clearDevices = function () {
         this._devices.length = 0;
     };
     Object.defineProperty(DeviceService.prototype, "devices", {

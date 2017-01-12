@@ -11,11 +11,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var socket_oi_service_1 = require("./socket.oi.service");
 var local_storage_service_1 = require("./local-storage.service");
+var friends_service_1 = require("./friends.service");
 var main_user_service_1 = require("./main.user.service");
 var AuthService = (function () {
-    function AuthService(io, ls, userService) {
+    function AuthService(io, ls, friend, userService) {
         this.io = io;
         this.ls = ls;
+        this.friend = friend;
         this.userService = userService;
         this._userName = null;
         this._userImage = null;
@@ -45,6 +47,7 @@ var AuthService = (function () {
                 _this.userService.user = d.user;
                 _this.userService.friends = d.user.friends;
                 _this.socket.emit(d.user.hash);
+                _this.friend.getInvites();
             }
             else {
                 _this.userName = null;
@@ -95,7 +98,7 @@ var AuthService = (function () {
     });
     AuthService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, main_user_service_1.UserService])
+        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, friends_service_1.FriendsService, main_user_service_1.UserService])
     ], AuthService);
     return AuthService;
 }());

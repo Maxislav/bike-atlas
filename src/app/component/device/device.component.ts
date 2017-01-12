@@ -88,6 +88,7 @@ export class DeviceComponent {
             index: -1
         };
         this.devices = deviceService.devices;
+        deviceService.updateDevices()
     }
 
     onShowHelp() {

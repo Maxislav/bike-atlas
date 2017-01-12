@@ -17,6 +17,7 @@ export class LoginService{
                  private ls: LocalStorage,
                  public as: AuthService,
                  private ts: ToastService,
+                 private  deviceService: DeviceService,
                  private userService: UserService,
     ){
         this.socket = io.socket;
@@ -57,6 +58,7 @@ export class LoginService{
 
                     this.ls.userKey = null;
                     this.userService.clearAll();
+                    this.deviceService.clearDevices()
 
 
                 }

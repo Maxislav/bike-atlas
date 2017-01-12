@@ -28,6 +28,7 @@ export class AuthService implements Resolve<any>{
     constructor(
         private io: Io,
         private ls: LocalStorage,
+        private friend: FriendsService,
         private userService: UserService) {
         this.socket = io.socket;
         this._setting = {};
@@ -55,7 +56,8 @@ export class AuthService implements Resolve<any>{
             if(d.result =='ok'){
                 this.userService.user = d.user;
                 this.userService.friends = d.user.friends;
-                this.socket.emit(d.user.hash)
+                this.socket.emit(d.user.hash);
+                this.friend.getInvites();
             }else{
                 this.userName = null;
             }

@@ -33,7 +33,7 @@ export class FriendsService {
     private _users: Array<User>;
     private _invites: Array<User>;
     private _myInvites: Array<User>;
-    public friends: Array<User>;
+    private _friends: Array<User> =[];
 
 
     constructor(
@@ -46,8 +46,12 @@ export class FriendsService {
         this._users = [];
         this._invites = [];
         this.socket = io.socket;
-        this.friends = userService.friends;
+        //this.friends = userService.friends;
 
+    }
+
+    getFriends(){
+        this.updateFriends()
     }
 
     updateFriends(){
@@ -55,7 +59,7 @@ export class FriendsService {
             .then(d=>{
                 console.log(d);
                 if(d.result == 'ok'){
-                    this.userService.friends = d.friends;
+                    this.friends = d.friends;
                     this.myInvites = d.invites;
                     return this.friends;
                 }else{
@@ -149,18 +153,17 @@ export class FriendsService {
     }
 
 
-   /* set friends(value:Array<User>){
+    set friends(value:Array<User>){
         this._friends.length = 0;
         if(value){
             value.forEach(item=>{
                 this._friends.push(item)
-
             })
         }
-    }*/
-    /*get friends(): Array<User>{
+    }
+    get friends(): Array<User>{
      return this._friends
-    }*/
+    }
     get users(): Array<User> {
         return this._users;
     }
@@ -170,7 +173,6 @@ export class FriendsService {
         if(value){
             value.forEach(item=>{
                 this._users.push(item)
-
             })
         }
     }

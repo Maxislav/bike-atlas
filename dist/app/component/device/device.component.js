@@ -70,6 +70,7 @@ var DeviceComponent = (function () {
             index: -1
         };
         this.devices = deviceService.devices;
+        deviceService.updateDevices();
     }
     DeviceComponent.prototype.onShowHelp = function () {
         this.showHelp = !this.showHelp;

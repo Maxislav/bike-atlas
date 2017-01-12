@@ -10,7 +10,7 @@ class Device{
         socket.on('getDevice', this.getDevice.bind(this));
         socket.on('onAddDevice', this.onAddDevice.bind(this));
         socket.on('onDelDevice', this.onDelDevice.bind(this));
-        socket.on('getLastPosition', this.getLastPosition.bind(this));
+       // socket.on('getLastPosition', this.getLastPosition.bind(this));
     }
 
     /**
@@ -21,7 +21,18 @@ class Device{
     getDevice(isLastPosition){
        return util.getUserIdBySocketId(this.connection, this.socket.id)
             .then(user_id=>{
-                return util.getFriends(this.connection, user_id)
+
+              return util.getDeviceByUserId(this.connection, user_id)
+                .then(rows=>{
+                  this.socket.emit('getDevice', {
+                    result: 'ok',
+                    devices: rows
+                  } );
+                });
+
+
+
+                /*return util.getFriends(this.connection, user_id)
                     .then(friends=>{
                         const ids = [user_id];
                         friends.forEach(friend=>{
@@ -46,7 +57,7 @@ class Device{
                                 }
                             })
                     });
-
+*/
             })
             .catch((err)=>{
                 this.socket.emit('getDevice', {
@@ -97,7 +108,7 @@ class Device{
 
     }
 
-    getLastPosition(){
+   /* getLastPosition(){
         this.getDevice(true)
             .then(devices=>{
                 const arrPromise = [];
@@ -118,7 +129,7 @@ class Device{
                         console.error('Error emitLastPosition->', err)
                     })
             })
-    }
+    }*/
 }
 
 

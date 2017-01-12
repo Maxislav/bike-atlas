@@ -12,17 +12,19 @@ var core_1 = require("@angular/core");
 var socket_oi_service_1 = require("./socket.oi.service");
 var local_storage_service_1 = require("./local-storage.service");
 var auth_service_1 = require("./auth.service");
+var device_service_1 = require("./device.service");
 var toast_component_1 = require("../component/toast/toast.component");
 var main_user_service_1 = require("./main.user.service");
 /**
  * Created by max on 04.01.17.
  */
 var LoginService = (function () {
-    function LoginService(io, ls, as, ts, userService) {
+    function LoginService(io, ls, as, ts, deviceService, userService) {
         this.io = io;
         this.ls = ls;
         this.as = as;
         this.ts = ts;
+        this.deviceService = deviceService;
         this.userService = userService;
         this.socket = io.socket;
     }
@@ -59,12 +61,13 @@ var LoginService = (function () {
             if (d.result == 'ok') {
                 _this.ls.userKey = null;
                 _this.userService.clearAll();
+                _this.deviceService.clearDevices();
             }
         });
     };
     LoginService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, auth_service_1.AuthService, toast_component_1.ToastService, main_user_service_1.UserService])
+        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, auth_service_1.AuthService, toast_component_1.ToastService, device_service_1.DeviceService, main_user_service_1.UserService])
     ], LoginService);
     return LoginService;
 }());

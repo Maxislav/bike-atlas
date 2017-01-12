@@ -30,7 +30,7 @@ export class DeviceService {
 
     ) {
         this.socket = io.socket;
-        this.devices = user.user.devices;
+        //this.devices = user.user.devices;
 
     }
 
@@ -72,7 +72,7 @@ export class DeviceService {
                return d;
            })
     }
-    clearDevice(){
+    clearDevices(){
         this._devices.length = 0;
     }
 
@@ -83,7 +83,6 @@ export class DeviceService {
     set devices(devices: Array<Device>) {
         this._devices.length = 0;
         devices.forEach(device => {
-           
             this._devices.push(device)
         });
     }

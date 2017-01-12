@@ -35,6 +35,7 @@ var FriendsComponent = (function () {
         this.invites = friend.invites;
         this.friends = friend.friends;
         this.myInvites = friend.myInvites;
+        friend.getFriends();
     }
     FriendsComponent.prototype.onAccept = function (friend) {
         this.friend.onAcceptInvite(friend);
