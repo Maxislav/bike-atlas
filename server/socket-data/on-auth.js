@@ -3,9 +3,10 @@ const util = require('./util');
 
 
 class OnAuth {
-    constructor(socket, _connection, chat) {
+    constructor(socket, _connection, chat, logger) {
         this.socket = socket;
         this.chat = chat;
+        this.logger = logger;
         this.connection = connection = _connection;
         this.socket.on('onAuth', this.onAuth.bind(this));
     }
@@ -66,6 +67,8 @@ class OnAuth {
                         arrLastPosition.push(
                             util.getLastPosition(this.connection, key)
                             .then(row=>{
+                                console.log('key->', key)
+                                this.logger.updateDevice(key, this.socket.id)
                                 this.socket.emit('log', row);
                                 return row;
                             }))

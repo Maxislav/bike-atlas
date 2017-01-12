@@ -3,6 +3,7 @@ import {MapService} from "./map.service";
 import {Point} from "./track.var";
 import {DeviceData} from "./log.service";
 import {TimerService} from "./timer.service";
+import {User} from "./main.user.service";
 
 export interface Marker {
     id:string;
@@ -36,7 +37,7 @@ export class MarkerService {
     }
 
 
-    marker(marker2:Marker):Marker {
+    marker(marker2:Marker, user: User):Marker {
      
         const map = this.mapService.map;
         const layerId:string = this.getNewLayer(0, 5000000, true) + '';
@@ -50,7 +51,7 @@ export class MarkerService {
 
 
         const img = new Image();
-        img.src = marker2.image || 'src/img/no-avatar.gif';
+        img.src = user.image || 'src/img/no-avatar.gif';
         icoContainer.appendChild(img);
 
         const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
@@ -112,9 +113,9 @@ export class MarkerService {
         }*/
         
         
-        marker2.update = function (d:DeviceData) {
-            for (let opt in d) {
-                this.marker2[opt] = d[opt]
+        marker2.update = function (mark: Marker) {
+            for (let opt in mark) {
+                this[opt] = mark[opt]
             }
             popup.setLngLat([this.lng, this.lat]);
             iconMarker.setLngLat([this.lng, this.lat]);

@@ -13,6 +13,7 @@ export interface Device {
     phone?: string,
     marker?: Marker;
     passed?: string;
+    device_key?: string;
 }
 
 
@@ -25,7 +26,7 @@ export class DeviceService {
     constructor(private io: Io,
                 private ls: LocalStorage,
                 private user: UserService,
-                private friend: FriendsService,
+                private friend: FriendsService
 
     ) {
         this.socket = io.socket;

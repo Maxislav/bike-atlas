@@ -61,7 +61,7 @@ module.exports = (sever, app) => {
         logger.sockets = ioServer.sockets.connected;
         chat.sockets = ioServer.sockets.connected;
         const onEnter = new OnEnter(socket, connection, logger, chat);
-        const onAuth = new OnAuth(socket, connection, chat);
+        const onAuth = new OnAuth(socket, connection, chat, logger);
         const device = new Device(socket, connection, logger);
         const onRegist = new OnRegist(socket, connection, logger);
         const onProfile = new OnProfile(socket, connection, logger);

@@ -34,7 +34,7 @@ module.exports = class Logger {
             res.end(checkSum);
             try{
                 data = this.parseGprmc(req.query.gprmc);
-                data.id = req.query.id;
+                data.device_key = data.id = req.query.id;
             }catch (err){
                 console.error('Error parse', err)
             }

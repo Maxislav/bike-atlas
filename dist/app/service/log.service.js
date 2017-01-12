@@ -21,27 +21,29 @@ var LogService = (function () {
         this.devices = {};
     }
     LogService.prototype.log = function (marker) {
-        var device = this.user.user.devices.find(function (item) {
-            return item.device_key == marker.device_key;
-        });
+        var user;
+        var device = this.getDevice(this.user.user, marker);
         if (device) {
-            marker.image = this.user.user.image;
+            user = this.user.user;
         }
         if (!device) {
-            this.user.friends.forEach(function (friend) {
-                var image = '';
-                device = friend.devices.find(function (item) {
-                    return item.device_key == marker.device_key;
-                });
+            var i = 0;
+            while (i < this.user.friends.length) {
+                device = this.getDevice(this.user.friends[i], marker);
                 if (device) {
-                    marker.image = friend.image;
+                    user = this.user.friends[i];
+                    break;
                 }
-            });
+                i++;
+            }
         }
         console.log(device);
         if (device && !device.marker) {
             marker.name = device.name;
-            device.marker = this.markerService.marker(marker);
+            device.marker = this.markerService.marker(marker, user);
+        }
+        else if (device && device.marker) {
+            device.marker.update(marker);
         }
         /* const device: Device = this.ds.devices.find(item => {
              return item.id == marker.id
@@ -65,6 +67,12 @@ var LogService = (function () {
             deviceData.image = device.image;
             device.marker = this.devices[deviceData.id] = this.markerService.marker(deviceData)
         }*/
+    };
+    LogService.prototype.getDevice = function (user, marker) {
+        var devices = user.devices;
+        return devices.find(function (item) {
+            return item.device_key == marker.device_key;
+        });
     };
     LogService.prototype.clearDevices = function () {
         for (var opt in this.devices) {

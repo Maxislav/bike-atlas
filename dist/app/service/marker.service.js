@@ -17,7 +17,7 @@ var MarkerService = (function () {
         this.timer = timer;
         this.layerIds = [];
     }
-    MarkerService.prototype.marker = function (marker2) {
+    MarkerService.prototype.marker = function (marker2, user) {
         var map = this.mapService.map;
         var layerId = this.getNewLayer(0, 5000000, true) + '';
         var mapboxgl = this.mapService.mapboxgl;
@@ -26,7 +26,7 @@ var MarkerService = (function () {
         icoContainer.classList.add("user-icon");
         icoContainer.setAttribute('status', getIconImage(marker2));
         var img = new Image();
-        img.src = marker2.image || 'src/img/no-avatar.gif';
+        img.src = user.image || 'src/img/no-avatar.gif';
         icoContainer.appendChild(img);
         var popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15], closeButton: false })
             .setLngLat([marker2.lng, marker2.lat])
@@ -79,9 +79,9 @@ var MarkerService = (function () {
                 mapBearing = map.getBearing();
             }
         }*/
-        marker2.update = function (d) {
-            for (var opt in d) {
-                this.marker2[opt] = d[opt];
+        marker2.update = function (mark) {
+            for (var opt in mark) {
+                this[opt] = mark[opt];
             }
             popup.setLngLat([this.lng, this.lat]);
             iconMarker.setLngLat([this.lng, this.lat]);

@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
 import {DeviceService, Device} from "./device.service";
 import {MarkerService, Marker} from "./marker.service";
-import {UserService} from "./main.user.service";
+import {UserService, User} from "./main.user.service";
 //import {MarkerService} from "./marker.service";
 
 export interface DeviceData {
@@ -28,36 +28,35 @@ export class LogService {
         this.socket = io.socket;
         this.socket.on('log', this.log.bind(this));
         this.devices = {};
-
     }
 
     log(marker: Marker) {
-
-        let device: Device = this.user.user.devices.find(item => {
-            return item.device_key == marker.device_key
-        });
+        let user: User;
+        let device: Device = this.getDevice(this.user.user, marker);
         if(device){
-            marker.image = this.user.user.image
+            user = this.user.user
+            //marker.image = this.user.user.image
         }
 
         if(!device){
-            this.user.friends.forEach(friend=>{
-                let image = '';
-
-                device = friend.devices.find(item=>{
-                        return item.device_key == marker.device_key
-                    })
-                if(device){
-                    marker.image = friend.image
+            let i = 0;
+            while (i<this.user.friends.length){
+                device = this.getDevice(this.user.friends[i], marker);
+                if(device) {
+                    user = this.user.friends[i];
+                    break;
                 }
-            })
+                i++;
+            }
         }
 
-        console.log(device)
+        console.log(device);
 
         if(device && !device.marker){
             marker.name = device.name;
-            device.marker = this.markerService.marker(marker)
+            device.marker = this.markerService.marker(marker, user)
+        }else if(device && device.marker){
+            device.marker.update(marker)
         }
 
        /* const device: Device = this.ds.devices.find(item => {
@@ -84,6 +83,13 @@ export class LogService {
             deviceData.image = device.image;
             device.marker = this.devices[deviceData.id] = this.markerService.marker(deviceData)
         }*/
+    }
+
+    private getDevice(user: User, marker: Marker){
+        const devices =user.devices;
+       return devices.find(item => {
+            return item.device_key == marker.device_key
+        });
     }
 
     clearDevices() {
