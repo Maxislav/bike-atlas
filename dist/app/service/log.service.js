@@ -75,10 +75,6 @@ var LogService = (function () {
         });
     };
     LogService.prototype.clearDevices = function () {
-        for (var opt in this.devices) {
-            this.devices[opt].hide();
-            delete this.devices[opt];
-        }
     };
     LogService.prototype.getLastPosition = function () {
         var _this = this;

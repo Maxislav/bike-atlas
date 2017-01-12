@@ -28,9 +28,6 @@ export class AuthService implements Resolve<any>{
     constructor(
         private io: Io,
         private ls: LocalStorage,
-        private log: LogService,
-        private ds: DeviceService,
-        private friend: FriendsService,
         private userService: UserService) {
         this.socket = io.socket;
         this._setting = {};

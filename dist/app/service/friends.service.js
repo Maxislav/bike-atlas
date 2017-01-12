@@ -17,11 +17,12 @@ var FriendsService = (function () {
         this.io = io;
         this.ls = ls;
         this.userService = userService;
-        this._friends = [];
+        // this._friends = [];
         this._myInvites = [];
         this._users = [];
         this._invites = [];
         this.socket = io.socket;
+        this.friends = userService.friends;
     }
     FriendsService.prototype.updateFriends = function () {
         var _this = this;
@@ -29,7 +30,7 @@ var FriendsService = (function () {
             .then(function (d) {
             console.log(d);
             if (d.result == 'ok') {
-                _this.friends = d.friends;
+                _this.userService.friends = d.friends;
                 _this.myInvites = d.invites;
                 return _this.friends;
             }
@@ -124,23 +125,19 @@ var FriendsService = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FriendsService.prototype, "friends", {
-        get: function () {
-            return this._friends;
-        },
-        set: function (value) {
-            var _this = this;
-            this._friends.length = 0;
-            if (value) {
-                value.forEach(function (item) {
-                    _this._friends.push(item);
-                });
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(FriendsService.prototype, "users", {
+        /* set friends(value:Array<User>){
+             this._friends.length = 0;
+             if(value){
+                 value.forEach(item=>{
+                     this._friends.push(item)
+     
+                 })
+             }
+         }*/
+        /*get friends(): Array<User>{
+         return this._friends
+        }*/
         get: function () {
             return this._users;
         },

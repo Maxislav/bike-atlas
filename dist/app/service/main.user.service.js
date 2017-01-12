@@ -24,6 +24,24 @@ var UserService = (function () {
             this._user[opt] = null;
         }
     };
+    UserService.prototype.clearAll = function () {
+        this.user.devices.forEach(function (device) {
+            if (device.marker) {
+                device.marker.remove();
+            }
+        });
+        this.friends.forEach(function (friend) {
+            friend.devices.forEach(function (device) {
+                if (device.marker) {
+                    device.marker.remove();
+                }
+            });
+        });
+        while (this.friends.length) {
+            this.friends.shift();
+        }
+        this.clearUser();
+    };
     Object.defineProperty(UserService.prototype, "friends", {
         get: function () {
             return this._friends;

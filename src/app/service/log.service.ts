@@ -35,7 +35,6 @@ export class LogService {
         let device: Device = this.getDevice(this.user.user, marker);
         if(device){
             user = this.user.user
-            //marker.image = this.user.user.image
         }
 
         if(!device){
@@ -93,10 +92,7 @@ export class LogService {
     }
 
     clearDevices() {
-        for (let opt in this.devices) {
-            this.devices[opt].hide();
-            delete this.devices[opt];
-        }
+        
     }
 
     getLastPosition() {

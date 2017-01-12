@@ -29,10 +29,11 @@ export class FriendsService {
 
     
     private socket: any;
-    private _friends: Array<User>;
+    //private _friends: Array<User>;
     private _users: Array<User>;
     private _invites: Array<User>;
     private _myInvites: Array<User>;
+    public friends: Array<User>;
 
 
     constructor(
@@ -40,11 +41,13 @@ export class FriendsService {
         private ls: LocalStorage,
         private userService: UserService
     ){
-        this._friends = [];
+       // this._friends = [];
         this._myInvites = [];
         this._users = [];
         this._invites = [];
         this.socket = io.socket;
+        this.friends = userService.friends;
+
     }
 
     updateFriends(){
@@ -52,7 +55,7 @@ export class FriendsService {
             .then(d=>{
                 console.log(d);
                 if(d.result == 'ok'){
-                    this.friends = d.friends;
+                    this.userService.friends = d.friends;
                     this.myInvites = d.invites;
                     return this.friends;
                 }else{
@@ -146,7 +149,7 @@ export class FriendsService {
     }
 
 
-    set friends(value:Array<User>){
+   /* set friends(value:Array<User>){
         this._friends.length = 0;
         if(value){
             value.forEach(item=>{
@@ -154,10 +157,10 @@ export class FriendsService {
 
             })
         }
-    }
-    get friends(): Array<User>{
+    }*/
+    /*get friends(): Array<User>{
      return this._friends
-    }
+    }*/
     get users(): Array<User> {
         return this._users;
     }

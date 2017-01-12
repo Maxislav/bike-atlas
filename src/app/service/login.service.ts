@@ -16,11 +16,9 @@ export class LoginService{
     constructor( private  io: Io,
                  private ls: LocalStorage,
                  public as: AuthService,
-                 private ds: DeviceService,
                  private ts: ToastService,
-                 private logService: LogService,
                  private userService: UserService,
-                 private friend: FriendsService,){
+    ){
         this.socket = io.socket;
     }
     onEnter({name, pass}){
@@ -33,6 +31,22 @@ export class LoginService{
 
     }
 
+   
+    setHashName(d){
+        console.log(d);
+        switch (d.result) {
+            case 'ok':
+                this.ls.userKey = d.hash;
+                this.as.onAuth();
+                break;
+            case false:
+                this.ts.show({
+                    type: 'warning',
+                    text: 'Невеное имя пользователя или пароль'
+                })
+
+        }
+    }
     onExit(e: Event) {
         this.socket
             .$emit('onExit', {
@@ -42,44 +56,11 @@ export class LoginService{
                 if (d.result == 'ok') {
 
                     this.ls.userKey = null;
-                    this.userService.clearUser();
-                    this.friend.clearUsers();
-                    this.logService.clearDevices();
-                    this.ds.clearDevice()
+                    this.userService.clearAll();
+
+
                 }
             })
 
-    }
-    setHashName(d){
-        console.log(d);
-        switch (d.result) {
-            case 'ok':
-                this.ls.userKey = d.hash;
-                this.userService.user = d.user;
-                this.friend.updateFriends()
-                    .then(d=>{
-                        this.ds.updateDevices()
-                            .then(d=>{
-                                this.logService.getLastPosition()
-                            })
-                    });
-                this.friend.getInvites();
-
-                /*this.ls.userKey = d.hash;
-                this.as.userName = d.user.name;
-                this.as.userImage = d.user.image;
-                this.as.userId = d.user.id;
-                this.ds.updateDevices();
-                this.friend.getInvites();*/
-
-
-                break;
-            case false:
-                this.ts.show({
-                    type: 'warning',
-                    text: 'Невеное имя пользователя или пароль'
-                })
-
-        }
     }
 }

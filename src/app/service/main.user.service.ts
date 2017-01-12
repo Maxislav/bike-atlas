@@ -32,6 +32,25 @@ export class UserService{
            this._user[opt] = null
        }
     }
+    clearAll(){
+        this.user.devices.forEach(device=>{
+            if(device.marker){
+                device.marker.remove()
+            }
+        });
+        this.friends.forEach(friend=>{
+            friend.devices.forEach(device=>{
+                if(device.marker){
+                    device.marker.remove()
+                }
+            })
+        });
+        while (this.friends.length){
+            this.friends.shift()
+        }
+
+        this.clearUser();
+    }
 
     set friends(friends: Array<User>){
         if(!friends) return;

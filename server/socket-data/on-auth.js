@@ -8,10 +8,10 @@ class OnAuth {
         this.chat = chat;
         this.logger = logger;
         this.connection = connection = _connection;
-        this.socket.on('onAuth', this.onAuth.bind(this));
+        this.socket.on('onAuth', this.onAuth.bind(this, 'onAuth'));
     }
 
-    onAuth(data) {
+    onAuth(eName, data) {
         let _user;
         let _userDevices;
         let _friends;
@@ -79,7 +79,7 @@ class OnAuth {
                 this.socket.on(hash,emitLastPosition);
 
 
-                this.socket.emit('onAuth', {
+                this.socket.emit(eName, {
                     result: 'ok',
                     user: {
                         id: _user.user_id,
@@ -95,7 +95,7 @@ class OnAuth {
             })
 
             .catch(err => {
-                this.socket.emit('onAuth', {
+                this.socket.emit(eName, {
                     result: false,
                     message: err
                 })

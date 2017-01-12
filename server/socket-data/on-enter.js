@@ -77,7 +77,6 @@ class OnEnter {
         for (let i = 0; i < 32; i++) {
             hash += '' + $possible[getRandom(0, 61, true)];
         }
-        ;
         if (-1 < hashKeys.indexOf[hash]) {
             return this.getHash()
         } else {

@@ -24,7 +24,7 @@ export class UsersContainer{
 }
 declare const module:{
     id: any
-}
+};
 
 @Component({
     //noinspection TypeScriptUnresolvedVariable
@@ -50,7 +50,6 @@ export class FriendsComponent{
     }
 
     onDelFriend(friend: User){
-
         this.friend.onDelFriend(friend.id)
 
     }
