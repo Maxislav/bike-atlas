@@ -133,7 +133,7 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
                // private su:AuthService,
                 private mapResolver : MapResolver) {
 
-        this.setting = userService.user.setting;
+        this.setting = userService.user.setting || {};
         this.center = [30.5, 50.5];
         this.el = el;
         this.renderer = renderer;
