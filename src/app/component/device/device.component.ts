@@ -13,38 +13,38 @@ import {UserService, User} from "../../service/main.user.service";
 @Directive({
     selector: 'help-container',
 })
-export class HelpContainer{
-    constructor(el: ElementRef, renderer: Renderer){
+export class HelpContainer {
+    constructor(el:ElementRef, renderer:Renderer) {
 
         let w = window,
             d = document,
             e = d.documentElement,
             g = d.getElementsByTagName('body')[0],
             x = w.innerWidth || e.clientWidth || g.clientWidth,
-            y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+            y = w.innerHeight || e.clientHeight || g.clientHeight;
 
 
-        renderer.setElementStyle(el.nativeElement, 'height', y-300+'px');
+        renderer.setElementStyle(el.nativeElement, 'height', y - 300 + 'px');
     }
 }
 declare const module:{
-    id: any
+    id:any
 }
-
 
 
 @Pipe({
     name: 'isOwner',
     pure: false
 })
-export class IsOwner implements PipeTransform  {
-    constructor(private user: UserService){
+export class IsOwner implements PipeTransform {
+    constructor(private user:UserService) {
 
     }
-    transform(value, args?){
 
-       // console.log('fds')
-        return value.filter(item=>{
+    transform(value, args?) {
+
+        // console.log('fds')
+        return value.filter(item=> {
             return item.ownerId == this.user.user.id
         })
     }
@@ -53,29 +53,28 @@ export class IsOwner implements PipeTransform  {
 
 @Component({
     moduleId: module.id,
-    templateUrl:'device.component.html',
+    templateUrl: 'device.component.html',
     pipes: [IsOwner],
     directives: [HelpContainer],
     styleUrls: [
         'device.component.css',
     ]
 })
-export class DeviceComponent{
+export class DeviceComponent {
 
-    private device: Device;
-    private devices: Array<Device>;
-    public btnPreDel: {index: number};
-    private user: User;
-    private showHelp: boolean = false;
+    private device:Device;
+    private devices:Array<Device>;
+    public btnPreDel:{index:number};
+    private user:User;
+    private showHelp:boolean = false;
 
 
-    constructor(private location: Location,
+    constructor(private location:Location,
                 private router:Router,
-                private userService: UserService,
-                private ds: DeviceService,
-                private toast: ToastService,
-                private lh: NavigationHistory
-){
+                private userService:UserService,
+                private deviceService: DeviceService,
+                private toast:ToastService,
+                private lh:NavigationHistory) {
 
         this.user = userService.user;
 
@@ -88,20 +87,22 @@ export class DeviceComponent{
         this.btnPreDel = {
             index: -1
         };
-        this.devices = ds.devices;
+        this.devices = deviceService.devices;
     }
-    onShowHelp(){
+
+    onShowHelp() {
         this.showHelp = !this.showHelp
     }
-    onAdd(e){
+
+    onAdd(e) {
         e.preventDefault();
 
 
-        this.device.name = this.device.name.replace(/^\s+/,'');
-        this.device.id = this.device.id.replace(/^\s+/,'');
+        this.device.name = this.device.name.replace(/^\s+/, '');
+        this.device.id = this.device.id.replace(/^\s+/, '');
 
         console.log(this.device);
-        if(!this.device.name || !this.device.id){
+        if (!this.device.name || !this.device.id) {
             this.toast.show({
                 type: 'warning',
                 text: "Имя или Идентификатор не заполнено"
@@ -109,40 +110,45 @@ export class DeviceComponent{
             return;
         }
 
-        this.ds.onAddDevice(this.device)
-            .then(d=>{
-                if(d && d.result == 'ok'){
+        this.deviceService.onAddDevice(this.device)
+            .then(d=> {
+                if (d && d.result == 'ok') {
                     this.reset()
                 }
             })
     }
-    onDel(e, device){
-        this.ds.onDelDevice(device)
-            .then(d=>{
+
+    onDel(e, device) {
+        this.deviceService.onDelDevice(device)
+            .then(d=> {
                 console.log(d);
                 this.clearPredel();
             });
     }
-    preDel(e, i){
+
+    preDel(e, i) {
         e.stopPropagation();
         this.btnPreDel.index = i
     }
-    clearPredel(){
+
+    clearPredel() {
         this.btnPreDel.index = -1
     }
 
-    reset(){
+    reset() {
         this.device = {
+            ownerId: -1,
             name: '',
-            id: ''
+            id: '',
+            image: ''
         };
     }
 
 
-    onClose(){
-        if(this.lh.is){
+    onClose() {
+        if (this.lh.is) {
             this.location.back()
-        }else{
+        } else {
             this.router.navigate(['/auth/map']);
         }
     }

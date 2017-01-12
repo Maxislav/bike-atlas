@@ -69,6 +69,8 @@ var LogService = (function () {
         }*/
     };
     LogService.prototype.getDevice = function (user, marker) {
+        if (!marker)
+            return null;
         var devices = user.devices;
         return devices.find(function (item) {
             return item.device_key == marker.device_key;

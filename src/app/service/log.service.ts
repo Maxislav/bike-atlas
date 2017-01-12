@@ -85,6 +85,7 @@ export class LogService {
     }
 
     private getDevice(user: User, marker: Marker){
+        if(!marker) return null;
         const devices =user.devices;
        return devices.find(item => {
             return item.device_key == marker.device_key

@@ -15,9 +15,9 @@ div.content
                         td Телефон
                         td
                 tbody
-                    tr(*ngFor="let dev of devices | isOwner:dev\;  let i = index ", (click)="preDel($event, i)")
+                    tr(*ngFor="let dev of devices \;  let i = index ", (click)="preDel($event, i)")
                         td {{dev.name}}
-                        td {{dev.id}}
+                        td {{dev.device_key}}
                         td {{dev.phone}}
                         td.predelCell
                             //.close((click)="onClose()") &times;

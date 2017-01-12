@@ -51,11 +51,11 @@ var IsOwner = (function () {
 }());
 exports.IsOwner = IsOwner;
 var DeviceComponent = (function () {
-    function DeviceComponent(location, router, userService, ds, toast, lh) {
+    function DeviceComponent(location, router, userService, deviceService, toast, lh) {
         this.location = location;
         this.router = router;
         this.userService = userService;
-        this.ds = ds;
+        this.deviceService = deviceService;
         this.toast = toast;
         this.lh = lh;
         this.showHelp = false;
@@ -69,7 +69,7 @@ var DeviceComponent = (function () {
         this.btnPreDel = {
             index: -1
         };
-        this.devices = ds.devices;
+        this.devices = deviceService.devices;
     }
     DeviceComponent.prototype.onShowHelp = function () {
         this.showHelp = !this.showHelp;
@@ -87,7 +87,7 @@ var DeviceComponent = (function () {
             });
             return;
         }
-        this.ds.onAddDevice(this.device)
+        this.deviceService.onAddDevice(this.device)
             .then(function (d) {
             if (d && d.result == 'ok') {
                 _this.reset();
@@ -96,7 +96,7 @@ var DeviceComponent = (function () {
     };
     DeviceComponent.prototype.onDel = function (e, device) {
         var _this = this;
-        this.ds.onDelDevice(device)
+        this.deviceService.onDelDevice(device)
             .then(function (d) {
             console.log(d);
             _this.clearPredel();
@@ -111,8 +111,10 @@ var DeviceComponent = (function () {
     };
     DeviceComponent.prototype.reset = function () {
         this.device = {
+            ownerId: -1,
             name: '',
-            id: ''
+            id: '',
+            image: ''
         };
     };
     DeviceComponent.prototype.onClose = function () {

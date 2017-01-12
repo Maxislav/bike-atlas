@@ -14,9 +14,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let dev of devices | isOwner:dev;  let i = index " (click)="preDel($event, i)">
+          <tr *ngFor="let dev of devices ;  let i = index " (click)="preDel($event, i)">
             <td>{{dev.name}}</td>
-            <td>{{dev.id}}</td>
+            <td>{{dev.device_key}}</td>
             <td>{{dev.phone}}</td>
             <td class="predelCell">
               <!--.close((click)="onClose()") &times;-->

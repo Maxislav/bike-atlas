@@ -20,7 +20,7 @@ export interface Device {
 @Injectable()
 export class DeviceService {
 
-    private _devices: Array<Device>;
+    private _devices: Array<Device> = [];
     private socket: any;
 
     constructor(private io: Io,
@@ -30,7 +30,8 @@ export class DeviceService {
 
     ) {
         this.socket = io.socket;
-        this._devices = [];
+        this.devices = user.user.devices;
+
     }
 
     updateDevices() {
@@ -47,7 +48,7 @@ export class DeviceService {
             })
     }
 
-    onAddDevice(device: Device) {
+    onAddDevice(device: Device): Promise<any> {
         return new Promise((resolve, reject) => {
             this.socket.$emit('onAddDevice', device)
                 .then(d => {
@@ -82,16 +83,7 @@ export class DeviceService {
     set devices(devices: Array<Device>) {
         this._devices.length = 0;
         devices.forEach(device => {
-            if(device.ownerId == this.user.user.id){
-                device.image = this.user.user.image
-            }else{
-                const friend = this.friend.friends.find((item)=>{
-                    return device.ownerId == item.id
-                });
-                if(friend){
-                    device.image = friend.image
-                }
-            }
+           
             this._devices.push(device)
         });
     }

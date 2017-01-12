@@ -19,8 +19,9 @@ var DeviceService = (function () {
         this.ls = ls;
         this.user = user;
         this.friend = friend;
-        this.socket = io.socket;
         this._devices = [];
+        this.socket = io.socket;
+        this.devices = user.user.devices;
     }
     DeviceService.prototype.updateDevices = function () {
         var _this = this;
@@ -73,17 +74,6 @@ var DeviceService = (function () {
             var _this = this;
             this._devices.length = 0;
             devices.forEach(function (device) {
-                if (device.ownerId == _this.user.user.id) {
-                    device.image = _this.user.user.image;
-                }
-                else {
-                    var friend = _this.friend.friends.find(function (item) {
-                        return device.ownerId == item.id;
-                    });
-                    if (friend) {
-                        device.image = friend.image;
-                    }
-                }
                 _this._devices.push(device);
             });
         },
