@@ -4,6 +4,8 @@ import {NavigationHistory} from "../../app.component";
 import {Location} from '@angular/common';
 import {PrivateAreaService, Area} from "../../service/private.area.service";
 import {Distance} from "../../service/distance";
+import {UserService} from "../../service/main.user.service";
+import {Setting} from "../../service/auth.service";
 
 
 
@@ -25,12 +27,14 @@ export class PrivateArea{
     private _lng:number;
     private _lat:number;
     private _rad:number;
+    private setting: Setting;
 
     constructor(
         private lh: NavigationHistory ,
         private location: Location,
         private router:Router,
         private distance: Distance,
+        private userService: UserService,
         private areaService:PrivateAreaService
 
     ){
@@ -44,6 +48,7 @@ export class PrivateArea{
         };
         
         this.areas = areaService.areas;
+        this.setting = userService.user.setting;
         this.areaService.onLoadMap
             .then(map=>{
                 this.map = map;
@@ -51,6 +56,9 @@ export class PrivateArea{
                 
             });
 
+    }
+    saveLock(val){
+        this.areaService.saveLock(val);
     }
 
     get lng():number {

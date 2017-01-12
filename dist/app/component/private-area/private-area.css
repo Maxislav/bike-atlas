@@ -56,6 +56,10 @@ button:active {
   cursor: pointer;
   text-decoration: underline;
 }
+.help {
+  font-size: 12px;
+  color: gray;
+}
 .close {
   position: absolute;
   right: 0;

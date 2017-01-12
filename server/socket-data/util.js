@@ -266,6 +266,18 @@ module.exports = {
             })
         })
     },
+    lockPrivateArea: function (connection, user_id, lock) {
+        return new Promise((resolve, reject) => {
+            lock = lock ? 1 : 0;
+            connection.query('UPDATE `setting` SET setting.lock = ? WHERE user_id = ? ', [lock, user_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve()
+            })
+        })
+    },
     addSettingUser: function (connection, user_id) {
         return new Promise((resolve, reject) => {
             connection.query('INSERT INTO `setting` ' +

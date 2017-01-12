@@ -8,6 +8,14 @@
     <div class="row">
       <load-img><img [src]="user.image || 'src/img/no-avatar.gif' " (click)="onOpenImage()"/>
         <div class="row">{{user.name}}</div>
+        <div class="row">
+          <p>
+            <input type="checkbox" id="test1" [(ngModel)]="setting.lock" (ngModelChange)="saveLock(setting.lock)"/>
+            <label for="test1">Мой лог закрытый</label>
+          </p>
+          <div *ngIf="setting.lock" class="help">снять галочку  чтобы все пользователи вас видели онлайн, если вы не находитесь в приватной зоне</div>
+          <div *ngIf="!setting.lock" class="help">поставьте галочку чтобы запретить показ моего местоположения всем кроме друзей</div>
+        </div>
         <input type="file" id="files" name="files[]" multiple="" style="display: none"/>
       </load-img>
     </div>

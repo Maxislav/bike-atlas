@@ -15,7 +15,7 @@ var map_service_1 = require("../service/map.service");
 var position_size_service_1 = require("../service/position-size.service");
 var local_storage_service_1 = require('../service/local-storage.service');
 var mapboxgl = require("@lib/mapbox-gl/mapbox-gl.js");
-var auth_service_1 = require("../service/auth.service");
+var main_user_service_1 = require("../service/main.user.service");
 var MapResolver = (function () {
     function MapResolver() {
         var _this = this;
@@ -43,11 +43,14 @@ var MapResolver = (function () {
 exports.MapResolver = MapResolver;
 ;
 var MapboxGlDirective = (function () {
-    function MapboxGlDirective(el, renderer, mapService, positionSiz, ls, as, mapResolver) {
+    function MapboxGlDirective(el, renderer, mapService, positionSiz, ls, userService, 
+        // private su:AuthService,
+        mapResolver) {
         this.ls = ls;
-        this.as = as;
+        this.userService = userService;
         this.mapResolver = mapResolver;
-        this.setting = as.setting;
+        this.setting = {};
+        this.setting = userService.user.setting;
         this.center = [30.5, 50.5];
         this.el = el;
         this.renderer = renderer;
@@ -97,12 +100,12 @@ var MapboxGlDirective = (function () {
                 "maxzoom": 14
             }
         };
-        console.log(as.setting);
+        console.log(this.setting);
         this.layers = [];
-        if (!as.setting.map || as.setting.map == 'ggl') {
+        if (!this.setting.map || this.setting.map == 'ggl') {
             this.layers.push(layers.ggl);
         }
-        if (as.setting.hill) {
+        if (this.setting.hill) {
             this.layers.push(layers.hill);
         }
         renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'rgba(200,200,200, 1)');
@@ -175,7 +178,7 @@ var MapboxGlDirective = (function () {
         core_2.Directive({
             selector: 'mapbox-gl',
         }), 
-        __metadata('design:paramtypes', [core_2.ElementRef, core_2.Renderer, map_service_1.MapService, position_size_service_1.PositionSize, local_storage_service_1.LocalStorage, auth_service_1.AuthService, MapResolver])
+        __metadata('design:paramtypes', [core_2.ElementRef, core_2.Renderer, map_service_1.MapService, position_size_service_1.PositionSize, local_storage_service_1.LocalStorage, main_user_service_1.UserService, MapResolver])
     ], MapboxGlDirective);
     return MapboxGlDirective;
 }());

@@ -14,13 +14,15 @@ var app_component_1 = require("../../app.component");
 var common_1 = require('@angular/common');
 var private_area_service_1 = require("../../service/private.area.service");
 var distance_1 = require("../../service/distance");
+var main_user_service_1 = require("../../service/main.user.service");
 var PrivateArea = (function () {
-    function PrivateArea(lh, location, router, distance, areaService) {
+    function PrivateArea(lh, location, router, distance, userService, areaService) {
         var _this = this;
         this.lh = lh;
         this.location = location;
         this.router = router;
         this.distance = distance;
+        this.userService = userService;
         this.areaService = areaService;
         this.clickCount = 0;
         this.myArea = {
@@ -32,12 +34,16 @@ var PrivateArea = (function () {
             remove: null
         };
         this.areas = areaService.areas;
+        this.setting = userService.user.setting;
         this.areaService.onLoadMap
             .then(function (map) {
             _this.map = map;
             _this.areaService.showArea();
         });
     }
+    PrivateArea.prototype.saveLock = function (val) {
+        this.areaService.saveLock(val);
+    };
     Object.defineProperty(PrivateArea.prototype, "lng", {
         get: function () {
             return this.myArea.lng ? parseFloat(this.myArea.lng.toFixed(5)) : null;
@@ -151,7 +157,7 @@ var PrivateArea = (function () {
             providers: [distance_1.Distance],
             styleUrls: ['./private-area.css']
         }), 
-        __metadata('design:paramtypes', [app_component_1.NavigationHistory, common_1.Location, router_1.Router, distance_1.Distance, private_area_service_1.PrivateAreaService])
+        __metadata('design:paramtypes', [app_component_1.NavigationHistory, common_1.Location, router_1.Router, distance_1.Distance, main_user_service_1.UserService, private_area_service_1.PrivateAreaService])
     ], PrivateArea);
     return PrivateArea;
 }());

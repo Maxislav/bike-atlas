@@ -6,6 +6,14 @@
       <div class="row">
         <p>Приватные зоны (в разработке..)</p>
       </div>
+      <div class="row">
+        <p>
+          <input type="checkbox" id="test1" [(ngModel)]="setting.lock" (ngModelChange)="saveLock(setting.lock)"/>
+          <label for="test1">Мой лог закрытый</label>
+        </p>
+        <div *ngIf="setting.lock" class="help">снять галочку  чтобы все пользователи вас видели онлайн, если вы не находитесь в приватной зоне</div>
+        <div *ngIf="!setting.lock" class="help">поставьте галочку чтобы запретить показ моего местоположения всем кроме друзей</div>
+      </div>
       <div *ngFor="let area of areas; let i = index" (mouseover)="onOver(area)" class="table saves-area">
         <div class="cell">{{area.lng}}</div>
         <div class="cell">{{area.lat}}</div>

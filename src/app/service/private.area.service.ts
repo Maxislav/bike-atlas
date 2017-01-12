@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {MapService} from "./map.service";
 import {Io} from "./socket.oi.service";
+import {ToastService} from "../component/toast/toast.component";
 
 export  interface Area{
     id?: number;
@@ -24,7 +25,8 @@ export class PrivateAreaService{
 
     constructor(
         private mapService: MapService,
-        private io : Io
+        private io : Io,
+        private toast: ToastService
     ){
         this._areas = [];
         this.socket = io.socket;
@@ -161,6 +163,18 @@ export class PrivateAreaService{
                 map.removeSource(layerId)
             }
         }
+    }
+    saveLock(value){
+        return this.socket.$emit('lockPrivateArea', value)
+            .then(d=>{
+                console.log(d)
+                if(d && d.result == 'ok'){
+                    this.toast.show({
+                        type: 'warning',
+                        text: 'Настройки приватности изменены'
+                    })
+                }
+            })
     }
 
     getNewLayerId(): string {

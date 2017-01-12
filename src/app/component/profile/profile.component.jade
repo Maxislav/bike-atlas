@@ -8,6 +8,12 @@ div.content
             load-img
                 img([src]="user.image || 'src/img/no-avatar.gif' ", (click)="onOpenImage()")
                 .row {{user.name}}
+                .row
+                    p
+                        input(type="checkbox" id="test1", [(ngModel)]="setting.lock", (ngModelChange)="saveLock(setting.lock)")
+                        label(for="test1") Мой лог закрытый
+                    .help(*ngIf="setting.lock") снять галочку  чтобы все пользователи вас видели онлайн, если вы не находитесь в приватной зоне
+                    .help(*ngIf="!setting.lock") поставьте галочку чтобы запретить показ моего местоположения всем кроме друзей
 
                 input(type="file" id="files" name="files[]" multiple="", style="display: none")
         .border-hidden

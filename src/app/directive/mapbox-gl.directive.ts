@@ -7,6 +7,7 @@ import {LocalStorage} from '../service/local-storage.service';
 import * as mapboxgl from "@lib/mapbox-gl/mapbox-gl.js";
 import {Resolve} from "@angular/router";
 import {AuthService, Setting} from "../service/auth.service";
+import {UserService} from "../service/main.user.service";
 
 
 declare var L:any;
@@ -40,7 +41,7 @@ export class MapResolver implements Resolve<any> {
     selector: 'mapbox-gl',
 })
 export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
-    private setting:Setting | {};
+    private setting: Setting = {};
 
     resolve():Promise<any> {
         return new Promise((resolve, reject)=> {
@@ -128,10 +129,11 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
                 mapService:MapService,
                 positionSiz:PositionSize,
                 private ls:LocalStorage,
-                private as:AuthService,
+                private userService: UserService,
+               // private su:AuthService,
                 private mapResolver : MapResolver) {
 
-        this.setting = as.setting;
+        this.setting = userService.user.setting;
         this.center = [30.5, 50.5];
         this.el = el;
         this.renderer = renderer;
@@ -184,12 +186,12 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
             }
         };
 
-        console.log(as.setting)
+        console.log(this.setting);
         this.layers = [];
-        if (!as.setting.map || as.setting.map == 'ggl') {
+        if (! this.setting.map ||  this.setting.map == 'ggl') {
             this.layers.push(layers.ggl)
         }
-        if (as.setting.hill) {
+        if (this.setting.hill) {
             this.layers.push(layers.hill)
         }
 

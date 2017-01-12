@@ -9,8 +9,24 @@ class OnPrivateArea {
     this.socket.on('savePrivateArea', this.savePrivateArea.bind(this))
     this.socket.on('getPrivateArea', this.getPrivateArea.bind(this))
     this.socket.on('removeArea', this.removeArea.bind(this))
+    this.socket.on('lockPrivateArea', this.lockPrivateArea.bind(this, 'lockPrivateArea'))
   }
 
+  lockPrivateArea(eName, val){
+    util.getUserIdBySocketId(this.connection, this.socket.id)
+      .then(user_id=>{
+        return util.lockPrivateArea(this.connection, user_id, val)
+      })
+      .then(d=>{
+        this.socket.emit(eName, {
+          result: 'ok'
+        })
+      })
+      .catch(err=>{
+
+        console.error('lockPrivateArea->', err)
+      })
+  }
   removeArea(area_id) {
     util.getUserIdBySocketId(this.connection, this.socket.id)
       .then(user_id=> {

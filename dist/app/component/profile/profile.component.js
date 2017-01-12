@@ -10,30 +10,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var common_1 = require('@angular/common');
-var auth_service_1 = require("../../service/auth.service");
 var router_1 = require("@angular/router");
 var app_component_1 = require("../../app.component");
 var socket_oi_service_1 = require("../../service/socket.oi.service");
 var toast_component_1 = require("../toast/toast.component");
 var main_user_service_1 = require("../../service/main.user.service");
+var private_area_service_1 = require("../../service/private.area.service");
 var ProfileComponent = (function () {
-    function ProfileComponent(location, elRef, as, router, lh, io, toast, userService) {
+    function ProfileComponent(location, elRef, router, lh, io, toast, areaService, userService) {
         this.location = location;
         this.elRef = elRef;
-        this.as = as;
         this.router = router;
         this.lh = lh;
         this.io = io;
         this.toast = toast;
+        this.areaService = areaService;
         this.user = userService.user;
-        this.imageurl = as.userImage;
-        this.name = as.userName;
+        this.setting = userService.user.setting;
         this.socket = io.socket;
     }
+    ProfileComponent.prototype.saveLock = function (val) {
+        this.areaService.saveLock(val);
+    };
     ProfileComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
         var el = this.elRef.nativeElement;
-        var inputEl = this.inputEl = el.getElementsByTagName("input")[0];
+        var inputEl = this.inputEl = el.getElementsByTagName("input")[1];
         inputEl.addEventListener('change', function () {
             console.log(inputEl.files);
             var file = inputEl.files[0];
@@ -116,7 +118,7 @@ var ProfileComponent = (function () {
             templateUrl: './profile.component.html',
             styleUrls: ['./profile.component.css'],
         }), 
-        __metadata('design:paramtypes', [common_1.Location, core_1.ElementRef, auth_service_1.AuthService, router_1.Router, app_component_1.NavigationHistory, socket_oi_service_1.Io, toast_component_1.ToastService, main_user_service_1.UserService])
+        __metadata('design:paramtypes', [common_1.Location, core_1.ElementRef, router_1.Router, app_component_1.NavigationHistory, socket_oi_service_1.Io, toast_component_1.ToastService, private_area_service_1.PrivateAreaService, main_user_service_1.UserService])
     ], ProfileComponent);
     return ProfileComponent;
 }());

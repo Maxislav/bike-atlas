@@ -6,6 +6,7 @@ import {NavigationHistory} from "../../app.component";
 import {Io} from "../../service/socket.oi.service";
 import {ToastService} from "../toast/toast.component";
 import {UserService, User} from "../../service/main.user.service";
+import {PrivateAreaService} from "../../service/private.area.service";
 
 
 
@@ -20,23 +21,28 @@ export class ProfileComponent implements AfterViewInit{
     private name: string;
     private socket: any;
     private user: User;
+    private setting;
     constructor(private location: Location,
                 private elRef: ElementRef,
-                private as: AuthService,
                 private router:Router,
                 private lh: NavigationHistory,
                 private io : Io,
                 private toast: ToastService,
+                private areaService: PrivateAreaService,
                 userService: UserService
     ){
         this.user = userService.user;
-        this.imageurl = as.userImage;
-        this.name = as.userName;
+        this.setting = userService.user.setting;
         this.socket = io.socket;
     }
+
+    saveLock(val){
+        this.areaService.saveLock(val);
+    }
+    
     ngAfterViewInit():void{
         const el =this.elRef.nativeElement;
-        const inputEl = this.inputEl = el.getElementsByTagName("input")[0];
+        const inputEl = this.inputEl = el.getElementsByTagName("input")[1];
         inputEl.addEventListener('change', ()=>{
             console.log(inputEl.files);
             const file = inputEl.files[0];

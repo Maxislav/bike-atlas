@@ -4,6 +4,12 @@ div.content
         users-container
             .row
                 p Приватные зоны (в разработке..)
+            .row
+                p
+                    input(type="checkbox" id="test1", [(ngModel)]="setting.lock", (ngModelChange)="saveLock(setting.lock)" )
+                    label(for="test1") Мой лог закрытый
+                .help(*ngIf="setting.lock") снять галочку  чтобы все пользователи вас видели онлайн, если вы не находитесь в приватной зоне
+                .help(*ngIf="!setting.lock") поставьте галочку чтобы запретить показ моего местоположения всем кроме друзей
             .table.saves-area(*ngFor="let area of areas\; let i = index", (mouseover)="onOver(area)")
                 .cell
                     |{{area.lng}}

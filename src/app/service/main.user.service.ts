@@ -7,8 +7,9 @@ export interface User{
     id: number;
     name: string;
     image: string;
-    deviceKeys?:Array<string>
-    devices?: Array<Device>
+    deviceKeys?:Array<string>;
+    setting?: any;
+    devices?: Array<Device>;
 }
 
 

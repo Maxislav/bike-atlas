@@ -11,11 +11,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var map_service_1 = require("./map.service");
 var socket_oi_service_1 = require("./socket.oi.service");
+var toast_component_1 = require("../component/toast/toast.component");
 var PrivateAreaService = (function () {
-    function PrivateAreaService(mapService, io) {
+    function PrivateAreaService(mapService, io, toast) {
         var _this = this;
         this.mapService = mapService;
         this.io = io;
+        this.toast = toast;
         this._areas = [];
         this.socket = io.socket;
         this.layerIds = [];
@@ -145,6 +147,19 @@ var PrivateAreaService = (function () {
             }
         };
     };
+    PrivateAreaService.prototype.saveLock = function (value) {
+        var _this = this;
+        return this.socket.$emit('lockPrivateArea', value)
+            .then(function (d) {
+            console.log(d);
+            if (d && d.result == 'ok') {
+                _this.toast.show({
+                    type: 'warning',
+                    text: 'Настройки приватности изменены'
+                });
+            }
+        });
+    };
     PrivateAreaService.prototype.getNewLayerId = function () {
         var min = 0, max = 10000;
         var rand = (min + Math.random() * (max - min));
@@ -159,7 +174,7 @@ var PrivateAreaService = (function () {
     };
     PrivateAreaService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [map_service_1.MapService, socket_oi_service_1.Io])
+        __metadata('design:paramtypes', [map_service_1.MapService, socket_oi_service_1.Io, toast_component_1.ToastService])
     ], PrivateAreaService);
     return PrivateAreaService;
 }());
