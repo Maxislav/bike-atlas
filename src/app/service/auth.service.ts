@@ -36,8 +36,7 @@ export class AuthService implements Resolve<any>{
         this._setting = {};
         this.socket.on('connect', this.onConnect.bind(this));
         this.socket.on('disconnect', (d) => {
-            console.log('disconnect');
-           // this.userName = null;
+            console.info('disconnect');
         });
     }
     resolve(): Promise<any> {
@@ -47,10 +46,12 @@ export class AuthService implements Resolve<any>{
     }
 
     onAuth(){
+
         this.onConnect()
     }
 
     onConnect() {
+        console.info('connect');
         this.socket.$emit('onAuth', {
             hash: this.ls.userKey
         }).then(d => {

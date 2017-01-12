@@ -29,8 +29,7 @@ var AuthService = (function () {
         this._setting = {};
         this.socket.on('connect', this.onConnect.bind(this));
         this.socket.on('disconnect', function (d) {
-            console.log('disconnect');
-            // this.userName = null;
+            console.info('disconnect');
         });
     }
     AuthService.prototype.resolve = function () {
@@ -44,6 +43,7 @@ var AuthService = (function () {
     };
     AuthService.prototype.onConnect = function () {
         var _this = this;
+        console.info('connect');
         this.socket.$emit('onAuth', {
             hash: this.ls.userKey
         }).then(function (d) {

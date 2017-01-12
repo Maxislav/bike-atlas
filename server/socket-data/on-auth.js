@@ -63,6 +63,7 @@ class OnAuth {
                 const arrLastPosition = [];
                 const emitLastPosition= () =>{
                     this.socket.removeListener(hash, emitLastPosition);
+                    util.clearHash(hash);
                     deviceKeys.forEach(key=>{
                         arrLastPosition.push(
                             util.getLastPosition(this.connection, key)

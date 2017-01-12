@@ -461,7 +461,6 @@ module.exports = {
         }
     },
     getHash : function () {
-
         const $possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         let hash = '';
         for (let i = 0; i < 32; i++) {
@@ -472,6 +471,9 @@ module.exports = {
         } else {
             return hash;
         }
+    },
+    clearHash: function (hash) {
+        hashKeys.splice(hashKeys.indexOf(hash), 1)
     }
 
 };
