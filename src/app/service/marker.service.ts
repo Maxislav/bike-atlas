@@ -111,8 +111,8 @@ export class MarkerService {
                 mapBearing = map.getBearing();
             }
         }*/
-        
-        
+        marker2.image = user.image || 'src/img/no-avatar.gif';
+        marker2.elapsed= '...'
         marker2.update = function (mark: Marker) {
             for (let opt in mark) {
                 this[opt] = mark[opt]

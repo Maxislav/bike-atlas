@@ -9,25 +9,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var device_service_1 = require("../../../service/device.service");
 var map_service_1 = require("../../../service/map.service");
-var log_service_1 = require("../../../service/log.service");
+var main_user_service_1 = require("../../../service/main.user.service");
 var MenuAthleteComponent = (function () {
-    function MenuAthleteComponent(ds, mapServ, ls) {
-        this.ds = ds;
-        this.mapServ = mapServ;
-        this.ls = ls;
-        this.devices = ds.devices;
+    function MenuAthleteComponent(user, mapService) {
+        this.user = user;
+        this.mapService = mapService;
+        this.userDevices = user.user.devices;
     }
     MenuAthleteComponent.prototype.selectDevice = function (device) {
-        var deviceData = this.ls.getDeviceData(device.id);
-        console.log(deviceData);
-        if (deviceData) {
-            this.mapServ.map.flyTo({
-                center: [deviceData.lng, deviceData.lat]
+        if (device.marker) {
+            this.mapService.map.flyTo({
+                center: [device.marker.lng, device.marker.lat]
             });
         }
+        /* const deviceData  = this.ls.getDeviceData(device.id)
+         console.log(deviceData);
+         if(deviceData){
+             this.mapServ.map.flyTo({
+                 center: [deviceData.lng, deviceData.lat]
+             })
+         }*/
     };
+    Object.defineProperty(MenuAthleteComponent.prototype, "friendDevices", {
+        get: function () {
+            var devices = [];
+            this.user.friends.forEach(function (friend) {
+                friend.devices.forEach(function (dev) {
+                    devices.push(dev);
+                });
+            });
+            return devices;
+        },
+        enumerable: true,
+        configurable: true
+    });
     MenuAthleteComponent.prototype.ngOnDestroy = function () {
         /* if(this.interval){
              clearInterval(this.interval)
@@ -40,7 +56,7 @@ var MenuAthleteComponent = (function () {
             templateUrl: './menu.athlete.component.html',
             styleUrls: ['./menu.athlete.component.css'],
         }), 
-        __metadata('design:paramtypes', [device_service_1.DeviceService, map_service_1.MapService, log_service_1.LogService])
+        __metadata('design:paramtypes', [main_user_service_1.UserService, map_service_1.MapService])
     ], MenuAthleteComponent);
     return MenuAthleteComponent;
 }());

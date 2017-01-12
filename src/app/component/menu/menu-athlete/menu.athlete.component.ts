@@ -3,6 +3,8 @@ import {Component} from "@angular/core";
 import {DeviceService, Device} from "../../../service/device.service";
 import {MapService} from "../../../service/map.service";
 import {LogService} from "../../../service/log.service";
+import {UserService} from "../../../service/main.user.service";
+import {forEach} from "@angular/router/esm/src/utils/collection";
 
 @Component({
     moduleId: module.id,
@@ -11,27 +13,43 @@ import {LogService} from "../../../service/log.service";
     styleUrls: ['./menu.athlete.component.css'],
 })
 export class MenuAthleteComponent{
-    private devices: Array<Device>;
-    private interval: number;
-    private passed: Array<number>;
+   
+    private userDevices: Array<Device>;
+    private _friendDevices: Array<Device>;
 
 
-    constructor(private ds: DeviceService,
-                private  mapServ: MapService,
-                private ls: LogService
-               ){
 
-        this.devices = ds.devices;
+    constructor(   private user: UserService, private mapService: MapService){
+        this.userDevices = user.user.devices;
     }
 
     selectDevice(device){
-        const deviceData  = this.ls.getDeviceData(device.id)
+        if(device.marker){
+            this.mapService.map.flyTo({
+                center: [device.marker.lng, device.marker.lat]
+            })
+        }
+
+       /* const deviceData  = this.ls.getDeviceData(device.id)
         console.log(deviceData);
         if(deviceData){
             this.mapServ.map.flyTo({
                 center: [deviceData.lng, deviceData.lat]
             })
-        }
+        }*/
+    }
+
+    get friendDevices():Array<Device> {
+        const devices = [];
+        
+        this.user.friends.forEach(friend=>{
+           friend.devices.forEach(dev=>{
+               devices.push(dev)
+           })
+            
+        });
+        
+        return devices;
     }
 
     ngOnDestroy(){
