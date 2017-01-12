@@ -12,11 +12,16 @@ var core_1 = require("@angular/core");
 var UserService = (function () {
     function UserService() {
         this._friends = [];
-        this._other = [];
         this._user = {
             name: null,
             id: null,
             image: null
+        };
+        this._other = {
+            id: null,
+            name: null,
+            image: null,
+            devices: []
         };
     }
     UserService.prototype.clearUser = function () {
@@ -42,6 +47,20 @@ var UserService = (function () {
         }
         this.clearUser();
     };
+    UserService.prototype.createDeviceOther = function (device) {
+        this._other.devices.push(device);
+        return device;
+    };
+    Object.defineProperty(UserService.prototype, "other", {
+        get: function () {
+            return this._other;
+        },
+        set: function (value) {
+            this._other = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(UserService.prototype, "friends", {
         get: function () {
             return this._friends;

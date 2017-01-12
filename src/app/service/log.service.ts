@@ -48,6 +48,25 @@ export class LogService {
                 i++;
             }
         }
+        
+        if(!device){
+            device =  this.getDevice(this.user.other, marker);
+            if(!device){
+
+
+                device = this.user.createDeviceOther({
+                    device_key:marker.device_key,
+                    name: marker.name,
+                    ownerId: marker.ownerId
+                });
+
+                this.getOtherImage(marker.ownerId)
+
+
+                user = marker
+            }
+        }
+        
 
         console.log(device);
 
@@ -58,6 +77,7 @@ export class LogService {
             device.marker.update(marker)
         }
 
+        
        /* const device: Device = this.ds.devices.find(item => {
             return item.id == marker.id
         });
@@ -84,16 +104,35 @@ export class LogService {
         }*/
     }
 
-    private getDevice(user: User, marker: Marker){
-        if(!marker) return null;
-        const devices =user.devices;
-       return devices.find(item => {
+    private getDevice(user:User, marker:Marker) {
+        if (!marker) return null;
+        if(!user.devices){
+            return null;
+        }
+        const devices = user.devices;
+        return devices.find(item => {
             return item.device_key == marker.device_key
         });
     }
 
     clearDevices() {
         
+    }
+
+    setOtherImage(ownerId, image){
+       const device =  this.user.other.devices.find(dev=>{
+            return dev.ownerId == ownerId
+        });
+        if(device && device.marker){
+            device.marker.updateSetImage(image)
+        }
+    }
+
+    getOtherImage(id){
+        this.socket.$emit('getUserImage', id)
+            .then(d=>{
+                this.setOtherImage(d.id , d.image)
+            })
     }
 
     getLastPosition() {

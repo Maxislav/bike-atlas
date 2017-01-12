@@ -13,8 +13,21 @@ class OnFriend {
         this.socket.on('getFriends', this.getFriends.bind(this));
         this.socket.on('onDelFriend', this.onDelFriend.bind(this));
         this.socket.on('onRejectInvite', this.onRejectInvite.bind(this));
+        this.socket.on('getUserImage', this.getUserImage.bind(this, 'getUserImage'));
     }
 
+      getUserImage(eName, user_id){
+        return util.getUserImageById(this.connection, user_id)
+          .then(image=>{
+            this.socket.emit(eName, {
+              id: user_id,
+              image: image
+            })
+          })
+          .catch(err=>{
+            console.error('Error getUserImage->', err)
+          })
+      }
 
 
     onRejectInvite(enemy_id){

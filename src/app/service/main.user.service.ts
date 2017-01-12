@@ -16,15 +16,24 @@ export interface User{
 @Injectable()
 
 export class UserService{
+    
+
     private _user: User;
     private _friends: Array<User> = [];
-    private _other:Array<User> = [];
+    private _other: User;
     constructor(){
         this._user = {
             name: null,
             id: null,
             image: null
         };
+        this._other = {
+            id: null,
+            name: null,
+            image: null,
+            devices: []
+        };
+        
 
     }
 
@@ -52,6 +61,20 @@ export class UserService{
 
         this.clearUser();
     }
+    
+    createDeviceOther(device){
+        this._other.devices.push(device);
+        return device
+    }
+
+    get other():User {
+        return this._other;
+    }
+
+    set other(value:User) {
+        this._other = value;
+    }
+  
 
     set friends(friends: Array<User>){
         if(!friends) return;

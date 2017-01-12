@@ -2,6 +2,7 @@ let app, ioServer;
 const dateFormat = require('dateformat');
 const util = require('./socket-data/util');
 const http = require( "http" );
+const distance = require('./distance');
 module.exports = class Logger {
     /** @namespace this.connection */
 
@@ -48,13 +49,68 @@ module.exports = class Logger {
         }
 
         console.log('onLog ->', data);
+
+        const emitedSockets = [];
+
         if (this.devices && this.devices[device_id]) {
             this.devices[device_id].forEach(socket_id => {
                 if(data){
+                    emitedSockets.push(socket_id);
                     this.sockets[socket_id] && this.sockets[socket_id].emit('log', data);
                 }
             })
         }
+        this.emitUnlockUser(emitedSockets, data)
+
+    }
+
+    emitUnlockUser(emitUnlockUser, device){
+        let _name;
+        let _userId;
+        let _setting;
+        util.getOwnerDevice(this.connection, device.device_key)
+          .then(rows=>{
+              if(rows && rows.length){
+                  _userId = rows[0].id;
+                  _name = rows[0].name;
+                  return util.getUserSettingByUserId(this.connection, _userId)
+                    .then(setting=>{
+                        return setting
+                    })
+              }
+              return null;
+          })
+          .then(setting=>{
+              if(setting && setting.lock == 0){
+                  _setting = setting;
+                  return util.getPrivateArea(this.connection, _userId)
+              }
+              return false
+          })
+          .then(areas=>{
+              if(areas){
+                  const isInPrivate =  distance.isInPrivate(areas, device);
+
+                  if(!isInPrivate){
+                      console.log('emitUnlockUser->',isInPrivate);
+                      
+                      for(var socket_id in this.sockets){
+                          if(emitUnlockUser.indexOf(socket_id)==-1){
+                              device.ownerId = _userId;
+                              device.name  = _name;
+                              this.sockets[socket_id].emit('log', device)
+                          }
+                      }
+                  }
+              }
+              
+              
+             
+          })
+          .catch(err=>{
+              console.error('Error emitUnlockUser->', err)
+          })
+
     }
 
     updateDevice(device_key, socket_id) {

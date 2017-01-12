@@ -351,6 +351,18 @@ module.exports = {
             })
         });
     },
+    getOwnerDevice: function (connection, device_key) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT user.id, device.name from `user` INNER JOIN `device` ON device.user_id = user.id AND device_key=? ';
+            connection.query(query, [device_key], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows)
+            })
+        });
+    },
     getMyInvites: function (connection, user_id) {
         return new Promise((resolve, reject) => {
             const query = 'SELECT * from `invite` WHERE `user_id` = ?  order by `id` desc limit 150';
@@ -397,6 +409,23 @@ module.exports = {
                     return
                 }
                 resolve(rows)
+            })
+        });
+    },
+    getUserImageById: function (connection, user_id) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * from `user` WHERE `id` = ? order by `id` desc limit 1';
+            connection.query(query, [user_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                if(rows && rows.length){
+                    resolve(rows[0].image)    
+                }else{
+                    reject('no user->', rows)
+                }
+                
             })
         });
     },

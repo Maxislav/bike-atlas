@@ -37,48 +37,9 @@ var MarkerService = (function () {
             .addTo(map);
         var intervalUpdateMarker = null;
         var timer = this.timer;
-        /*const marker:Marker = {
-            id: layerId,
-            popup: popup,
-            deviceData: marker2,
-            elapsed: '...',
-            status: getIconImage(marker2),
-            updateMarker: function () {
-                this.status = getIconImage(this.deviceData);
-                icoContainer.setAttribute('status', this.status);
-                this.elapsed = timer.elapse(this.deviceData.date)
-            },
-            update: function (d:DeviceData) {
-                for (let opt in d) {
-                    this.deviceData[opt] = d[opt]
-                }
-                point.coordinates = [d.lng, d.lat];
-                popup.setLngLat(point.coordinates);
-                iconMarker.setLngLat(point.coordinates);
-                this.status = getIconImage(this.deviceData);
-                icoContainer.setAttribute('status', this.status);
-
-                //map.getSource(layerId).setData(point);
-            },
-            rotate: function () {
-                map.setLayoutProperty(layerId, 'icon-rotate', point.bearing - map.getBearing());
-                map.getSource(layerId).setData(point)
-            },
-            hide: function () {
-                //map.removeLayer(layerId);
-                //map.removeSource(layerId);
-                popup.remove();
-                console.log('delete marker id', layerId);
-                iconMarker.remove();
-                intervalUpdateMarker && clearInterval(intervalUpdateMarker);
-            }
-        };*/
-        /*function move() {
-            if (map.getBearing() != mapBearing) {
-                marker.rotate();
-                mapBearing = map.getBearing();
-            }
-        }*/
+        marker2.updateSetImage = function (src) {
+            img.src = src;
+        };
         marker2.image = user.image || 'src/img/no-avatar.gif';
         marker2.elapsed = '...';
         marker2.update = function (mark) {

@@ -37,6 +37,18 @@ var LogService = (function () {
                 i++;
             }
         }
+        if (!device) {
+            device = this.getDevice(this.user.other, marker);
+            if (!device) {
+                device = this.user.createDeviceOther({
+                    device_key: marker.device_key,
+                    name: marker.name,
+                    ownerId: marker.ownerId
+                });
+                this.getOtherImage(marker.ownerId);
+                user = marker;
+            }
+        }
         console.log(device);
         if (device && !device.marker) {
             marker.name = device.name;
@@ -71,12 +83,30 @@ var LogService = (function () {
     LogService.prototype.getDevice = function (user, marker) {
         if (!marker)
             return null;
+        if (!user.devices) {
+            return null;
+        }
         var devices = user.devices;
         return devices.find(function (item) {
             return item.device_key == marker.device_key;
         });
     };
     LogService.prototype.clearDevices = function () {
+    };
+    LogService.prototype.setOtherImage = function (ownerId, image) {
+        var device = this.user.other.devices.find(function (dev) {
+            return dev.ownerId == ownerId;
+        });
+        if (device && device.marker) {
+            device.marker.updateSetImage(image);
+        }
+    };
+    LogService.prototype.getOtherImage = function (id) {
+        var _this = this;
+        this.socket.$emit('getUserImage', id)
+            .then(function (d) {
+            _this.setOtherImage(d.id, d.image);
+        });
     };
     LogService.prototype.getLastPosition = function () {
         var _this = this;
