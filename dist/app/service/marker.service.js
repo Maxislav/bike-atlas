@@ -42,6 +42,7 @@ var MarkerService = (function () {
         var timer = this.timer;
         marker.updateSetImage = function (src) {
             img.src = src;
+            this.image = src;
         };
         marker.image = user.image || 'src/img/no-avatar.gif';
         marker.elapsed = '...';

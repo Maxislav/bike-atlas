@@ -3,18 +3,14 @@ import {Router} from "@angular/router";
 import {NavigationHistory} from "../../app.component";
 import {Location} from '@angular/common';
 import {PrivateAreaService, Area} from "../../service/private.area.service";
-import {Distance} from "../../service/distance";
 import {UserService} from "../../service/main.user.service";
 import {Setting} from "../../service/auth.service";
-
-
-
+import {distance} from "../../util/distance";
 
 @Component({
     //noinspection TypeScriptUnresolvedVariable
     moduleId: module.id,
     templateUrl: './private-area.html',
-    providers: [Distance],
     styleUrls: ['./private-area.css']
 })
 export class PrivateArea{
@@ -33,7 +29,6 @@ export class PrivateArea{
         private lh: NavigationHistory ,
         private location: Location,
         private router:Router,
-        private distance: Distance,
         private userService: UserService,
         private areaService:PrivateAreaService
 
@@ -77,7 +72,7 @@ export class PrivateArea{
         this.clickCount++;
         const move = (e)=>{
 
-            const dist = this.distance.distance([
+            const dist = distance([
                 this.myArea.lng,
                 this.myArea.lat,
             ],[

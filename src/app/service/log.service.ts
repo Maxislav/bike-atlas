@@ -59,24 +59,21 @@ export class LogService {
 
         if (!device) {
             device = this.getDevice(this.user.other, devData);
-            if (!device) {
-
-                device = this.user.createDeviceOther({
-                    device_key: devData.device_key,
-                    name: devData.name,
-                    ownerId: devData.ownerId
-                });
-
-                this.getOtherImage(devData.ownerId);
-                user = {
-                    id: null,
-                    name: devData.name,
-                    image: null
-                }
-
-            }
         }
 
+        if (!device) {
+            device = this.user.createDeviceOther({
+                device_key: devData.device_key,
+                name: devData.name,
+                ownerId: devData.ownerId
+            });
+            this.getOtherImage(devData.ownerId);
+            user = {
+                id: null,
+                name: devData.name,
+                image: null
+            }
+        }
 
         console.log(device);
 

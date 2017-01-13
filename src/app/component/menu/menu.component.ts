@@ -13,6 +13,7 @@ import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
 import {FriendsService} from "../../service/friends.service";
 import {UserService, User} from "../../service/main.user.service";
+import {ToastService} from "../toast/toast.component";
 //import {Track} from "./track";
 
 declare var document: any;
@@ -40,10 +41,14 @@ export class MenuComponent{
         public as: AuthService,
         private router: Router,
         private friend: FriendsService,
-        userService: UserService){
+        private userService: UserService,
+    private toast: ToastService)
+
+    {
         this.user = userService.user;
         this.invites = friend.invites;
         this.trackList = track.trackList;
+
     }
     onOpen(){
         this.ms.menuOpen = !this.ms.menuOpen;
@@ -52,7 +57,16 @@ export class MenuComponent{
         this.ms.menuOpenLogin = !this.ms.menuOpenLogin;
     }
     onOpenAthlete(){
-        this.ms.menuAthlete = !this.ms.menuAthlete;
+        if(this.user.name || this.userService.other.devices.length){
+            this.ms.menuAthlete = !this.ms.menuAthlete;
+        }else {
+            this.toast.show({
+                type: 'warning',
+                text: 'Вы не вошли в системы'
+            })
+        }
+
+
     }
     goToProfile(){
         if(this.as.userName){

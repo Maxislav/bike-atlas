@@ -16,11 +16,13 @@ export class MenuAthleteComponent{
    
     private userDevices: Array<Device>;
     private _friendDevices: Array<Device>;
+    private otherDevices: Array<Device>;
 
 
 
     constructor(   private user: UserService, private mapService: MapService){
         this.userDevices = user.user.devices;
+        this.otherDevices = user.other.devices;
     }
 
     selectDevice(device){
@@ -29,14 +31,6 @@ export class MenuAthleteComponent{
                 center: [device.marker.lng, device.marker.lat]
             })
         }
-
-       /* const deviceData  = this.ls.getDeviceData(device.id)
-        console.log(deviceData);
-        if(deviceData){
-            this.mapServ.map.flyTo({
-                center: [deviceData.lng, deviceData.lat]
-            })
-        }*/
     }
 
     get friendDevices():Array<Device> {

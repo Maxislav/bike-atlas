@@ -15,7 +15,7 @@ var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
 var app_component_1 = require('./app.component');
-var my_hero_detail_component_1 = require('./my-hero-detail.component');
+//import {HeroDetailComponent}  from './my-hero-detail.component';
 var app_routing_1 = require('./app.routing');
 var heroes_component_1 = require("./heroes.component");
 //import {DashboardComponent} from "./dasboard.component";
@@ -50,6 +50,7 @@ var timer_service_1 = require("./service/timer.service");
 var private_area_1 = require("./component/private-area/private-area");
 var mapbox_gl_directive_1 = require("./directive/mapbox-gl.directive");
 var private_area_service_1 = require("./service/private.area.service");
+var no_found_component_1 = require("./no-found.component");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -71,7 +72,6 @@ var AppModule = (function () {
                 map_component_1.MapComponent,
                 auth_component_1.AuthComponent,
                 app_component_1.AppComponent,
-                my_hero_detail_component_1.HeroDetailComponent,
                 heroes_component_1.HeroesComponent,
                 menu_component_1.MenuComponent,
                 menu_track_component_1.MenuTrackComponent,
@@ -83,7 +83,8 @@ var AppModule = (function () {
                 profile_component_1.ProfileComponent,
                 journal_component_1.JournalComponent,
                 friends_component_1.FriendsComponent,
-                private_area_1.PrivateArea
+                private_area_1.PrivateArea,
+                no_found_component_1.NoFoundComponent
             ],
             bootstrap: [
                 app_component_1.AppComponent

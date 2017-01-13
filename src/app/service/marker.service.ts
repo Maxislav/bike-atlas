@@ -43,8 +43,6 @@ export class MarkerService {
 
     marker(devData:DeviceData, user: User):Marker {
         const marker : Marker = deepCopy(devData);
-        
-     
         const map = this.mapService.map;
         const layerId:string = this.getNewLayer(0, 5000000, true) + '';
         const mapboxgl = this.mapService.mapboxgl;
@@ -76,7 +74,8 @@ export class MarkerService {
 
 
         marker.updateSetImage = function (src) {
-            img.src = src
+            img.src = src;
+            this.image = src;
         };
         marker.image = user.image || 'src/img/no-avatar.gif';
         marker.elapsed= '...';

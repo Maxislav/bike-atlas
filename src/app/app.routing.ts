@@ -19,6 +19,7 @@ import {JournalComponent} from "./component/journal-component/journal.component"
 import {FriendsComponent} from "./component/friends-component/friends-component";
 import {PrivateArea} from "./component/private-area/private-area";
 import {MapResolver} from "./directive/mapbox-gl.directive";
+import {NoFoundComponent} from "./no-found.component";
 
 const  appRouters: Routes = [
     {
@@ -26,6 +27,7 @@ const  appRouters: Routes = [
         redirectTo: 'auth/map',
         pathMatch: 'full'
     },
+
     {
         path: 'auth',
         component: AuthComponent,
@@ -73,6 +75,14 @@ const  appRouters: Routes = [
             }
         ]
         
+    },
+    {
+        path:'404',
+        component: NoFoundComponent
+    },
+    {
+        path: '**',
+        redirectTo: '404',
     },
     {
         path: 'heroes',

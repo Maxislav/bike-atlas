@@ -10,6 +10,7 @@ var profile_component_1 = require("./component/profile/profile.component");
 var journal_component_1 = require("./component/journal-component/journal.component");
 var friends_component_1 = require("./component/friends-component/friends-component");
 var private_area_1 = require("./component/private-area/private-area");
+var no_found_component_1 = require("./no-found.component");
 var appRouters = [
     {
         path: '',
@@ -60,6 +61,14 @@ var appRouters = [
                 ]
             }
         ]
+    },
+    {
+        path: '404',
+        component: no_found_component_1.NoFoundComponent
+    },
+    {
+        path: '**',
+        redirectTo: '404',
     },
     {
         path: 'heroes',

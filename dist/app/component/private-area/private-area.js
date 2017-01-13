@@ -13,15 +13,14 @@ var router_1 = require("@angular/router");
 var app_component_1 = require("../../app.component");
 var common_1 = require('@angular/common');
 var private_area_service_1 = require("../../service/private.area.service");
-var distance_1 = require("../../service/distance");
 var main_user_service_1 = require("../../service/main.user.service");
+var distance_1 = require("../../util/distance");
 var PrivateArea = (function () {
-    function PrivateArea(lh, location, router, distance, userService, areaService) {
+    function PrivateArea(lh, location, router, userService, areaService) {
         var _this = this;
         this.lh = lh;
         this.location = location;
         this.router = router;
-        this.distance = distance;
         this.userService = userService;
         this.areaService = areaService;
         this.clickCount = 0;
@@ -69,7 +68,7 @@ var PrivateArea = (function () {
         var _this = this;
         this.clickCount++;
         var move = function (e) {
-            var dist = _this.distance.distance([
+            var dist = distance_1.distance([
                 _this.myArea.lng,
                 _this.myArea.lat,
             ], [
@@ -154,10 +153,9 @@ var PrivateArea = (function () {
             //noinspection TypeScriptUnresolvedVariable
             moduleId: module.id,
             templateUrl: './private-area.html',
-            providers: [distance_1.Distance],
             styleUrls: ['./private-area.css']
         }), 
-        __metadata('design:paramtypes', [app_component_1.NavigationHistory, common_1.Location, router_1.Router, distance_1.Distance, main_user_service_1.UserService, private_area_service_1.PrivateAreaService])
+        __metadata('design:paramtypes', [app_component_1.NavigationHistory, common_1.Location, router_1.Router, main_user_service_1.UserService, private_area_service_1.PrivateAreaService])
     ], PrivateArea);
     return PrivateArea;
 }());

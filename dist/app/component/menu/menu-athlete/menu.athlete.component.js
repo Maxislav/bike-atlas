@@ -16,6 +16,7 @@ var MenuAthleteComponent = (function () {
         this.user = user;
         this.mapService = mapService;
         this.userDevices = user.user.devices;
+        this.otherDevices = user.other.devices;
     }
     MenuAthleteComponent.prototype.selectDevice = function (device) {
         if (device.marker) {
@@ -23,13 +24,6 @@ var MenuAthleteComponent = (function () {
                 center: [device.marker.lng, device.marker.lat]
             });
         }
-        /* const deviceData  = this.ls.getDeviceData(device.id)
-         console.log(deviceData);
-         if(deviceData){
-             this.mapServ.map.flyTo({
-                 center: [deviceData.lng, deviceData.lat]
-             })
-         }*/
     };
     Object.defineProperty(MenuAthleteComponent.prototype, "friendDevices", {
         get: function () {

@@ -58,7 +58,6 @@ export class UserService{
         while (this.friends.length){
             this.friends.shift()
         }
-
         this.clearUser();
     }
     

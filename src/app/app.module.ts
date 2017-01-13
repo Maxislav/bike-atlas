@@ -6,7 +6,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule}   from '@angular/forms';
 
 import {AppComponent}  from './app.component';
-import {HeroDetailComponent}  from './my-hero-detail.component';
+//import {HeroDetailComponent}  from './my-hero-detail.component';
 import {routing} from './app.routing';
 import {HeroesComponent} from "./heroes.component";
 //import {DashboardComponent} from "./dasboard.component";
@@ -41,6 +41,7 @@ import {TimerService} from "./service/timer.service";
 import {PrivateArea} from "./component/private-area/private-area";
 import {MapResolver} from "./directive/mapbox-gl.directive";
 import {PrivateAreaService} from "./service/private.area.service";
+import {NoFoundComponent} from "./no-found.component";
 
 @NgModule({
     imports: [
@@ -59,7 +60,6 @@ import {PrivateAreaService} from "./service/private.area.service";
         MapComponent,
         AuthComponent,
         AppComponent,
-        HeroDetailComponent,
         HeroesComponent,
         MenuComponent,
         MenuTrackComponent,
@@ -71,7 +71,8 @@ import {PrivateAreaService} from "./service/private.area.service";
         ProfileComponent,
         JournalComponent,
         FriendsComponent,
-        PrivateArea
+        PrivateArea,
+        NoFoundComponent
     ],
     bootstrap: [
         AppComponent

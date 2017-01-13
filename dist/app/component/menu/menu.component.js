@@ -21,12 +21,15 @@ var auth_service_1 = require("../../service/auth.service");
 var router_1 = require("@angular/router");
 var friends_service_1 = require("../../service/friends.service");
 var main_user_service_1 = require("../../service/main.user.service");
+var toast_component_1 = require("../toast/toast.component");
 var MenuComponent = (function () {
-    function MenuComponent(ms, track, as, router, friend, userService) {
+    function MenuComponent(ms, track, as, router, friend, userService, toast) {
         this.ms = ms;
         this.as = as;
         this.router = router;
         this.friend = friend;
+        this.userService = userService;
+        this.toast = toast;
         this.user = userService.user;
         this.invites = friend.invites;
         this.trackList = track.trackList;
@@ -38,7 +41,15 @@ var MenuComponent = (function () {
         this.ms.menuOpenLogin = !this.ms.menuOpenLogin;
     };
     MenuComponent.prototype.onOpenAthlete = function () {
-        this.ms.menuAthlete = !this.ms.menuAthlete;
+        if (this.user.name || this.userService.other.devices.length) {
+            this.ms.menuAthlete = !this.ms.menuAthlete;
+        }
+        else {
+            this.toast.show({
+                type: 'warning',
+                text: 'Вы не вошли в системы'
+            });
+        }
     };
     MenuComponent.prototype.goToProfile = function () {
         if (this.as.userName) {
@@ -56,7 +67,7 @@ var MenuComponent = (function () {
             styleUrls: ['./menu.component.css'],
             providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService, track_list_component_1.TrackList]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, track_service_1.TrackService, auth_service_1.AuthService, router_1.Router, friends_service_1.FriendsService, main_user_service_1.UserService])
+        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, track_service_1.TrackService, auth_service_1.AuthService, router_1.Router, friends_service_1.FriendsService, main_user_service_1.UserService, toast_component_1.ToastService])
     ], MenuComponent);
     return MenuComponent;
     var _a;

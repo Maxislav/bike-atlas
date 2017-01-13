@@ -18,7 +18,7 @@ export class LoginService{
                  public as: AuthService,
                  private ts: ToastService,
                  private  deviceService: DeviceService,
-                 private userService: UserService,
+                 private userService: UserService
     ){
         this.socket = io.socket;
     }
