@@ -50,16 +50,13 @@ export class DeviceService {
     }
 
     onAddDevice(device: Device): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.socket.$emit('onAddDevice', device)
-                .then(d => {
-                    if (d && d.result == 'ok') {
-                        this.updateDevices();
-                        resolve(d)
-                    }
-                    reject()
-                })
-        })
+       return this.socket.$emit('onAddDevice', device)
+            .then(d => {
+                if (d && d.result == 'ok') {
+                    this.updateDevices();
+                }
+                return d;
+            })
     }
     onDelDevice(device: Device){
        return this.socket.$emit('onDelDevice', device)

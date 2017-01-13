@@ -115,6 +115,11 @@ export class DeviceComponent {
             .then(d=> {
                 if (d && d.result == 'ok') {
                     this.reset()
+                }else if(d && d.result === false && d.message == 'device exist'){
+                    this.toast.show({
+                        type: 'warning',
+                        text: "Устройство зарегистрированно на другого пользователя"
+                    });
                 }
             })
     }

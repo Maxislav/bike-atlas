@@ -91,6 +91,17 @@ module.exports = {
             })
         })
     },
+    getDeviceByKey: function (connection, device_key) {
+        return new Promise((resolve, reject) => {
+            connection.query('SELECT `user_id` FROM `device` WHERE `device_key`= ? ', [device_key], function (err, rows) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows)
+            })
+        })
+    },
     getDeviceByUserId: function (connection, user_id) {
             return new Promise((resolve, reject) => {
                 connection.query('SELECT * FROM `device` WHERE `user_id`=?', [user_id], function (err, rows) {
@@ -135,6 +146,9 @@ module.exports = {
         })
     },
     addDeviceBySocketId: function (connection, socket_id, device) {
+
+
+
         return this.getUserIdBySocketId(connection, socket_id)
             .then(user_id => {
                 return new Promise((resolve, reject) => {

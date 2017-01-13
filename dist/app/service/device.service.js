@@ -39,15 +39,12 @@ var DeviceService = (function () {
     };
     DeviceService.prototype.onAddDevice = function (device) {
         var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.socket.$emit('onAddDevice', device)
-                .then(function (d) {
-                if (d && d.result == 'ok') {
-                    _this.updateDevices();
-                    resolve(d);
-                }
-                reject();
-            });
+        return this.socket.$emit('onAddDevice', device)
+            .then(function (d) {
+            if (d && d.result == 'ok') {
+                _this.updateDevices();
+            }
+            return d;
         });
     };
     DeviceService.prototype.onDelDevice = function (device) {
