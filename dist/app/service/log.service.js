@@ -19,17 +19,21 @@ var LogService = (function () {
         this.socket = io.socket;
         this.socket.on('log', this.log.bind(this));
         this.devices = {};
+        var a = {
+            a: 1,
+            b: 3
+        };
     }
-    LogService.prototype.log = function (marker) {
+    LogService.prototype.log = function (devData) {
         var user;
-        var device = this.getDevice(this.user.user, marker);
+        var device = this.getDevice(this.user.user, devData);
         if (device) {
             user = this.user.user;
         }
         if (!device) {
             var i = 0;
             while (i < this.user.friends.length) {
-                device = this.getDevice(this.user.friends[i], marker);
+                device = this.getDevice(this.user.friends[i], devData);
                 if (device) {
                     user = this.user.friends[i];
                     break;
@@ -38,57 +42,61 @@ var LogService = (function () {
             }
         }
         if (!device) {
-            device = this.getDevice(this.user.other, marker);
+            device = this.getDevice(this.user.other, devData);
             if (!device) {
                 device = this.user.createDeviceOther({
-                    device_key: marker.device_key,
-                    name: marker.name,
-                    ownerId: marker.ownerId
+                    device_key: devData.device_key,
+                    name: devData.name,
+                    ownerId: devData.ownerId
                 });
-                this.getOtherImage(marker.ownerId);
-                user = marker;
+                this.getOtherImage(devData.ownerId);
+                user = {
+                    id: null,
+                    name: devData.name,
+                    image: null
+                };
             }
         }
         console.log(device);
         if (device && !device.marker) {
-            marker.name = device.name;
-            device.marker = this.markerService.marker(marker, user);
+            devData.name = device.name;
+            device.marker = this.markerService.marker(devData, user);
         }
         else if (device && device.marker) {
-            device.marker.update(marker);
+            device.marker.update(devData);
         }
         /* const device: Device = this.ds.devices.find(item => {
-             return item.id == marker.id
+         return item.id == marker.id
          });
-         
+
          if(!device) return;
-         
+
          if(device.marker){
-             
+
          }else{
-             device.marker = this.markerService.marker(marker)
+         device.marker = this.markerService.marker(marker)
          }*/
         /*console.log(deviceData);
-        if (this.devices[deviceData.id]) {
-            this.devices[deviceData.id].update(deviceData);
-        } else {
-            let device: Device = this.ds.devices.find(item => {
-                return item.id == deviceData.id
-            });
-            deviceData.name = device.name;
-            deviceData.image = device.image;
-            device.marker = this.devices[deviceData.id] = this.markerService.marker(deviceData)
-        }*/
+         if (this.devices[deviceData.id]) {
+         this.devices[deviceData.id].update(deviceData);
+         } else {
+         let device: Device = this.ds.devices.find(item => {
+         return item.id == deviceData.id
+         });
+         deviceData.name = device.name;
+         deviceData.image = device.image;
+         device.marker = this.devices[deviceData.id] = this.markerService.marker(deviceData)
+         }*/
     };
-    LogService.prototype.getDevice = function (user, marker) {
-        if (!marker)
+    LogService.prototype.getDevice = function (user, devData) {
+        if (!devData)
             return null;
         if (!user.devices) {
             return null;
         }
         var devices = user.devices;
         return devices.find(function (item) {
-            return item.device_key == marker.device_key;
+            return item.device_key == devData.device_key;
         });
     };
     LogService.prototype.clearDevices = function () {

@@ -11,61 +11,64 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var map_service_1 = require("./map.service");
 var timer_service_1 = require("./timer.service");
+var deep_copy_1 = require("../util/deep-copy");
+var elapsed_status_1 = require("../util/elapsed-status");
 var MarkerService = (function () {
     function MarkerService(mapService, timer) {
         this.mapService = mapService;
         this.timer = timer;
         this.layerIds = [];
     }
-    MarkerService.prototype.marker = function (marker2, user) {
+    MarkerService.prototype.marker = function (devData, user) {
+        var marker = deep_copy_1.deepCopy(devData);
         var map = this.mapService.map;
         var layerId = this.getNewLayer(0, 5000000, true) + '';
         var mapboxgl = this.mapService.mapboxgl;
         var mapBearing = map.getBearing();
         var icoContainer = document.createElement('div');
         icoContainer.classList.add("user-icon");
-        icoContainer.setAttribute('status', getIconImage(marker2));
+        icoContainer.setAttribute('status', elapsed_status_1.elapsedStatus(devData));
         var img = new Image();
         img.src = user.image || 'src/img/no-avatar.gif';
         icoContainer.appendChild(img);
         var popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15], closeButton: false })
-            .setLngLat([marker2.lng, marker2.lat])
-            .setHTML('<div>' + marker2.name + '</div>')
+            .setLngLat([devData.lng, devData.lat])
+            .setHTML('<div>' + devData.name + '</div>')
             .addTo(map);
         var iconMarker = new mapboxgl.Marker(icoContainer, { offset: [-20, -20] })
-            .setLngLat([marker2.lng, marker2.lat])
+            .setLngLat([devData.lng, devData.lat])
             .addTo(map);
         var intervalUpdateMarker = null;
         var timer = this.timer;
-        marker2.updateSetImage = function (src) {
+        marker.updateSetImage = function (src) {
             img.src = src;
         };
-        marker2.image = user.image || 'src/img/no-avatar.gif';
-        marker2.elapsed = '...';
-        marker2.update = function (mark) {
-            for (var opt in mark) {
-                this[opt] = mark[opt];
+        marker.image = user.image || 'src/img/no-avatar.gif';
+        marker.elapsed = '...';
+        marker.update = function (devData) {
+            for (var opt in devData) {
+                this[opt] = devData[opt];
             }
             popup.setLngLat([this.lng, this.lat]);
             iconMarker.setLngLat([this.lng, this.lat]);
-            this.status = getIconImage(this);
+            this.status = elapsed_status_1.elapsedStatus(this);
             icoContainer.setAttribute('status', this.status);
         };
-        marker2.updateMarker = function () {
-            this.status = getIconImage(this);
+        marker.updateMarker = function () {
+            this.status = elapsed_status_1.elapsedStatus(this);
             icoContainer.setAttribute('status', this.status);
             this.elapsed = timer.elapse(this.date);
         };
-        marker2.remove = function () {
+        marker.remove = function () {
             popup.remove();
             console.log('delete marker id', layerId);
             iconMarker.remove();
             intervalUpdateMarker && clearInterval(intervalUpdateMarker);
         };
         intervalUpdateMarker = setInterval(function () {
-            marker2.updateMarker();
+            marker.updateMarker();
         }, 1000);
-        return marker2;
+        return marker;
     };
     MarkerService.prototype.getNewLayer = function (min, max, int) {
         var rand = min + Math.random() * (max - min);
@@ -86,22 +89,4 @@ var MarkerService = (function () {
     return MarkerService;
 }());
 exports.MarkerService = MarkerService;
-function getIconImage(device) {
-    var dateLong = new Date(device.date).getTime();
-    var passed = new Date().getTime() - dateLong;
-    if (passed < 10 * 60 * 1000) {
-        if (device.speed < 0.1) {
-            return 'green';
-        }
-        else {
-            return 'arrow';
-        }
-    }
-    else if (passed < 3600 * 12 * 1000) {
-        return 'yellow';
-    }
-    else {
-        return 'white';
-    }
-}
 //# sourceMappingURL=marker.service.js.map

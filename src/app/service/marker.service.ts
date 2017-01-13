@@ -4,6 +4,8 @@ import {Point} from "./track.var";
 import {DeviceData} from "./log.service";
 import {TimerService} from "./timer.service";
 import {User} from "./main.user.service";
+import {deepCopy} from "../util/deep-copy";
+import {elapsedStatus} from "../util/elapsed-status";
 
 export interface Marker {
     id:string;
@@ -39,7 +41,9 @@ export class MarkerService {
     }
 
 
-    marker(marker2:Marker, user: User):Marker {
+    marker(devData:DeviceData, user: User):Marker {
+        const marker : Marker = deepCopy(devData);
+        
      
         const map = this.mapService.map;
         const layerId:string = this.getNewLayer(0, 5000000, true) + '';
@@ -49,7 +53,7 @@ export class MarkerService {
         const icoContainer = document.createElement('div');
         icoContainer.classList.add("user-icon");
 
-        icoContainer.setAttribute('status', getIconImage(marker2));
+        icoContainer.setAttribute('status', elapsedStatus(devData));
 
 
         const img = new Image();
@@ -57,12 +61,12 @@ export class MarkerService {
         icoContainer.appendChild(img);
 
         const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
-            .setLngLat([marker2.lng, marker2.lat])
-            .setHTML('<div>' + marker2.name + '</div>')
+            .setLngLat([devData.lng, devData.lat])
+            .setHTML('<div>' + devData.name + '</div>')
             .addTo(map);
 
         const iconMarker = new mapboxgl.Marker(icoContainer, {offset: [-20, -20]})
-            .setLngLat([marker2.lng, marker2.lat])
+            .setLngLat([devData.lng, devData.lat])
             .addTo(map);
 
 
@@ -70,29 +74,29 @@ export class MarkerService {
 
         const timer = this.timer;
 
-        
-        marker2.updateSetImage = function (src) {
+
+        marker.updateSetImage = function (src) {
             img.src = src
         };
-        marker2.image = user.image || 'src/img/no-avatar.gif';
-        marker2.elapsed= '...'
-        marker2.update = function (mark: Marker) {
-            for (let opt in mark) {
-                this[opt] = mark[opt]
+        marker.image = user.image || 'src/img/no-avatar.gif';
+        marker.elapsed= '...';
+        marker.update = function (devData: DeviceData) {
+            for (let opt in devData) {
+                this[opt] = devData[opt]
             }
             popup.setLngLat([this.lng, this.lat]);
             iconMarker.setLngLat([this.lng, this.lat]);
-            this.status = getIconImage(this);
+            this.status = elapsedStatus(this);
             icoContainer.setAttribute('status', this.status);
         };
-        
-        marker2.updateMarker = function () {
-            this.status = getIconImage(this);
+
+        marker.updateMarker = function () {
+            this.status = elapsedStatus(this);
             icoContainer.setAttribute('status', this.status);
             this.elapsed = timer.elapse(this.date)
         };
 
-        marker2.remove = function () {
+        marker.remove = function () {
             popup.remove();
             console.log('delete marker id', layerId);
             iconMarker.remove();
@@ -100,12 +104,12 @@ export class MarkerService {
         };
 
         intervalUpdateMarker = setInterval(()=> {
-            marker2.updateMarker();
+            marker.updateMarker();
         }, 1000);
         
         
 
-        return marker2;
+        return marker;
     }
 
     getNewLayer(min, max, int) {
@@ -120,22 +124,4 @@ export class MarkerService {
         }
 
     }
-}
-
-function getIconImage(device) {
-
-    let dateLong = new Date(device.date).getTime();
-    let passed = new Date().getTime() - dateLong;
-    if (passed < 10 * 60 * 1000) {
-        if (device.speed < 0.1) {
-            return 'green';
-        } else {
-            return 'arrow'
-        }
-    } else if (passed < 3600 * 12 * 1000) {
-        return 'yellow'
-    } else {
-        return 'white'
-    }
-
 }

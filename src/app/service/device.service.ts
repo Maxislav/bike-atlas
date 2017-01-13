@@ -5,6 +5,7 @@ import {Marker} from "./marker.service";
 import {FriendsService} from "./friends.service";
 import {UserService} from "./main.user.service";
 
+
 export interface Device {
     id: string;
     name: string;
