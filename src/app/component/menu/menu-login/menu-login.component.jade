@@ -1,16 +1,17 @@
 div((click)="$event.stopPropagation();$event.preventDefault()" )
-    div(*ngIf="!user.name")
-        ul
-            li
-                label Имя
-                input(type="text", [(ngModel)]="name")
-            li
-                label Пароль
-                input( type="password", [(ngModel)]="pass")
-            li((click)="onEnter($event)")
-                div() Вход
-            li
-                a((click)="goToReg()") Регистрация
+    form(name='formLogin', (submit)="onEnter()")
+        div(*ngIf="!user.name")
+            ul
+                li
+                    label Имя
+                    input(type="text", [(ngModel)]="name", name='name')
+                li
+                    label Пароль
+                    input( type="password", [(ngModel)]="pass", name='pass')
+                li()
+                    button((click)="onEnter($event)") Вход
+                li
+                    a((click)="goToReg()") Регистрация
     .border-hidden
     template([ngIf]="user.name")
         ul
