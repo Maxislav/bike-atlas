@@ -77,6 +77,9 @@ export class FriendsComponent{
         }
         return false
     }
+    onCancelInvite(user: User){
+        this.friend.onCancelInvite(user.id)
+    }
 
     isFriend(user: User){
         let i = 0;

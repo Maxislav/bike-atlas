@@ -65,6 +65,9 @@ var FriendsComponent = (function () {
         }
         return false;
     };
+    FriendsComponent.prototype.onCancelInvite = function (user) {
+        this.friend.onCancelInvite(user.id);
+    };
     FriendsComponent.prototype.isFriend = function (user) {
         var i = 0;
         while (i < this.friends.length) {

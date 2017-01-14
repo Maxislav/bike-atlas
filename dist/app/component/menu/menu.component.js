@@ -41,14 +41,14 @@ var MenuComponent = (function () {
         this.ms.menuOpenLogin = !this.ms.menuOpenLogin;
     };
     MenuComponent.prototype.onOpenAthlete = function () {
-        if (this.user.name || this.userService.other.devices.length) {
-            this.ms.menuAthlete = !this.ms.menuAthlete;
-        }
-        else {
+        if (!this.user.name && !this.userService.other.devices.length) {
             this.toast.show({
                 type: 'warning',
-                text: 'Вы не вошли в системы'
+                text: 'Нет онлайн пользователей'
             });
+        }
+        else {
+            this.ms.menuAthlete = !this.ms.menuAthlete;
         }
     };
     MenuComponent.prototype.goToProfile = function () {

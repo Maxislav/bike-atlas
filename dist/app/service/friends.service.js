@@ -97,6 +97,15 @@ var FriendsService = (function () {
             _this.getInvites();
         });
     };
+    FriendsService.prototype.onCancelInvite = function (enemy_id) {
+        var _this = this;
+        this.socket.$emit('onCancelInvite', enemy_id)
+            .then(function (d) {
+            console.log(d);
+            _this.updateFriends();
+            _this.getInvites();
+        });
+    };
     FriendsService.prototype.clearUsers = function () {
         this.users = [];
         this.invites = [];

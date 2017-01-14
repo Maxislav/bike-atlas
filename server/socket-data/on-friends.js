@@ -14,53 +14,78 @@ class OnFriend {
         this.socket.on('onDelFriend', this.onDelFriend.bind(this));
         this.socket.on('onRejectInvite', this.onRejectInvite.bind(this));
         this.socket.on('getUserImage', this.getUserImage.bind(this, 'getUserImage'));
+        this.socket.on('onCancelInvite', this.onCancelInvite.bind(this, 'onCancelInvite'));
     }
 
-      getUserImage(eName, user_id){
-        return util.getUserImageById(this.connection, user_id)
-          .then(image=>{
-            this.socket.emit(eName, {
-              id: user_id,
-              image: image
+    onCancelInvite(eName, enemy_id) {
+        return util.getUserIdBySocketId(this.connection, this.socket.id)
+            .then(user_id=>{
+                return util.onCancelInvite(this.connection, user_id, enemy_id)
             })
-          })
-          .catch(err=>{
-            console.error('Error getUserImage->', err)
-          })
-      }
-
-
-    onRejectInvite(enemy_id){
-
-      return  util.getUserIdBySocketId(this.connection, this.socket.id)
-        .then(user_id => {
-          return util.getInvites(this.connection, user_id)
-            .then((rows)=>{
-            const enemy =  R.find(item=>{
-               return item.user_id == enemy_id
-              })(rows);
-              
-              if(enemy){
-                util.delInviteByUserId(this.connection, enemy.user_id)
-                  .then(d=>{
-                    this.socket.emit('onRejectInvite', {
-                      result: 'ok'
-                    })
-                  })
-              }
+            .then(d=>{
+                this.socket.emit(eName, {
+                    result: 'ok'
+                })
             })
-         
-        })
-        .catch(err => {
-            this.socket.emit('onRejectInvite', {
-              result: false,
-              message: err
+            .catch(err => {
+                this.socket.emit(eName, {
+                    result: false,
+                    message: err
+                });
+
+                console.error('error onCancelInvite -> ', err)
             });
 
-          console.error('error onRejectInvite -> ', err)
-        });
+
 
     }
+
+    getUserImage(eName, user_id) {
+        return util.getUserImageById(this.connection, user_id)
+            .then(image => {
+                this.socket.emit(eName, {
+                    id: user_id,
+                    image: image
+                })
+            })
+            .catch(err => {
+                console.error('Error getUserImage->', err)
+            })
+    }
+
+
+    onRejectInvite(enemy_id) {
+
+        return util.getUserIdBySocketId(this.connection, this.socket.id)
+            .then(user_id => {
+                return util.getInvites(this.connection, user_id)
+                    .then((rows) => {
+                        const enemy = R.find(item => {
+                            return item.user_id == enemy_id
+                        })(rows);
+
+                        if (enemy) {
+                            util.delInviteByUserId(this.connection, enemy.user_id)
+                                .then(d => {
+                                    this.socket.emit('onRejectInvite', {
+                                        result: 'ok'
+                                    })
+                                })
+                        }
+                    })
+
+            })
+            .catch(err => {
+                this.socket.emit('onRejectInvite', {
+                    result: false,
+                    message: err
+                });
+
+                console.error('error onRejectInvite -> ', err)
+            });
+
+    }
+
     /**
      *
      * @param {boolean}isOnDelFriend
@@ -141,7 +166,7 @@ class OnFriend {
                         }
                     })
             })
-            .catch(err=>{
+            .catch(err => {
                 console.error('Error onDelFriend ->', err)
             })
 
