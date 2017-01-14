@@ -43,12 +43,12 @@ var TimerService = (function () {
         result += seconds + "s";
         return result;
     };
-    TimerService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
-    ], TimerService);
     return TimerService;
 }());
+TimerService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
+], TimerService);
 exports.TimerService = TimerService;
 ;
 //# sourceMappingURL=timer.service.js.map

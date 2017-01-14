@@ -39,11 +39,11 @@ var Io = (function () {
         enumerable: true,
         configurable: true
     });
-    Io = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
-    ], Io);
     return Io;
 }());
+Io = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
+], Io);
 exports.Io = Io;
 //# sourceMappingURL=socket.oi.service.js.map

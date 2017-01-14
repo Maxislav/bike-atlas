@@ -8,12 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var core_2 = require('@angular/core');
+var core_1 = require("@angular/core");
+var core_2 = require("@angular/core");
 //import any = jasmine.any;
 var map_service_1 = require("../service/map.service");
 var position_size_service_1 = require("../service/position-size.service");
-var local_storage_service_1 = require('../service/local-storage.service');
+var local_storage_service_1 = require("../service/local-storage.service");
 var mapboxgl = require("@lib/mapbox-gl/mapbox-gl.js");
 var main_user_service_1 = require("../service/main.user.service");
 var MapResolver = (function () {
@@ -34,12 +34,12 @@ var MapResolver = (function () {
     MapResolver.prototype.resolve = function () {
         return this._resPromise;
     };
-    MapResolver = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
-    ], MapResolver);
     return MapResolver;
 }());
+MapResolver = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
+], MapResolver);
 exports.MapResolver = MapResolver;
 ;
 var MapboxGlDirective = (function () {
@@ -174,13 +174,19 @@ var MapboxGlDirective = (function () {
         this.mapService.setMap(this.map);
     };
     ;
-    MapboxGlDirective = __decorate([
-        core_2.Directive({
-            selector: 'mapbox-gl',
-        }), 
-        __metadata('design:paramtypes', [core_2.ElementRef, core_2.Renderer, map_service_1.MapService, position_size_service_1.PositionSize, local_storage_service_1.LocalStorage, main_user_service_1.UserService, MapResolver])
-    ], MapboxGlDirective);
     return MapboxGlDirective;
 }());
+MapboxGlDirective = __decorate([
+    core_2.Directive({
+        selector: 'mapbox-gl',
+    }),
+    __metadata("design:paramtypes", [core_2.ElementRef,
+        core_2.Renderer,
+        map_service_1.MapService,
+        position_size_service_1.PositionSize,
+        local_storage_service_1.LocalStorage,
+        main_user_service_1.UserService,
+        MapResolver])
+], MapboxGlDirective);
 exports.MapboxGlDirective = MapboxGlDirective;
 //# sourceMappingURL=mapbox-gl.directive.js.map

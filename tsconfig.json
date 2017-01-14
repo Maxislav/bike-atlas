@@ -9,7 +9,10 @@
     "removeComments": false,
     "noImplicitAny": false,
     "rootDir": "./src",
-    "outDir": "dist/"
+    "outDir": "dist/",
+    "typeRoots": [
+      "node_modules/@types/"
+    ]
 
   },
   "exclude": [

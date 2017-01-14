@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var NavigationHistory = (function () {
     function NavigationHistory() {
@@ -21,12 +21,12 @@ var NavigationHistory = (function () {
         enumerable: true,
         configurable: true
     });
-    NavigationHistory = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
-    ], NavigationHistory);
     return NavigationHistory;
 }());
+NavigationHistory = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
+], NavigationHistory);
 exports.NavigationHistory = NavigationHistory;
 var AppComponent = (function () {
     function AppComponent(router, nh) {
@@ -38,20 +38,20 @@ var AppComponent = (function () {
             }
         });
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'my-app',
-            //templateUrl: 'src/app/template/my-app.html',
-            template: '<toast-component></toast-component><router-outlet></router-outlet>',
-            providers: [NavigationHistory],
-            styleUrls: [
-                'css/app.component.css',
-            ]
-        }), 
-        __metadata('design:paramtypes', [router_1.Router, NavigationHistory])
-    ], AppComponent);
     return AppComponent;
 }());
+AppComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        selector: 'my-app',
+        //templateUrl: 'src/app/template/my-app.html',
+        template: '<toast-component></toast-component><router-outlet></router-outlet>',
+        providers: [NavigationHistory],
+        styleUrls: [
+            'css/app.component.css',
+        ]
+    }),
+    __metadata("design:paramtypes", [router_1.Router, NavigationHistory])
+], AppComponent);
 exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map

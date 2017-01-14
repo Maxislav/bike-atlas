@@ -89,11 +89,11 @@ var UserService = (function () {
         enumerable: true,
         configurable: true
     });
-    UserService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
-    ], UserService);
     return UserService;
 }());
+UserService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
+], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=main.user.service.js.map

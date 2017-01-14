@@ -11,9 +11,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var R = require('@ramda/ramda.min.js');
-var util_1 = require('./util');
+var core_1 = require("@angular/core");
+var R = require("@ramda/ramda.min.js");
+var util_1 = require("./util");
 var socket_oi_service_1 = require("./socket.oi.service");
 var F = parseFloat;
 var TrackService = (function () {
@@ -190,11 +190,11 @@ var TrackService = (function () {
         enumerable: true,
         configurable: true
     });
-    TrackService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_oi_service_1.Io])
-    ], TrackService);
     return TrackService;
 }());
+TrackService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io])
+], TrackService);
 exports.TrackService = TrackService;
 //# sourceMappingURL=track.service.js.map

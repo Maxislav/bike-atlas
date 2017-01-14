@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var common_1 = require('@angular/common');
+var common_1 = require("@angular/common");
 var router_1 = require("@angular/router");
 var app_component_1 = require("../../app.component");
 var socket_oi_service_1 = require("../../service/socket.oi.service");
@@ -112,15 +112,22 @@ var ProfileComponent = (function () {
             }
         });
     };
-    ProfileComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            templateUrl: './profile.component.html',
-            styleUrls: ['./profile.component.css'],
-        }), 
-        __metadata('design:paramtypes', [common_1.Location, core_1.ElementRef, router_1.Router, app_component_1.NavigationHistory, socket_oi_service_1.Io, toast_component_1.ToastService, private_area_service_1.PrivateAreaService, main_user_service_1.UserService])
-    ], ProfileComponent);
     return ProfileComponent;
 }());
+ProfileComponent = __decorate([
+    core_1.Component({
+        moduleId: module.id,
+        templateUrl: './profile.component.html',
+        styleUrls: ['./profile.component.css'],
+    }),
+    __metadata("design:paramtypes", [common_1.Location,
+        core_1.ElementRef,
+        router_1.Router,
+        app_component_1.NavigationHistory,
+        socket_oi_service_1.Io,
+        toast_component_1.ToastService,
+        private_area_service_1.PrivateAreaService,
+        main_user_service_1.UserService])
+], ProfileComponent);
 exports.ProfileComponent = ProfileComponent;
 //# sourceMappingURL=profile.component.js.map
