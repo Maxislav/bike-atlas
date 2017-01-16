@@ -15,11 +15,14 @@ var core_1 = require('@angular/core');
 var R = require('@ramda/ramda.min.js');
 var util_1 = require('./util');
 var socket_oi_service_1 = require("./socket.oi.service");
+var map_service_1 = require("./map.service");
 var F = parseFloat;
+var I = parseInt;
 var TrackService = (function () {
-    function TrackService(io) {
+    function TrackService(io, mapService) {
         var _this = this;
         this.io = io;
+        this.mapService = mapService;
         this._trackList = [];
         this.layerIds = [];
         this._trackList = [];
@@ -54,14 +57,14 @@ var TrackService = (function () {
         var points = [];
         var trackList = this.trackList;
         var color = this._getColor();
-        console.log(color);
+        var map = this.mapService.map;
         data.forEach(function (_a) {
             var lng = _a.lng, lat = _a.lat;
             coordinates.push([lng, lat]);
             points.push({ lng: lng, lat: lat });
         });
         var layerId = this.getRandom(0, 5000000, false) + '';
-        this.map.addSource(layerId, {
+        map.addSource(layerId, {
             "type": "geojson",
             "data": {
                 "type": "Feature",
@@ -72,7 +75,7 @@ var TrackService = (function () {
                 }
             }
         });
-        this.map.addLayer({
+        map.addLayer({
             "id": layerId,
             "type": "line",
             "source": layerId,
@@ -88,8 +91,8 @@ var TrackService = (function () {
         });
         var tr = {
             hide: function () {
-                $this.map.removeLayer(layerId);
-                $this.map.removeSource(layerId);
+                map.removeLayer(layerId);
+                map.removeSource(layerId);
                 var index = R.findIndex(R.propEq('id', layerId))(trackList);
                 trackList.splice(index, 1);
                 console.log('delete track index', index);
@@ -107,6 +110,49 @@ var TrackService = (function () {
         trackList.push(tr);
         console.log(tr);
         return tr;
+    };
+    TrackService.prototype.marker = function (point) {
+        var map = this.mapService.map;
+        var mapboxgl = this.mapService.mapboxgl;
+        var icoContainer = document.createElement('div');
+        icoContainer.classList.add("track-icon");
+        var icoEl = document.createElement('div');
+        icoContainer.appendChild(icoEl);
+        var iconMarker = new mapboxgl.Marker(icoContainer, { offset: [-10, -10] })
+            .setLngLat([point.lng, point.lat])
+            .addTo(map);
+        var marker = {
+            lng: point.lng,
+            lat: point.lat,
+            bearing: point.bearing,
+            _mapBearing: map.getBearing(),
+            rotate: function () {
+                var angle = this.bearing - this._mapBearing;
+                icoEl.style.transform = "rotate(" + I(angle + '') + "deg)";
+            },
+            update: function (point) {
+                for (var opt in point) {
+                    this[opt] = point[opt];
+                }
+                if (point.bearing) {
+                    this.rotate();
+                }
+                iconMarker.setLngLat([this.lng, this.lat]);
+            },
+            remove: function () {
+                iconMarker.remove();
+                map.off('move', rotate);
+            }
+        };
+        var rotate = function () {
+            var mapBearing = map.getBearing();
+            if (marker._mapBearing != mapBearing) {
+                marker._mapBearing = mapBearing;
+                marker.rotate();
+            }
+        };
+        map.on('move', rotate);
+        return marker;
     };
     TrackService.prototype.showSpriteMarker = function (point) {
         var point = {
@@ -192,7 +238,7 @@ var TrackService = (function () {
     });
     TrackService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_oi_service_1.Io])
+        __metadata('design:paramtypes', [socket_oi_service_1.Io, map_service_1.MapService])
     ], TrackService);
     return TrackService;
 }());

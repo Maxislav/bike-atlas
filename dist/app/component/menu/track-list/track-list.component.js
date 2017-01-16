@@ -11,9 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var track_service_1 = require("app/service/track.service");
 var util_1 = require("app/service/util");
+var map_service_1 = require("../../../service/map.service");
 var TrackList = (function () {
-    function TrackList(track) {
+    function TrackList(track, mapService) {
         this.track = track;
+        this.mapService = mapService;
         this.util = new util_1.Util();
         this.list = track.trackList;
         //this.permitMovie = true
@@ -27,16 +29,22 @@ var TrackList = (function () {
     TrackList.prototype.onGo = function (_tr) {
         this.hideTrack();
         var $this = this;
-        var map = this.track.map;
+        var map = this.mapService.map;
         var points = this.fillTrack(_tr.points);
-        var marker = this.track.showSpriteMarker(points[0]);
+        var marker = this.track.marker(points[0]); //this.track.showSpriteMarker(points[0]);
+        /**
+         * todo
+         */
+        // return;
         var timeout;
         var i = 0;
         var step = 1;
         flyTo();
         function flyTo() {
-            map.setCenter([points[i].lng, points[i].lat]);
-            marker.setCenter(points[i], points[i].bearing);
+            if (points[i]) {
+                map.setCenter([points[i].lng, points[i].lat]);
+                marker.update(points[i]);
+            }
             if (i < points.length - 2) {
                 timeout = setTimeout(function () {
                     i += step;
@@ -66,7 +74,7 @@ var TrackList = (function () {
         }
         this.stop = function () {
             clearTimeout(timeout);
-            marker.hide();
+            marker.remove();
         };
     };
     TrackList.prototype.fillTrack = function (points) {
@@ -112,7 +120,7 @@ var TrackList = (function () {
             templateUrl: "./track-list.html",
             styleUrls: ['./track-list.css']
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof track_service_1.TrackService !== 'undefined' && track_service_1.TrackService) === 'function' && _a) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof track_service_1.TrackService !== 'undefined' && track_service_1.TrackService) === 'function' && _a) || Object, map_service_1.MapService])
     ], TrackList);
     return TrackList;
     var _a;
