@@ -63,6 +63,10 @@ var LogService = (function () {
         if (device && !device.marker) {
             devData.name = device.name;
             device.marker = this.markerService.marker(devData, user);
+            if (this.devices[device.device_key]) {
+                this.devices[device.device_key].marker.remove();
+            }
+            this.devices[device.device_key] = device;
         }
         else if (device && device.marker) {
             device.marker.update(devData);
@@ -112,11 +116,11 @@ var LogService = (function () {
         }
         return null;
     };
+    LogService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [socket_oi_service_1.Io, main_user_service_1.UserService, marker_service_1.MarkerService])
+    ], LogService);
     return LogService;
 }());
-LogService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [socket_oi_service_1.Io, main_user_service_1.UserService, marker_service_1.MarkerService])
-], LogService);
 exports.LogService = LogService;
 //# sourceMappingURL=log.service.js.map

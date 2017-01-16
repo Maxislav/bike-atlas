@@ -56,11 +56,11 @@ var LocalStorage = (function () {
         enumerable: true,
         configurable: true
     });
+    LocalStorage = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [])
+    ], LocalStorage);
     return LocalStorage;
 }());
-LocalStorage = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
-], LocalStorage);
 exports.LocalStorage = LocalStorage;
 //# sourceMappingURL=local-storage.service.js.map

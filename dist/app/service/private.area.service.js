@@ -172,13 +172,11 @@ var PrivateAreaService = (function () {
             return newId;
         }
     };
+    PrivateAreaService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [map_service_1.MapService, socket_oi_service_1.Io, toast_component_1.ToastService])
+    ], PrivateAreaService);
     return PrivateAreaService;
 }());
-PrivateAreaService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [map_service_1.MapService,
-        socket_oi_service_1.Io,
-        toast_component_1.ToastService])
-], PrivateAreaService);
 exports.PrivateAreaService = PrivateAreaService;
 //# sourceMappingURL=private.area.service.js.map

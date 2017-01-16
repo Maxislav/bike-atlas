@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var app_component_1 = require("../../app.component");
-var common_1 = require("@angular/common");
+var common_1 = require('@angular/common');
 var private_area_service_1 = require("../../service/private.area.service");
 var main_user_service_1 = require("../../service/main.user.service");
 var distance_1 = require("../../util/distance");
@@ -148,20 +148,16 @@ var PrivateArea = (function () {
         }
         this.areaService.hideArea();
     };
+    PrivateArea = __decorate([
+        core_1.Component({
+            //noinspection TypeScriptUnresolvedVariable
+            moduleId: module.id,
+            templateUrl: './private-area.html',
+            styleUrls: ['./private-area.css']
+        }), 
+        __metadata('design:paramtypes', [app_component_1.NavigationHistory, common_1.Location, router_1.Router, main_user_service_1.UserService, private_area_service_1.PrivateAreaService])
+    ], PrivateArea);
     return PrivateArea;
 }());
-PrivateArea = __decorate([
-    core_1.Component({
-        //noinspection TypeScriptUnresolvedVariable
-        moduleId: module.id,
-        templateUrl: './private-area.html',
-        styleUrls: ['./private-area.css']
-    }),
-    __metadata("design:paramtypes", [app_component_1.NavigationHistory,
-        common_1.Location,
-        router_1.Router,
-        main_user_service_1.UserService,
-        private_area_service_1.PrivateAreaService])
-], PrivateArea);
 exports.PrivateArea = PrivateArea;
 //# sourceMappingURL=private-area.js.map

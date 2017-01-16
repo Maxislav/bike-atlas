@@ -170,13 +170,11 @@ var FriendsService = (function () {
         enumerable: true,
         configurable: true
     });
+    FriendsService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, main_user_service_1.UserService])
+    ], FriendsService);
     return FriendsService;
 }());
-FriendsService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [socket_oi_service_1.Io,
-        local_storage_service_1.LocalStorage,
-        main_user_service_1.UserService])
-], FriendsService);
 exports.FriendsService = FriendsService;
 //# sourceMappingURL=friends.service.js.map

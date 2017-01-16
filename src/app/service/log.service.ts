@@ -80,7 +80,11 @@ export class LogService {
 
         if (device && !device.marker) {
             devData.name = device.name;
-            device.marker = this.markerService.marker(devData, user)
+            device.marker = this.markerService.marker(devData, user);
+            if(this.devices[device.device_key]){
+                this.devices[device.device_key].marker.remove();
+            }
+            this.devices[device.device_key] = device;
         } else if (device && device.marker) {
             device.marker.update(devData)
         }

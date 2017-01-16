@@ -1,6 +1,6 @@
 "use strict";
-var router_1 = require("@angular/router");
-var heroes_component_1 = require("./heroes.component");
+var router_1 = require('@angular/router');
+var heroes_component_1 = require('./heroes.component');
 var auth_component_1 = require("./component/auth-component/auth.component");
 var map_component_1 = require("./map.component");
 var registration_component_1 = require("./component/registration/registration.component");

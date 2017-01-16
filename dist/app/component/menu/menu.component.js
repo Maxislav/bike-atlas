@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 22.11.16.
  */
-var core_1 = require("@angular/core");
-var menu_track_component_1 = require("./menu-track/menu-track.component");
+var core_1 = require('@angular/core');
+var menu_track_component_1 = require('./menu-track/menu-track.component');
 //import any = jasmine.any;
 var menu_service_1 = require("app/service/menu.service");
 var track_service_1 = require("../../service/track.service");
@@ -59,23 +59,18 @@ var MenuComponent = (function () {
     MenuComponent.prototype.goToFriends = function () {
         this.router.navigate(['/auth/map/friends']);
     };
+    MenuComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'menu',
+            templateUrl: './menu.component.html',
+            styleUrls: ['./menu.component.css'],
+            providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService, track_list_component_1.TrackList]
+        }), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, track_service_1.TrackService, auth_service_1.AuthService, router_1.Router, friends_service_1.FriendsService, main_user_service_1.UserService, toast_component_1.ToastService])
+    ], MenuComponent);
     return MenuComponent;
+    var _a;
 }());
-MenuComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'menu',
-        templateUrl: './menu.component.html',
-        styleUrls: ['./menu.component.css'],
-        providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService, track_list_component_1.TrackList]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof menu_service_1.MenuService !== "undefined" && menu_service_1.MenuService) === "function" && _a || Object, track_service_1.TrackService,
-        auth_service_1.AuthService,
-        router_1.Router,
-        friends_service_1.FriendsService,
-        main_user_service_1.UserService,
-        toast_component_1.ToastService])
-], MenuComponent);
 exports.MenuComponent = MenuComponent;
-var _a;
 //# sourceMappingURL=menu.component.js.map

@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
+var core_1 = require('@angular/core');
+var common_1 = require('@angular/common');
 var router_1 = require("@angular/router");
 var device_service_1 = require("../../service/device.service");
 var app_component_1 = require("../../app.component");
@@ -20,14 +20,14 @@ var HelpContainer = (function () {
         var w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0], x = w.innerWidth || e.clientWidth || g.clientWidth, y = w.innerHeight || e.clientHeight || g.clientHeight;
         renderer.setElementStyle(el.nativeElement, 'height', y - 300 + 'px');
     }
+    HelpContainer = __decorate([
+        core_1.Directive({
+            selector: 'help-container',
+        }), 
+        __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer])
+    ], HelpContainer);
     return HelpContainer;
 }());
-HelpContainer = __decorate([
-    core_1.Directive({
-        selector: 'help-container',
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, core_1.Renderer])
-], HelpContainer);
 exports.HelpContainer = HelpContainer;
 var IsOwner = (function () {
     function IsOwner(user) {
@@ -40,15 +40,15 @@ var IsOwner = (function () {
             return item.ownerId == _this.user.user.id;
         });
     };
+    IsOwner = __decorate([
+        core_1.Pipe({
+            name: 'isOwner',
+            pure: false
+        }), 
+        __metadata('design:paramtypes', [main_user_service_1.UserService])
+    ], IsOwner);
     return IsOwner;
 }());
-IsOwner = __decorate([
-    core_1.Pipe({
-        name: 'isOwner',
-        pure: false
-    }),
-    __metadata("design:paramtypes", [main_user_service_1.UserService])
-], IsOwner);
 exports.IsOwner = IsOwner;
 var DeviceComponent = (function () {
     function DeviceComponent(location, router, userService, deviceService, toast, lh) {
@@ -132,24 +132,19 @@ var DeviceComponent = (function () {
             this.router.navigate(['/auth/map']);
         }
     };
+    DeviceComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            templateUrl: 'device.component.html',
+            pipes: [IsOwner],
+            directives: [HelpContainer],
+            styleUrls: [
+                'device.component.css',
+            ]
+        }), 
+        __metadata('design:paramtypes', [common_1.Location, router_1.Router, main_user_service_1.UserService, device_service_1.DeviceService, toast_component_1.ToastService, app_component_1.NavigationHistory])
+    ], DeviceComponent);
     return DeviceComponent;
 }());
-DeviceComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        templateUrl: 'device.component.html',
-        pipes: [IsOwner],
-        directives: [HelpContainer],
-        styleUrls: [
-            'device.component.css',
-        ]
-    }),
-    __metadata("design:paramtypes", [common_1.Location,
-        router_1.Router,
-        main_user_service_1.UserService,
-        device_service_1.DeviceService,
-        toast_component_1.ToastService,
-        app_component_1.NavigationHistory])
-], DeviceComponent);
 exports.DeviceComponent = DeviceComponent;
 //# sourceMappingURL=device.component.js.map

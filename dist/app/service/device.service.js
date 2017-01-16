@@ -77,14 +77,11 @@ var DeviceService = (function () {
         enumerable: true,
         configurable: true
     });
+    DeviceService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, main_user_service_1.UserService, friends_service_1.FriendsService])
+    ], DeviceService);
     return DeviceService;
 }());
-DeviceService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [socket_oi_service_1.Io,
-        local_storage_service_1.LocalStorage,
-        main_user_service_1.UserService,
-        friends_service_1.FriendsService])
-], DeviceService);
 exports.DeviceService = DeviceService;
 //# sourceMappingURL=device.service.js.map

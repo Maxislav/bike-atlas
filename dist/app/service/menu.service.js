@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 25.11.16.
  */
-var core_1 = require("@angular/core");
+var core_1 = require('@angular/core');
 var MenuService = (function () {
     function MenuService() {
         this._menuOpen = false;
@@ -88,11 +88,11 @@ var MenuService = (function () {
         enumerable: true,
         configurable: true
     });
+    MenuService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [])
+    ], MenuService);
     return MenuService;
 }());
-MenuService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
-], MenuService);
 exports.MenuService = MenuService;
 //# sourceMappingURL=menu.service.js.map

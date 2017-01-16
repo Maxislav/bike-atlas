@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
+var core_1 = require('@angular/core');
+var common_1 = require('@angular/common');
 var md5_service_1 = require("../../service/md5.service");
 var toast_component_1 = require("../toast/toast.component");
 var socket_oi_service_1 = require("../../service/socket.oi.service");
@@ -115,15 +115,15 @@ var RegistrationComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    RegistrationComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            templateUrl: './registration.component.html',
+            styleUrls: ['./registration.component.css'],
+        }), 
+        __metadata('design:paramtypes', [common_1.Location, md5_service_1.Md5, toast_component_1.ToastService, socket_oi_service_1.Io, login_service_1.LoginService])
+    ], RegistrationComponent);
     return RegistrationComponent;
 }());
-RegistrationComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        templateUrl: './registration.component.html',
-        styleUrls: ['./registration.component.css'],
-    }),
-    __metadata("design:paramtypes", [common_1.Location, md5_service_1.Md5, toast_component_1.ToastService, socket_oi_service_1.Io, login_service_1.LoginService])
-], RegistrationComponent);
 exports.RegistrationComponent = RegistrationComponent;
 //# sourceMappingURL=registration.component.js.map

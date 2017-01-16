@@ -43,16 +43,16 @@ var MenuAthleteComponent = (function () {
              clearInterval(this.interval)
          }*/
     };
+    MenuAthleteComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'menu-athlete',
+            templateUrl: './menu.athlete.component.html',
+            styleUrls: ['./menu.athlete.component.css'],
+        }), 
+        __metadata('design:paramtypes', [main_user_service_1.UserService, map_service_1.MapService])
+    ], MenuAthleteComponent);
     return MenuAthleteComponent;
 }());
-MenuAthleteComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        selector: 'menu-athlete',
-        templateUrl: './menu.athlete.component.html',
-        styleUrls: ['./menu.athlete.component.css'],
-    }),
-    __metadata("design:paramtypes", [main_user_service_1.UserService, map_service_1.MapService])
-], MenuAthleteComponent);
 exports.MenuAthleteComponent = MenuAthleteComponent;
 //# sourceMappingURL=menu.athlete.component.js.map

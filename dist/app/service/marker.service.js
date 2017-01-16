@@ -83,11 +83,11 @@ var MarkerService = (function () {
             return rand;
         }
     };
+    MarkerService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [map_service_1.MapService, timer_service_1.TimerService])
+    ], MarkerService);
     return MarkerService;
 }());
-MarkerService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [map_service_1.MapService, timer_service_1.TimerService])
-], MarkerService);
 exports.MarkerService = MarkerService;
 //# sourceMappingURL=marker.service.js.map

@@ -14,8 +14,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 05.10.16.
  */
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var DashboardComponent = (function () {
     function DashboardComponent(router) {
         this.router = router;
@@ -24,16 +24,16 @@ var DashboardComponent = (function () {
         var link = ['/dashboard/', heroId];
         this.router.navigate(link);
     };
+    DashboardComponent = __decorate([
+        core_1.Component({
+            //selector: 'router-outlet',
+            //templateUrl: 'src/app/template/my-app.html'
+            //template: '<div>My dashboard</div>'
+            templateUrl: 'src/app/template/dashboard.component.html'
+        }), 
+        __metadata('design:paramtypes', [router_1.Router])
+    ], DashboardComponent);
     return DashboardComponent;
 }());
-DashboardComponent = __decorate([
-    core_1.Component({
-        //selector: 'router-outlet',
-        //templateUrl: 'src/app/template/my-app.html'
-        //template: '<div>My dashboard</div>'
-        templateUrl: 'src/app/template/dashboard.component.html'
-    }),
-    __metadata("design:paramtypes", [router_1.Router])
-], DashboardComponent);
 exports.DashboardComponent = DashboardComponent;
 //# sourceMappingURL=dasboard.component.js.map

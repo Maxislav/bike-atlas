@@ -16,13 +16,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
+var core_1 = require('@angular/core');
 var map_service_1 = require("../service/map.service");
 var position_size_service_1 = require("../service/position-size.service");
 var MyEl = (function (_super) {
     __extends(MyEl, _super);
     function MyEl(id) {
-        return _super.call(this) || this;
+        _super.call(this);
     }
     return MyEl;
 }(HTMLElement));
@@ -86,13 +86,13 @@ var LeafletMapDirective = (function () {
         //this.mapService.setMap(this.map);
     };
     ;
+    LeafletMapDirective = __decorate([
+        core_1.Directive({
+            selector: 'leaflet-map',
+        }), 
+        __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer, map_service_1.MapService, position_size_service_1.PositionSize])
+    ], LeafletMapDirective);
     return LeafletMapDirective;
 }());
-LeafletMapDirective = __decorate([
-    core_1.Directive({
-        selector: 'leaflet-map',
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, core_1.Renderer, map_service_1.MapService, position_size_service_1.PositionSize])
-], LeafletMapDirective);
 exports.LeafletMapDirective = LeafletMapDirective;
 //# sourceMappingURL=leaflet-map.directive.js.map

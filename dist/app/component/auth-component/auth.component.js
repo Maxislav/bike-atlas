@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 10.10.16.
  */
-var core_1 = require("@angular/core");
+var core_1 = require('@angular/core');
 var mercator_service_1 = require("../../service/mercator.service");
 var position_size_service_1 = require("../../service/position-size.service");
 var info_position_component_1 = require("../info-position/info-position-component");
@@ -22,19 +22,19 @@ var AuthComponent = (function () {
         this.as = as;
         this.as = as;
     }
+    AuthComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            templateUrl: 'auth.component.html',
+            //providers: [Mercator, MapService, InfoPositionComponent, PositionSize, MenuComponent],
+            providers: [mercator_service_1.Mercator, info_position_component_1.InfoPositionComponent, position_size_service_1.PositionSize, menu_component_1.MenuComponent],
+            styleUrls: [
+                'auth.component.css',
+            ]
+        }), 
+        __metadata('design:paramtypes', [auth_service_1.AuthService])
+    ], AuthComponent);
     return AuthComponent;
 }());
-AuthComponent = __decorate([
-    core_1.Component({
-        moduleId: module.id,
-        templateUrl: 'auth.component.html',
-        //providers: [Mercator, MapService, InfoPositionComponent, PositionSize, MenuComponent],
-        providers: [mercator_service_1.Mercator, info_position_component_1.InfoPositionComponent, position_size_service_1.PositionSize, menu_component_1.MenuComponent],
-        styleUrls: [
-            'auth.component.css',
-        ]
-    }),
-    __metadata("design:paramtypes", [auth_service_1.AuthService])
-], AuthComponent);
 exports.AuthComponent = AuthComponent;
 //# sourceMappingURL=auth.component.js.map

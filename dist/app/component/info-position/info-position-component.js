@@ -11,7 +11,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
+var core_1 = require('@angular/core');
 var map_service_1 = require("../../service/map.service");
 var mercator_service_1 = require("../../service/mercator.service");
 var InfoPositionComponent = (function () {
@@ -28,16 +28,16 @@ var InfoPositionComponent = (function () {
         this.mapService = mapService;
         mapService.registerChanges(this.changes);
     }
+    InfoPositionComponent = __decorate([
+        core_1.Component({
+            selector: 'info-position',
+            //template:'<div>lat: {{mapService.lat}}</div>' + '<div>Pixel: {{pixelY}}</div>',
+            templateUrl: 'dist/app/component/info-position/info-position-component.html',
+            styleUrls: ['dist/app/component/info-position/info-position.css']
+        }), 
+        __metadata('design:paramtypes', [mercator_service_1.Mercator, map_service_1.MapService])
+    ], InfoPositionComponent);
     return InfoPositionComponent;
 }());
-InfoPositionComponent = __decorate([
-    core_1.Component({
-        selector: 'info-position',
-        //template:'<div>lat: {{mapService.lat}}</div>' + '<div>Pixel: {{pixelY}}</div>',
-        templateUrl: 'dist/app/component/info-position/info-position-component.html',
-        styleUrls: ['dist/app/component/info-position/info-position.css']
-    }),
-    __metadata("design:paramtypes", [mercator_service_1.Mercator, map_service_1.MapService])
-], InfoPositionComponent);
 exports.InfoPositionComponent = InfoPositionComponent;
 //# sourceMappingURL=info-position-component.js.map
