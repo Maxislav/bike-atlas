@@ -58,7 +58,7 @@ class Robot {
         }else{
           tick(0)
         }
-      }, points[i].timeout)
+      }, 30000<points[i].timeout? 10000: points[i].timeout)
     };
     tick(0);
     return true;
