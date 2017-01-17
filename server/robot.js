@@ -40,7 +40,6 @@ class Robot {
   
   tick(points){
     const tick = (i)=>{
-      console.log(points[i]);
       setTimeout(()=>{
         const point = points[i]
         for(let id in this.sockets){
