@@ -44,7 +44,10 @@ class Robot {
       let timeout = 30000;
 
       try{
-        timeout = points[i].timeout
+        timeout = points[i].timeout;
+        if(30000<timeout){
+          timeout = 30000;
+        }
       }catch (err){
         console.log('Err points ->', i, points[i]);
         timeout = 3000;
