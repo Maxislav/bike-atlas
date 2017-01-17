@@ -32,7 +32,7 @@ class Robot {
           reject(err);
           return;
         }
-        resolve(rows)
+        resolve(rows[0].id)
       });
     })
   }
