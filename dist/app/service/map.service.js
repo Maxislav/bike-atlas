@@ -13,15 +13,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var local_storage_service_1 = require('../service/local-storage.service');
-var track_service_1 = require("./track.service");
 var MapService = (function () {
     // public ls: LocalStorage
     //private ref: ApplicationRef
-    function MapService(ref, ls, trackService) {
+    function MapService(ref, ls) {
         var _this = this;
         this.ref = ref;
         this.ls = ls;
-        this.trackService = trackService;
         this.events = {
             load: []
         };
@@ -32,7 +30,7 @@ var MapService = (function () {
     MapService.prototype.setMap = function (map) {
         var _this = this;
         this.map = map;
-        this.trackService.setMap(map);
+        //this.trackService.setMap(map);
         map.on('load', function () {
             _this.pitch = map.getPitch().toFixed(0);
             _this.bearing = map.getBearing().toFixed(1);
@@ -104,7 +102,7 @@ var MapService = (function () {
     });
     MapService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [core_1.ApplicationRef, local_storage_service_1.LocalStorage, track_service_1.TrackService])
+        __metadata('design:paramtypes', [core_1.ApplicationRef, local_storage_service_1.LocalStorage])
     ], MapService);
     return MapService;
 }());

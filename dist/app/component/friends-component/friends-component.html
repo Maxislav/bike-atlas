@@ -52,7 +52,9 @@
                   <template [ngIf]="!isInviteActive(user)">
                     <div (click)="sendInvite(user)">Отправть запрос</div>
                   </template>
-                  <template [ngIf]="isInviteActive(user)">Запрос отправлен</template>
+                  <template [ngIf]="isInviteActive(user)">
+                    <div (click)="onCancelInvite(user)">Запрос отправлен (отменить)</div>
+                  </template>
                 </div>
               </td>
             </tr>

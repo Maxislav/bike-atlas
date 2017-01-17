@@ -7,7 +7,9 @@ import * as R from '@ramda/ramda.min.js';
 import {Track as Tr, Point, Coordinate} from 'app/service/track.var';
 import {Util} from './util';
 import {Io} from "./socket.oi.service";
+import {MapService} from "./map.service";
 const F = parseFloat;
+const I = parseInt;
 
 @Injectable()
 export class TrackService {
@@ -18,7 +20,7 @@ export class TrackService {
     private _trackList: Array<Tr> = [];
     private _map:any;
 
-    constructor(private io:Io) {
+    constructor(private io:Io, private mapService: MapService) {
         this.layerIds = [];
         this._trackList = [];
         this.util = new Util();
@@ -54,15 +56,12 @@ export class TrackService {
     }
 
     showTrack(data:Array<Point>) {
-
         const $this = this;
         const coordinates = [];
         const points: Array<Point> = []
-
         const trackList = this.trackList;
-
         const color = this._getColor();
-        console.log(color);
+        const map = this.mapService.map;
 
 
 
@@ -75,7 +74,7 @@ export class TrackService {
 
         let layerId:string = this.getRandom(0, 5000000, false)+'';
 
-        this.map.addSource(layerId, {
+        map.addSource(layerId, {
             "type": "geojson",
             "data": {
                 "type": "Feature",
@@ -87,7 +86,7 @@ export class TrackService {
             }
         });
 
-        this.map.addLayer({
+        map.addLayer({
             "id": layerId,
             "type": "line",
             "source": layerId,
@@ -104,8 +103,8 @@ export class TrackService {
 
         let tr: Tr = {
             hide: function () {
-                $this.map.removeLayer(layerId);
-                $this.map.removeSource(layerId);
+                map.removeLayer(layerId);
+                map.removeSource(layerId);
                 let index = R.findIndex(R.propEq('id', layerId))(trackList);
                 trackList.splice(index, 1);
                 console.log('delete track index', index)
@@ -130,6 +129,61 @@ export class TrackService {
         return tr
     }
 
+    marker(point: Point){
+        const map = this.mapService.map;
+        const mapboxgl = this.mapService.mapboxgl;
+
+        const icoContainer = document.createElement('div');
+        icoContainer.classList.add("track-icon");
+        const icoEl = document.createElement('div');
+        icoContainer.appendChild(icoEl);
+        
+        
+        const iconMarker = new mapboxgl.Marker(icoContainer, {offset: [-10, -10]})
+            .setLngLat([point.lng, point.lat])
+            .addTo(map);
+
+
+        
+        
+        const marker = {
+            lng: point.lng,
+            lat: point.lat,
+            bearing: point.bearing,
+            _mapBearing: map.getBearing(),
+            rotate: function () {
+                let angle =this.bearing-this._mapBearing;
+                icoEl.style.transform = "rotate("+I(angle+'')+"deg)"
+            },
+            update: function (point:Point) {
+                for(let opt in point){
+                    this[opt] = point[opt];
+                }
+                if(point.bearing){
+                    this.rotate();
+                }
+                iconMarker.setLngLat([this.lng, this.lat])
+            },
+            remove: function () {
+                iconMarker.remove();
+                map.off('move', rotate)
+            }
+        };
+
+        const rotate = ()=>{
+            const mapBearing = map.getBearing();
+            if(marker._mapBearing != mapBearing ){
+                marker._mapBearing = mapBearing;
+                marker.rotate();
+            }
+
+        };
+
+        map.on('move', rotate);
+
+        return marker;
+    }
+    
     showSpriteMarker(point: Point){
         var point = {
             "type": "Point",
@@ -150,6 +204,9 @@ export class TrackService {
                 "icon-image": "arrow"
             }
         });
+      
+        
+        
         return {
             id: layerId,
             setCenter: function (_point: Point, bearing: number) {

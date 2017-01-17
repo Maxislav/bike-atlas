@@ -42,6 +42,7 @@ import {PrivateArea} from "./component/private-area/private-area";
 import {MapResolver} from "./directive/mapbox-gl.directive";
 import {PrivateAreaService} from "./service/private.area.service";
 import {NoFoundComponent} from "./no-found.component";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
     imports: [

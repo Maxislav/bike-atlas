@@ -75,5 +75,5 @@ var appRouters = [
         component: heroes_component_1.HeroesComponent
     },
 ];
-exports.routing = router_1.RouterModule.forRoot(appRouters);
+exports.routing = router_1.RouterModule.forRoot(appRouters, { useHash: true });
 //# sourceMappingURL=app.routing.js.map

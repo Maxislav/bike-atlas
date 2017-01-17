@@ -46,4 +46,5 @@ div.content
                                 .invite( *ngIf="!isFriend(user)")
                                     template([ngIf]="!isInviteActive(user)", )
                                         div((click)="sendInvite(user)") Отправть запрос
-                                    template([ngIf]="isInviteActive(user)") Запрос отправлен
+                                    template([ngIf]="isInviteActive(user)")
+                                        div((click)="onCancelInvite(user)") Запрос отправлен (отменить)

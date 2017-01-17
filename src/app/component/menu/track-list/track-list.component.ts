@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {TrackService} from "app/service/track.service";
 import {Track as TrackVar, Point} from "app/service/track.var";
 import {Util} from "app/service/util";
+import {MapService} from "../../../service/map.service";
 
 @Component({
     moduleId: module.id,
@@ -16,7 +17,7 @@ export class TrackList {
     util: Util;
     stop: Function;
 
-    constructor(private track:TrackService) {
+    constructor(private track:TrackService, private mapService: MapService) {
         this.util = new Util();
         this.list = track.trackList;
         //this.permitMovie = true
@@ -32,17 +33,25 @@ export class TrackList {
     onGo(_tr: TrackVar){
         this.hideTrack();
         const $this = this;
-        const map = this.track.map;
+        const map = this.mapService.map;
         const points = this.fillTrack(_tr.points);
-        const marker = this.track.showSpriteMarker(points[0]);
+        const marker = this.track.marker(points[0])//this.track.showSpriteMarker(points[0]);
+        /**
+         * todo
+         */
+       // return;
+
         let timeout;
 
         let i = 0;
         let step = 1;
         flyTo();
         function flyTo(){
-            map.setCenter([points[i].lng, points[i].lat]);
-            marker.setCenter(points[i], points[i].bearing)
+            if(points[i]){
+                 map.setCenter([points[i].lng, points[i].lat]);
+                marker.update(points[i]);
+            }
+
             if(i<points.length-2){
                 timeout = setTimeout(()=>{
                     i+=step;
@@ -76,7 +85,7 @@ export class TrackList {
 
         this.stop = function () {
             clearTimeout(timeout);
-            marker.hide()
+            marker.remove()
         }
 
     }

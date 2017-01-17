@@ -25,6 +25,8 @@ var LogService = (function () {
         };
     }
     LogService.prototype.log = function (devData) {
+        if (!devData)
+            return;
         var user;
         var device = this.getDevice(this.user.user, devData);
         if (device) {
@@ -61,32 +63,14 @@ var LogService = (function () {
         if (device && !device.marker) {
             devData.name = device.name;
             device.marker = this.markerService.marker(devData, user);
+            if (this.devices[device.device_key]) {
+                this.devices[device.device_key].marker.remove();
+            }
+            this.devices[device.device_key] = device;
         }
         else if (device && device.marker) {
             device.marker.update(devData);
         }
-        /* const device: Device = this.ds.devices.find(item => {
-         return item.id == marker.id
-         });
-
-         if(!device) return;
-
-         if(device.marker){
-
-         }else{
-         device.marker = this.markerService.marker(marker)
-         }*/
-        /*console.log(deviceData);
-         if (this.devices[deviceData.id]) {
-         this.devices[deviceData.id].update(deviceData);
-         } else {
-         let device: Device = this.ds.devices.find(item => {
-         return item.id == deviceData.id
-         });
-         deviceData.name = device.name;
-         deviceData.image = device.image;
-         device.marker = this.devices[deviceData.id] = this.markerService.marker(deviceData)
-         }*/
     };
     LogService.prototype.getDevice = function (user, devData) {
         if (!devData)

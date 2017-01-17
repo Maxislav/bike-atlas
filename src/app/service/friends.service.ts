@@ -117,11 +117,19 @@ export class FriendsService {
             })
     }
     onRejectInvite(enemy_id: number){
-        
         this.socket.$emit('onRejectInvite', enemy_id)
             .then(rows=>{
-                this.updateFriends()
-                this.getInvites()
+                this.updateFriends();
+                this.getInvites();
+            })
+    }
+
+    onCancelInvite(enemy_id){
+        this.socket.$emit('onCancelInvite', enemy_id)
+            .then(d=>{
+                console.log(d)
+                this.updateFriends();
+                this.getInvites();
             })
     }
 

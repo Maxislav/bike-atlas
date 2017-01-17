@@ -4,7 +4,6 @@
 import {Injectable, ApplicationRef} from '@angular/core';
 import {SimpleChanges, OnChanges} from '@angular/core';
 import {LocalStorage} from '../service/local-storage.service';
-import {TrackService} from "./track.service";
 
 
 @Injectable()
@@ -30,7 +29,7 @@ export class MapService {
     //private ref: ApplicationRef
 
 
-    constructor(private ref:ApplicationRef, private ls:LocalStorage, private trackService: TrackService) {
+    constructor(private ref:ApplicationRef, private ls:LocalStorage) {
         this.events = {
             load: []
         };
@@ -44,7 +43,7 @@ export class MapService {
 
     setMap(map:any) {
         this.map = map;
-        this.trackService.setMap(map);
+        //this.trackService.setMap(map);
         map.on('load', ()=> {
             this.pitch = map.getPitch().toFixed(0);
             this.bearing = map.getBearing().toFixed(1)

@@ -8,21 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-/**
- * Created by maxislav on 05.10.16.
- */
-var core_1 = require('@angular/core');
-var HeroesComponent = (function () {
-    function HeroesComponent() {
-        console.log('ololo');
+var core_1 = require("@angular/core");
+var NoFoundComponent = (function () {
+    function NoFoundComponent() {
     }
-    HeroesComponent = __decorate([
+    NoFoundComponent = __decorate([
         core_1.Component({
-            template: '<div>My-heroes</div>'
+            template: '<h4 style="color: #082846; padding: 10px; text-align: center">Page not found</h4>'
         }), 
         __metadata('design:paramtypes', [])
-    ], HeroesComponent);
-    return HeroesComponent;
+    ], NoFoundComponent);
+    return NoFoundComponent;
 }());
-exports.HeroesComponent = HeroesComponent;
-//# sourceMappingURL=heroes.component.js.map
+exports.NoFoundComponent = NoFoundComponent;
+//# sourceMappingURL=no-found.component.js.map

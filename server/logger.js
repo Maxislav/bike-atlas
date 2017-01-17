@@ -81,6 +81,7 @@ module.exports = class Logger {
               return null;
           })
           .then(setting=>{
+              console.log('setting ->', setting)
               if(setting && setting.lock == 0){
                   _setting = setting;
                   return util.getPrivateArea(this.connection, _userId)
@@ -88,6 +89,7 @@ module.exports = class Logger {
               return false
           })
           .then(areas=>{
+              console.log('areas->',areas)
               if(areas){
                   const isInPrivate =  distance.isInPrivate(areas, device);
 

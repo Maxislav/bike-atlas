@@ -1,21 +1,23 @@
 
 <div (click)="$event.stopPropagation();$event.preventDefault()">
-  <div *ngIf="!user.name">
-    <ul>
-      <li>
-        <label>Имя</label>
-        <input type="text" [(ngModel)]="name"/>
-      </li>
-      <li>
-        <label>Пароль</label>
-        <input type="password" [(ngModel)]="pass"/>
-      </li>
-      <li (click)="onEnter($event)">
-        <div>Вход</div>
-      </li>
-      <li><a (click)="goToReg()">Регистрация</a></li>
-    </ul>
-  </div>
+  <form name="formLogin" (submit)="onEnter()">
+    <div *ngIf="!user.name">
+      <ul>
+        <li>
+          <label>Имя</label>
+          <input type="text" [(ngModel)]="name" name="name"/>
+        </li>
+        <li>
+          <label>Пароль</label>
+          <input type="password" [(ngModel)]="pass" name="pass"/>
+        </li>
+        <li>
+          <button (click)="onEnter($event)">Вход</button>
+        </li>
+        <li><a (click)="goToReg()">Регистрация</a></li>
+      </ul>
+    </div>
+  </form>
   <div class="border-hidden"></div>
   <template [ngIf]="user.name">
     <ul>

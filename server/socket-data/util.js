@@ -353,6 +353,17 @@ module.exports = {
             })
         })
     },
+    onCancelInvite: function (connection, user_id, enemy_id) {
+        return new Promise((resolve, reject) => {
+            connection.query('DELETE FROM `invite` WHERE `user_id`=? AND `invite_user_id`=?', [user_id, enemy_id], (err, result) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(result)
+            })
+        })
+    },
     getInvites: function (connection, user_id) {
         return new Promise((resolve, reject) => {
             const query = 'SELECT user_id, image, name from `user` INNER JOIN `invite` ON invite.user_id = user.id AND invite.invite_user_id=? ';
