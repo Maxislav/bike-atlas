@@ -40,6 +40,17 @@ class Robot {
   
   tick(points){
     const tick = (i)=>{
+      
+      let timeout = 30000;
+
+      try{
+        timeout = points[i].timeout
+      }catch (err){
+        console.log('Err points ->', i, points[i]);
+        timeout = 3000;
+        i = 0;
+      }
+      
       setTimeout(()=>{
         const point = points[i]
         for(let id in this.sockets){
@@ -53,12 +64,12 @@ class Robot {
             date: new Date().toISOString()
           })
         }
-        if(i<points.length){
+        if(i<points.length-2){
           tick(++i)  
         }else{
           tick(0)
         }
-      }, 30000<points[i].timeout? 10000: points[i].timeout)
+      }, timeout)
     };
     tick(0);
     return true;
