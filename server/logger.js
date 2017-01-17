@@ -3,6 +3,7 @@ const dateFormat = require('dateformat');
 const util = require('./socket-data/util');
 const http = require( "http" );
 const distance = require('./distance');
+const Robot = require('./robot');
 module.exports = class Logger {
     /** @namespace this.connection */
 
@@ -10,7 +11,9 @@ module.exports = class Logger {
     constructor(_app, _ioServer, connection) {
         app = _app;
         ioServer = _ioServer;
+       
         this.connection = connection;
+        this.robot = new Robot(connection);
         this._sockets = {};
         this.devices = {};
         app.get('/log*', this.onLog.bind(this))
@@ -167,6 +170,7 @@ module.exports = class Logger {
 
     set sockets(connected) {
         this._sockets = connected;
+        this.robot.sockets = connected;
     }
 
     get sockets() {
