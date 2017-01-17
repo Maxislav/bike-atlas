@@ -48,6 +48,7 @@ class Robot {
             lng:point.lng,
             lat: point.lat,
             device_key: '0000',
+            ownerId:this.ownerId,
             bearing: 0,
             date: new Date().toISOString()
           })
