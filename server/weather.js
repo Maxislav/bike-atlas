@@ -3,9 +3,10 @@ module.exports = (req, res, nest) => {
   //const path = 'http://localhost/src/img/1342970542_meteoradar_borispol.png';
   const path = 'http://meteoinfo.by/radar/UKBB/UKBB_latest.png';
 
-  new Promise((resolve, reject)=> {
+  return new Promise((resolve, reject)=> {
     Jimp.read(path, function (err, image) {
       if (err) {
+        console.error('meteoinfo error->',err)
         reject(err);
         return;
       }
