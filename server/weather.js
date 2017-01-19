@@ -4,14 +4,15 @@ let isProcess = false;
 module.exports = (req, res, nest) => {
   //const path = 'http://localhost/src/img/1342970542_meteoradar_borispol.png';
   const path = 'http://meteoinfo.by/radar/UKBB/UKBB_latest.png';
-  console.log('meteoinfo.by ->','try');
+
   
   
   
   if(isProcess){
     res.status(500).send({ error: 'meteoinfo isProcess' });
     return
-  }  
+  }
+  console.log('meteoinfo.by ->','try');
   
   isProcess = true;
   
