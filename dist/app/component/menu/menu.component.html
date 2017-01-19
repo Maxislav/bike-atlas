@@ -16,7 +16,6 @@
 </table>
 <menu-athlete *ngIf="menuService.menuAthlete"></menu-athlete>
 <menu-track *ngIf="menuService.menuOpen"></menu-track>
-<menu-track-load *ngIf="menuService.menuLoadOpen"></menu-track-load>
+<!--menu-track-load(*ngIf="menuService.menuLoadOpen")-->
 <track-list *ngIf="trackList.length" [style.top]="menuService.menuOpen ?  '150px' : '100%' "></track-list>
 <menu-login *ngIf="menuService.menuOpenLogin"></menu-login>
-<device-list></device-list>

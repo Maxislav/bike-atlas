@@ -51,6 +51,8 @@ var private_area_1 = require("./component/private-area/private-area");
 var mapbox_gl_directive_1 = require("./directive/mapbox-gl.directive");
 var private_area_service_1 = require("./service/private.area.service");
 var no_found_component_1 = require("./no-found.component");
+var mapbox_gl_directive_2 = require("./directive/mapbox-gl.directive");
+var device_component_2 = require("./component/device/device.component");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -73,9 +75,11 @@ var AppModule = (function () {
                 auth_component_1.AuthComponent,
                 app_component_1.AppComponent,
                 heroes_component_1.HeroesComponent,
+                device_component_2.HelpContainer,
                 menu_component_1.MenuComponent,
                 menu_track_component_1.MenuTrackComponent,
                 menu_login_component_1.MenuLoginComponent,
+                mapbox_gl_directive_2.MapboxGlDirective,
                 track_list_component_1.TrackList,
                 toast_component_1.ToastComponent,
                 device_component_1.DeviceComponent,

@@ -43,6 +43,8 @@ import {MapResolver} from "./directive/mapbox-gl.directive";
 import {PrivateAreaService} from "./service/private.area.service";
 import {NoFoundComponent} from "./no-found.component";
 import {RouterModule} from "@angular/router";
+import {MapboxGlDirective} from "./directive/mapbox-gl.directive";
+import {HelpContainer} from "./component/device/device.component";
 
 @NgModule({
     imports: [
@@ -62,9 +64,11 @@ import {RouterModule} from "@angular/router";
         AuthComponent,
         AppComponent,
         HeroesComponent,
+	HelpContainer,
         MenuComponent,
         MenuTrackComponent,
         MenuLoginComponent,
+	MapboxGlDirective,
         TrackList,
         ToastComponent,
         DeviceComponent,

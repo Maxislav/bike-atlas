@@ -13,7 +13,6 @@ table
             |{{user.name || 'Войти' }}
 menu-athlete(*ngIf="menuService.menuAthlete")
 menu-track(*ngIf="menuService.menuOpen")
-menu-track-load(*ngIf="menuService.menuLoadOpen")
+//menu-track-load(*ngIf="menuService.menuLoadOpen")
 track-list(*ngIf="trackList.length", [style.top]="menuService.menuOpen ?  '150px' : '100%' ")
 menu-login(*ngIf="menuService.menuOpenLogin")
-device-list()
