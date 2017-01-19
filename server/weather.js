@@ -31,6 +31,7 @@ module.exports = (req, res, nest) => {
       res.send(buff);
     })
     .catch(err=> {
+      console.error('meteoinfo error->',err)
       res.setStatus = 500;
       res.end(err)
     });
