@@ -40,7 +40,7 @@ server.listen(8081);
 socketData(server, app);
 
 
-app.get('*/borisbolukbb', weather);
+app.get('/borisbolukbb', weather);
 
 /**
  * tiler proxy
