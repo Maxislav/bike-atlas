@@ -1,4 +1,3 @@
-const http = require("http");
 var Jimp = require("jimp");
 module.exports = (req, res, nest) => {
   //const path = 'http://localhost/src/img/1342970542_meteoradar_borispol.png';
