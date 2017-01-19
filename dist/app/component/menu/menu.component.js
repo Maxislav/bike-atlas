@@ -22,23 +22,26 @@ var router_1 = require("@angular/router");
 var friends_service_1 = require("../../service/friends.service");
 var main_user_service_1 = require("../../service/main.user.service");
 var toast_component_1 = require("../toast/toast.component");
+var map_service_1 = require("../../service/map.service");
 var MenuComponent = (function () {
-    function MenuComponent(ms, track, as, router, friend, userService, toast) {
-        this.ms = ms;
-        this.as = as;
+    function MenuComponent(menuService, track, authService, router, friend, userService, mapService, toast) {
+        this.menuService = menuService;
+        this.track = track;
+        this.authService = authService;
         this.router = router;
         this.friend = friend;
         this.userService = userService;
+        this.mapService = mapService;
         this.toast = toast;
         this.user = userService.user;
         this.invites = friend.invites;
         this.trackList = track.trackList;
     }
     MenuComponent.prototype.onOpen = function () {
-        this.ms.menuOpen = !this.ms.menuOpen;
+        this.menuService.menuOpen = !this.menuService.menuOpen;
     };
     MenuComponent.prototype.onOpenLogin = function () {
-        this.ms.menuOpenLogin = !this.ms.menuOpenLogin;
+        this.menuService.menuOpenLogin = !this.menuService.menuOpenLogin;
     };
     MenuComponent.prototype.onOpenAthlete = function () {
         if (!this.user.name && !this.userService.other.devices.length) {
@@ -48,11 +51,48 @@ var MenuComponent = (function () {
             });
         }
         else {
-            this.ms.menuAthlete = !this.ms.menuAthlete;
+            this.menuService.menuAthlete = !this.menuService.menuAthlete;
         }
     };
+    MenuComponent.prototype.onWeather = function () {
+        if (this.weatherLayer) {
+            this.weatherLayer.remove();
+        }
+        else {
+            this.weatherLayer = this.addWeatherLayer();
+        }
+    };
+    MenuComponent.prototype.addWeatherLayer = function () {
+        var _this = this;
+        var map = this.mapService.map;
+        map.addSource('borispol', {
+            "type": "image",
+            'url': 'borisbolukbb?date=' + new Date().toISOString(),
+            "coordinates": [
+                [27.9, 52.14],
+                [33.89, 52.14],
+                [33.89, 48.35],
+                [27.9, 48.35]
+            ]
+        });
+        map.addLayer({
+            id: 'borispol',
+            source: 'borispol',
+            "type": "raster",
+            "paint": { "raster-opacity": 0.7 }
+        });
+        return {
+            remove: function () {
+                map.removeLayer('borispol');
+                map.removeSource('borispol');
+                _this.weatherLayer = null;
+            }
+        };
+    };
+    MenuComponent.prototype.removeWeatherLayer = function () {
+    };
     MenuComponent.prototype.goToProfile = function () {
-        if (this.as.userName) {
+        if (this.authService.userName) {
             this.router.navigate(['/auth/map/profile']);
         }
     };
@@ -67,7 +107,7 @@ var MenuComponent = (function () {
             styleUrls: ['./menu.component.css'],
             providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService, track_list_component_1.TrackList]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, track_service_1.TrackService, auth_service_1.AuthService, router_1.Router, friends_service_1.FriendsService, main_user_service_1.UserService, toast_component_1.ToastService])
+        __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, track_service_1.TrackService, auth_service_1.AuthService, router_1.Router, friends_service_1.FriendsService, main_user_service_1.UserService, map_service_1.MapService, toast_component_1.ToastService])
     ], MenuComponent);
     return MenuComponent;
     var _a;

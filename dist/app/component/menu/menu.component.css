@@ -70,6 +70,21 @@ table td.icoUser img {
   width: 34px;
   height: 34px;
 }
+table td.fill-space {
+  width: 100%;
+}
+table td.weather {
+  width: 40px;
+}
+table td.weather.active {
+  background-color: #afdced;
+}
+table td.weather .weather-ico {
+  width: 40px;
+  height: 40px;
+  background: url("src/img/weather-ico.png") no-repeat center;
+  background-size: 80%;
+}
 table td.bell {
   padding: 0;
   width: 50px;

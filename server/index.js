@@ -11,6 +11,8 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const tileProxy = require('./tile-proxy');
 const socketData = require('./socket-data');
+const weather = require('./weather');
+
 
 
 
@@ -37,6 +39,8 @@ const server = require('http').Server(app);
 server.listen(8081);
 socketData(server, app);
 
+
+app.get('*/borisbolukbb', weather);
 
 /**
  * tiler proxy

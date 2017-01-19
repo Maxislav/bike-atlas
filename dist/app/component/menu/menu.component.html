@@ -3,7 +3,10 @@
   <tr>
     <td (click)="onOpenAthlete()" class="button menu">Участники</td>
     <td (click)="onOpen()" class="button menu">Маршруты</td>
-    <td></td>
+    <td [class.active]="weatherLayer" class="button weather">
+      <div (click)="onWeather()" class="weather-ico"></div>
+    </td>
+    <td class="fill-space"></td>
     <td (click)="goToFriends()" class="bell">
       <div *ngIf="invites.length" class="num">{{invites.length}}</div>
     </td>
@@ -11,9 +14,9 @@
     <td (click)="onOpenLogin()" class="button enter">{{user.name || 'Войти' }}</td>
   </tr>
 </table>
-<menu-athlete *ngIf="ms.menuAthlete"></menu-athlete>
-<menu-track *ngIf="ms.menuOpen"></menu-track>
-<menu-track-load *ngIf="ms.menuLoadOpen"></menu-track-load>
-<track-list *ngIf="trackList.length" [style.top]="ms.menuOpen ?  '150px' : '100%' "></track-list>
-<menu-login *ngIf="ms.menuOpenLogin"></menu-login>
+<menu-athlete *ngIf="menuService.menuAthlete"></menu-athlete>
+<menu-track *ngIf="menuService.menuOpen"></menu-track>
+<menu-track-load *ngIf="menuService.menuLoadOpen"></menu-track-load>
+<track-list *ngIf="trackList.length" [style.top]="menuService.menuOpen ?  '150px' : '100%' "></track-list>
+<menu-login *ngIf="menuService.menuOpenLogin"></menu-login>
 <device-list></device-list>

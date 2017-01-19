@@ -14,6 +14,8 @@ import {Router} from "@angular/router";
 import {FriendsService} from "../../service/friends.service";
 import {UserService, User} from "../../service/main.user.service";
 import {ToastService} from "../toast/toast.component";
+import {MapService} from "../../service/map.service";
+import {getimage} from "../../util/get-image";
 //import {Track} from "./track";
 
 declare var document: any;
@@ -31,17 +33,19 @@ export class MenuComponent{
 
     public menuOpen: boolean;
     public userName: string;
-    private invites: Array<User>
+    private invites: Array<User>;
     trackList: Array<any>;
     private user: User;
+    private weatherLayer: any;
 
     constructor(
-        private ms: MenuService,
-        track: TrackService,
-        public as: AuthService,
+        private menuService: MenuService,
+        private track: TrackService,
+        private authService: AuthService,
         private router: Router,
         private friend: FriendsService,
         private userService: UserService,
+        private mapService: MapService,
     private toast: ToastService)
 
     {
@@ -49,12 +53,13 @@ export class MenuComponent{
         this.invites = friend.invites;
         this.trackList = track.trackList;
 
+
     }
     onOpen(){
-        this.ms.menuOpen = !this.ms.menuOpen;
+        this.menuService.menuOpen = !this.menuService.menuOpen;
     }
     onOpenLogin(){
-        this.ms.menuOpenLogin = !this.ms.menuOpenLogin;
+        this.menuService.menuOpenLogin = !this.menuService.menuOpenLogin;
     }
     onOpenAthlete(){
         if(!this.user.name && !this.userService.other.devices.length){
@@ -63,14 +68,59 @@ export class MenuComponent{
                 text: 'Нет онлайн пользователей'
             })
         }else {
-            this.ms.menuAthlete = !this.ms.menuAthlete;
+            this.menuService.menuAthlete = !this.menuService.menuAthlete;
         }
 
 
 
     }
+
+    onWeather(){
+
+        if(this.weatherLayer){
+            this.weatherLayer.remove();
+        }else{
+            this.weatherLayer = this.addWeatherLayer();
+        }
+    }
+
+    addWeatherLayer(){
+        const map = this.mapService.map;
+        map.addSource('borispol',{
+            "type": "image",
+            'url': 'borisbolukbb?date='+new Date().toISOString(),
+            "coordinates" :[
+                [27.9,52.14],
+                [33.89,52.14],
+                [33.89,48.35],
+                [27.9,48.35]
+            ]
+        });
+        map.addLayer({
+            id:'borispol',
+            source: 'borispol',
+            "type": "raster",
+            "paint": {"raster-opacity": 0.7}
+
+        });
+        return {
+            remove: ()=>{
+                map.removeLayer('borispol');
+                map.removeSource('borispol');
+                this.weatherLayer = null;
+            }
+        }
+    }
+
+    removeWeatherLayer(){
+
+    }
+
+
+
+
     goToProfile(){
-        if(this.as.userName){
+        if(this.authService.userName){
             this.router.navigate(['/auth/map/profile']);
         }
     }
