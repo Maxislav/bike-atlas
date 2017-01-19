@@ -24,9 +24,6 @@ module.exports = (req, res, nest) => {
       return;
     }
     image.crop(5, 5, 500, 475);
-    image.scale(2);
-    image.blur(1);
-    image.scale(0.5);
     image.scan(0, 0, image.bitmap.width, image.bitmap.height, function (x, y, idx) {
       var red = image.bitmap.data[idx + 0];
       var green = image.bitmap.data[idx + 1];
