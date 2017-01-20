@@ -136,8 +136,6 @@ var DeviceComponent = (function () {
         core_1.Component({
             moduleId: module.id,
             templateUrl: 'device.component.html',
-            pipes: [IsOwner],
-            directives: [HelpContainer],
             styleUrls: [
                 'device.component.css',
             ]

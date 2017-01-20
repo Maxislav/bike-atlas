@@ -14,8 +14,7 @@ import {LogService} from "./service/log.service";
         '<router-outlet></router-outlet>',
         '<mapbox-gl> map loading...</mapbox-gl>'
     ].join('') ,
-    styleUrls: ['css/map.component.css'],
-    directives: [MapboxGlDirective],
+    styleUrls: ['./css/map.component.css'],
     providers: [HeroService]
 })
 export class MapComponent {

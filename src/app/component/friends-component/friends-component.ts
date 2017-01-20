@@ -30,7 +30,6 @@ declare const module:{
     //noinspection TypeScriptUnresolvedVariable
     moduleId: module.id,
     templateUrl: './friends-component.html',
-    directives: [UsersContainer],
     styleUrls: ['./friends-component.css'],
 })
 export class FriendsComponent{

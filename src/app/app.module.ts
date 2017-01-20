@@ -6,10 +6,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule}   from '@angular/forms';
 
 import {AppComponent}  from './app.component';
-//import {HeroDetailComponent}  from './my-hero-detail.component';
 import {routing} from './app.routing';
 import {HeroesComponent} from "./heroes.component";
-//import {DashboardComponent} from "./dasboard.component";
 import {TransactionResolver} from "./transaction.resolve";
 import {AuthComponent} from "./component/auth-component/auth.component";
 import {MapComponent} from "./map.component";
@@ -34,7 +32,7 @@ import {LoginService} from "./service/login.service";
 import {MenuAthleteComponent} from "./component/menu/menu-athlete/menu.athlete.component";
 import {ProfileComponent} from "./component/profile/profile.component";
 import {JournalComponent} from "./component/journal-component/journal.component";
-import {FriendsComponent} from "./component/friends-component/friends-component";
+import {FriendsComponent, UsersContainer} from "./component/friends-component/friends-component";
 import {FriendsService} from "./service/friends.service";
 import {UserService} from "./service/main.user.service";
 import {TimerService} from "./service/timer.service";
@@ -42,7 +40,6 @@ import {PrivateArea} from "./component/private-area/private-area";
 import {MapResolver} from "./directive/mapbox-gl.directive";
 import {PrivateAreaService} from "./service/private.area.service";
 import {NoFoundComponent} from "./no-found.component";
-import {RouterModule} from "@angular/router";
 import {MapboxGlDirective} from "./directive/mapbox-gl.directive";
 import {HelpContainer} from "./component/device/device.component";
 
@@ -56,19 +53,18 @@ import {HelpContainer} from "./component/device/device.component";
      * Компоненты
      */
     declarations: [
-        //LeafletMapDirective,
-        //DashboardComponent,
+        UsersContainer,
         RegistrationComponent,
         InfoPositionComponent,
         MapComponent,
         AuthComponent,
         AppComponent,
         HeroesComponent,
-	HelpContainer,
+        HelpContainer,
         MenuComponent,
         MenuTrackComponent,
         MenuLoginComponent,
-	MapboxGlDirective,
+        MapboxGlDirective,
         TrackList,
         ToastComponent,
         DeviceComponent,
@@ -79,9 +75,7 @@ import {HelpContainer} from "./component/device/device.component";
         PrivateArea,
         NoFoundComponent
     ],
-    bootstrap: [
-        AppComponent
-    ],
+
     providers: [
         TransactionResolver,
         MenuComponent,
@@ -101,6 +95,9 @@ import {HelpContainer} from "./component/device/device.component";
         TimerService,
         MapResolver,
         PrivateAreaService
+    ],
+    bootstrap: [
+        AppComponent
     ]
 })
 export class AppModule {

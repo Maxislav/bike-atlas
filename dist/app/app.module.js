@@ -15,10 +15,8 @@ var core_1 = require('@angular/core');
 var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
 var app_component_1 = require('./app.component');
-//import {HeroDetailComponent}  from './my-hero-detail.component';
 var app_routing_1 = require('./app.routing');
 var heroes_component_1 = require("./heroes.component");
-//import {DashboardComponent} from "./dasboard.component";
 var transaction_resolve_1 = require("./transaction.resolve");
 var auth_component_1 = require("./component/auth-component/auth.component");
 var map_component_1 = require("./map.component");
@@ -67,8 +65,7 @@ var AppModule = (function () {
              * Компоненты
              */
             declarations: [
-                //LeafletMapDirective,
-                //DashboardComponent,
+                friends_component_1.UsersContainer,
                 registration_component_1.RegistrationComponent,
                 info_position_component_1.InfoPositionComponent,
                 map_component_1.MapComponent,
@@ -90,9 +87,6 @@ var AppModule = (function () {
                 private_area_1.PrivateArea,
                 no_found_component_1.NoFoundComponent
             ],
-            bootstrap: [
-                app_component_1.AppComponent
-            ],
             providers: [
                 transaction_resolve_1.TransactionResolver,
                 menu_component_1.MenuComponent,
@@ -112,6 +106,9 @@ var AppModule = (function () {
                 timer_service_1.TimerService,
                 mapbox_gl_directive_1.MapResolver,
                 private_area_service_1.PrivateAreaService
+            ],
+            bootstrap: [
+                app_component_1.AppComponent
             ]
         }), 
         __metadata('design:paramtypes', [])

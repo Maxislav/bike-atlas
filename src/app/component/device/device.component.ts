@@ -54,8 +54,6 @@ export class IsOwner implements PipeTransform {
 @Component({
     moduleId: module.id,
     templateUrl: 'device.component.html',
-    pipes: [IsOwner],
-    directives: [HelpContainer],
     styleUrls: [
         'device.component.css',
     ]

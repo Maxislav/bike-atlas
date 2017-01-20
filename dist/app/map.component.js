@@ -12,7 +12,6 @@ var core_1 = require('@angular/core');
 var mercator_service_1 = require('./service/mercator.service');
 var hero_service_1 = require("./hero.service");
 var map_service_1 = require("./service/map.service");
-var mapbox_gl_directive_1 = require("./directive/mapbox-gl.directive");
 var log_service_1 = require("./service/log.service");
 var MapComponent = (function () {
     function MapComponent(mercator, mapService, ls) {
@@ -27,8 +26,7 @@ var MapComponent = (function () {
                 '<router-outlet></router-outlet>',
                 '<mapbox-gl> map loading...</mapbox-gl>'
             ].join(''),
-            styleUrls: ['css/map.component.css'],
-            directives: [mapbox_gl_directive_1.MapboxGlDirective],
+            styleUrls: ['./css/map.component.css'],
             providers: [hero_service_1.HeroService]
         }), 
         __metadata('design:paramtypes', [mercator_service_1.Mercator, map_service_1.MapService, log_service_1.LogService])

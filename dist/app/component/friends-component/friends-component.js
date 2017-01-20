@@ -83,7 +83,6 @@ var FriendsComponent = (function () {
             //noinspection TypeScriptUnresolvedVariable
             moduleId: module.id,
             templateUrl: './friends-component.html',
-            directives: [UsersContainer],
             styleUrls: ['./friends-component.css'],
         }), 
         __metadata('design:paramtypes', [common_1.Location, friends_service_1.FriendsService, toast_component_1.ToastService])

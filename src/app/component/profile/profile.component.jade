@@ -5,7 +5,7 @@ div.content
             p
                 | Профиль
         .row
-            load-img
+            .load-img
                 img([src]="user.image || 'src/img/no-avatar.gif' ", (click)="onOpenImage()")
                 .row {{user.name}}
                 .row
