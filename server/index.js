@@ -56,7 +56,10 @@ app.post('/import/kml-data',kmlData);
 
 
 app.use((req, res, next)=>{
-  console.log('req.url ->', req.url)
+  if(req.url.match(/node_modules/)){
+    console.log('req.url ->', req.url)  
+  }
+  
 
   
   if(/sprite/.test(req.url)){
