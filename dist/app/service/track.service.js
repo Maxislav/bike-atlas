@@ -62,7 +62,7 @@ var TrackService = (function () {
             coordinates.push([lng, lat]);
             points.push(new track_var_1.Point(lng, lat));
         });
-        var layerId = this.getLayerId(0, 5000000, false) + '';
+        var layerId = this.getLayerId('track-') + '';
         map.addSource(layerId, {
             "type": "geojson",
             "data": {
@@ -88,6 +88,7 @@ var TrackService = (function () {
                 "line-opacity": 0.8
             }
         });
+        var srcPoints = this.addSrcPoints(data);
         var tr = {
             hide: function () {
                 map.removeLayer(layerId);
@@ -95,6 +96,7 @@ var TrackService = (function () {
                 var index = R.findIndex(R.propEq('id', layerId))(trackList);
                 trackList.splice(index, 1);
                 console.log('delete track index', index);
+                srcPoints.remove();
             },
             show: function () {
                 return $this.showTrack(data);
@@ -110,6 +112,97 @@ var TrackService = (function () {
         trackList.push(tr);
         console.log(tr);
         return tr;
+    };
+    TrackService.prototype.addSrcPoints = function (points) {
+        var layers = [];
+        var map = this.mapService.map;
+        var layerId = this.getLayerId('cluster-');
+        var data = {
+            "type": "FeatureCollection",
+            "features": (function () {
+                var features = [];
+                points.forEach(function (item) {
+                    var f = {
+                        properties: {
+                            color: "Green",
+                            point: item
+                        },
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": item
+                        }
+                    };
+                    features.push(f);
+                });
+                return features;
+            })()
+        };
+        map.addSource(layerId, {
+            type: "geojson",
+            data: data
+        });
+        map.addLayer({
+            id: layerId,
+            type: "circle",
+            "paint": {
+                "circle-color": {
+                    "property": "color",
+                    "stops": [
+                        ["Red", "#f00"],
+                        ["Green", "#0f0"],
+                        ["Blue", "#00f"]
+                    ],
+                    "type": "categorical"
+                },
+                "circle-radius": 8
+            },
+            layout: {},
+            source: layerId
+        });
+        map.on('click', function (e) {
+            var features = map.queryRenderedFeatures(e.point, {
+                layers: [layerId],
+            });
+            console.log(features);
+        });
+        return {
+            remove: function () {
+                map.removeLayer(layerId);
+            },
+            update: function (points) {
+                var data = {
+                    "type": "FeatureCollection",
+                    "features": (function () {
+                        var features = [];
+                        points.forEach(function (item) {
+                            var f = {
+                                properties: {
+                                    color: "Green",
+                                    point: item
+                                },
+                                "type": "Feature",
+                                "geometry": {
+                                    "type": "Point",
+                                    "coordinates": item
+                                }
+                            };
+                            features.push(f);
+                        });
+                        return features;
+                    })()
+                };
+                map.getSource(layerId).setdata(data);
+            }
+        };
+    };
+    TrackService.prototype.createPopupEdit = function (point) {
+        var map = this.mapService.map;
+        var mapboxgl = this.mapService.mapboxgl;
+        var popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15], closeButton: false })
+            .setLngLat(point)
+            .setHTML('<div>' + 'Удалить' + '</div>')
+            .addTo(map);
     };
     TrackService.prototype.marker = function (point) {
         var map = this.mapService.map;

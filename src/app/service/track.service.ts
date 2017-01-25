@@ -19,11 +19,12 @@ export class TrackService {
     private util: Util;
     private _trackList: Array<Tr> = [];
     private _map:any;
-
+    private popupEdit: any;
     constructor(private io:Io, private mapService: MapService) {
         this.layerIds = [];
         this._trackList = [];
         this.util = new Util();
+
 
         const socket = io.socket;
 
@@ -70,7 +71,7 @@ export class TrackService {
         
         
 
-        let layerId:string = this.getLayerId(0, 5000000, false)+'';
+        let layerId:string = this.getLayerId('track-')+'';
 
         map.addSource(layerId, {
             "type": "geojson",
@@ -98,6 +99,7 @@ export class TrackService {
                 "line-opacity": 0.8
             }
         });
+        const srcPoints = this.addSrcPoints(data)
 
         let tr: Tr = {
             hide: function () {
@@ -106,6 +108,7 @@ export class TrackService {
                 let index = R.findIndex(R.propEq('id', layerId))(trackList);
                 trackList.splice(index, 1);
                 console.log('delete track index', index)
+                srcPoints.remove()
             },
             show: function () {
                 return $this.showTrack(data)
@@ -126,6 +129,113 @@ export class TrackService {
         console.log(tr);
 
         return tr
+    }
+
+    addSrcPoints(points:Array<Point>){
+        const layers = [];
+        const map = this.mapService.map;
+        const layerId = this.getLayerId('cluster-');
+
+        const data = {
+            "type": "FeatureCollection",
+            "features": (()=>{
+                const features = [];
+                points.forEach(item=>{
+                    const f = {
+                        properties: {
+                            color: "Green",
+                            point: item
+                        },
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": item
+                        }
+                    };
+                    features.push(f)
+                });
+                return features
+            })()
+        };
+
+
+        map.addSource(layerId,  {
+            type: "geojson",
+            data: data
+        });
+
+
+        map.addLayer({
+            id: layerId,
+            type: "circle",
+            "paint": {
+                "circle-color": {
+                    "property": "color",
+                    "stops": [
+                        ["Red", "#f00"],
+                        ["Green", "#0f0"],
+                        ["Blue", "#00f"]
+                    ],
+                    "type": "categorical"
+                },
+                "circle-radius": 8
+            },
+            layout: {},
+            source: layerId
+        });
+
+        map.on('click', (e)=>{
+            var features = map.queryRenderedFeatures(e.point, {
+                layers: [layerId],
+            });
+
+            console.log(features)
+        });
+
+
+        return {
+            remove: ()=>{
+                 map.removeLayer(layerId);
+            },
+            update: (points:Array<Point>)=>{
+                const data = {
+                    "type": "FeatureCollection",
+                    "features": (()=>{
+                        const features = [];
+                        points.forEach(item=>{
+                            const f = {
+                                properties: {
+                                    color: "Green",
+                                    point: item
+                                },
+                                "type": "Feature",
+                                "geometry": {
+                                    "type": "Point",
+                                    "coordinates": item
+                                }
+                            };
+                            features.push(f)
+                        });
+                        return features
+                    })()
+                };
+                map.getSource(layerId).setdata(data)
+            }
+        }
+    }
+
+    createPopupEdit(point: Point){
+        const map = this.mapService.map;
+        const mapboxgl = this.mapService.mapboxgl;
+
+        const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
+            .setLngLat(point)
+            .setHTML('<div>' + 'Удалить'+ '</div>')
+            .addTo(map);
+        
+
+
+
     }
 
     marker(point: Point){
