@@ -16,6 +16,7 @@ var R = require('@ramda/ramda.min.js');
 var util_1 = require('./util');
 var socket_oi_service_1 = require("./socket.oi.service");
 var map_service_1 = require("./map.service");
+var track_var_1 = require("./track.var");
 var F = parseFloat;
 var I = parseInt;
 var TrackService = (function () {
@@ -40,10 +41,8 @@ var TrackService = (function () {
         var forEach = Array.prototype.forEach;
         forEach.call(xmlDoc.getElementsByTagName('trkpt'), function (item) {
             if (item.getAttribute('lon')) {
-                track.push({
-                    lng: F(item.getAttribute('lon')),
-                    lat: F(item.getAttribute('lat'))
-                });
+                var point = new track_var_1.Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')));
+                track.push(point);
             }
         });
         this.showTrack(track);
@@ -61,9 +60,9 @@ var TrackService = (function () {
         data.forEach(function (_a) {
             var lng = _a.lng, lat = _a.lat;
             coordinates.push([lng, lat]);
-            points.push({ lng: lng, lat: lat });
+            points.push(new track_var_1.Point(lng, lat));
         });
-        var layerId = this.getRandom(0, 5000000, false) + '';
+        var layerId = this.getLayerId(0, 5000000, false) + '';
         map.addSource(layerId, {
             "type": "geojson",
             "data": {
@@ -103,7 +102,8 @@ var TrackService = (function () {
             id: layerId,
             coordinates: coordinates,
             points: points,
-            color: color
+            color: color,
+            distance: 0
         };
         tr.distance = this.util.distance(tr);
         this.util.bearing(tr.points);
@@ -154,50 +154,24 @@ var TrackService = (function () {
         map.on('move', rotate);
         return marker;
     };
-    TrackService.prototype.showSpriteMarker = function (point) {
-        var point = {
-            "type": "Point",
-            "coordinates": [point.lng, point.lat]
-        };
-        var map = this.map;
-        var F = parseFloat;
-        var layerId = this.getRandom(0, 5000000, false) + '';
-        map.addSource(layerId, { type: 'geojson', data: point });
-        map.addLayer({
-            "id": layerId,
-            "type": "symbol",
-            "source": layerId,
-            "layout": {
-                "icon-image": "arrow"
-            }
-        });
-        return {
-            id: layerId,
-            setCenter: function (_point, bearing) {
-                point.coordinates = [_point.lng, _point.lat];
-                if (bearing) {
-                    map.setLayoutProperty(layerId, 'icon-rotate', bearing - map.getBearing());
-                }
-                map.getSource(layerId).setData(point);
-            },
-            hide: function () {
-                map.removeLayer(layerId);
-                map.removeSource(layerId);
-                console.log('delete marker id', layerId);
-            }
-        };
+    TrackService.prototype.getLayerId = function (prefix) {
+        prefix = prefix || '';
+        var min = 0, max = 10000;
+        var rand = prefix + Math.round(min + Math.random() * (max - min)).toLocaleString();
+        if (-1 < this.layerIds.indexOf(rand)) {
+            return this.getLayerId(prefix);
+        }
+        else {
+            this.layerIds.push(rand);
+            return rand;
+        }
     };
     TrackService.prototype.getRandom = function (min, max, int) {
         var rand = min + Math.random() * (max - min);
         if (int) {
             rand = Math.round(rand) + '';
         }
-        if (-1 < this.layerIds.indexOf(rand)) {
-            return this.getRandom(min, max, int);
-        }
-        else {
-            return rand;
-        }
+        return rand;
     };
     TrackService.prototype._getColor = function () {
         var _this = this;

@@ -2,19 +2,19 @@
  * Created by maxislav on 30.11.16.
  */
 
-import {Injectable} from '@angular/core';
+import {Injectable, transition} from '@angular/core';
 import * as R from '@ramda/ramda.min.js';
-import {Track as Tr, Point, Coordinate} from 'app/service/track.var';
 import {Util} from './util';
 import {Io} from "./socket.oi.service";
 import {MapService} from "./map.service";
+import {Track as Tr, Point} from "./track.var";
 const F = parseFloat;
 const I = parseInt;
 
 @Injectable()
 export class TrackService {
 
-    layerIds:Array<number>;
+    layerIds:Array<String>;
 
     private util: Util;
     private _trackList: Array<Tr> = [];
@@ -42,10 +42,8 @@ export class TrackService {
         var forEach = Array.prototype.forEach;
         forEach.call(xmlDoc.getElementsByTagName('trkpt'), item=>{
             if(item.getAttribute('lon')){
-                track.push({
-                    lng:F(item.getAttribute('lon')),
-                    lat:F(item.getAttribute('lat'))
-                })
+                const point: Point = new Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')));
+                track.push(point)
             }
         });
         this.showTrack(track)
@@ -66,13 +64,13 @@ export class TrackService {
 
 
         data.forEach(({lng, lat})=> {
-            coordinates.push([lng, lat])
-            points.push({lng,lat})
+            coordinates.push([lng, lat]);
+            points.push(new Point(lng, lat))
         });
         
         
 
-        let layerId:string = this.getRandom(0, 5000000, false)+'';
+        let layerId:string = this.getLayerId(0, 5000000, false)+'';
 
         map.addSource(layerId, {
             "type": "geojson",
@@ -115,7 +113,8 @@ export class TrackService {
             id: layerId,
             coordinates: coordinates,
             points: points,
-            color:color
+            color:color,
+            distance: 0
             //distance: (function() { return $this.util.distance(this)})()
         };
 
@@ -184,45 +183,19 @@ export class TrackService {
         return marker;
     }
     
-    showSpriteMarker(point: Point){
-        var point = {
-            "type": "Point",
-            "coordinates": [point.lng, point.lat]
-        };
-        const map = this.map;
-        const F = parseFloat;
 
-        let layerId:string = this.getRandom(0, 5000000, false)+'';
+    private getLayerId(prefix?: String) {
+        prefix = prefix || '';
+        const min = 0, max = 10000;
 
-        map.addSource(layerId, { type: 'geojson', data: point });
+        const rand = prefix + Math.round(min + Math.random() * (max - min)).toLocaleString();
 
-        map.addLayer({
-            "id": layerId,
-            "type": "symbol",
-            "source": layerId,
-            "layout": {
-                "icon-image": "arrow"
-            }
-        });
-      
-        
-        
-        return {
-            id: layerId,
-            setCenter: function (_point: Point, bearing: number) {
-                point.coordinates = [_point.lng, _point.lat];
-                if(bearing){
-                    map.setLayoutProperty(layerId, 'icon-rotate', bearing-map.getBearing());
-                }
-                map.getSource(layerId).setData(point);
-            },
-            hide: function () {
-                map.removeLayer(layerId);
-                map.removeSource(layerId);
-                console.log('delete marker id', layerId)
-            }
+        if (-1<this.layerIds.indexOf(rand)) {
+            return this.getLayerId(prefix)
+        } else {
+            this.layerIds.push(rand)
+            return rand;
         }
-
     }
 
     getRandom(min, max, int) {
@@ -230,13 +203,10 @@ export class TrackService {
         if (int) {
             rand = Math.round(rand)+''
         }
-        if (-1<this.layerIds.indexOf(rand)) {
-            return this.getRandom(min, max, int)
-        } else {
-            return rand;
-        }
+        return rand;
 
     }
+
     _getColor(){
         const I = parseInt;
         const colors: Array<string> = [

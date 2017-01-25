@@ -11,12 +11,30 @@
     '@angular':                   'node_modules/@angular',
     'socket':                     'node_modules/socket.io-client/dist',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
-    'rxjs':                       'node_modules/rxjs'
+    'rxjs':                       'node_modules/rxjs',
+    /*'rxjs/Subject':                       'dist/rx.min.js',
+    'rxjs/Observable':                       'dist/rx.min.js',
+    'rxjs/observable/PromiseObservable':                       'dist/rx.min.js',
+    'rxjs/operator/toPromise':                       'dist/rx.min.js',
+    '/rxjs/observable/from ' : 'dist/rx.min.js' ,
+    '/rxjs/operator/every ' : 'dist/rx.min.js' ,
+    '/rxjs/observable/of ' : 'dist/rx.min.js' ,
+    '/rxjs/operator/map ' : 'dist/rx.min.js' ,
+    '/rxjs/operator/mergeMap ' : 'dist/rx.min.js' ,
+    '/rxjs/operator/mergeAll ' : 'dist/rx.min.js' ,
+    '/rxjs/operator/reduce' : 'dist/rx.min.js' ,
+    '/rxjs/operator/catch ' : 'dist/rx.min.js' ,
+    '/rxjs/operator/concatAll ' : 'dist/rx.min.js' ,
+    '/rxjs/operator/first' : 'dist/rx.min.js' ,
+    '/rxjs/util/EmptyError' : 'dist/rx.min.js' ,
+    '/rxjs/observable/fromPromise' : 'dist/rx.min.js' ,
+    '/rxjs/operator/last' : 'dist/rx.min.js' ,
+    '/rxjs/BehaviorSubject' : 'dist/rx.min.js'*/
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
     'app':                        { main: 'init.js',  defaultExtension: 'js' },
-    'rxjs':                       { defaultExtension: 'js' },
+    'rxjs':                       { main : 'Rx.js', defaultExtension: 'js' },
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' }
   };
   var ngPackageNames = [
