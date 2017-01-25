@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 ;
 var ToastService = (function () {
     function ToastService() {
@@ -32,30 +32,30 @@ var ToastService = (function () {
         }, 5000);
         return res;
     };
-    ToastService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
-    ], ToastService);
     return ToastService;
 }());
+ToastService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
+], ToastService);
 exports.ToastService = ToastService;
 var ToastComponent = (function () {
     function ToastComponent(ts) {
         this.ts = ts;
         this.messages = ts.messages;
     }
-    ToastComponent = __decorate([
-        core_1.Component({
-            selector: 'toast-component',
-            templateUrl: 'dist/app/component/toast/toast-component.html',
-            styleUrls: [
-                'dist/app/component/toast/toast.component.css',
-            ]
-        }), 
-        __metadata('design:paramtypes', [ToastService])
-    ], ToastComponent);
     return ToastComponent;
 }());
+ToastComponent = __decorate([
+    core_1.Component({
+        selector: 'toast-component',
+        templateUrl: 'dist/app/component/toast/toast-component.html',
+        styleUrls: [
+            'dist/app/component/toast/toast.component.css',
+        ]
+    }),
+    __metadata("design:paramtypes", [ToastService])
+], ToastComponent);
 exports.ToastComponent = ToastComponent;
 ;
 //# sourceMappingURL=toast.component.js.map

@@ -96,11 +96,14 @@ var AuthService = (function () {
         enumerable: true,
         configurable: true
     });
-    AuthService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, friends_service_1.FriendsService, main_user_service_1.UserService])
-    ], AuthService);
     return AuthService;
 }());
+AuthService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io,
+        local_storage_service_1.LocalStorage,
+        friends_service_1.FriendsService,
+        main_user_service_1.UserService])
+], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

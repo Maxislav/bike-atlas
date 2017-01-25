@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 20.10.16.
  */
-var core_1 = require('@angular/core');
+var core_1 = require("@angular/core");
 var Mercator = (function () {
     function Mercator() {
         var _this = this;
@@ -31,11 +31,11 @@ var Mercator = (function () {
     Mercator.prototype.toRad = function (degrees) {
         return degrees * Math.PI / 180;
     };
-    Mercator = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
-    ], Mercator);
     return Mercator;
 }());
+Mercator = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
+], Mercator);
 exports.Mercator = Mercator;
 //# sourceMappingURL=mercator.service.js.map

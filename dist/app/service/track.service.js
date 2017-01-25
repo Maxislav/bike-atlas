@@ -11,9 +11,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var R = require('@ramda/ramda.min.js');
-var util_1 = require('./util');
+var core_1 = require("@angular/core");
+var R = require("@ramda/ramda.min.js");
+var util_1 = require("./util");
 var socket_oi_service_1 = require("./socket.oi.service");
 var map_service_1 = require("./map.service");
 var track_var_1 = require("./track.var");
@@ -57,10 +57,9 @@ var TrackService = (function () {
         var trackList = this.trackList;
         var color = this._getColor();
         var map = this.mapService.map;
-        data.forEach(function (_a) {
-            var lng = _a.lng, lat = _a.lat;
-            coordinates.push([lng, lat]);
-            points.push(new track_var_1.Point(lng, lat));
+        data.forEach(function (point) {
+            coordinates.push(point);
+            points.push(point);
         });
         var layerId = this.getLayerId('track-') + '';
         map.addSource(layerId, {
@@ -303,11 +302,11 @@ var TrackService = (function () {
         enumerable: true,
         configurable: true
     });
-    TrackService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [socket_oi_service_1.Io, map_service_1.MapService])
-    ], TrackService);
     return TrackService;
 }());
+TrackService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io, map_service_1.MapService])
+], TrackService);
 exports.TrackService = TrackService;
 //# sourceMappingURL=track.service.js.map

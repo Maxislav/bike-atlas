@@ -12,7 +12,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by max on 05.01.17.
  */
 var core_1 = require("@angular/core");
-var common_1 = require('@angular/common');
+var common_1 = require("@angular/common");
 var JournalComponent = (function () {
     function JournalComponent(location) {
         this.location = location;
@@ -20,16 +20,16 @@ var JournalComponent = (function () {
     JournalComponent.prototype.onClose = function () {
         this.location.back();
     };
-    JournalComponent = __decorate([
-        core_1.Component({
-            //noinspection TypeScriptUnresolvedVariable
-            moduleId: module.id,
-            templateUrl: './journal.component.html',
-            styleUrls: ['./journal.component.css'],
-        }), 
-        __metadata('design:paramtypes', [common_1.Location])
-    ], JournalComponent);
     return JournalComponent;
 }());
+JournalComponent = __decorate([
+    core_1.Component({
+        //noinspection TypeScriptUnresolvedVariable
+        moduleId: module.id,
+        templateUrl: './journal.component.html',
+        styleUrls: ['./journal.component.css'],
+    }),
+    __metadata("design:paramtypes", [common_1.Location])
+], JournalComponent);
 exports.JournalComponent = JournalComponent;
 //# sourceMappingURL=journal.component.js.map

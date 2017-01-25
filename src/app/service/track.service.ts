@@ -63,10 +63,9 @@ export class TrackService {
         const map = this.mapService.map;
 
 
-
-        data.forEach(({lng, lat})=> {
-            coordinates.push([lng, lat]);
-            points.push(new Point(lng, lat))
+        data.forEach((point)=> {
+            coordinates.push(point);
+            points.push(point)
         });
         
         

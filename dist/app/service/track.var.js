@@ -9,14 +9,21 @@ var Point = (function (_super) {
     function Point() {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i - 0] = arguments[_i];
+            args[_i] = arguments[_i];
         }
-        _super.apply(this, args);
-        this.push.apply(this, args);
+        var _this = _super.apply(this, args) || this;
+        //this.push(...args);
+        _this.lng = args[0];
+        _this.lat = args[1];
+        _this.bearing = _this.azimuth = args[2];
+        return _this;
     }
-    Object.defineProperty(Point.prototype, "lng", {
+    Object.defineProperty(Point.prototype, "bearing", {
         get: function () {
-            return this[0];
+            return this._bearing;
+        },
+        set: function (value) {
+            this._bearing = value;
         },
         enumerable: true,
         configurable: true
@@ -25,25 +32,28 @@ var Point = (function (_super) {
         get: function () {
             return this[1];
         },
+        set: function (value) {
+            this._lat = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Point.prototype, "lng", {
+        get: function () {
+            return this._lng;
+        },
+        set: function (val) {
+            this._lng = val;
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(Point.prototype, "azimuth", {
         get: function () {
-            return this[2];
+            return this._azimuth;
         },
         set: function (val) {
-            this[2] = val;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Point.prototype, "bearing", {
-        get: function () {
-            return this[2];
-        },
-        set: function (val) {
-            this[2] = val;
+            this._azimuth = val;
         },
         enumerable: true,
         configurable: true

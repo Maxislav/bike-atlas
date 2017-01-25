@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 20.10.16.
  */
-var core_1 = require('@angular/core');
-var local_storage_service_1 = require('../service/local-storage.service');
+var core_1 = require("@angular/core");
+var local_storage_service_1 = require("../service/local-storage.service");
 var MapService = (function () {
     // public ls: LocalStorage
     //private ref: ApplicationRef
@@ -100,11 +100,11 @@ var MapService = (function () {
         enumerable: true,
         configurable: true
     });
-    MapService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [core_1.ApplicationRef, local_storage_service_1.LocalStorage])
-    ], MapService);
     return MapService;
 }());
+MapService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [core_1.ApplicationRef, local_storage_service_1.LocalStorage])
+], MapService);
 exports.MapService = MapService;
 //# sourceMappingURL=map.service.js.map

@@ -9,9 +9,9 @@ var MyImage = (function (_super) {
     function MyImage() {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i - 0] = arguments[_i];
+            args[_i] = arguments[_i];
         }
-        _super.apply(this, args);
+        return _super.apply(this, args) || this;
     }
     MyImage.prototype.toCanvas = function (w, h, w1, h1, x, y) {
         var canvas = document.createElement('canvas');
