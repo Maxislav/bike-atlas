@@ -8,42 +8,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var core_2 = require("@angular/core");
+const core_1 = require('@angular/core');
+const core_2 = require('@angular/core');
 //import any = jasmine.any;
-var map_service_1 = require("../service/map.service");
-var position_size_service_1 = require("../service/position-size.service");
-var local_storage_service_1 = require("../service/local-storage.service");
-var mapboxgl = require("@lib/mapbox-gl/mapbox-gl.js");
-var main_user_service_1 = require("../service/main.user.service");
-var MapResolver = (function () {
-    function MapResolver() {
-        var _this = this;
+const map_service_1 = require("../service/map.service");
+const position_size_service_1 = require("../service/position-size.service");
+const local_storage_service_1 = require('../service/local-storage.service');
+const mapboxgl = require("@lib/mapbox-gl/mapbox-gl.js");
+const main_user_service_1 = require("../service/main.user.service");
+let MapResolver = class MapResolver {
+    constructor() {
         this._resolver = null;
-        this._resPromise = new Promise(function (resolve, reject) {
-            _this._resolver = resolve;
+        this._resPromise = new Promise((resolve, reject) => {
+            this._resolver = resolve;
         });
     }
-    Object.defineProperty(MapResolver.prototype, "onLoad", {
-        get: function () {
-            return this._resolver;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MapResolver.prototype.resolve = function () {
+    get onLoad() {
+        return this._resolver;
+    }
+    resolve() {
         return this._resPromise;
-    };
-    return MapResolver;
-}());
+    }
+};
 MapResolver = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], MapResolver);
 exports.MapResolver = MapResolver;
 ;
-var MapboxGlDirective = (function () {
-    function MapboxGlDirective(el, renderer, mapService, positionSiz, ls, userService, 
+let MapboxGlDirective = class MapboxGlDirective {
+    constructor(el, renderer, mapService, positionSiz, ls, userService, 
         // private su:AuthService,
         mapResolver) {
         this.ls = ls;
@@ -81,7 +75,7 @@ var MapboxGlDirective = (function () {
                 "tileSize": 256
             }
         };
-        var layers = {
+        const layers = {
             'osm': {
                 "id": "osm",
                 "source": "osm",
@@ -114,27 +108,22 @@ var MapboxGlDirective = (function () {
         //renderer.setElementStyle(el.nativeElement, 'height', '100%');
         renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'gray');
     }
-    MapboxGlDirective.prototype.resolve = function () {
-        return new Promise(function (resolve, reject) {
-            setTimeout(function () {
+    resolve() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
                 resolve();
             }, 5000);
         });
-    };
-    Object.defineProperty(MapboxGlDirective.prototype, "mapboxgl", {
-        get: function () {
-            return this._mapboxgl;
-        },
-        set: function (value) {
-            this._mapboxgl = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MapboxGlDirective.prototype.ngAfterViewInit = function () {
-        var _this = this;
+    }
+    get mapboxgl() {
+        return this._mapboxgl;
+    }
+    set mapboxgl(value) {
+        this._mapboxgl = value;
+    }
+    ngAfterViewInit() {
         var localStorageCenter = this.ls.mapCenter;
-        var el = this.el;
+        let el = this.el;
         el.nativeElement.innerHTML = '';
         mapboxgl.accessToken = "pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA";
         this.map = new mapboxgl.Map({
@@ -154,16 +143,16 @@ var MapboxGlDirective = (function () {
             position: 'top-right',
             maxWidth: 80
         }));
-        this.map.on('load', function () {
-            _this.mapResolver.onLoad(_this.map);
-            _this.map.addSource('hill', {
+        this.map.on('load', () => {
+            this.mapResolver.onLoad(this.map);
+            this.map.addSource('hill', {
                 "type": "raster",
                 "tiles": [
                     "hills/{z}/{x}/{y}.png"
                 ],
                 "tileSize": 256
             });
-            _this.map.addLayer({
+            this.map.addLayer({
                 'id': 'urban-areas-fill',
                 'type': 'raster',
                 "minzoom": 7,
@@ -172,21 +161,14 @@ var MapboxGlDirective = (function () {
             });
         });
         this.mapService.setMap(this.map);
-    };
+    }
     ;
-    return MapboxGlDirective;
-}());
+};
 MapboxGlDirective = __decorate([
     core_2.Directive({
         selector: 'mapbox-gl',
-    }),
-    __metadata("design:paramtypes", [core_2.ElementRef,
-        core_2.Renderer,
-        map_service_1.MapService,
-        position_size_service_1.PositionSize,
-        local_storage_service_1.LocalStorage,
-        main_user_service_1.UserService,
-        MapResolver])
+    }), 
+    __metadata('design:paramtypes', [core_2.ElementRef, core_2.Renderer, map_service_1.MapService, position_size_service_1.PositionSize, local_storage_service_1.LocalStorage, main_user_service_1.UserService, MapResolver])
 ], MapboxGlDirective);
 exports.MapboxGlDirective = MapboxGlDirective;
 //# sourceMappingURL=mapbox-gl.directive.js.map

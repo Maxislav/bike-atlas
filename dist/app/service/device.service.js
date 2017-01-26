@@ -8,13 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var socket_oi_service_1 = require("./socket.oi.service");
-var local_storage_service_1 = require("./local-storage.service");
-var friends_service_1 = require("./friends.service");
-var main_user_service_1 = require("./main.user.service");
-var DeviceService = (function () {
-    function DeviceService(io, ls, user, friend) {
+const core_1 = require("@angular/core");
+const socket_oi_service_1 = require("./socket.oi.service");
+const local_storage_service_1 = require("./local-storage.service");
+const friends_service_1 = require("./friends.service");
+const main_user_service_1 = require("./main.user.service");
+let DeviceService = class DeviceService {
+    constructor(io, ls, user, friend) {
         this.io = io;
         this.ls = ls;
         this.user = user;
@@ -23,68 +23,56 @@ var DeviceService = (function () {
         this.socket = io.socket;
         //this.devices = user.user.devices;
     }
-    DeviceService.prototype.updateDevices = function () {
-        var _this = this;
+    updateDevices() {
         return this.socket.$emit('getDevice')
-            .then(function (d) {
+            .then(d => {
             if (d && d.result == 'ok') {
-                _this.devices = d.devices;
+                this.devices = d.devices;
             }
             console.log(d);
-            return _this.devices;
+            return this.devices;
         })
-            .catch(function (err) {
+            .catch(err => {
             console.log(err);
         });
-    };
-    DeviceService.prototype.onAddDevice = function (device) {
-        var _this = this;
+    }
+    onAddDevice(device) {
         return this.socket.$emit('onAddDevice', device)
-            .then(function (d) {
+            .then(d => {
             if (d && d.result == 'ok') {
-                _this.updateDevices();
+                this.updateDevices();
             }
             return d;
         });
-    };
-    DeviceService.prototype.onDelDevice = function (device) {
-        var _this = this;
+    }
+    onDelDevice(device) {
         return this.socket.$emit('onDelDevice', device)
-            .then(function (d) {
+            .then(d => {
             if (d.result == 'ok') {
-                var index = _this.devices.indexOf(device);
+                let index = this.devices.indexOf(device);
                 if (-1 < index) {
-                    _this._devices.splice(index, 1);
+                    this._devices.splice(index, 1);
                 }
             }
             return d;
         });
-    };
-    DeviceService.prototype.clearDevices = function () {
+    }
+    clearDevices() {
         this._devices.length = 0;
-    };
-    Object.defineProperty(DeviceService.prototype, "devices", {
-        get: function () {
-            return this._devices;
-        },
-        set: function (devices) {
-            var _this = this;
-            this._devices.length = 0;
-            devices.forEach(function (device) {
-                _this._devices.push(device);
-            });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return DeviceService;
-}());
+    }
+    get devices() {
+        return this._devices;
+    }
+    set devices(devices) {
+        this._devices.length = 0;
+        devices.forEach(device => {
+            this._devices.push(device);
+        });
+    }
+};
 DeviceService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [socket_oi_service_1.Io,
-        local_storage_service_1.LocalStorage,
-        main_user_service_1.UserService,
-        friends_service_1.FriendsService])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, main_user_service_1.UserService, friends_service_1.FriendsService])
 ], DeviceService);
 exports.DeviceService = DeviceService;
 //# sourceMappingURL=device.service.js.map

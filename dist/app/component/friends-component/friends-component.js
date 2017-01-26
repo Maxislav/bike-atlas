@@ -8,26 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var friends_service_1 = require("../../service/friends.service");
-var toast_component_1 = require("../toast/toast.component");
-var UsersContainer = (function () {
-    function UsersContainer(el, renderer) {
-        var w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0], x = w.innerWidth || e.clientWidth || g.clientWidth, y = w.innerHeight || e.clientHeight || g.clientHeight;
+const core_1 = require("@angular/core");
+const common_1 = require('@angular/common');
+const friends_service_1 = require("../../service/friends.service");
+const toast_component_1 = require("../toast/toast.component");
+let UsersContainer = class UsersContainer {
+    constructor(el, renderer) {
+        let w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0], x = w.innerWidth || e.clientWidth || g.clientWidth, y = w.innerHeight || e.clientHeight || g.clientHeight;
         renderer.setElementStyle(el.nativeElement, 'height', y - 160 + 'px');
     }
-    return UsersContainer;
-}());
+};
 UsersContainer = __decorate([
     core_1.Directive({
         selector: 'users-container',
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, core_1.Renderer])
+    }), 
+    __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer])
 ], UsersContainer);
 exports.UsersContainer = UsersContainer;
-var FriendsComponent = (function () {
-    function FriendsComponent(location, friend, toast) {
+let FriendsComponent = class FriendsComponent {
+    constructor(location, friend, toast) {
         this.location = location;
         this.friend = friend;
         this.toast = toast;
@@ -37,26 +36,26 @@ var FriendsComponent = (function () {
         this.myInvites = friend.myInvites;
         friend.getFriends();
     }
-    FriendsComponent.prototype.onAccept = function (friend) {
+    onAccept(friend) {
         this.friend.onAcceptInvite(friend);
-    };
-    FriendsComponent.prototype.onDelFriend = function (friend) {
+    }
+    onDelFriend(friend) {
         this.friend.onDelFriend(friend.id);
-    };
-    FriendsComponent.prototype.onClose = function () {
+    }
+    onClose() {
         this.location.back();
-    };
-    FriendsComponent.prototype.getAllUsers = function () {
+    }
+    getAllUsers() {
         this.friend.getAllUsers();
-    };
-    FriendsComponent.prototype.sendInvite = function (user) {
+    }
+    sendInvite(user) {
         this.friend.onInvite(user.id);
-    };
-    FriendsComponent.prototype.onReject = function (user) {
+    }
+    onReject(user) {
         this.friend.onRejectInvite(user.id);
-    };
-    FriendsComponent.prototype.isInviteActive = function (user) {
-        var i = 0;
+    }
+    isInviteActive(user) {
+        let i = 0;
         while (i < this.myInvites.length) {
             if (this.myInvites[i].invite_user_id == user.id) {
                 return true;
@@ -64,12 +63,12 @@ var FriendsComponent = (function () {
             i++;
         }
         return false;
-    };
-    FriendsComponent.prototype.onCancelInvite = function (user) {
+    }
+    onCancelInvite(user) {
         this.friend.onCancelInvite(user.id);
-    };
-    FriendsComponent.prototype.isFriend = function (user) {
-        var i = 0;
+    }
+    isFriend(user) {
+        let i = 0;
         while (i < this.friends.length) {
             if (this.friends[i].id == user.id) {
                 return true;
@@ -77,17 +76,16 @@ var FriendsComponent = (function () {
             i++;
         }
         return false;
-    };
-    return FriendsComponent;
-}());
+    }
+};
 FriendsComponent = __decorate([
     core_1.Component({
         //noinspection TypeScriptUnresolvedVariable
         moduleId: module.id,
         templateUrl: './friends-component.html',
         styleUrls: ['./friends-component.css'],
-    }),
-    __metadata("design:paramtypes", [common_1.Location, friends_service_1.FriendsService, toast_component_1.ToastService])
+    }), 
+    __metadata('design:paramtypes', [common_1.Location, friends_service_1.FriendsService, toast_component_1.ToastService])
 ], FriendsComponent);
 exports.FriendsComponent = FriendsComponent;
 //# sourceMappingURL=friends-component.js.map

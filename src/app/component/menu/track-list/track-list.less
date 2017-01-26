@@ -6,15 +6,16 @@
   padding: 8px;
   min-width: 200px;
 }
+
 .del{
   cursor: pointer;
   display: block;
-  float: right;
+
 }
 .go{
   cursor: pointer;
   display: block;
-  float: right;
+//  float: right;
   margin-right: 10px;
   //padding: 8px;
   &:active{
@@ -26,7 +27,16 @@
 li{
   //padding: 8px;
   color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   &>div{
     padding: 8px;
+  }
+  .download{
+    height: 30px;width: 30px;
+    background: url("src/img/ico-download.png") no-repeat center;
+    background-size: 80%;
+    padding: 0;
   }
 }

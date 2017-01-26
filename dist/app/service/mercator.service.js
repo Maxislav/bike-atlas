@@ -11,31 +11,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 20.10.16.
  */
-var core_1 = require("@angular/core");
-var Mercator = (function () {
-    function Mercator() {
-        var _this = this;
-        this.getYpixel = function (fi, z) {
-            var pi = _this.Pi;
-            var t = Math.tan((pi / 4) + _this.toRad(fi) / 2);
-            _this.dy = (128 / pi) * Math.pow(2, z) * (pi - Math.log(t));
-            return Math.round(_this.dy);
+const core_1 = require('@angular/core');
+let Mercator = class Mercator {
+    constructor() {
+        this.getYpixel = (fi, z) => {
+            var pi = this.Pi;
+            var t = Math.tan((pi / 4) + this.toRad(fi) / 2);
+            this.dy = (128 / pi) * Math.pow(2, z) * (pi - Math.log(t));
+            return Math.round(this.dy);
         };
-        this.getXpixel = function (la, z) {
-            var pi = _this.Pi;
-            return (128 / pi) * Math.pow(2, z) * (_this.toRad(la) + pi);
+        this.getXpixel = (la, z) => {
+            var pi = this.Pi;
+            return (128 / pi) * Math.pow(2, z) * (this.toRad(la) + pi);
         };
         this.Pi = Math.PI;
         this.getXpixel;
     }
-    Mercator.prototype.toRad = function (degrees) {
+    toRad(degrees) {
         return degrees * Math.PI / 180;
-    };
-    return Mercator;
-}());
+    }
+};
 Mercator = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], Mercator);
 exports.Mercator = Mercator;
 //# sourceMappingURL=mercator.service.js.map

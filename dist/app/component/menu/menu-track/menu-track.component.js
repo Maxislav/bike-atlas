@@ -9,14 +9,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 ///<reference path="../../../../../node_modules/@angular/compiler/src/ml_parser/ast.d.ts"/>
-var core_1 = require("@angular/core");
-var menu_service_1 = require("app/service/menu.service");
-var socket_oi_service_1 = require("app/service/socket.oi.service");
-var track_service_1 = require("app/service/track.service");
-var router_1 = require("@angular/router");
-var ss = require('node_modules/socket.io-stream/socket.io-stream.js');
-var log = console.log;
-var MENU = [
+const core_1 = require('@angular/core');
+const menu_service_1 = require("app/service/menu.service");
+const socket_oi_service_1 = require("app/service/socket.oi.service");
+const track_service_1 = require("app/service/track.service");
+const router_1 = require("@angular/router");
+const ss = require('node_modules/socket.io-stream/socket.io-stream.js');
+const log = console.log;
+const MENU = [
     {
         value: 'journal',
         text: "Журнал"
@@ -31,8 +31,8 @@ var MENU = [
         text: "Импорт from Google KML"
     },
 ];
-var MenuTrackComponent = (function () {
-    function MenuTrackComponent(ms, io, trackService, router) {
+let MenuTrackComponent = class MenuTrackComponent {
+    constructor(ms, io, trackService, router) {
         this.ms = ms;
         this.io = io;
         this.trackService = trackService;
@@ -41,7 +41,7 @@ var MenuTrackComponent = (function () {
         this.clickLoad = 0;
         this.socket = io.socket;
     }
-    MenuTrackComponent.prototype.onSelect = function (item, $event) {
+    onSelect(item, $event) {
         $event.preventDefault();
         $event.stopPropagation();
         switch (item.value) {
@@ -59,25 +59,24 @@ var MenuTrackComponent = (function () {
             default:
                 return null;
         }
-    };
-    MenuTrackComponent.prototype.loadFile = function (e) {
-        var _this = this;
+    }
+    loadFile(e) {
         this.clickLoad++;
-        var elFile = e.target.parentElement.getElementsByTagName('input')[1];
-        elFile.addEventListener('change', function () {
-            goStream.call(_this);
+        const elFile = e.target.parentElement.getElementsByTagName('input')[1];
+        elFile.addEventListener('change', () => {
+            goStream.call(this);
         });
         if (this.clickLoad == 2) {
             goStream.call(this);
         }
-        elFile.addEventListener('click', function (e) {
+        elFile.addEventListener('click', (e) => {
             e.stopPropagation();
         });
         elFile.click();
         function goStream() {
             this.ms.menuOpen = false;
             this.clickLoad = 0;
-            var FReader = new FileReader();
+            let FReader = new FileReader();
             FReader.onload = function (e) {
                 console.log(e);
             };
@@ -86,14 +85,14 @@ var MenuTrackComponent = (function () {
             ss(this.socket).emit('file', stream, { size: file.size });
             ss.createBlobReadStream(file).pipe(stream);
         }
-    };
-    MenuTrackComponent.prototype.importFile = function (e) {
+    }
+    importFile(e) {
         this.clickLoad++;
-        var trackService = this.trackService;
+        const trackService = this.trackService;
         this.ms.menuOpen = false;
-        var elFile = e.target.parentElement.getElementsByTagName('input')[1];
+        const elFile = e.target.parentElement.getElementsByTagName('input')[1];
         elFile.addEventListener('change', goStream.bind(this));
-        elFile.addEventListener('click', function (e) {
+        elFile.addEventListener('click', (e) => {
             e.stopPropagation();
         });
         elFile.click();
@@ -134,17 +133,16 @@ var MenuTrackComponent = (function () {
                 pom.click();
             }
         }
-    };
-    return MenuTrackComponent;
-}());
+    }
+};
 MenuTrackComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
         selector: 'menu-track',
         templateUrl: './menu-track.html',
         styleUrls: ['./menu-track.css'],
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof menu_service_1.MenuService !== "undefined" && menu_service_1.MenuService) === "function" && _a || Object, typeof (_b = typeof socket_oi_service_1.Io !== "undefined" && socket_oi_service_1.Io) === "function" && _b || Object, typeof (_c = typeof track_service_1.TrackService !== "undefined" && track_service_1.TrackService) === "function" && _c || Object, router_1.Router])
+    }), 
+    __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, (typeof (_b = typeof socket_oi_service_1.Io !== 'undefined' && socket_oi_service_1.Io) === 'function' && _b) || Object, (typeof (_c = typeof track_service_1.TrackService !== 'undefined' && track_service_1.TrackService) === 'function' && _c) || Object, router_1.Router])
 ], MenuTrackComponent);
 exports.MenuTrackComponent = MenuTrackComponent;
 var _a, _b, _c;

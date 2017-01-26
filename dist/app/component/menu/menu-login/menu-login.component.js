@@ -8,23 +8,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
+const core_1 = require('@angular/core');
 //import { Rp } from '@angular/core';
-var menu_service_1 = require("app/service/menu.service");
-var router_1 = require("@angular/router");
-var socket_oi_service_1 = require("../../../service/socket.oi.service");
-var md5_service_1 = require("../../../service/md5.service");
-var local_storage_service_1 = require("../../../service/local-storage.service");
-var auth_service_1 = require("../../../service/auth.service");
-var toast_component_1 = require("../../toast/toast.component");
-var device_service_1 = require("../../../service/device.service");
-var login_service_1 = require("../../../service/login.service");
-var log_service_1 = require("../../../service/log.service");
-var friends_service_1 = require("../../../service/friends.service");
-var main_user_service_1 = require("../../../service/main.user.service");
+const menu_service_1 = require("app/service/menu.service");
+const router_1 = require("@angular/router");
+const socket_oi_service_1 = require("../../../service/socket.oi.service");
+const md5_service_1 = require("../../../service/md5.service");
+const local_storage_service_1 = require("../../../service/local-storage.service");
+const auth_service_1 = require("../../../service/auth.service");
+const toast_component_1 = require("../../toast/toast.component");
+const device_service_1 = require("../../../service/device.service");
+const login_service_1 = require("../../../service/login.service");
+const log_service_1 = require("../../../service/log.service");
+const friends_service_1 = require("../../../service/friends.service");
+const main_user_service_1 = require("../../../service/main.user.service");
 //import {RouterLink} from "@angular/router-deprecated";
-var MenuLoginComponent = (function () {
-    function MenuLoginComponent(router, ms, io, md5, ls, as, ds, ts, logService, friend, loginService, userService) {
+let MenuLoginComponent = class MenuLoginComponent {
+    constructor(router, ms, io, md5, ls, as, ds, ts, logService, friend, loginService, userService) {
         this.router = router;
         this.ms = ms;
         this.io = io;
@@ -40,38 +40,37 @@ var MenuLoginComponent = (function () {
         this.user = userService.user;
         this.socket = io.socket;
     }
-    MenuLoginComponent.prototype.goToReg = function () {
+    goToReg() {
         this.router.navigate(['/auth/map/registration']);
         this.ms.menuOpenLogin = false;
-    };
-    MenuLoginComponent.prototype.goToPrivateArea = function () {
+    }
+    goToPrivateArea() {
         this.router.navigate(['/auth/map/privatearea']);
         this.ms.menuOpenLogin = false;
-    };
-    MenuLoginComponent.prototype.onEnter = function (e) {
+    }
+    onEnter(e) {
         this.loginService
             .onEnter({
             name: this.name,
             pass: this.md5.hash(this.pass)
         });
-    };
-    MenuLoginComponent.prototype.goToProfile = function () {
+    }
+    goToProfile() {
         this.router.navigate(['/auth/map/profile']);
         this.ms.menuOpenLogin = false;
-    };
-    MenuLoginComponent.prototype.onExit = function (e) {
+    }
+    onExit(e) {
         this.loginService.onExit(e);
-    };
-    MenuLoginComponent.prototype.goToFriends = function () {
+    }
+    goToFriends() {
         this.ms.menuOpenLogin = false;
         this.router.navigate(['/auth/map/friends']);
-    };
-    MenuLoginComponent.prototype.goDevice = function () {
+    }
+    goDevice() {
         this.router.navigate(['/auth/map/device']);
         this.ms.menuOpenLogin = false;
-    };
-    return MenuLoginComponent;
-}());
+    }
+};
 MenuLoginComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
@@ -79,17 +78,8 @@ MenuLoginComponent = __decorate([
         //directives: [RouterLink],
         templateUrl: './menu-login.component.html',
         styleUrls: ['./menu-login.css'],
-    }),
-    __metadata("design:paramtypes", [router_1.Router, typeof (_a = typeof menu_service_1.MenuService !== "undefined" && menu_service_1.MenuService) === "function" && _a || Object, socket_oi_service_1.Io,
-        md5_service_1.Md5,
-        local_storage_service_1.LocalStorage,
-        auth_service_1.AuthService,
-        device_service_1.DeviceService,
-        toast_component_1.ToastService,
-        log_service_1.LogService,
-        friends_service_1.FriendsService,
-        login_service_1.LoginService,
-        main_user_service_1.UserService])
+    }), 
+    __metadata('design:paramtypes', [router_1.Router, (typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, socket_oi_service_1.Io, md5_service_1.Md5, local_storage_service_1.LocalStorage, auth_service_1.AuthService, device_service_1.DeviceService, toast_component_1.ToastService, log_service_1.LogService, friends_service_1.FriendsService, login_service_1.LoginService, main_user_service_1.UserService])
 ], MenuLoginComponent);
 exports.MenuLoginComponent = MenuLoginComponent;
 var _a;

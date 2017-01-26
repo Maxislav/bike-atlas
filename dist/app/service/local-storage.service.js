@@ -11,9 +11,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 25.11.16.
  */
-var core_1 = require("@angular/core");
-var LocalStorage = (function () {
-    function LocalStorage() {
+const core_1 = require("@angular/core");
+let LocalStorage = class LocalStorage {
+    constructor() {
         this.prefix = window.location.hostname;
         this._mapCenter = {
             lng: null,
@@ -28,39 +28,30 @@ var LocalStorage = (function () {
             this.mapCenter = JSON.parse(localStorage.getItem(this.prefix + '-' + 'map-center'));
         }
     }
-    Object.defineProperty(LocalStorage.prototype, "mapCenter", {
-        get: function () {
-            return this._mapCenter;
-        },
-        set: function (value) {
-            localStorage.setItem(this.prefix + '-' + 'map-center', JSON.stringify(value));
-            this._mapCenter = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LocalStorage.prototype, "userKey", {
-        get: function () {
-            this._userKey = localStorage.getItem(this.prefix + '-' + 'user-key');
-            return this._userKey;
-        },
-        set: function (key) {
-            if (key) {
-                localStorage.setItem(this.prefix + '-' + 'user-key', key);
-            }
-            else {
-                localStorage.removeItem(this.prefix + '-' + 'user-key');
-            }
-            this._userKey = key;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return LocalStorage;
-}());
+    get mapCenter() {
+        return this._mapCenter;
+    }
+    set mapCenter(value) {
+        localStorage.setItem(this.prefix + '-' + 'map-center', JSON.stringify(value));
+        this._mapCenter = value;
+    }
+    set userKey(key) {
+        if (key) {
+            localStorage.setItem(this.prefix + '-' + 'user-key', key);
+        }
+        else {
+            localStorage.removeItem(this.prefix + '-' + 'user-key');
+        }
+        this._userKey = key;
+    }
+    get userKey() {
+        this._userKey = localStorage.getItem(this.prefix + '-' + 'user-key');
+        return this._userKey;
+    }
+};
 LocalStorage = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], LocalStorage);
 exports.LocalStorage = LocalStorage;
 //# sourceMappingURL=local-storage.service.js.map

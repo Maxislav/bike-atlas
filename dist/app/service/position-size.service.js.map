@@ -1,1 +1,1 @@
-{"version":3,"file":"position-size.service.js","sourceRoot":"","sources":["../../../src/app/service/position-size.service.ts"],"names":[],"mappings":";;;;;;;AAAA;;GAEG;AACH,sCAA2C;AAG3C,IAAa,YAAY;IAAzB;IAEA,CAAC;IAAD,mBAAC;AAAD,CAAC,AAFD,IAEC;AAFY,YAAY;IADxB,iBAAU,EAAE;GACA,YAAY,CAExB;AAFY,oCAAY"}
+{"version":3,"file":"position-size.service.js","sourceRoot":"","sources":["../../../src/app/service/position-size.service.ts"],"names":[],"mappings":";;;;;;;;;;AAAA;;GAEG;AACH,uBAA2B,eAAe,CAAC,CAAA;AAG3C;AAEA,CAAC;AAHD;IAAC,iBAAU,EAAE;;gBAAA;AACA,oBAAY,eAExB,CAAA"}

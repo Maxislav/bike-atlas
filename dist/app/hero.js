@@ -2,11 +2,8 @@
 /**
  * Created by maxislav on 18.08.16.
  */
-var Hero = (function () {
-    function Hero() {
-    }
-    return Hero;
-}());
+class Hero {
+}
 exports.Hero = Hero;
 exports.HEROES = [
     { id: 11, name: 'Mr. Nice' },

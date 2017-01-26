@@ -8,13 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var socket_oi_service_1 = require("./socket.oi.service");
-var local_storage_service_1 = require("./local-storage.service");
-var friends_service_1 = require("./friends.service");
-var main_user_service_1 = require("./main.user.service");
-var AuthService = (function () {
-    function AuthService(io, ls, friend, userService) {
+const core_1 = require("@angular/core");
+const socket_oi_service_1 = require("./socket.oi.service");
+const local_storage_service_1 = require("./local-storage.service");
+const friends_service_1 = require("./friends.service");
+const main_user_service_1 = require("./main.user.service");
+let AuthService = class AuthService {
+    constructor(io, ls, friend, userService) {
         this.io = io;
         this.ls = ls;
         this.friend = friend;
@@ -24,86 +24,64 @@ var AuthService = (function () {
         this.socket = io.socket;
         this._setting = {};
         this.socket.on('connect', this.onConnect.bind(this));
-        this.socket.on('disconnect', function (d) {
+        this.socket.on('disconnect', (d) => {
             console.info('disconnect');
         });
     }
-    AuthService.prototype.resolve = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.resolveAuth = resolve;
+    resolve() {
+        return new Promise((resolve, reject) => {
+            this.resolveAuth = resolve;
         });
-    };
-    AuthService.prototype.onAuth = function () {
+    }
+    onAuth() {
         this.onConnect();
-    };
-    AuthService.prototype.onConnect = function () {
-        var _this = this;
+    }
+    onConnect() {
         console.info('connect');
         this.socket.$emit('onAuth', {
             hash: this.ls.userKey
-        }).then(function (d) {
+        }).then(d => {
             if (d.result == 'ok') {
-                _this.userService.user = d.user;
-                _this.userService.friends = d.user.friends;
-                _this.socket.emit(d.user.hash);
-                _this.friend.getInvites();
+                this.userService.user = d.user;
+                this.userService.friends = d.user.friends;
+                this.socket.emit(d.user.hash);
+                this.friend.getInvites();
             }
             else {
-                _this.userName = null;
+                this.userName = null;
             }
             console.log(d);
-            _this.resolveAuth(true);
+            this.resolveAuth(true);
         });
-    };
-    Object.defineProperty(AuthService.prototype, "userName", {
-        get: function () {
-            return this._userName;
-        },
-        set: function (name) {
-            this._userName = name;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(AuthService.prototype, "setting", {
-        get: function () {
-            return this._setting;
-        },
-        set: function (value) {
-            this._setting = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(AuthService.prototype, "userImage", {
-        get: function () {
-            return this._userImage;
-        },
-        set: function (value) {
-            this._userImage = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(AuthService.prototype, "userId", {
-        get: function () {
-            return this._userId;
-        },
-        set: function (value) {
-            this._userId = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return AuthService;
-}());
+    }
+    get userName() {
+        return this._userName;
+    }
+    set userName(name) {
+        this._userName = name;
+    }
+    get setting() {
+        return this._setting;
+    }
+    set setting(value) {
+        this._setting = value;
+    }
+    get userImage() {
+        return this._userImage;
+    }
+    set userImage(value) {
+        this._userImage = value;
+    }
+    get userId() {
+        return this._userId;
+    }
+    set userId(value) {
+        this._userId = value;
+    }
+};
 AuthService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [socket_oi_service_1.Io,
-        local_storage_service_1.LocalStorage,
-        friends_service_1.FriendsService,
-        main_user_service_1.UserService])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, friends_service_1.FriendsService, main_user_service_1.UserService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

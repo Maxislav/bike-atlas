@@ -8,38 +8,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var router_1 = require("@angular/router");
-var NavigationHistory = (function () {
-    function NavigationHistory() {
+const core_1 = require('@angular/core');
+const router_1 = require("@angular/router");
+let NavigationHistory = class NavigationHistory {
+    constructor() {
         this.history = [];
     }
-    Object.defineProperty(NavigationHistory.prototype, "is", {
-        get: function () {
-            return 1 < this.history.length;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return NavigationHistory;
-}());
+    get is() {
+        return 1 < this.history.length;
+    }
+};
 NavigationHistory = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], NavigationHistory);
 exports.NavigationHistory = NavigationHistory;
-var AppComponent = (function () {
-    function AppComponent(router, nh) {
+let AppComponent = class AppComponent {
+    constructor(router, nh) {
         this.router = router;
         this.title = 'Tour of Heroes';
-        this.router.events.subscribe(function (e) {
+        this.router.events.subscribe((e) => {
             if (e instanceof router_1.NavigationEnd) {
                 nh.history.push(e.url);
             }
         });
     }
-    return AppComponent;
-}());
+};
 AppComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
@@ -50,8 +44,8 @@ AppComponent = __decorate([
         styleUrls: [
             'css/app.component.css',
         ]
-    }),
-    __metadata("design:paramtypes", [router_1.Router, NavigationHistory])
+    }), 
+    __metadata('design:paramtypes', [router_1.Router, NavigationHistory])
 ], AppComponent);
 exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map

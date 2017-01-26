@@ -11,23 +11,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var hero_1 = require("./hero");
-var TransactionResolver = (function () {
-    function TransactionResolver() {
+const core_1 = require('@angular/core');
+const hero_1 = require("./hero");
+let TransactionResolver = class TransactionResolver {
+    constructor() {
     }
-    TransactionResolver.prototype.resolve = function () {
-        return new Promise(function (resolve) {
-            setTimeout(function () {
+    resolve() {
+        return new Promise(resolve => {
+            setTimeout(() => {
                 resolve(hero_1.HEROES);
             }, 1000);
         });
-    };
-    return TransactionResolver;
-}());
+    }
+};
 TransactionResolver = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], TransactionResolver);
 exports.TransactionResolver = TransactionResolver;
 //# sourceMappingURL=transaction.resolve.js.map

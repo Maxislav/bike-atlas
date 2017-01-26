@@ -8,44 +8,41 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
+const core_1 = require('@angular/core');
 ;
-var ToastService = (function () {
-    function ToastService() {
+let ToastService = class ToastService {
+    constructor() {
         this.messages = [];
     }
-    ToastService.prototype.show = function (message) {
-        var _this = this;
+    show(message) {
         message.className = message.type || 'default';
         this.messages.push(message);
-        var res = {
-            remove: function () {
-                var index = _this.messages.indexOf(message);
+        const res = {
+            remove: () => {
+                const index = this.messages.indexOf(message);
                 if (-1 < index) {
-                    _this.messages.splice(index, 1);
+                    this.messages.splice(index, 1);
                 }
             }
         };
         message.remove = res.remove;
-        setTimeout(function () {
+        setTimeout(() => {
             res.remove();
         }, 5000);
         return res;
-    };
-    return ToastService;
-}());
+    }
+};
 ToastService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], ToastService);
 exports.ToastService = ToastService;
-var ToastComponent = (function () {
-    function ToastComponent(ts) {
+let ToastComponent = class ToastComponent {
+    constructor(ts) {
         this.ts = ts;
         this.messages = ts.messages;
     }
-    return ToastComponent;
-}());
+};
 ToastComponent = __decorate([
     core_1.Component({
         selector: 'toast-component',
@@ -53,8 +50,8 @@ ToastComponent = __decorate([
         styleUrls: [
             'dist/app/component/toast/toast.component.css',
         ]
-    }),
-    __metadata("design:paramtypes", [ToastService])
+    }), 
+    __metadata('design:paramtypes', [ToastService])
 ], ToastComponent);
 exports.ToastComponent = ToastComponent;
 ;

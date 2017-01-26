@@ -1,17 +1,17 @@
 "use strict";
-var router_1 = require("@angular/router");
-var heroes_component_1 = require("./heroes.component");
-var auth_component_1 = require("./component/auth-component/auth.component");
-var map_component_1 = require("./map.component");
-var registration_component_1 = require("./component/registration/registration.component");
-var device_component_1 = require("./component/device/device.component");
-var auth_service_1 = require("./service/auth.service");
-var profile_component_1 = require("./component/profile/profile.component");
-var journal_component_1 = require("./component/journal-component/journal.component");
-var friends_component_1 = require("./component/friends-component/friends-component");
-var private_area_1 = require("./component/private-area/private-area");
-var no_found_component_1 = require("./no-found.component");
-var appRouters = [
+const router_1 = require('@angular/router');
+const heroes_component_1 = require('./heroes.component');
+const auth_component_1 = require("./component/auth-component/auth.component");
+const map_component_1 = require("./map.component");
+const registration_component_1 = require("./component/registration/registration.component");
+const device_component_1 = require("./component/device/device.component");
+const auth_service_1 = require("./service/auth.service");
+const profile_component_1 = require("./component/profile/profile.component");
+const journal_component_1 = require("./component/journal-component/journal.component");
+const friends_component_1 = require("./component/friends-component/friends-component");
+const private_area_1 = require("./component/private-area/private-area");
+const no_found_component_1 = require("./no-found.component");
+const appRouters = [
     {
         path: '',
         redirectTo: 'auth/map',

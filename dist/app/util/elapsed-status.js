@@ -1,7 +1,7 @@
 "use strict";
-exports.elapsedStatus = function (device) {
-    var dateLong = new Date(device.date).getTime();
-    var passed = new Date().getTime() - dateLong;
+exports.elapsedStatus = (device) => {
+    let dateLong = new Date(device.date).getTime();
+    let passed = new Date().getTime() - dateLong;
     if (passed < 10 * 60 * 1000) {
         if (device.speed < 0.1) {
             return 'green';

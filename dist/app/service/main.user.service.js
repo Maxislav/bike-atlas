@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var UserService = (function () {
-    function UserService() {
+const core_1 = require("@angular/core");
+let UserService = class UserService {
+    constructor() {
         this._friends = [];
         this._user = {
             name: null,
@@ -24,19 +24,19 @@ var UserService = (function () {
             devices: []
         };
     }
-    UserService.prototype.clearUser = function () {
-        for (var opt in this._user) {
+    clearUser() {
+        for (let opt in this._user) {
             this._user[opt] = null;
         }
-    };
-    UserService.prototype.clearAll = function () {
-        this.user.devices.forEach(function (device) {
+    }
+    clearAll() {
+        this.user.devices.forEach(device => {
             if (device.marker) {
                 device.marker.remove();
             }
         });
-        this.friends.forEach(function (friend) {
-            friend.devices.forEach(function (device) {
+        this.friends.forEach(friend => {
+            friend.devices.forEach(device => {
                 if (device.marker) {
                     device.marker.remove();
                 }
@@ -46,54 +46,40 @@ var UserService = (function () {
             this.friends.shift();
         }
         this.clearUser();
-    };
-    UserService.prototype.createDeviceOther = function (device) {
+    }
+    createDeviceOther(device) {
         this._other.devices.push(device);
         return device;
-    };
-    Object.defineProperty(UserService.prototype, "other", {
-        get: function () {
-            return this._other;
-        },
-        set: function (value) {
-            this._other = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UserService.prototype, "friends", {
-        get: function () {
-            return this._friends;
-        },
-        set: function (friends) {
-            var _this = this;
-            if (!friends)
-                return;
-            this._friends.length = 0;
-            friends.forEach(function (friend) {
-                _this._friends.push(friend);
-            });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UserService.prototype, "user", {
-        get: function () {
-            return this._user;
-        },
-        set: function (value) {
-            for (var opt in value) {
-                this._user[opt] = value[opt];
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return UserService;
-}());
+    }
+    get other() {
+        return this._other;
+    }
+    set other(value) {
+        this._other = value;
+    }
+    set friends(friends) {
+        if (!friends)
+            return;
+        this._friends.length = 0;
+        friends.forEach(friend => {
+            this._friends.push(friend);
+        });
+    }
+    get friends() {
+        return this._friends;
+    }
+    get user() {
+        return this._user;
+    }
+    set user(value) {
+        for (let opt in value) {
+            this._user[opt] = value[opt];
+        }
+    }
+};
 UserService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=main.user.service.js.map

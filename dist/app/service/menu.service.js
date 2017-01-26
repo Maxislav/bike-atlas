@@ -11,88 +11,75 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 25.11.16.
  */
-var core_1 = require("@angular/core");
-var MenuService = (function () {
-    function MenuService() {
+const core_1 = require('@angular/core');
+let MenuService = class MenuService {
+    constructor() {
         this._menuOpen = false;
         this.menuOpenLogin = false;
         this._menuDevice = false;
         this._menuAthlete = false;
     }
-    Object.defineProperty(MenuService.prototype, "menuAthlete", {
-        get: function () {
-            return this._menuAthlete;
-        },
-        set: function (value) {
-            var click = onclick.bind(this);
-            if (value) {
-                setTimeout(function () {
-                    document.body.addEventListener('click', click);
-                }, 100);
-            }
-            else {
-                document.body.removeEventListener('click', click);
-            }
-            function onclick(e) {
-                document.body.removeEventListener('click', click);
-                this.menuAthlete = false;
-            }
-            this._menuAthlete = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MenuService.prototype, "menuOpen", {
-        get: function () {
-            return this._menuOpen;
-        },
-        set: function (value) {
-            var click = onclick.bind(this);
-            if (value) {
-                setTimeout(function () {
-                    document.body.addEventListener('click', click);
-                }, 100);
-            }
-            else {
-                document.body.removeEventListener('click', click);
-            }
-            function onclick(e) {
-                document.body.removeEventListener('click', click);
-                this.menuOpen = false;
-            }
-            this._menuOpen = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MenuService.prototype, "menuOpenLogin", {
-        get: function () {
-            return this._menuOpenLogin;
-        },
-        set: function (value) {
-            var click = onclick.bind(this);
-            if (value) {
-                setTimeout(function () {
-                    document.body.addEventListener('click', click);
-                }, 100);
-            }
-            else {
-                document.body.removeEventListener('click', click);
-            }
-            function onclick(e) {
-                document.body.removeEventListener('click', click);
-                this.menuOpenLogin = false;
-            }
-            this._menuOpenLogin = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return MenuService;
-}());
+    get menuAthlete() {
+        return this._menuAthlete;
+    }
+    set menuAthlete(value) {
+        const click = onclick.bind(this);
+        if (value) {
+            setTimeout(() => {
+                document.body.addEventListener('click', click);
+            }, 100);
+        }
+        else {
+            document.body.removeEventListener('click', click);
+        }
+        function onclick(e) {
+            document.body.removeEventListener('click', click);
+            this.menuAthlete = false;
+        }
+        this._menuAthlete = value;
+    }
+    get menuOpen() {
+        return this._menuOpen;
+    }
+    set menuOpen(value) {
+        const click = onclick.bind(this);
+        if (value) {
+            setTimeout(() => {
+                document.body.addEventListener('click', click);
+            }, 100);
+        }
+        else {
+            document.body.removeEventListener('click', click);
+        }
+        function onclick(e) {
+            document.body.removeEventListener('click', click);
+            this.menuOpen = false;
+        }
+        this._menuOpen = value;
+    }
+    get menuOpenLogin() {
+        return this._menuOpenLogin;
+    }
+    set menuOpenLogin(value) {
+        const click = onclick.bind(this);
+        if (value) {
+            setTimeout(() => {
+                document.body.addEventListener('click', click);
+            }, 100);
+        }
+        else {
+            document.body.removeEventListener('click', click);
+        }
+        function onclick(e) {
+            document.body.removeEventListener('click', click);
+            this.menuOpenLogin = false;
+        }
+        this._menuOpenLogin = value;
+    }
+};
 MenuService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], MenuService);
 exports.MenuService = MenuService;
 //# sourceMappingURL=menu.service.js.map

@@ -11,20 +11,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 22.11.16.
  */
-var core_1 = require("@angular/core");
-var menu_track_component_1 = require("./menu-track/menu-track.component");
+const core_1 = require('@angular/core');
+const menu_track_component_1 = require('./menu-track/menu-track.component');
 //import any = jasmine.any;
-var menu_service_1 = require("app/service/menu.service");
-var track_service_1 = require("../../service/track.service");
-var track_list_component_1 = require("./track-list/track-list.component");
-var auth_service_1 = require("../../service/auth.service");
-var router_1 = require("@angular/router");
-var friends_service_1 = require("../../service/friends.service");
-var main_user_service_1 = require("../../service/main.user.service");
-var toast_component_1 = require("../toast/toast.component");
-var map_service_1 = require("../../service/map.service");
-var MenuComponent = (function () {
-    function MenuComponent(menuService, track, authService, router, friend, userService, mapService, toast) {
+const menu_service_1 = require("app/service/menu.service");
+const track_service_1 = require("../../service/track.service");
+const track_list_component_1 = require("./track-list/track-list.component");
+const auth_service_1 = require("../../service/auth.service");
+const router_1 = require("@angular/router");
+const friends_service_1 = require("../../service/friends.service");
+const main_user_service_1 = require("../../service/main.user.service");
+const toast_component_1 = require("../toast/toast.component");
+const map_service_1 = require("../../service/map.service");
+let MenuComponent = class MenuComponent {
+    constructor(menuService, track, authService, router, friend, userService, mapService, toast) {
         this.menuService = menuService;
         this.track = track;
         this.authService = authService;
@@ -37,13 +37,13 @@ var MenuComponent = (function () {
         this.invites = friend.invites;
         this.trackList = track.trackList;
     }
-    MenuComponent.prototype.onOpen = function () {
+    onOpen() {
         this.menuService.menuOpen = !this.menuService.menuOpen;
-    };
-    MenuComponent.prototype.onOpenLogin = function () {
+    }
+    onOpenLogin() {
         this.menuService.menuOpenLogin = !this.menuService.menuOpenLogin;
-    };
-    MenuComponent.prototype.onOpenAthlete = function () {
+    }
+    onOpenAthlete() {
         if (!this.user.name && !this.userService.other.devices.length) {
             this.toast.show({
                 type: 'warning',
@@ -53,18 +53,17 @@ var MenuComponent = (function () {
         else {
             this.menuService.menuAthlete = !this.menuService.menuAthlete;
         }
-    };
-    MenuComponent.prototype.onWeather = function () {
+    }
+    onWeather() {
         if (this.weatherLayer) {
             this.weatherLayer.remove();
         }
         else {
             this.weatherLayer = this.addWeatherLayer();
         }
-    };
-    MenuComponent.prototype.addWeatherLayer = function () {
-        var _this = this;
-        var map = this.mapService.map;
+    }
+    addWeatherLayer() {
+        const map = this.mapService.map;
         map.addSource('borispol', {
             "type": "image",
             'url': 'borisbolukbb?date=' + new Date().toISOString(),
@@ -82,25 +81,24 @@ var MenuComponent = (function () {
             "paint": { "raster-opacity": 0.7 }
         });
         return {
-            remove: function () {
+            remove: () => {
                 map.removeLayer('borispol');
                 map.removeSource('borispol');
-                _this.weatherLayer = null;
+                this.weatherLayer = null;
             }
         };
-    };
-    MenuComponent.prototype.removeWeatherLayer = function () {
-    };
-    MenuComponent.prototype.goToProfile = function () {
+    }
+    removeWeatherLayer() {
+    }
+    goToProfile() {
         if (this.authService.userName) {
             this.router.navigate(['/auth/map/profile']);
         }
-    };
-    MenuComponent.prototype.goToFriends = function () {
+    }
+    goToFriends() {
         this.router.navigate(['/auth/map/friends']);
-    };
-    return MenuComponent;
-}());
+    }
+};
 MenuComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
@@ -108,14 +106,8 @@ MenuComponent = __decorate([
         templateUrl: './menu.component.html',
         styleUrls: ['./menu.component.css'],
         providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService, track_list_component_1.TrackList]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof menu_service_1.MenuService !== "undefined" && menu_service_1.MenuService) === "function" && _a || Object, track_service_1.TrackService,
-        auth_service_1.AuthService,
-        router_1.Router,
-        friends_service_1.FriendsService,
-        main_user_service_1.UserService,
-        map_service_1.MapService,
-        toast_component_1.ToastService])
+    }), 
+    __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, track_service_1.TrackService, auth_service_1.AuthService, router_1.Router, friends_service_1.FriendsService, main_user_service_1.UserService, map_service_1.MapService, toast_component_1.ToastService])
 ], MenuComponent);
 exports.MenuComponent = MenuComponent;
 var _a;

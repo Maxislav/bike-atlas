@@ -8,37 +8,37 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var track_service_1 = require("app/service/track.service");
-var util_1 = require("app/service/util");
-var map_service_1 = require("../../../service/map.service");
-var TrackList = (function () {
-    function TrackList(track, mapService) {
+const core_1 = require('@angular/core');
+const track_service_1 = require("app/service/track.service");
+const util_1 = require("app/service/util");
+const map_service_1 = require("../../../service/map.service");
+let TrackList = class TrackList {
+    constructor(track, mapService) {
         this.track = track;
         this.mapService = mapService;
         this.util = new util_1.Util();
         this.list = track.trackList;
         //this.permitMovie = true
     }
-    TrackList.prototype.hideTrack = function (track) {
+    hideTrack(track) {
         track && track.hide();
         if (this.stop) {
             this.stop();
         }
-    };
-    TrackList.prototype.onGo = function (_tr) {
+    }
+    onGo(_tr) {
         this.hideTrack();
-        var $this = this;
-        var map = this.mapService.map;
-        var points = this.fillTrack(_tr.points);
-        var marker = this.track.marker(points[0]); //this.track.showSpriteMarker(points[0]);
+        const $this = this;
+        const map = this.mapService.map;
+        const points = this.fillTrack(_tr.points);
+        const marker = this.track.marker(points[0]); //this.track.showSpriteMarker(points[0]);
         /**
          * todo
          */
         // return;
-        var timeout;
-        var i = 0;
-        var step = 1;
+        let timeout;
+        let i = 0;
+        let step = 1;
         flyTo();
         function flyTo() {
             if (points[i]) {
@@ -46,7 +46,7 @@ var TrackList = (function () {
                 marker.update(points[i]);
             }
             if (i < points.length - 2) {
-                timeout = setTimeout(function () {
+                timeout = setTimeout(() => {
                     i += step;
                     flyTo();
                 }, 40);
@@ -76,24 +76,23 @@ var TrackList = (function () {
             clearTimeout(timeout);
             marker.remove();
         };
-    };
-    TrackList.prototype.fillTrack = function (points) {
-        var _this = this;
-        var fillTrack = [];
-        var F = parseFloat;
-        points.forEach(function (point, i) {
+    }
+    fillTrack(points) {
+        let fillTrack = [];
+        const F = parseFloat;
+        points.forEach((point, i) => {
             if (i < points.length - 1) {
-                var distBetween = parseInt(_this.util.distanceBetween2(point, points[i + 1]));
-                var arr = fill(point, points[i + 1], distBetween);
+                let distBetween = parseInt(this.util.distanceBetween2(point, points[i + 1]));
+                let arr = fill(point, points[i + 1], distBetween);
                 fillTrack = fillTrack.concat(arr);
             }
         });
         function fill(point1, point2, steps) {
-            var arr = [];
-            var lngStep = (point2.lng - point1.lng) / steps;
-            var latStep = (point2.lat - point1.lat) / steps;
+            const arr = [];
+            let lngStep = (point2.lng - point1.lng) / steps;
+            let latStep = (point2.lat - point1.lat) / steps;
             if (1 < steps) {
-                for (var i = 0; i < steps; i++) {
+                for (let i = 0; i < steps; i++) {
                     arr.push({
                         lng: point1.lng + (lngStep * i),
                         lat: point1.lat + (latStep * i),
@@ -111,9 +110,8 @@ var TrackList = (function () {
             return arr;
         }
         return fillTrack;
-    };
-    return TrackList;
-}());
+    }
+};
 TrackList = __decorate([
     core_1.Component({
         moduleId: module.id,
@@ -121,8 +119,8 @@ TrackList = __decorate([
         //template: "<div>Список</div><ul><li *ngFor='let track of list; let i = index'>{{i}}: {{track.distance}} km<div class='del' (click)='hideTrack(track)'>x</div></li></ul>",
         templateUrl: "./track-list.html",
         styleUrls: ['./track-list.css']
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof track_service_1.TrackService !== "undefined" && track_service_1.TrackService) === "function" && _a || Object, map_service_1.MapService])
+    }), 
+    __metadata('design:paramtypes', [(typeof (_a = typeof track_service_1.TrackService !== 'undefined' && track_service_1.TrackService) === 'function' && _a) || Object, map_service_1.MapService])
 ], TrackList);
 exports.TrackList = TrackList;
 var _a;

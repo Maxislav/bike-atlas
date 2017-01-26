@@ -8,13 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var map_service_1 = require("./map.service");
-var socket_oi_service_1 = require("./socket.oi.service");
-var toast_component_1 = require("../component/toast/toast.component");
-var PrivateAreaService = (function () {
-    function PrivateAreaService(mapService, io, toast) {
-        var _this = this;
+const core_1 = require("@angular/core");
+const map_service_1 = require("./map.service");
+const socket_oi_service_1 = require("./socket.oi.service");
+const toast_component_1 = require("../component/toast/toast.component");
+let PrivateAreaService = class PrivateAreaService {
+    constructor(mapService, io, toast) {
         this.mapService = mapService;
         this.io = io;
         this.toast = toast;
@@ -22,67 +21,59 @@ var PrivateAreaService = (function () {
         this.socket = io.socket;
         this.layerIds = [];
         this.onLoadMap = mapService.onLoad;
-        mapService.onLoad.then(function (_map) {
-            _this.map = _map;
+        mapService.onLoad.then(_map => {
+            this.map = _map;
         });
     }
-    PrivateAreaService.prototype.onSave = function (area) {
-        var _this = this;
+    onSave(area) {
         return this.socket.$emit('savePrivateArea', area)
-            .then(function (d) {
+            .then(d => {
             if (d && d.result == 'ok') {
-                _this.showArea();
+                this.showArea();
                 return true;
             }
             return false;
         });
-    };
-    PrivateAreaService.prototype.showArea = function () {
-        var _this = this;
+    }
+    showArea() {
         return this.socket.$emit('getPrivateArea')
-            .then(function (d) {
-            return _this.areas = d.areas;
+            .then(d => {
+            return this.areas = d.areas;
         });
-    };
-    PrivateAreaService.prototype.hideArea = function () {
+    }
+    hideArea() {
         while (this._areas.length) {
             this._areas.shift().remove();
         }
-    };
-    PrivateAreaService.prototype.removeArea = function (id) {
-        var _this = this;
+    }
+    removeArea(id) {
         this.socket.$emit('removeArea', id)
-            .then(function (d) {
+            .then(d => {
             if (d && d.result == 'ok') {
-                _this.showArea();
+                this.showArea();
             }
             else {
                 console.error(d);
             }
         });
-    };
-    Object.defineProperty(PrivateAreaService.prototype, "areas", {
-        get: function () {
-            return this._areas;
-        },
-        set: function (value) {
-            var _this = this;
-            while (this._areas.length) {
-                this._areas.shift().remove();
-            }
-            this._areas.length = 0;
-            value.forEach(function (ar) {
-                var area = _this.createArea(ar);
-                _this._areas.push(area);
-            });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    PrivateAreaService.prototype.createArea = function (area) {
-        var layerId = this.getNewLayerId();
-        var radius = area.radius || 0.5;
-        var map = this.map;
+    }
+    get areas() {
+        return this._areas;
+    }
+    set areas(value) {
+        while (this._areas.length) {
+            this._areas.shift().remove();
+        }
+        this._areas.length = 0;
+        value.forEach(ar => {
+            const area = this.createArea(ar);
+            this._areas.push(area);
+        });
+    }
+    createArea(area) {
+        const layerId = this.getNewLayerId();
+        const radius = area.radius || 0.5;
+        const map = this.map;
         this.map.addSource(layerId, {
             type: "geojson",
             data: createGeoJSONCircle([area.lng, area.lat], radius)
@@ -100,16 +91,16 @@ var PrivateAreaService = (function () {
         function createGeoJSONCircle(center, radiusInKm, points) {
             if (!points)
                 points = 64;
-            var coords = {
+            const coords = {
                 latitude: center[1],
                 longitude: center[0]
             };
-            var km = radiusInKm;
-            var ret = [];
-            var distanceX = km / (111.320 * Math.cos(coords.latitude * Math.PI / 180));
-            var distanceY = km / 110.574;
-            var theta, x, y;
-            for (var i = 0; i < points; i++) {
+            const km = radiusInKm;
+            const ret = [];
+            let distanceX = km / (111.320 * Math.cos(coords.latitude * Math.PI / 180));
+            let distanceY = km / 110.574;
+            let theta, x, y;
+            for (let i = 0; i < points; i++) {
                 theta = (i / points) * (2 * Math.PI);
                 x = distanceX * Math.cos(theta);
                 y = distanceY * Math.sin(theta);
@@ -134,8 +125,7 @@ var PrivateAreaService = (function () {
             lng: area.lng,
             lat: area.lat,
             radius: radius,
-            update: function (_a, r) {
-                var lng = _a[0], lat = _a[1];
+            update: function ([lng, lat], r) {
                 this.lng = lng;
                 this.lat = lat;
                 map.getSource(layerId)
@@ -146,24 +136,23 @@ var PrivateAreaService = (function () {
                 map.removeSource(layerId);
             }
         };
-    };
-    PrivateAreaService.prototype.saveLock = function (value) {
-        var _this = this;
+    }
+    saveLock(value) {
         return this.socket.$emit('lockPrivateArea', value)
-            .then(function (d) {
+            .then(d => {
             console.log(d);
             if (d && d.result == 'ok') {
-                _this.toast.show({
+                this.toast.show({
                     type: 'warning',
                     text: 'Настройки приватности изменены'
                 });
             }
         });
-    };
-    PrivateAreaService.prototype.getNewLayerId = function () {
-        var min = 0, max = 10000;
-        var rand = (min + Math.random() * (max - min));
-        var newId = ('area' + Math.round(rand)).toString();
+    }
+    getNewLayerId() {
+        const min = 0, max = 10000;
+        let rand = (min + Math.random() * (max - min));
+        const newId = ('area' + Math.round(rand)).toString();
         if (-1 < this.layerIds.indexOf(newId)) {
             return this.getNewLayerId();
         }
@@ -171,14 +160,11 @@ var PrivateAreaService = (function () {
             this.layerIds.push(newId);
             return newId;
         }
-    };
-    return PrivateAreaService;
-}());
+    }
+};
 PrivateAreaService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [map_service_1.MapService,
-        socket_oi_service_1.Io,
-        toast_component_1.ToastService])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [map_service_1.MapService, socket_oi_service_1.Io, toast_component_1.ToastService])
 ], PrivateAreaService);
 exports.PrivateAreaService = PrivateAreaService;
 //# sourceMappingURL=private.area.service.js.map

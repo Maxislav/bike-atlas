@@ -1,45 +1,39 @@
 
 export class Point extends Array<number>{
-    get bearing(): number {
-        return this._bearing;
-    }
 
-    set bearing(value: number) {
-        this._bearing = value;
-    }
-    set lat(value: number) {
-        this._lat = value;
-    }
 
-    private _lng:number;
-    private _lat:number;
-    private _azimuth:number;
-    private _bearing:number;
+    private _date: Date;
+    public id: number;
+
 
     constructor(...args){
         super(...args);
-        //this.push(...args);
-        this.lng = args[0]
-        this.lat = args[1]
-        this.bearing = this.azimuth = args[2]
-    }
 
-    set lng(val){
-        this._lng = val;
     }
     get lng() {
-        return this._lng;
+        return this[0]
     }
     get lat() {
         return this[1]
     }
-    set azimuth(val) {
-        this._azimuth = val;
-    }
     get azimuth() {
-        return this._azimuth;
+        return this[2]
+    }
+    get bearing(): number {
+        return this[2]
     }
 
+    set bearing(val: number){
+        this[2] = val
+    }
+
+    get date():Date | String {
+        return this._date;
+    }
+
+    set date(value: String | Date) {
+        this._date = new Date(value);
+    }
 
 }
 
@@ -52,8 +46,10 @@ export interface Coordinate extends Array<number>{
 
 export  interface Track {
     id: string;
+    download: Function;
     show: Function;
     hide: Function;
+    update: Function;
     coordinates: Array<Coordinate>;
     points: Array<Point>,
     color: String,

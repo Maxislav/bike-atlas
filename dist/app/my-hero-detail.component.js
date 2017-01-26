@@ -11,27 +11,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 18.08.16.
  */
-var core_1 = require("@angular/core");
-var hero_1 = require("./hero");
-var HeroDetailComponent = (function () {
-    function HeroDetailComponent() {
+const core_1 = require('@angular/core');
+const hero_1 = require('./hero');
+let HeroDetailComponent = class HeroDetailComponent {
+    constructor() {
         this.hero = {
             id: 0,
             name: 'Olol'
         };
     }
-    return HeroDetailComponent;
-}());
+};
 __decorate([
-    core_1.Input(),
-    __metadata("design:type", hero_1.Hero)
+    core_1.Input(), 
+    __metadata('design:type', hero_1.Hero)
 ], HeroDetailComponent.prototype, "hero", void 0);
 HeroDetailComponent = __decorate([
     core_1.Component({
         selector: 'my-hero-detail',
         templateUrl: 'src/app/template/hero-detail-component.html'
-    }),
-    __metadata("design:paramtypes", [])
+    }), 
+    __metadata('design:paramtypes', [])
 ], HeroDetailComponent);
 exports.HeroDetailComponent = HeroDetailComponent;
 //# sourceMappingURL=my-hero-detail.component.js.map

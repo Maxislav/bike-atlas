@@ -8,42 +8,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var io = require("socket/socket.io.js");
-var Io = (function () {
-    function Io() {
-        var _this = this;
+const core_1 = require("@angular/core");
+const io = require("socket/socket.io.js");
+let Io = class Io {
+    constructor() {
         this._socket = io("http://" + window.location.hostname + ":8081");
-        this._socket.$emit = function (name, data) {
-            return new Promise(function (resolve, reject) {
-                var timeout = setTimeout(function () {
+        this._socket.$emit = (name, data) => {
+            return new Promise((resolve, reject) => {
+                const timeout = setTimeout(() => {
                     reject('Error by timeout ');
                 }, 30000);
-                var response = function (d) {
+                const response = (d) => {
                     clearTimeout(timeout);
-                    _this.socket.off(name, response);
+                    this.socket.off(name, response);
                     resolve(d);
                 };
-                _this.socket.on(name, response);
-                _this.socket.emit(name, data);
+                this.socket.on(name, response);
+                this.socket.emit(name, data);
             });
         };
-        this._socket.on('news', function (d) {
+        this._socket.on('news', (d) => {
             //console.log(d,'klklttewefewfwe')
         });
     }
-    Object.defineProperty(Io.prototype, "socket", {
-        get: function () {
-            return this._socket;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return Io;
-}());
+    get socket() {
+        return this._socket;
+    }
+};
 Io = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], Io);
 exports.Io = Io;
 //# sourceMappingURL=socket.oi.service.js.map

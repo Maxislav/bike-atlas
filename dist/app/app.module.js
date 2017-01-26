@@ -5,54 +5,54 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 /**
  * Created by maxislav on 16.08.16.
  */
-var core_1 = require("@angular/core");
-var platform_browser_1 = require("@angular/platform-browser");
-var forms_1 = require("@angular/forms");
-var app_component_1 = require("./app.component");
-var app_routing_1 = require("./app.routing");
-var heroes_component_1 = require("./heroes.component");
-var transaction_resolve_1 = require("./transaction.resolve");
-var auth_component_1 = require("./component/auth-component/auth.component");
-var map_component_1 = require("./map.component");
-var info_position_component_1 = require("./component/info-position/info-position-component");
-var menu_component_1 = require("./component/menu/menu.component");
-var local_storage_service_1 = require("./service/local-storage.service");
-var menu_track_component_1 = require("./component/menu/menu-track/menu-track.component");
-var socket_oi_service_1 = require("./service/socket.oi.service");
-var track_service_1 = require("./service/track.service");
-var track_list_component_1 = require("./component/menu/track-list/track-list.component");
-var menu_login_component_1 = require("./component/menu/menu-login/menu-login.component");
-var registration_component_1 = require("./component/registration/registration.component");
-var md5_service_1 = require("./service/md5.service");
-var toast_component_1 = require("./component/toast/toast.component");
-var device_component_1 = require("./component/device/device.component");
-var auth_service_1 = require("./service/auth.service");
-var device_service_1 = require("./service/device.service");
-var log_service_1 = require("./service/log.service");
-var marker_service_1 = require("./service/marker.service");
-var map_service_1 = require("./service/map.service");
-var login_service_1 = require("./service/login.service");
-var menu_athlete_component_1 = require("./component/menu/menu-athlete/menu.athlete.component");
-var profile_component_1 = require("./component/profile/profile.component");
-var journal_component_1 = require("./component/journal-component/journal.component");
-var friends_component_1 = require("./component/friends-component/friends-component");
-var friends_service_1 = require("./service/friends.service");
-var main_user_service_1 = require("./service/main.user.service");
-var timer_service_1 = require("./service/timer.service");
-var private_area_1 = require("./component/private-area/private-area");
-var mapbox_gl_directive_1 = require("./directive/mapbox-gl.directive");
-var private_area_service_1 = require("./service/private.area.service");
-var no_found_component_1 = require("./no-found.component");
-var mapbox_gl_directive_2 = require("./directive/mapbox-gl.directive");
-var device_component_2 = require("./component/device/device.component");
-var AppModule = (function () {
-    function AppModule() {
-    }
-    return AppModule;
-}());
+const core_1 = require('@angular/core');
+const platform_browser_1 = require('@angular/platform-browser');
+const forms_1 = require('@angular/forms');
+const app_component_1 = require('./app.component');
+const app_routing_1 = require('./app.routing');
+const heroes_component_1 = require("./heroes.component");
+const transaction_resolve_1 = require("./transaction.resolve");
+const auth_component_1 = require("./component/auth-component/auth.component");
+const map_component_1 = require("./map.component");
+const info_position_component_1 = require("./component/info-position/info-position-component");
+const menu_component_1 = require("./component/menu/menu.component");
+const local_storage_service_1 = require("./service/local-storage.service");
+const menu_track_component_1 = require("./component/menu/menu-track/menu-track.component");
+const socket_oi_service_1 = require("./service/socket.oi.service");
+const track_service_1 = require("./service/track.service");
+const track_list_component_1 = require("./component/menu/track-list/track-list.component");
+const menu_login_component_1 = require("./component/menu/menu-login/menu-login.component");
+const registration_component_1 = require("./component/registration/registration.component");
+const md5_service_1 = require("./service/md5.service");
+const toast_component_1 = require("./component/toast/toast.component");
+const device_component_1 = require("./component/device/device.component");
+const auth_service_1 = require("./service/auth.service");
+const device_service_1 = require("./service/device.service");
+const log_service_1 = require("./service/log.service");
+const marker_service_1 = require("./service/marker.service");
+const map_service_1 = require("./service/map.service");
+const login_service_1 = require("./service/login.service");
+const menu_athlete_component_1 = require("./component/menu/menu-athlete/menu.athlete.component");
+const profile_component_1 = require("./component/profile/profile.component");
+const journal_component_1 = require("./component/journal-component/journal.component");
+const friends_component_1 = require("./component/friends-component/friends-component");
+const friends_service_1 = require("./service/friends.service");
+const main_user_service_1 = require("./service/main.user.service");
+const timer_service_1 = require("./service/timer.service");
+const private_area_1 = require("./component/private-area/private-area");
+const mapbox_gl_directive_1 = require("./directive/mapbox-gl.directive");
+const private_area_service_1 = require("./service/private.area.service");
+const no_found_component_1 = require("./no-found.component");
+const mapbox_gl_directive_2 = require("./directive/mapbox-gl.directive");
+const device_component_2 = require("./component/device/device.component");
+let AppModule = class AppModule {
+};
 AppModule = __decorate([
     core_1.NgModule({
         imports: [
@@ -109,7 +109,8 @@ AppModule = __decorate([
         bootstrap: [
             app_component_1.AppComponent
         ]
-    })
+    }), 
+    __metadata('design:paramtypes', [])
 ], AppModule);
 exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map

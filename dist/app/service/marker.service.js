@@ -8,38 +8,38 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var map_service_1 = require("./map.service");
-var timer_service_1 = require("./timer.service");
-var deep_copy_1 = require("../util/deep-copy");
-var elapsed_status_1 = require("../util/elapsed-status");
-var MarkerService = (function () {
-    function MarkerService(mapService, timer) {
+const core_1 = require("@angular/core");
+const map_service_1 = require("./map.service");
+const timer_service_1 = require("./timer.service");
+const deep_copy_1 = require("../util/deep-copy");
+const elapsed_status_1 = require("../util/elapsed-status");
+let MarkerService = class MarkerService {
+    constructor(mapService, timer) {
         this.mapService = mapService;
         this.timer = timer;
         this.layerIds = [];
     }
-    MarkerService.prototype.marker = function (devData, user) {
-        var marker = deep_copy_1.deepCopy(devData);
-        var map = this.mapService.map;
-        var layerId = this.getNewLayer(0, 5000000, true) + '';
-        var mapboxgl = this.mapService.mapboxgl;
-        var mapBearing = map.getBearing();
-        var icoContainer = document.createElement('div');
+    marker(devData, user) {
+        const marker = deep_copy_1.deepCopy(devData);
+        const map = this.mapService.map;
+        const layerId = this.getNewLayer(0, 5000000, true) + '';
+        const mapboxgl = this.mapService.mapboxgl;
+        let mapBearing = map.getBearing();
+        const icoContainer = document.createElement('div');
         icoContainer.classList.add("user-icon");
         icoContainer.setAttribute('status', elapsed_status_1.elapsedStatus(devData));
-        var img = new Image();
+        const img = new Image();
         img.src = user.image || 'src/img/no-avatar.gif';
         icoContainer.appendChild(img);
-        var popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15], closeButton: false })
+        const popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15], closeButton: false })
             .setLngLat([devData.lng, devData.lat])
             .setHTML('<div>' + devData.name + '</div>')
             .addTo(map);
-        var iconMarker = new mapboxgl.Marker(icoContainer, { offset: [-20, -20] })
+        const iconMarker = new mapboxgl.Marker(icoContainer, { offset: [-20, -20] })
             .setLngLat([devData.lng, devData.lat])
             .addTo(map);
-        var intervalUpdateMarker = null;
-        var timer = this.timer;
+        let intervalUpdateMarker = null;
+        const timer = this.timer;
         marker.updateSetImage = function (src) {
             img.src = src;
             this.image = src;
@@ -47,7 +47,7 @@ var MarkerService = (function () {
         marker.image = user.image || 'src/img/no-avatar.gif';
         marker.elapsed = '...';
         marker.update = function (devData) {
-            for (var opt in devData) {
+            for (let opt in devData) {
                 this[opt] = devData[opt];
             }
             popup.setLngLat([this.lng, this.lat]);
@@ -66,13 +66,13 @@ var MarkerService = (function () {
             iconMarker.remove();
             intervalUpdateMarker && clearInterval(intervalUpdateMarker);
         };
-        intervalUpdateMarker = setInterval(function () {
+        intervalUpdateMarker = setInterval(() => {
             marker.updateMarker();
         }, 1000);
         return marker;
-    };
-    MarkerService.prototype.getNewLayer = function (min, max, int) {
-        var rand = min + Math.random() * (max - min);
+    }
+    getNewLayer(min, max, int) {
+        let rand = min + Math.random() * (max - min);
         if (int) {
             rand = 'marker' + Math.round(rand);
         }
@@ -82,12 +82,11 @@ var MarkerService = (function () {
         else {
             return rand;
         }
-    };
-    return MarkerService;
-}());
+    }
+};
 MarkerService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [map_service_1.MapService, timer_service_1.TimerService])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [map_service_1.MapService, timer_service_1.TimerService])
 ], MarkerService);
 exports.MarkerService = MarkerService;
 //# sourceMappingURL=marker.service.js.map

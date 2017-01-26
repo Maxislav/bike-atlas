@@ -8,32 +8,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var socket_oi_service_1 = require("./socket.oi.service");
-var marker_service_1 = require("./marker.service");
-var main_user_service_1 = require("./main.user.service");
-var LogService = (function () {
-    function LogService(io, user, markerService) {
+const core_1 = require("@angular/core");
+const socket_oi_service_1 = require("./socket.oi.service");
+const marker_service_1 = require("./marker.service");
+const main_user_service_1 = require("./main.user.service");
+let LogService = class LogService {
+    constructor(io, user, markerService) {
         this.user = user;
         this.markerService = markerService;
         this.socket = io.socket;
         this.socket.on('log', this.log.bind(this));
         this.devices = {};
-        var a = {
+        const a = {
             a: 1,
             b: 3
         };
     }
-    LogService.prototype.log = function (devData) {
+    log(devData) {
         if (!devData)
             return;
-        var user;
-        var device = this.getDevice(this.user.user, devData);
+        let user;
+        let device = this.getDevice(this.user.user, devData);
         if (device) {
             user = this.user.user;
         }
         if (!device) {
-            var i = 0;
+            let i = 0;
             while (i < this.user.friends.length) {
                 device = this.getDevice(this.user.friends[i], devData);
                 if (device) {
@@ -71,56 +71,53 @@ var LogService = (function () {
         else if (device && device.marker) {
             device.marker.update(devData);
         }
-    };
-    LogService.prototype.getDevice = function (user, devData) {
+    }
+    getDevice(user, devData) {
         if (!devData)
             return null;
         if (!user.devices) {
             return null;
         }
-        var devices = user.devices;
-        return devices.find(function (item) {
+        const devices = user.devices;
+        return devices.find(item => {
             return item.device_key == devData.device_key;
         });
-    };
-    LogService.prototype.clearDevices = function () {
-    };
-    LogService.prototype.setOtherImage = function (ownerId, image) {
-        var device = this.user.other.devices.find(function (dev) {
+    }
+    clearDevices() {
+    }
+    setOtherImage(ownerId, image) {
+        const device = this.user.other.devices.find(dev => {
             return dev.ownerId == ownerId;
         });
         if (device && device.marker) {
             device.marker.updateSetImage(image);
         }
-    };
-    LogService.prototype.getOtherImage = function (id) {
-        var _this = this;
+    }
+    getOtherImage(id) {
         this.socket.$emit('getUserImage', id)
-            .then(function (d) {
-            _this.setOtherImage(d.id, d.image);
+            .then(d => {
+            this.setOtherImage(d.id, d.image);
         });
-    };
-    LogService.prototype.getLastPosition = function () {
-        var _this = this;
+    }
+    getLastPosition() {
         this.socket.$emit('getLastPosition')
-            .then(function (rows) {
-            _this.clearDevices();
-            rows.forEach(function (deviceData) {
-                _this.log(deviceData);
+            .then(rows => {
+            this.clearDevices();
+            rows.forEach(deviceData => {
+                this.log(deviceData);
             });
         });
-    };
-    LogService.prototype.getDeviceData = function (id) {
+    }
+    getDeviceData(id) {
         if (this.devices[id]) {
             return this.devices[id].deviceData;
         }
         return null;
-    };
-    return LogService;
-}());
+    }
+};
 LogService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [socket_oi_service_1.Io, main_user_service_1.UserService, marker_service_1.MarkerService])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [socket_oi_service_1.Io, main_user_service_1.UserService, marker_service_1.MarkerService])
 ], LogService);
 exports.LogService = LogService;
 //# sourceMappingURL=log.service.js.map

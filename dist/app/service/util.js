@@ -2,11 +2,11 @@
  * Created by maxislav on 01.12.16.
  */
 "use strict";
-var Util = (function () {
-    function Util() {
+class Util {
+    constructor() {
     }
-    Util.prototype.distance = function (track) {
-        var arrTrackFull = track.points;
+    distance(track) {
+        const arrTrackFull = track.points;
         var dist_sum = 0;
         var R = 6372795; //радиус Земли
         var lat1, lat2, long1, long2;
@@ -23,9 +23,9 @@ var Util = (function () {
         dist_sum = dist_sum / 1000;
         dist_sum = parseFloat(dist_sum.toFixed(3));
         return dist_sum;
-    };
-    Util.prototype.distanceBetween2 = function (point1, point2) {
-        var R = 6372795; //радиус Земли
+    }
+    distanceBetween2(point1, point2) {
+        const R = 6372795; //радиус Земли
         var lat1, lat2, long1, long2;
         lat1 = point1.lat;
         long1 = point1.lng;
@@ -49,9 +49,9 @@ var Util = (function () {
         var x = sl1 * sl2 + cl1 * cl2 * cdelta;
         var ad = Math.atan2(y, x);
         return ad * R;
-    };
-    Util.prototype.bearing = function (points) {
-        points.forEach(function (point, i) {
+    }
+    bearing(points) {
+        points.forEach((point, i) => {
             if (i != points.length - 1) {
                 points[i + 1].bearing = getBearing(point.lat, point.lng, points[i + 1].lat, points[i + 1].lng);
             }
@@ -77,8 +77,7 @@ var Util = (function () {
             }
             return (degrees(Math.atan2(dLong, dPhi)) + 360.0) % 360.0;
         }
-    };
-    return Util;
-}());
+    }
+}
 exports.Util = Util;
 //# sourceMappingURL=util.js.map

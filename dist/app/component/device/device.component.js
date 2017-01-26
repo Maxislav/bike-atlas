@@ -8,50 +8,47 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var router_1 = require("@angular/router");
-var device_service_1 = require("../../service/device.service");
-var app_component_1 = require("../../app.component");
-var toast_component_1 = require("../toast/toast.component");
-var main_user_service_1 = require("../../service/main.user.service");
-var HelpContainer = (function () {
-    function HelpContainer(el, renderer) {
-        var w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0], x = w.innerWidth || e.clientWidth || g.clientWidth, y = w.innerHeight || e.clientHeight || g.clientHeight;
+const core_1 = require('@angular/core');
+const common_1 = require('@angular/common');
+const router_1 = require("@angular/router");
+const device_service_1 = require("../../service/device.service");
+const app_component_1 = require("../../app.component");
+const toast_component_1 = require("../toast/toast.component");
+const main_user_service_1 = require("../../service/main.user.service");
+let HelpContainer = class HelpContainer {
+    constructor(el, renderer) {
+        let w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0], x = w.innerWidth || e.clientWidth || g.clientWidth, y = w.innerHeight || e.clientHeight || g.clientHeight;
         renderer.setElementStyle(el.nativeElement, 'height', y - 300 + 'px');
     }
-    return HelpContainer;
-}());
+};
 HelpContainer = __decorate([
     core_1.Directive({
         selector: 'help-container',
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, core_1.Renderer])
+    }), 
+    __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer])
 ], HelpContainer);
 exports.HelpContainer = HelpContainer;
-var IsOwner = (function () {
-    function IsOwner(user) {
+let IsOwner = class IsOwner {
+    constructor(user) {
         this.user = user;
     }
-    IsOwner.prototype.transform = function (value, args) {
-        var _this = this;
+    transform(value, args) {
         // console.log('fds')
-        return value.filter(function (item) {
-            return item.ownerId == _this.user.user.id;
+        return value.filter(item => {
+            return item.ownerId == this.user.user.id;
         });
-    };
-    return IsOwner;
-}());
+    }
+};
 IsOwner = __decorate([
     core_1.Pipe({
         name: 'isOwner',
         pure: false
-    }),
-    __metadata("design:paramtypes", [main_user_service_1.UserService])
+    }), 
+    __metadata('design:paramtypes', [main_user_service_1.UserService])
 ], IsOwner);
 exports.IsOwner = IsOwner;
-var DeviceComponent = (function () {
-    function DeviceComponent(location, router, userService, deviceService, toast, lh) {
+let DeviceComponent = class DeviceComponent {
+    constructor(location, router, userService, deviceService, toast, lh) {
         this.location = location;
         this.router = router;
         this.userService = userService;
@@ -72,11 +69,10 @@ var DeviceComponent = (function () {
         this.devices = deviceService.devices;
         deviceService.updateDevices();
     }
-    DeviceComponent.prototype.onShowHelp = function () {
+    onShowHelp() {
         this.showHelp = !this.showHelp;
-    };
-    DeviceComponent.prototype.onAdd = function (e) {
-        var _this = this;
+    }
+    onAdd(e) {
         e.preventDefault();
         this.device.name = this.device.name.replace(/^\s+/, '');
         this.device.id = this.device.id.replace(/^\s+/, '');
@@ -89,51 +85,49 @@ var DeviceComponent = (function () {
             return;
         }
         this.deviceService.onAddDevice(this.device)
-            .then(function (d) {
+            .then(d => {
             if (d && d.result == 'ok') {
-                _this.reset();
+                this.reset();
             }
             else if (d && d.result === false && d.message == 'device exist') {
-                _this.toast.show({
+                this.toast.show({
                     type: 'warning',
                     text: "Устройство зарегистрированно на другого пользователя"
                 });
             }
         });
-    };
-    DeviceComponent.prototype.onDel = function (e, device) {
-        var _this = this;
+    }
+    onDel(e, device) {
         this.deviceService.onDelDevice(device)
-            .then(function (d) {
+            .then(d => {
             console.log(d);
-            _this.clearPredel();
+            this.clearPredel();
         });
-    };
-    DeviceComponent.prototype.preDel = function (e, i) {
+    }
+    preDel(e, i) {
         e.stopPropagation();
         this.btnPreDel.index = i;
-    };
-    DeviceComponent.prototype.clearPredel = function () {
+    }
+    clearPredel() {
         this.btnPreDel.index = -1;
-    };
-    DeviceComponent.prototype.reset = function () {
+    }
+    reset() {
         this.device = {
             ownerId: -1,
             name: '',
             id: '',
             image: ''
         };
-    };
-    DeviceComponent.prototype.onClose = function () {
+    }
+    onClose() {
         if (this.lh.is) {
             this.location.back();
         }
         else {
             this.router.navigate(['/auth/map']);
         }
-    };
-    return DeviceComponent;
-}());
+    }
+};
 DeviceComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
@@ -141,13 +135,8 @@ DeviceComponent = __decorate([
         styleUrls: [
             'device.component.css',
         ]
-    }),
-    __metadata("design:paramtypes", [common_1.Location,
-        router_1.Router,
-        main_user_service_1.UserService,
-        device_service_1.DeviceService,
-        toast_component_1.ToastService,
-        app_component_1.NavigationHistory])
+    }), 
+    __metadata('design:paramtypes', [common_1.Location, router_1.Router, main_user_service_1.UserService, device_service_1.DeviceService, toast_component_1.ToastService, app_component_1.NavigationHistory])
 ], DeviceComponent);
 exports.DeviceComponent = DeviceComponent;
 //# sourceMappingURL=device.component.js.map

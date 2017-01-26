@@ -11,19 +11,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 10.10.16.
  */
-var core_1 = require("@angular/core");
-var mercator_service_1 = require("../../service/mercator.service");
-var position_size_service_1 = require("../../service/position-size.service");
-var info_position_component_1 = require("../info-position/info-position-component");
-var menu_component_1 = require("../menu/menu.component");
-var auth_service_1 = require("../../service/auth.service");
-var AuthComponent = (function () {
-    function AuthComponent(as) {
+const core_1 = require('@angular/core');
+const mercator_service_1 = require("../../service/mercator.service");
+const position_size_service_1 = require("../../service/position-size.service");
+const info_position_component_1 = require("../info-position/info-position-component");
+const menu_component_1 = require("../menu/menu.component");
+const auth_service_1 = require("../../service/auth.service");
+let AuthComponent = class AuthComponent {
+    constructor(as) {
         this.as = as;
         this.as = as;
     }
-    return AuthComponent;
-}());
+};
 AuthComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
@@ -33,8 +32,8 @@ AuthComponent = __decorate([
         styleUrls: [
             'auth.component.css',
         ]
-    }),
-    __metadata("design:paramtypes", [auth_service_1.AuthService])
+    }), 
+    __metadata('design:paramtypes', [auth_service_1.AuthService])
 ], AuthComponent);
 exports.AuthComponent = AuthComponent;
 //# sourceMappingURL=auth.component.js.map

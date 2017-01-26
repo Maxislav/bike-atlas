@@ -8,6 +8,7 @@ import {Util} from './util';
 import {Io} from "./socket.oi.service";
 import {MapService} from "./map.service";
 import {Track as Tr, Point} from "./track.var";
+import * as mapboxgl from "@lib/mapbox-gl/mapbox-gl.js";
 const F = parseFloat;
 const I = parseInt;
 
@@ -41,47 +42,56 @@ export class TrackService {
         let parser = new DOMParser();
         let xmlDoc = parser.parseFromString(xmlStr, "text/xml");
         var forEach = Array.prototype.forEach;
-        forEach.call(xmlDoc.getElementsByTagName('trkpt'), item=>{
+        forEach.call(xmlDoc.getElementsByTagName('trkpt'), (item, i)=>{
             if(item.getAttribute('lon')){
-                const point: Point = new Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')));
+                item.setAttribute('id',i)
+                const ele = item.getElementsByTagName('ele') ? item.getElementsByTagName('ele')[0] : null;
+                const point: Point = new Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')), ele  ? F(ele.innerHTML): null);
+                point.date = item.getElementsByTagName('time')[0].innerHTML;
+                point.id = i;
                 track.push(point)
             }
         });
-        this.showTrack(track)
+        this.showTrack(track, xmlDoc)
+
+
+
     }
 
     setMap(map:any) {
         this.map = map
     }
 
-    showTrack(data:Array<Point>) {
+    showTrack(points:Array<Point>, xmlDoc) {
         const $this = this;
         const coordinates = [];
-        const points: Array<Point> = []
+        //const points: Array<Point> = []
         const trackList = this.trackList;
         const color = this._getColor();
         const map = this.mapService.map;
 
 
-        data.forEach((point)=> {
+        points.forEach((point)=> {
             coordinates.push(point);
-            points.push(point)
         });
         
         
 
         let layerId:string = this.getLayerId('track-')+'';
 
+        const data =  {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "LineString",
+                "coordinates": points
+            }
+        };
+
+
         map.addSource(layerId, {
             "type": "geojson",
-            "data": {
-                "type": "Feature",
-                "properties": {},
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": coordinates
-                }
-            }
+            "data": data
         });
 
         map.addLayer({
@@ -98,7 +108,14 @@ export class TrackService {
                 "line-opacity": 0.8
             }
         });
-        const srcPoints = this.addSrcPoints(data)
+
+        const update = (points: Array<Point>) => {
+            data.geometry.coordinates = points;
+            map.getSource(layerId).setData(data)
+
+        };
+
+        const srcPoints = this.addSrcPoints(points, xmlDoc, update);
 
         let tr: Tr = {
             hide: function () {
@@ -106,17 +123,26 @@ export class TrackService {
                 map.removeSource(layerId);
                 let index = R.findIndex(R.propEq('id', layerId))(trackList);
                 trackList.splice(index, 1);
+
+
+               
+                
+                
                 console.log('delete track index', index)
                 srcPoints.remove()
             },
-            show: function () {
-                return $this.showTrack(data)
+            show:  () => {
+                //return this.showTrack(points)
             },
+            update: update,
             id: layerId,
             coordinates: coordinates,
             points: points,
             color:color,
-            distance: 0
+            distance: 0,
+            download: () =>{
+                this.onDownload(xmlDoc)
+            }
             //distance: (function() { return $this.util.distance(this)})()
         };
 
@@ -130,20 +156,58 @@ export class TrackService {
         return tr
     }
 
-    addSrcPoints(points:Array<Point>){
+    onDownload(xmlDoc){
+
+      const time  = xmlDoc.getElementsByTagName('time')[0]
+
+
+
+        download(time.innerHTML+'.gpx', xml2string(xmlDoc))
+
+        function xml2string(node) {
+            if (typeof(XMLSerializer) !== 'undefined') {
+                var serializer = new XMLSerializer();
+                return serializer.serializeToString(node);
+            } else if (node.xml) {
+                return node.xml;
+            }
+        }
+
+        function download(filename, text) {
+            var pom = document.createElement('a');
+            pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            pom.setAttribute('download', filename);
+
+            if (document.createEvent) {
+                var event = document.createEvent('MouseEvents');
+                event.initEvent('click', true, true);
+                pom.dispatchEvent(event);
+            }
+            else {
+                pom.click();
+            }
+        }
+    }
+
+
+    addSrcPoints(points:Array<Point>, xmlDoc, update: Function){
         const layers = [];
         const map = this.mapService.map;
         const layerId = this.getLayerId('cluster-');
 
-        const data = {
-            "type": "FeatureCollection",
-            "features": (()=>{
+
+
+        const getData =(points)=>{
+          return  {
+                "type": "FeatureCollection",
+                "features": (()=>{
                 const features = [];
-                points.forEach(item=>{
+                points.forEach((item,i)=>{
                     const f = {
                         properties: {
                             color: "Green",
-                            point: item
+                            point: item,
+                            id: item.id,
                         },
                         "type": "Feature",
                         "geometry": {
@@ -155,7 +219,9 @@ export class TrackService {
                 });
                 return features
             })()
+            };
         };
+        const data = getData(points)
 
 
         map.addSource(layerId,  {
@@ -187,8 +253,32 @@ export class TrackService {
             var features = map.queryRenderedFeatures(e.point, {
                 layers: [layerId],
             });
+            if(features.length){
+                const id = features[0].properties.id
+                const p = points.find((item)=>{
+                    return item.id == id
+                });
+                this.createPopupEdit(p, (e)=>{
+                    let index =  R.findIndex(R.propEq('id', id))(points);
+                    
+                    points.splice(index,1);
 
-            console.log(features)
+                    var find = Array.prototype.find;
+
+                    const trkpt =  find.call(xmlDoc.getElementsByTagName('trkpt'), (item=>{
+                        return item.getAttribute('id') == id
+                    }));
+                    trkpt.parentNode.removeChild(trkpt);
+
+                    
+                    update(points);
+                    const data = getData(points);
+                    map.getSource(layerId).setData(data)
+
+                })
+            }
+
+            //console.log(features)
         });
 
 
@@ -201,14 +291,16 @@ export class TrackService {
                     "type": "FeatureCollection",
                     "features": (()=>{
                         const features = [];
-                        points.forEach(item=>{
+                        points.forEach((item,i)=>{
                             const f = {
                                 properties: {
                                     color: "Green",
-                                    point: item
+                                    point: item,
+                                    id: item.id,
                                 },
                                 "type": "Feature",
                                 "geometry": {
+
                                     "type": "Point",
                                     "coordinates": item
                                 }
@@ -223,14 +315,28 @@ export class TrackService {
         }
     }
 
-    createPopupEdit(point: Point){
+    createPopupEdit(point: Point, f: Function){
         const map = this.mapService.map;
         const mapboxgl = this.mapService.mapboxgl;
+        const div = document.createElement('div');
+
+        const btn = document.createElement('button');
+
+        btn.innerHTML = 'Удалить';
+
+        div.appendChild(btn);
+
+        //div.innerHTML =   `${point.date}`;
 
         const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
-            .setLngLat(point)
-            .setHTML('<div>' + 'Удалить'+ '</div>')
+            .setLngLat(  new mapboxgl.LngLat(point.lng, point.lat))
+            .setDOMContent(div)
             .addTo(map);
+
+        btn.addEventListener('click',()=>{
+            popup.remove()
+            f();
+        } );
         
 
 
@@ -302,7 +408,7 @@ export class TrackService {
         if (-1<this.layerIds.indexOf(rand)) {
             return this.getLayerId(prefix)
         } else {
-            this.layerIds.push(rand)
+            this.layerIds.push(rand);
             return rand;
         }
     }

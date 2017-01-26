@@ -8,16 +8,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var router_1 = require("@angular/router");
-var app_component_1 = require("../../app.component");
-var socket_oi_service_1 = require("../../service/socket.oi.service");
-var toast_component_1 = require("../toast/toast.component");
-var main_user_service_1 = require("../../service/main.user.service");
-var private_area_service_1 = require("../../service/private.area.service");
-var ProfileComponent = (function () {
-    function ProfileComponent(location, elRef, router, lh, io, toast, areaService, userService) {
+const core_1 = require("@angular/core");
+const common_1 = require('@angular/common');
+const router_1 = require("@angular/router");
+const app_component_1 = require("../../app.component");
+const socket_oi_service_1 = require("../../service/socket.oi.service");
+const toast_component_1 = require("../toast/toast.component");
+const main_user_service_1 = require("../../service/main.user.service");
+const private_area_service_1 = require("../../service/private.area.service");
+let ProfileComponent = class ProfileComponent {
+    constructor(location, elRef, router, lh, io, toast, areaService, userService) {
         this.location = location;
         this.elRef = elRef;
         this.router = router;
@@ -29,30 +29,29 @@ var ProfileComponent = (function () {
         this.setting = userService.user.setting;
         this.socket = io.socket;
     }
-    ProfileComponent.prototype.saveLock = function (val) {
+    saveLock(val) {
         this.areaService.saveLock(val);
-    };
-    ProfileComponent.prototype.ngAfterViewInit = function () {
-        var _this = this;
-        var el = this.elRef.nativeElement;
-        var inputEl = this.inputEl = el.getElementsByTagName("input")[1];
-        inputEl.addEventListener('change', function () {
+    }
+    ngAfterViewInit() {
+        const el = this.elRef.nativeElement;
+        const inputEl = this.inputEl = el.getElementsByTagName("input")[1];
+        inputEl.addEventListener('change', () => {
             console.log(inputEl.files);
-            var file = inputEl.files[0];
-            var reader = new FileReader();
-            reader.onload = function (event) {
-                var the_url = event.target.result;
+            const file = inputEl.files[0];
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const the_url = event.target.result;
                 //this.imageurl = the_url
-                _this.crop(the_url);
+                this.crop(the_url);
             };
             reader.readAsDataURL(file);
         });
-    };
-    ProfileComponent.prototype.crop = function (base64) {
-        var $this = this;
-        var imageObj = new Image();
+    }
+    crop(base64) {
+        const $this = this;
+        const imageObj = new Image();
         imageObj.style.display = 'none';
-        var elCanvas = document.createElement('canvas');
+        const elCanvas = document.createElement('canvas');
         elCanvas.width = 100;
         elCanvas.height = 100;
         var context = elCanvas.getContext('2d');
@@ -73,20 +72,19 @@ var ProfileComponent = (function () {
         };
         imageObj.src = base64;
         document.body.appendChild(imageObj);
-    };
-    ProfileComponent.prototype.onClose = function () {
+    }
+    onClose() {
         if (this.lh.is) {
             this.location.back();
         }
         else {
             this.router.navigate(['/auth/map']);
         }
-    };
-    ProfileComponent.prototype.onOpenImage = function () {
+    }
+    onOpenImage() {
         this.inputEl.click();
-    };
-    ProfileComponent.prototype.onSave = function () {
-        var _this = this;
+    }
+    onSave() {
         if (!this.user.name) {
             this.toast.show({
                 type: 'warning',
@@ -102,32 +100,24 @@ var ProfileComponent = (function () {
             return;
         }
         this.socket.$emit('onImage', this.user.image)
-            .then(function (d) {
+            .then(d => {
             console.log(d);
             if (d && d.result == 'ok') {
-                _this.toast.show({
+                this.toast.show({
                     type: 'success',
                     text: 'Профиль сохранен'
                 });
             }
         });
-    };
-    return ProfileComponent;
-}());
+    }
+};
 ProfileComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
         templateUrl: './profile.component.html',
         styleUrls: ['./profile.component.css'],
-    }),
-    __metadata("design:paramtypes", [common_1.Location,
-        core_1.ElementRef,
-        router_1.Router,
-        app_component_1.NavigationHistory,
-        socket_oi_service_1.Io,
-        toast_component_1.ToastService,
-        private_area_service_1.PrivateAreaService,
-        main_user_service_1.UserService])
+    }), 
+    __metadata('design:paramtypes', [common_1.Location, core_1.ElementRef, router_1.Router, app_component_1.NavigationHistory, socket_oi_service_1.Io, toast_component_1.ToastService, private_area_service_1.PrivateAreaService, main_user_service_1.UserService])
 ], ProfileComponent);
 exports.ProfileComponent = ProfileComponent;
 //# sourceMappingURL=profile.component.js.map

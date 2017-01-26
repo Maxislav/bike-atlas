@@ -9,12 +9,10 @@
 .del {
   cursor: pointer;
   display: block;
-  float: right;
 }
 .go {
   cursor: pointer;
   display: block;
-  float: right;
   margin-right: 10px;
 }
 .go:active {
@@ -24,7 +22,17 @@
 }
 li {
   color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 li > div {
   padding: 8px;
+}
+li .download {
+  height: 30px;
+  width: 30px;
+  background: url("src/img/ico-download.png") no-repeat center;
+  background-size: 80%;
+  padding: 0;
 }

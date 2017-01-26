@@ -11,25 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by max on 05.01.17.
  */
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var JournalComponent = (function () {
-    function JournalComponent(location) {
+const core_1 = require("@angular/core");
+const common_1 = require('@angular/common');
+let JournalComponent = class JournalComponent {
+    constructor(location) {
         this.location = location;
     }
-    JournalComponent.prototype.onClose = function () {
+    onClose() {
         this.location.back();
-    };
-    return JournalComponent;
-}());
+    }
+};
 JournalComponent = __decorate([
     core_1.Component({
         //noinspection TypeScriptUnresolvedVariable
         moduleId: module.id,
         templateUrl: './journal.component.html',
         styleUrls: ['./journal.component.css'],
-    }),
-    __metadata("design:paramtypes", [common_1.Location])
+    }), 
+    __metadata('design:paramtypes', [common_1.Location])
 ], JournalComponent);
 exports.JournalComponent = JournalComponent;
 //# sourceMappingURL=journal.component.js.map

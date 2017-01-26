@@ -8,12 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var socket_oi_service_1 = require("./socket.oi.service");
-var local_storage_service_1 = require("./local-storage.service");
-var main_user_service_1 = require("./main.user.service");
-var FriendsService = (function () {
-    function FriendsService(io, ls, userService) {
+const core_1 = require("@angular/core");
+const socket_oi_service_1 = require("./socket.oi.service");
+const local_storage_service_1 = require("./local-storage.service");
+const main_user_service_1 = require("./main.user.service");
+let FriendsService = class FriendsService {
+    constructor(io, ls, userService) {
         this.io = io;
         this.ls = ls;
         this.userService = userService;
@@ -25,158 +25,127 @@ var FriendsService = (function () {
         this.socket = io.socket;
         //this.friends = userService.friends;
     }
-    FriendsService.prototype.getFriends = function () {
+    getFriends() {
         this.updateFriends();
-    };
-    FriendsService.prototype.updateFriends = function () {
-        var _this = this;
+    }
+    updateFriends() {
         return this.socket.$emit('getFriends')
-            .then(function (d) {
+            .then(d => {
             console.log(d);
             if (d.result == 'ok') {
-                _this.friends = d.friends;
-                _this.myInvites = d.invites;
-                return _this.friends;
+                this.friends = d.friends;
+                this.myInvites = d.invites;
+                return this.friends;
             }
             else {
                 return null;
             }
         });
-    };
-    FriendsService.prototype.onDelFriend = function (id) {
-        var _this = this;
+    }
+    onDelFriend(id) {
         this.socket.$emit('onDelFriend', id)
-            .then(function (d) {
+            .then((d) => {
             console.log(d);
-            _this.updateFriends();
+            this.updateFriends();
         });
-    };
-    FriendsService.prototype.getInvites = function () {
-        var _this = this;
-        var hash = this.ls.userKey;
-        this.socket.$emit('getInvites', { hash: hash })
-            .then(function (d) {
+    }
+    getInvites() {
+        const hash = this.ls.userKey;
+        this.socket.$emit('getInvites', { hash })
+            .then((d) => {
             console.log(d);
-            _this.invites = d;
+            this.invites = d;
         });
-    };
-    FriendsService.prototype.onAcceptInvite = function (friend) {
-        var _this = this;
+    }
+    onAcceptInvite(friend) {
         return this.socket.$emit('onAcceptInvite', friend.id)
-            .then(function (d) {
-            _this.updateFriends();
-            _this.getInvites();
+            .then(d => {
+            this.updateFriends();
+            this.getInvites();
         });
-    };
-    FriendsService.prototype.getAllUsers = function () {
-        var _this = this;
+    }
+    getAllUsers() {
         this.socket.$emit('getAllUsers', { hash: this.ls.userKey, id: this.userService.user.id })
-            .then(function (d) {
+            .then(d => {
             console.log(d);
             if (d && d.result == 'ok') {
-                _this.users = d.users;
+                this.users = d.users;
             }
             else {
                 console.error('getAllUsers', d);
             }
         });
-    };
-    FriendsService.prototype.onInvite = function (inviteId) {
-        var _this = this;
-        this.socket.$emit('onInvite', { hash: this.ls.userKey, inviteId: inviteId })
-            .then(function (d) {
+    }
+    onInvite(inviteId) {
+        this.socket.$emit('onInvite', { hash: this.ls.userKey, inviteId })
+            .then(d => {
             console.log(d);
-            _this.updateFriends();
+            this.updateFriends();
         });
-    };
-    FriendsService.prototype.onRejectInvite = function (enemy_id) {
-        var _this = this;
+    }
+    onRejectInvite(enemy_id) {
         this.socket.$emit('onRejectInvite', enemy_id)
-            .then(function (rows) {
-            _this.updateFriends();
-            _this.getInvites();
+            .then(rows => {
+            this.updateFriends();
+            this.getInvites();
         });
-    };
-    FriendsService.prototype.onCancelInvite = function (enemy_id) {
-        var _this = this;
+    }
+    onCancelInvite(enemy_id) {
         this.socket.$emit('onCancelInvite', enemy_id)
-            .then(function (d) {
+            .then(d => {
             console.log(d);
-            _this.updateFriends();
-            _this.getInvites();
+            this.updateFriends();
+            this.getInvites();
         });
-    };
-    FriendsService.prototype.clearUsers = function () {
+    }
+    clearUsers() {
         this.users = [];
         this.invites = [];
-    };
-    Object.defineProperty(FriendsService.prototype, "invites", {
-        get: function () {
-            return this._invites;
-        },
-        set: function (value) {
-            var _this = this;
-            this._invites.length = 0;
-            value.forEach(function (item) {
-                _this._invites.push(item);
+    }
+    get invites() {
+        return this._invites;
+    }
+    set invites(value) {
+        this._invites.length = 0;
+        value.forEach(item => {
+            this._invites.push(item);
+        });
+    }
+    get myInvites() {
+        return this._myInvites;
+    }
+    set myInvites(value) {
+        this._myInvites.length = 0;
+        value.forEach(item => {
+            this._myInvites.push(item);
+        });
+    }
+    set friends(value) {
+        this._friends.length = 0;
+        if (value) {
+            value.forEach(item => {
+                this._friends.push(item);
             });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FriendsService.prototype, "myInvites", {
-        get: function () {
-            return this._myInvites;
-        },
-        set: function (value) {
-            var _this = this;
-            this._myInvites.length = 0;
-            value.forEach(function (item) {
-                _this._myInvites.push(item);
+        }
+    }
+    get friends() {
+        return this._friends;
+    }
+    get users() {
+        return this._users;
+    }
+    set users(value) {
+        this._users.length = 0;
+        if (value) {
+            value.forEach(item => {
+                this._users.push(item);
             });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FriendsService.prototype, "friends", {
-        get: function () {
-            return this._friends;
-        },
-        set: function (value) {
-            var _this = this;
-            this._friends.length = 0;
-            if (value) {
-                value.forEach(function (item) {
-                    _this._friends.push(item);
-                });
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FriendsService.prototype, "users", {
-        get: function () {
-            return this._users;
-        },
-        set: function (value) {
-            var _this = this;
-            this._users.length = 0;
-            if (value) {
-                value.forEach(function (item) {
-                    _this._users.push(item);
-                });
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return FriendsService;
-}());
+        }
+    }
+};
 FriendsService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [socket_oi_service_1.Io,
-        local_storage_service_1.LocalStorage,
-        main_user_service_1.UserService])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, main_user_service_1.UserService])
 ], FriendsService);
 exports.FriendsService = FriendsService;
 //# sourceMappingURL=friends.service.js.map
