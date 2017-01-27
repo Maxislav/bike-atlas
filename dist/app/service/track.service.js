@@ -19,7 +19,7 @@ const map_service_1 = require("./map.service");
 const track_var_1 = require("./track.var");
 const F = parseFloat;
 const I = parseInt;
-let TrackService = class TrackService {
+let TrackService_1 = class TrackService {
     constructor(io, mapService) {
         this.io = io;
         this.mapService = mapService;
@@ -45,6 +45,7 @@ let TrackService = class TrackService {
                 const point = new track_var_1.Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')), ele ? F(ele.innerHTML) : null);
                 point.date = item.getElementsByTagName('time')[0].innerHTML;
                 point.id = i;
+                point.speed = item.getElementsByTagName('speed')[0] ? F(item.getElementsByTagName('speed')[0].innerHTML) * 1.852 : 0;
                 track.push(point);
             }
         });
@@ -158,57 +159,59 @@ let TrackService = class TrackService {
             }
         }
     }
+    static getData(points) {
+        return {
+            "type": "FeatureCollection",
+            "features": (() => {
+                const features = [];
+                points.forEach((item, i) => {
+                    const f = {
+                        properties: {
+                            color: item.color,
+                            point: item,
+                            id: item.id,
+                        },
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": item
+                        }
+                    };
+                    features.push(f);
+                });
+                return features;
+            })()
+        };
+    }
     addSrcPoints(points, xmlDoc, update) {
-        const layers = [];
         const map = this.mapService.map;
         const layerId = this.getLayerId('cluster-');
-        const getData = (points) => {
-            return {
-                "type": "FeatureCollection",
-                "features": (() => {
-                    const features = [];
-                    points.forEach((item, i) => {
-                        const f = {
-                            properties: {
-                                color: "Green",
-                                point: item,
-                                id: item.id,
-                            },
-                            "type": "Feature",
-                            "geometry": {
-                                "type": "Point",
-                                "coordinates": item
-                            }
-                        };
-                        features.push(f);
-                    });
-                    return features;
-                })()
-            };
-        };
-        const data = getData(points);
-        map.addSource(layerId, {
-            type: "geojson",
-            data: data
-        });
-        map.addLayer({
-            id: layerId,
-            type: "circle",
-            "paint": {
-                "circle-color": {
-                    "property": "color",
-                    "stops": [
-                        ["Red", "#f00"],
-                        ["Green", "#0f0"],
-                        ["Blue", "#00f"]
-                    ],
-                    "type": "categorical"
+        const worker = new Worker('dist/app/worker/color-speed.js');
+        let sourceData;
+        worker.postMessage([points]);
+        worker.onmessage = (e) => {
+            let colorPoints = e.data[0];
+            let stops = e.data[1];
+            sourceData = TrackService_1.getData(colorPoints);
+            map.addSource(layerId, {
+                type: "geojson",
+                data: sourceData
+            });
+            map.addLayer({
+                id: layerId,
+                type: "circle",
+                "paint": {
+                    "circle-color": {
+                        "property": "color",
+                        "stops": stops,
+                        "type": "categorical"
+                    },
+                    "circle-radius": 8
                 },
-                "circle-radius": 8
-            },
-            layout: {},
-            source: layerId
-        });
+                layout: {},
+                source: layerId
+            });
+        };
         const mapClick = (e) => {
             var features = map.queryRenderedFeatures(e.point, {
                 layers: [layerId],
@@ -227,8 +230,8 @@ let TrackService = class TrackService {
                     }));
                     trkpt.parentNode.removeChild(trkpt);
                     update(points);
-                    const data = getData(points);
-                    map.getSource(layerId).setData(data);
+                    sourceData = TrackService_1.getData(points);
+                    map.getSource(layerId).setData(sourceData);
                     map.off('click', mapClick);
                 });
             }
@@ -373,7 +376,8 @@ let TrackService = class TrackService {
         this._trackList = value;
     }
 };
-TrackService = __decorate([
+let TrackService = TrackService_1;
+TrackService = TrackService_1 = __decorate([
     core_1.Injectable(), 
     __metadata('design:paramtypes', [socket_oi_service_1.Io, map_service_1.MapService])
 ], TrackService);

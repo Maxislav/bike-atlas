@@ -17,11 +17,12 @@ export class TrackService {
 
     layerIds:Array<String>;
 
-    private util: Util;
-    private _trackList: Array<Tr> = [];
+    private util:Util;
+    private _trackList:Array<Tr> = [];
     private _map:any;
-    private popupEdit: any;
-    constructor(private io:Io, private mapService: MapService) {
+    private popupEdit:any;
+
+    constructor(private io:Io, private mapService:MapService) {
         this.layerIds = [];
         this._trackList = [];
         this.util = new Util();
@@ -29,7 +30,7 @@ export class TrackService {
 
         const socket = io.socket;
 
-        socket.on('file', d=>{
+        socket.on('file', d=> {
 
             let xmlStr = String.fromCharCode.apply(null, new Uint8Array(d));
             this.showGpxTrack(xmlStr)
@@ -37,23 +38,23 @@ export class TrackService {
         });
     }
 
-    showGpxTrack(xmlStr: string){
+    showGpxTrack(xmlStr:string) {
         const track = [];
         let parser = new DOMParser();
         let xmlDoc = parser.parseFromString(xmlStr, "text/xml");
         var forEach = Array.prototype.forEach;
-        forEach.call(xmlDoc.getElementsByTagName('trkpt'), (item, i)=>{
-            if(item.getAttribute('lon')){
-                item.setAttribute('id',i)
+        forEach.call(xmlDoc.getElementsByTagName('trkpt'), (item, i)=> {
+            if (item.getAttribute('lon')) {
+                item.setAttribute('id', i)
                 const ele = item.getElementsByTagName('ele') ? item.getElementsByTagName('ele')[0] : null;
-                const point: Point = new Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')), ele  ? F(ele.innerHTML): null);
+                const point:Point = new Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')), ele ? F(ele.innerHTML) : null);
                 point.date = item.getElementsByTagName('time')[0].innerHTML;
                 point.id = i;
+                point.speed = item.getElementsByTagName('speed')[0] ? F(item.getElementsByTagName('speed')[0].innerHTML) *1.852 : 0;
                 track.push(point)
             }
         });
         this.showTrack(track, xmlDoc)
-
 
 
     }
@@ -73,12 +74,11 @@ export class TrackService {
         points.forEach((point)=> {
             coordinates.push(point);
         });
-        
-        
 
-        let layerId:string = this.getLayerId('track-')+'';
 
-        const data =  {
+        let layerId:string = this.getLayerId('track-') + '';
+
+        const data = {
             "type": "Feature",
             "properties": {},
             "geometry": {
@@ -108,7 +108,7 @@ export class TrackService {
             }
         });
 
-        const update = (points: Array<Point>) => {
+        const update = (points:Array<Point>) => {
             data.geometry.coordinates = points;
             map.getSource(layerId).setData(data)
 
@@ -117,7 +117,7 @@ export class TrackService {
         let srcPoints; //= this.addSrcPoints(points, xmlDoc, update);
         let isShowPonts = false;
 
-        let tr: Tr = {
+        let tr:Tr = {
             hide: function () {
                 map.removeLayer(layerId);
                 map.removeSource(layerId);
@@ -126,25 +126,25 @@ export class TrackService {
                 console.log('delete track index', index)
                 srcPoints && srcPoints.remove()
             },
-            showSrcPoint:  () => {
-                if(!!srcPoints){
+            showSrcPoint: () => {
+                if (!!srcPoints) {
                     srcPoints.remove();
                     srcPoints = null;
-                }else{
+                } else {
                     srcPoints = this.addSrcPoints(points, xmlDoc, update);
                 }
 
             },
-            hideSrcPoint: () =>{
+            hideSrcPoint: () => {
                 srcPoints && srcPoints.remove()
             },
             update: update,
             id: layerId,
             coordinates: coordinates,
             points: points,
-            color:color,
+            color: color,
             distance: 0,
-            download: () =>{
+            download: () => {
                 this.onDownload(xmlDoc)
             }
             //distance: (function() { return $this.util.distance(this)})()
@@ -160,13 +160,12 @@ export class TrackService {
         return tr
     }
 
-    onDownload(xmlDoc){
+    onDownload(xmlDoc) {
 
-      const time  = xmlDoc.getElementsByTagName('time')[0]
+        const time = xmlDoc.getElementsByTagName('time')[0]
 
 
-
-        download(time.innerHTML+'.gpx', xml2string(xmlDoc))
+        download(time.innerHTML + '.gpx', xml2string(xmlDoc))
 
         function xml2string(node) {
             if (typeof(XMLSerializer) !== 'undefined') {
@@ -193,23 +192,15 @@ export class TrackService {
         }
     }
 
-
-    addSrcPoints(points:Array<Point>, xmlDoc, update: Function){
-        const layers = [];
-        const map = this.mapService.map;
-        const layerId = this.getLayerId('cluster-');
-
-
-
-        const getData =(points)=>{
-          return  {
-                "type": "FeatureCollection",
-                "features": (()=>{
+    private static getData(points){
+        return {
+            "type": "FeatureCollection",
+            "features": (()=> {
                 const features = [];
-                points.forEach((item,i)=>{
+                points.forEach((item, i)=> {
                     const f = {
                         properties: {
-                            color: "Green",
+                            color: item.color,
                             point: item,
                             id: item.id,
                         },
@@ -223,59 +214,67 @@ export class TrackService {
                 });
                 return features
             })()
-            };
         };
-        const data = getData(points)
+    }
 
 
-        map.addSource(layerId,  {
-            type: "geojson",
-            data: data
-        });
+    addSrcPoints(points:Array<Point>, xmlDoc, update:Function) {
+        const map = this.mapService.map;
+        const layerId = this.getLayerId('cluster-');
+        const worker = new Worker('dist/app/worker/color-speed.js');
+        let sourceData;
+        worker.postMessage([points])
+        worker.onmessage = (e)=>{
+            let colorPoints = e.data[0];
+            let stops = e.data[1];
+            sourceData = TrackService.getData(colorPoints);
+            map.addSource(layerId, {
+                type: "geojson",
+                data: sourceData
+            });
 
-
-        map.addLayer({
-            id: layerId,
-            type: "circle",
-            "paint": {
-                "circle-color": {
-                    "property": "color",
-                    "stops": [
-                        ["Red", "#f00"],
-                        ["Green", "#0f0"],
-                        ["Blue", "#00f"]
-                    ],
-                    "type": "categorical"
+            map.addLayer({
+                id: layerId,
+                type: "circle",
+                "paint": {
+                    "circle-color": {
+                        "property": "color",
+                        "stops": stops,
+                        "type": "categorical"
+                    },
+                    "circle-radius": 8
                 },
-                "circle-radius": 8
-            },
-            layout: {},
-            source: layerId
-        });
+                layout: {},
+                source: layerId
+            });
+        }
 
-        const mapClick = (e)=>{
+
+
+
+        const mapClick = (e)=> {
             var features = map.queryRenderedFeatures(e.point, {
                 layers: [layerId],
             });
-            if(features.length){
+            if (features.length) {
                 const id = features[0].properties.id
-                const p = points.find((item)=>{
+                const p = points.find((item)=> {
                     return item.id == id
                 });
-                this.createPopupEdit(p, (e)=>{
-                    let index =  R.findIndex(R.propEq('id', id))(points);
+                this.createPopupEdit(p, (e)=> {
+                    let index = R.findIndex(R.propEq('id', id))(points);
 
-                    points.splice(index,1);
+                    points.splice(index, 1);
 
                     var find = Array.prototype.find;
 
-                    const trkpt =  find.call(xmlDoc.getElementsByTagName('trkpt'), (item=>{
+                    const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item=> {
                         return item.getAttribute('id') == id
                     }));
                     trkpt.parentNode.removeChild(trkpt);
                     update(points);
-                    const data = getData(points);
-                    map.getSource(layerId).setData(data);
+                    sourceData = TrackService.getData(points);
+                    map.getSource(layerId).setData(sourceData);
                     map.off('click', mapClick)
 
                 })
@@ -286,15 +285,15 @@ export class TrackService {
 
 
         return {
-            remove: ()=>{
-                 map.removeLayer(layerId);
+            remove: ()=> {
+                map.removeLayer(layerId);
             },
-            update: (points:Array<Point>)=>{
+            update: (points:Array<Point>)=> {
                 const data = {
                     "type": "FeatureCollection",
-                    "features": (()=>{
+                    "features": (()=> {
                         const features = [];
-                        points.forEach((item,i)=>{
+                        points.forEach((item, i)=> {
                             const f = {
                                 properties: {
                                     color: "Green",
@@ -318,7 +317,7 @@ export class TrackService {
         }
     }
 
-    createPopupEdit(point: Point, f: Function){
+    createPopupEdit(point:Point, f:Function) {
         const map = this.mapService.map;
         const mapboxgl = this.mapService.mapboxgl;
         const div = document.createElement('div');
@@ -332,21 +331,19 @@ export class TrackService {
         //div.innerHTML =   `${point.date}`;
 
         const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
-            .setLngLat(  new mapboxgl.LngLat(point.lng, point.lat))
+            .setLngLat(new mapboxgl.LngLat(point.lng, point.lat))
             .setDOMContent(div)
             .addTo(map);
 
-        btn.addEventListener('click',()=>{
+        btn.addEventListener('click', ()=> {
             popup.remove()
             f();
-        } );
-        
-
+        });
 
 
     }
 
-    marker(point: Point){
+    marker(point:Point) {
         const map = this.mapService.map;
         const mapboxgl = this.mapService.mapboxgl;
 
@@ -354,29 +351,27 @@ export class TrackService {
         icoContainer.classList.add("track-icon");
         const icoEl = document.createElement('div');
         icoContainer.appendChild(icoEl);
-        
-        
+
+
         const iconMarker = new mapboxgl.Marker(icoContainer, {offset: [-10, -10]})
             .setLngLat([point.lng, point.lat])
             .addTo(map);
 
 
-        
-        
         const marker = {
             lng: point.lng,
             lat: point.lat,
             bearing: point.bearing,
             _mapBearing: map.getBearing(),
             rotate: function () {
-                let angle =this.bearing-this._mapBearing;
-                icoEl.style.transform = "rotate("+I(angle+'')+"deg)"
+                let angle = this.bearing - this._mapBearing;
+                icoEl.style.transform = "rotate(" + I(angle + '') + "deg)"
             },
             update: function (point:Point) {
-                for(let opt in point){
+                for (let opt in point) {
                     this[opt] = point[opt];
                 }
-                if(point.bearing){
+                if (point.bearing) {
                     this.rotate();
                 }
                 iconMarker.setLngLat([this.lng, this.lat])
@@ -387,9 +382,9 @@ export class TrackService {
             }
         };
 
-        const rotate = ()=>{
+        const rotate = ()=> {
             const mapBearing = map.getBearing();
-            if(marker._mapBearing != mapBearing ){
+            if (marker._mapBearing != mapBearing) {
                 marker._mapBearing = mapBearing;
                 marker.rotate();
             }
@@ -400,15 +395,15 @@ export class TrackService {
 
         return marker;
     }
-    
 
-    private getLayerId(prefix?: String) {
+
+    private getLayerId(prefix?:String) {
         prefix = prefix || '';
         const min = 0, max = 10000;
 
         const rand = prefix + Math.round(min + Math.random() * (max - min)).toLocaleString();
 
-        if (-1<this.layerIds.indexOf(rand)) {
+        if (-1 < this.layerIds.indexOf(rand)) {
             return this.getLayerId(prefix)
         } else {
             this.layerIds.push(rand);
@@ -419,27 +414,25 @@ export class TrackService {
     getRandom(min, max, int) {
         var rand = min + Math.random() * (max - min);
         if (int) {
-            rand = Math.round(rand)+''
+            rand = Math.round(rand) + ''
         }
         return rand;
 
     }
 
-    _getColor(){
+    _getColor() {
         const I = parseInt;
-        const colors: Array<string> = [
-
-        ];
+        const colors:Array<string> = [];
 
 
-        let c = ['0','0','0'];
+        let c = ['0', '0', '0'];
 
-        c.forEach( (r, i) => {
-            r = I(this.getRandom(100,200,true)).toString(16);
-            if(r.length<2){
-                c[i]='0'+r
-            }else{
-                c[i]= r
+        c.forEach((r, i) => {
+            r = I(this.getRandom(100, 200, true)).toString(16);
+            if (r.length < 2) {
+                c[i] = '0' + r
+            } else {
+                c[i] = r
             }
         });
 
@@ -451,6 +444,7 @@ export class TrackService {
         //console.log(value)
         this._map = value;
     }
+
     get map():any {
         return this._map;
     }
