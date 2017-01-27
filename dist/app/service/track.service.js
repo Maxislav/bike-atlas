@@ -17,6 +17,8 @@ const util_1 = require('./util');
 const socket_oi_service_1 = require("./socket.oi.service");
 const map_service_1 = require("./map.service");
 const track_var_1 = require("./track.var");
+const dateformat = require("node_modules/dateformat/lib/dateformat.js");
+//console.log(dateformat)
 const F = parseFloat;
 const I = parseInt;
 let TrackService_1 = class TrackService {
@@ -45,8 +47,9 @@ let TrackService_1 = class TrackService {
                 const point = new track_var_1.Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')), ele ? F(ele.innerHTML) : null);
                 point.date = item.getElementsByTagName('time')[0].innerHTML;
                 point.id = i;
-                point.speed = item.getElementsByTagName('speed')[0] ? F(item.getElementsByTagName('speed')[0].innerHTML) * 1.852 : 0;
+                point.speed = item.getElementsByTagName('speed')[0] ? F(item.getElementsByTagName('speed')[0].innerHTML) * 3.6 : 0;
                 track.push(point);
+                console.log(point.speed);
             }
         });
         this.showTrack(track, xmlDoc);
@@ -187,6 +190,35 @@ let TrackService_1 = class TrackService {
         const map = this.mapService.map;
         const layerId = this.getLayerId('cluster-');
         const worker = new Worker('dist/app/worker/color-speed.js');
+        const mapClick = (e) => {
+            var features = map.queryRenderedFeatures(e.point, {
+                layers: [layerId],
+            });
+            if (features.length) {
+                const id = features[0].properties.id;
+                const p = points.find((item) => {
+                    return item.id == id;
+                });
+                this.createPopupEdit(p, (e) => {
+                    let index = R.findIndex(R.propEq('id', id))(points);
+                    points.splice(index, 1);
+                    var find = Array.prototype.find;
+                    const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item => {
+                        return item.getAttribute('id') == id;
+                    }));
+                    trkpt.parentNode.removeChild(trkpt);
+                    update(points);
+                    sourceData = TrackService_1.getData(points);
+                    map.getSource(layerId).setData(sourceData);
+                    //map.off('click', mapClick)
+                });
+            }
+        };
+        const mousemove = (e) => {
+            var features = map.queryRenderedFeatures(e.point, {
+                layers: [layerId],
+            });
+        };
         let sourceData;
         worker.postMessage([points]);
         worker.onmessage = (e) => {
@@ -211,59 +243,16 @@ let TrackService_1 = class TrackService {
                 layout: {},
                 source: layerId
             });
+            map.on('mousemove', mapClick);
+            map.on('click', mapClick);
         };
-        const mapClick = (e) => {
-            var features = map.queryRenderedFeatures(e.point, {
-                layers: [layerId],
-            });
-            if (features.length) {
-                const id = features[0].properties.id;
-                const p = points.find((item) => {
-                    return item.id == id;
-                });
-                this.createPopupEdit(p, (e) => {
-                    let index = R.findIndex(R.propEq('id', id))(points);
-                    points.splice(index, 1);
-                    var find = Array.prototype.find;
-                    const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item => {
-                        return item.getAttribute('id') == id;
-                    }));
-                    trkpt.parentNode.removeChild(trkpt);
-                    update(points);
-                    sourceData = TrackService_1.getData(points);
-                    map.getSource(layerId).setData(sourceData);
-                    map.off('click', mapClick);
-                });
-            }
-        };
-        map.on('click', mapClick);
         return {
             remove: () => {
+                map.off('click', mapClick);
                 map.removeLayer(layerId);
             },
             update: (points) => {
-                const data = {
-                    "type": "FeatureCollection",
-                    "features": (() => {
-                        const features = [];
-                        points.forEach((item, i) => {
-                            const f = {
-                                properties: {
-                                    color: "Green",
-                                    point: item,
-                                    id: item.id,
-                                },
-                                "type": "Feature",
-                                "geometry": {
-                                    "type": "Point",
-                                    "coordinates": item
-                                }
-                            };
-                            features.push(f);
-                        });
-                        return features;
-                    })()
-                };
+                const data = TrackService_1.getData(points);
                 map.getSource(layerId).setdata(data);
             }
         };
@@ -272,18 +261,26 @@ let TrackService_1 = class TrackService {
         const map = this.mapService.map;
         const mapboxgl = this.mapService.mapboxgl;
         const div = document.createElement('div');
+        div.setAttribute('class', 'info-point');
         const btn = document.createElement('button');
+        const content = `<div>${dateformat(point.date, 'mm/dd HH:MM:ss')}</div>` +
+            `<div>${point.speed.toFixed(1) + 'km/h'}</div>`;
+        div.innerHTML = content;
         btn.innerHTML = 'Удалить';
         div.appendChild(btn);
-        //div.innerHTML =   `${point.date}`;
         const popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15], closeButton: false })
             .setLngLat(new mapboxgl.LngLat(point.lng, point.lat))
             .setDOMContent(div)
             .addTo(map);
-        btn.addEventListener('click', () => {
+        const delClick = () => {
             popup.remove();
             f();
-        });
+        };
+        btn.addEventListener('click', delClick);
+        setTimeout(() => {
+            btn.removeEventListener('click', delClick);
+            popup.remove();
+        }, 5000);
     }
     marker(point) {
         const map = this.mapService.map;

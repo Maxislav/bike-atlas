@@ -45,3 +45,12 @@
   background: url("src/sprite/sprite.png") no-repeat left top;
   background-size: 20px 80px;
 }
+:host /deep/ .info-point > div {
+  margin: 5px 0;
+}
+:host /deep/ .info-point button {
+  background: none;
+  color: gray;
+  border: none;
+  outline: none;
+}

@@ -9,6 +9,9 @@ import {Io} from "./socket.oi.service";
 import {MapService} from "./map.service";
 import {Track as Tr, Point} from "./track.var";
 import * as mapboxgl from "@lib/mapbox-gl/mapbox-gl.js";
+
+import * as dateformat from "node_modules/dateformat/lib/dateformat.js";
+//console.log(dateformat)
 const F = parseFloat;
 const I = parseInt;
 
@@ -50,8 +53,9 @@ export class TrackService {
                 const point:Point = new Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')), ele ? F(ele.innerHTML) : null);
                 point.date = item.getElementsByTagName('time')[0].innerHTML;
                 point.id = i;
-                point.speed = item.getElementsByTagName('speed')[0] ? F(item.getElementsByTagName('speed')[0].innerHTML) *1.852 : 0;
+                point.speed = item.getElementsByTagName('speed')[0] ? F(item.getElementsByTagName('speed')[0].innerHTML)*3.6 : 0;
                 track.push(point)
+                console.log(point.speed)
             }
         });
         this.showTrack(track, xmlDoc)
@@ -222,34 +226,6 @@ export class TrackService {
         const map = this.mapService.map;
         const layerId = this.getLayerId('cluster-');
         const worker = new Worker('dist/app/worker/color-speed.js');
-        let sourceData;
-        worker.postMessage([points])
-        worker.onmessage = (e)=>{
-            let colorPoints = e.data[0];
-            let stops = e.data[1];
-            sourceData = TrackService.getData(colorPoints);
-            map.addSource(layerId, {
-                type: "geojson",
-                data: sourceData
-            });
-
-            map.addLayer({
-                id: layerId,
-                type: "circle",
-                "paint": {
-                    "circle-color": {
-                        "property": "color",
-                        "stops": stops,
-                        "type": "categorical"
-                    },
-                    "circle-radius": 8
-                },
-                layout: {},
-                source: layerId
-            });
-        }
-
-
 
 
         const mapClick = (e)=> {
@@ -275,43 +251,65 @@ export class TrackService {
                     update(points);
                     sourceData = TrackService.getData(points);
                     map.getSource(layerId).setData(sourceData);
-                    map.off('click', mapClick)
+                    //map.off('click', mapClick)
 
                 })
             }
         };
+        const mousemove = (e)=>{
+            var features = map.queryRenderedFeatures(e.point, {
+                layers: [layerId],
+            });
+        }
 
-        map.on('click', mapClick);
+
+
+        let sourceData;
+        worker.postMessage([points])
+        worker.onmessage = (e)=>{
+            let colorPoints = e.data[0];
+            let stops = e.data[1];
+            sourceData = TrackService.getData(colorPoints);
+            map.addSource(layerId, {
+                type: "geojson",
+                data: sourceData
+            });
+
+            map.addLayer({
+                id: layerId,
+                type: "circle",
+                "paint": {
+                    "circle-color": {
+                        "property": "color",
+                        "stops": stops,
+                        "type": "categorical"
+                    },
+                    "circle-radius": 8
+                },
+                layout: {},
+                source: layerId
+            });
+
+            map.on('mousemove', mapClick)
+
+            map.on('click', mapClick);
+        };
+
+
+
+
+
+
+
 
 
         return {
             remove: ()=> {
+                map.off('click', mapClick)
                 map.removeLayer(layerId);
             },
             update: (points:Array<Point>)=> {
-                const data = {
-                    "type": "FeatureCollection",
-                    "features": (()=> {
-                        const features = [];
-                        points.forEach((item, i)=> {
-                            const f = {
-                                properties: {
-                                    color: "Green",
-                                    point: item,
-                                    id: item.id,
-                                },
-                                "type": "Feature",
-                                "geometry": {
-
-                                    "type": "Point",
-                                    "coordinates": item
-                                }
-                            };
-                            features.push(f)
-                        });
-                        return features
-                    })()
-                };
+                const data = TrackService.getData(points);
                 map.getSource(layerId).setdata(data)
             }
         }
@@ -321,25 +319,29 @@ export class TrackService {
         const map = this.mapService.map;
         const mapboxgl = this.mapService.mapboxgl;
         const div = document.createElement('div');
-
+        div.setAttribute('class', 'info-point');
         const btn = document.createElement('button');
-
+        const content = `<div>${dateformat(point.date, 'mm/dd HH:MM:ss')}</div>`+
+                        `<div>${point.speed.toFixed(1)+'km/h'}</div>`;
+        div.innerHTML = content;
         btn.innerHTML = 'Удалить';
-
         div.appendChild(btn);
-
-        //div.innerHTML =   `${point.date}`;
-
         const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
             .setLngLat(new mapboxgl.LngLat(point.lng, point.lat))
             .setDOMContent(div)
             .addTo(map);
 
-        btn.addEventListener('click', ()=> {
+        const delClick = ()=>{
             popup.remove()
             f();
-        });
+        };
 
+        btn.addEventListener('click', delClick);
+
+        setTimeout(()=>{
+            btn.removeEventListener('click', delClick)
+            popup.remove();
+        }, 5000)
 
     }
 
