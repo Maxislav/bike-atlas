@@ -55,7 +55,6 @@ export class TrackService {
                 point.id = i;
                 point.speed = item.getElementsByTagName('speed')[0] ? F(item.getElementsByTagName('speed')[0].innerHTML)*3.6 : 0;
                 track.push(point)
-                console.log(point.speed)
             }
         });
         this.showTrack(track, xmlDoc)
@@ -306,7 +305,7 @@ export class TrackService {
         return {
             remove: ()=> {
                 map.off('click', mapClick);
-                map.on('mousemove', mapClick);
+                map.off('mousemove', mapClick);
                 map.removeLayer(layerId);
             },
             update: (points:Array<Point>)=> {
