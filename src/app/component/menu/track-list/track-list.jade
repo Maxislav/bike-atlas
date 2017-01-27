@@ -1,9 +1,14 @@
 div Список
 div
     ul
-        li( *ngFor="let track of list\; let i = index" ,  [style.background]="track.color")
-            div {{i}}: {{track.distance}} km
-            .download((click)="track.download()")
-            .go( (click)="onGo(track)") &#9658;
-            .del( (click)='hideTrack(track)') &#215;
+        li( *ngFor="let track of list\; let i = index" )
+            .title
+                .color([style.background]="track.color")
+                .info {{i}}: {{track.distance}} km
+                .del( (click)='hideTrack(track)') &#215;
+            .action
+                .download((click)="track.download()")
+                .route-points((click)="track.showSrcPoint()")
+                .go( (click)="onGo(track)") Play &#9658;
+
 

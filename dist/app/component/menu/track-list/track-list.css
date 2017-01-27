@@ -1,7 +1,39 @@
+* {
+  color: #444a56;
+}
+.button-container > div {
+  float: right;
+  margin-top: 15px;
+}
+.button-container > div button {
+  margin-left: 8px;
+}
+.row {
+  margin-bottom: 15px;
+}
+.table {
+  display: table;
+}
+.table .cell {
+  display: table-cell;
+}
+button {
+  padding: 8px 15px;
+  border: none;
+  background: white;
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+}
+button:active {
+  color: #999999;
+  box-shadow: none;
+}
 :host {
   position: absolute;
   top: calc(100% + 100px);
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(255, 255, 255, 0.8);
   z-index: 2;
   padding: 8px;
   min-width: 200px;
@@ -9,6 +41,7 @@
 .del {
   cursor: pointer;
   display: block;
+  color: darkred;
 }
 .go {
   cursor: pointer;
@@ -20,14 +53,30 @@
   transform: scaleX(0.8, 0, 8);
   box-shadow: inset 0 0 20px black;
 }
+.title,
+.action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+.route-points {
+  background: url("src/img/ico-route-points.png") no-repeat center;
+  background-size: 80%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+.color {
+  margin-left: 5px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
 li {
   color: black;
-  display: flex;
-  justify-content: space-between;
+  border-bottom: 1px solid #9ba8b2;
   align-items: center;
-}
-li > div {
-  padding: 8px;
 }
 li .download {
   height: 30px;

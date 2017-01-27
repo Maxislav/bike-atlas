@@ -65,7 +65,6 @@ export class TrackService {
     showTrack(points:Array<Point>, xmlDoc) {
         const $this = this;
         const coordinates = [];
-        //const points: Array<Point> = []
         const trackList = this.trackList;
         const color = this._getColor();
         const map = this.mapService.map;
@@ -115,7 +114,8 @@ export class TrackService {
 
         };
 
-        const srcPoints = this.addSrcPoints(points, xmlDoc, update);
+        let srcPoints; //= this.addSrcPoints(points, xmlDoc, update);
+        let isShowPonts = false;
 
         let tr: Tr = {
             hide: function () {
@@ -123,16 +123,20 @@ export class TrackService {
                 map.removeSource(layerId);
                 let index = R.findIndex(R.propEq('id', layerId))(trackList);
                 trackList.splice(index, 1);
-
-
-               
-                
-                
                 console.log('delete track index', index)
-                srcPoints.remove()
+                srcPoints && srcPoints.remove()
             },
-            show:  () => {
-                //return this.showTrack(points)
+            showSrcPoint:  () => {
+                if(!!srcPoints){
+                    srcPoints.remove();
+                    srcPoints = null;
+                }else{
+                    srcPoints = this.addSrcPoints(points, xmlDoc, update);
+                }
+
+            },
+            hideSrcPoint: () =>{
+                srcPoints && srcPoints.remove()
             },
             update: update,
             id: layerId,
@@ -249,7 +253,7 @@ export class TrackService {
             source: layerId
         });
 
-        map.on('click', (e)=>{
+        const mapClick = (e)=>{
             var features = map.queryRenderedFeatures(e.point, {
                 layers: [layerId],
             });
@@ -260,7 +264,7 @@ export class TrackService {
                 });
                 this.createPopupEdit(p, (e)=>{
                     let index =  R.findIndex(R.propEq('id', id))(points);
-                    
+
                     points.splice(index,1);
 
                     var find = Array.prototype.find;
@@ -269,17 +273,16 @@ export class TrackService {
                         return item.getAttribute('id') == id
                     }));
                     trkpt.parentNode.removeChild(trkpt);
-
-                    
                     update(points);
                     const data = getData(points);
-                    map.getSource(layerId).setData(data)
+                    map.getSource(layerId).setData(data);
+                    map.off('click', mapClick)
 
                 })
             }
+        };
 
-            //console.log(features)
-        });
+        map.on('click', mapClick);
 
 
         return {

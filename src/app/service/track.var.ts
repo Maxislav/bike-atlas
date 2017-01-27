@@ -47,7 +47,8 @@ export interface Coordinate extends Array<number>{
 export  interface Track {
     id: string;
     download: Function;
-    show: Function;
+    showSrcPoint: Function;
+    hideSrcPoint: Function;
     hide: Function;
     update: Function;
     coordinates: Array<Coordinate>;

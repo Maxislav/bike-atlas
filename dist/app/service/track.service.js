@@ -56,7 +56,6 @@ let TrackService = class TrackService {
     showTrack(points, xmlDoc) {
         const $this = this;
         const coordinates = [];
-        //const points: Array<Point> = []
         const trackList = this.trackList;
         const color = this._getColor();
         const map = this.mapService.map;
@@ -94,7 +93,8 @@ let TrackService = class TrackService {
             data.geometry.coordinates = points;
             map.getSource(layerId).setData(data);
         };
-        const srcPoints = this.addSrcPoints(points, xmlDoc, update);
+        let srcPoints; //= this.addSrcPoints(points, xmlDoc, update);
+        let isShowPonts = false;
         let tr = {
             hide: function () {
                 map.removeLayer(layerId);
@@ -102,10 +102,19 @@ let TrackService = class TrackService {
                 let index = R.findIndex(R.propEq('id', layerId))(trackList);
                 trackList.splice(index, 1);
                 console.log('delete track index', index);
-                srcPoints.remove();
+                srcPoints && srcPoints.remove();
             },
-            show: () => {
-                //return this.showTrack(points)
+            showSrcPoint: () => {
+                if (!!srcPoints) {
+                    srcPoints.remove();
+                    srcPoints = null;
+                }
+                else {
+                    srcPoints = this.addSrcPoints(points, xmlDoc, update);
+                }
+            },
+            hideSrcPoint: () => {
+                srcPoints && srcPoints.remove();
             },
             update: update,
             id: layerId,
@@ -200,7 +209,7 @@ let TrackService = class TrackService {
             layout: {},
             source: layerId
         });
-        map.on('click', (e) => {
+        const mapClick = (e) => {
             var features = map.queryRenderedFeatures(e.point, {
                 layers: [layerId],
             });
@@ -220,10 +229,11 @@ let TrackService = class TrackService {
                     update(points);
                     const data = getData(points);
                     map.getSource(layerId).setData(data);
+                    map.off('click', mapClick);
                 });
             }
-            //console.log(features)
-        });
+        };
+        map.on('click', mapClick);
         return {
             remove: () => {
                 map.removeLayer(layerId);
