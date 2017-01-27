@@ -249,6 +249,7 @@ let TrackService_1 = class TrackService {
         return {
             remove: () => {
                 map.off('click', mapClick);
+                map.on('mousemove', mapClick);
                 map.removeLayer(layerId);
             },
             update: (points) => {

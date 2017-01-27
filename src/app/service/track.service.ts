@@ -305,7 +305,8 @@ export class TrackService {
 
         return {
             remove: ()=> {
-                map.off('click', mapClick)
+                map.off('click', mapClick);
+                map.on('mousemove', mapClick);
                 map.removeLayer(layerId);
             },
             update: (points:Array<Point>)=> {
