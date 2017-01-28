@@ -81,7 +81,7 @@ export class FriendsService {
         const hash = this.ls.userKey;
         this.socket.$emit('getInvites', {hash})
             .then((d)=>{
-                console.log(d);
+               // console.log(d);
                 this.invites = d;
             });
 
@@ -112,7 +112,7 @@ export class FriendsService {
     onInvite(inviteId: number){
         this.socket.$emit('onInvite', {hash: this.ls.userKey, inviteId})
             .then(d=>{
-                console.log(d)
+                //console.log(d)
                 this.updateFriends()
             })
     }

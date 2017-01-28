@@ -11,9 +11,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require('@angular/core');
-const R = require('@ramda/ramda.min.js');
-const util_1 = require('./util');
+const core_1 = require("@angular/core");
+const R = require("@ramda/ramda.min.js");
+const util_1 = require("./util");
 const socket_oi_service_1 = require("./socket.oi.service");
 const map_service_1 = require("./map.service");
 const track_var_1 = require("./track.var");
@@ -21,7 +21,7 @@ const dateformat = require("node_modules/dateformat/lib/dateformat.js");
 //console.log(dateformat)
 const F = parseFloat;
 const I = parseInt;
-let TrackService_1 = class TrackService {
+let TrackService = TrackService_1 = class TrackService {
     constructor(io, mapService) {
         this.io = io;
         this.mapService = mapService;
@@ -373,10 +373,10 @@ let TrackService_1 = class TrackService {
         this._trackList = value;
     }
 };
-let TrackService = TrackService_1;
 TrackService = TrackService_1 = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [socket_oi_service_1.Io, map_service_1.MapService])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io, map_service_1.MapService])
 ], TrackService);
 exports.TrackService = TrackService;
+var TrackService_1;
 //# sourceMappingURL=track.service.js.map

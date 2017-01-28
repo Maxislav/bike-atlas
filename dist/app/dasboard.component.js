@@ -14,8 +14,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 05.10.16.
  */
-const core_1 = require('@angular/core');
-const router_1 = require('@angular/router');
+const core_1 = require("@angular/core");
+const router_1 = require("@angular/router");
 let DashboardComponent = class DashboardComponent {
     constructor(router) {
         this.router = router;
@@ -31,8 +31,8 @@ DashboardComponent = __decorate([
         //templateUrl: 'src/app/template/my-app.html'
         //template: '<div>My dashboard</div>'
         templateUrl: 'src/app/template/dashboard.component.html'
-    }), 
-    __metadata('design:paramtypes', [router_1.Router])
+    }),
+    __metadata("design:paramtypes", [router_1.Router])
 ], DashboardComponent);
 exports.DashboardComponent = DashboardComponent;
 //# sourceMappingURL=dasboard.component.js.map

@@ -5,17 +5,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 /**
  * Created by maxislav on 16.08.16.
  */
-const core_1 = require('@angular/core');
-const platform_browser_1 = require('@angular/platform-browser');
-const forms_1 = require('@angular/forms');
-const app_component_1 = require('./app.component');
-const app_routing_1 = require('./app.routing');
+const core_1 = require("@angular/core");
+const platform_browser_1 = require("@angular/platform-browser");
+const forms_1 = require("@angular/forms");
+const app_component_1 = require("./app.component");
+const app_routing_1 = require("./app.routing");
 const heroes_component_1 = require("./heroes.component");
 const transaction_resolve_1 = require("./transaction.resolve");
 const auth_component_1 = require("./component/auth-component/auth.component");
@@ -51,6 +48,7 @@ const private_area_service_1 = require("./service/private.area.service");
 const no_found_component_1 = require("./no-found.component");
 const mapbox_gl_directive_2 = require("./directive/mapbox-gl.directive");
 const device_component_2 = require("./component/device/device.component");
+const one_track_component_1 = require("./component/journal-component/one-track.component/one-track.component");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -64,6 +62,7 @@ AppModule = __decorate([
          * Компоненты
          */
         declarations: [
+            one_track_component_1.OneTrack,
             friends_component_1.UsersContainer,
             registration_component_1.RegistrationComponent,
             info_position_component_1.InfoPositionComponent,
@@ -87,6 +86,7 @@ AppModule = __decorate([
             no_found_component_1.NoFoundComponent
         ],
         providers: [
+            journal_component_1.LeafletResolver,
             transaction_resolve_1.TransactionResolver,
             menu_component_1.MenuComponent,
             local_storage_service_1.LocalStorage,
@@ -109,8 +109,7 @@ AppModule = __decorate([
         bootstrap: [
             app_component_1.AppComponent
         ]
-    }), 
-    __metadata('design:paramtypes', [])
+    })
 ], AppModule);
 exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map

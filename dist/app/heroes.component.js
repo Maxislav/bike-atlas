@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 05.10.16.
  */
-const core_1 = require('@angular/core');
+const core_1 = require("@angular/core");
 let HeroesComponent = class HeroesComponent {
     constructor() {
         console.log('ololo');
@@ -20,8 +20,8 @@ let HeroesComponent = class HeroesComponent {
 HeroesComponent = __decorate([
     core_1.Component({
         template: '<div>My-heroes</div>'
-    }), 
-    __metadata('design:paramtypes', [])
+    }),
+    __metadata("design:paramtypes", [])
 ], HeroesComponent);
 exports.HeroesComponent = HeroesComponent;
 //# sourceMappingURL=heroes.component.js.map

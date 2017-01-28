@@ -31,7 +31,7 @@ import {MapService} from "./service/map.service";
 import {LoginService} from "./service/login.service";
 import {MenuAthleteComponent} from "./component/menu/menu-athlete/menu.athlete.component";
 import {ProfileComponent} from "./component/profile/profile.component";
-import {JournalComponent} from "./component/journal-component/journal.component";
+import {JournalComponent, LeafletResolver} from "./component/journal-component/journal.component";
 import {FriendsComponent, UsersContainer} from "./component/friends-component/friends-component";
 import {FriendsService} from "./service/friends.service";
 import {UserService} from "./service/main.user.service";
@@ -42,6 +42,7 @@ import {PrivateAreaService} from "./service/private.area.service";
 import {NoFoundComponent} from "./no-found.component";
 import {MapboxGlDirective} from "./directive/mapbox-gl.directive";
 import {HelpContainer} from "./component/device/device.component";
+import {OneTrack} from "./component/journal-component/one-track.component/one-track.component";
 
 @NgModule({
     imports: [
@@ -53,6 +54,7 @@ import {HelpContainer} from "./component/device/device.component";
      * Компоненты
      */
     declarations: [
+        OneTrack,
         UsersContainer,
         RegistrationComponent,
         InfoPositionComponent,
@@ -77,6 +79,7 @@ import {HelpContainer} from "./component/device/device.component";
     ],
 
     providers: [
+        LeafletResolver,
         TransactionResolver,
         MenuComponent,
         LocalStorage,

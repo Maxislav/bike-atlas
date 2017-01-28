@@ -61,6 +61,12 @@ button:active {
   font-size: 20px;
   font: 30px/15px bold;
 }
+.row {
+  margin: 0 -15px;
+}
+.row > p {
+  margin: 0 15px;
+}
 @media screen and (max-width: 600px) {
   .content {
     position: relative;

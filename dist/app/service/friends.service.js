@@ -53,7 +53,7 @@ let FriendsService = class FriendsService {
         const hash = this.ls.userKey;
         this.socket.$emit('getInvites', { hash })
             .then((d) => {
-            console.log(d);
+            // console.log(d);
             this.invites = d;
         });
     }
@@ -79,7 +79,7 @@ let FriendsService = class FriendsService {
     onInvite(inviteId) {
         this.socket.$emit('onInvite', { hash: this.ls.userKey, inviteId })
             .then(d => {
-            console.log(d);
+            //console.log(d)
             this.updateFriends();
         });
     }
@@ -144,8 +144,10 @@ let FriendsService = class FriendsService {
     }
 };
 FriendsService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, main_user_service_1.UserService])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io,
+        local_storage_service_1.LocalStorage,
+        main_user_service_1.UserService])
 ], FriendsService);
 exports.FriendsService = FriendsService;
 //# sourceMappingURL=friends.service.js.map

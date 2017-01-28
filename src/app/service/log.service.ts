@@ -76,7 +76,7 @@ export class LogService {
             }
         }
 
-        console.log(device);
+       // console.log(device);
 
         if (device && !device.marker) {
             devData.name = device.name;

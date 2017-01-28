@@ -12,6 +12,7 @@
     'socket':                     'node_modules/socket.io-client/dist',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'rxjs':                       'node_modules/rxjs',
+      'css': 'node_modules/systemjs-plugin-css/css.js'
     /*'rxjs/Subject':                       'dist/rx.min.js',
     'rxjs/Observable':                       'dist/rx.min.js',
     'rxjs/observable/PromiseObservable':                       'dist/rx.min.js',
@@ -63,7 +64,10 @@
   ngPackageNames.forEach(setPackageConfig);
   var config = {
     map: map,
-    packages: packages
+    packages: packages,
+    meta: {
+        '*.css': { loader: 'css' }
+    }
   };
   System.config(config);
 })(this);

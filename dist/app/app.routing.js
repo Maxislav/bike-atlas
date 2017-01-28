@@ -1,6 +1,6 @@
 "use strict";
-const router_1 = require('@angular/router');
-const heroes_component_1 = require('./heroes.component');
+const router_1 = require("@angular/router");
+const heroes_component_1 = require("./heroes.component");
 const auth_component_1 = require("./component/auth-component/auth.component");
 const map_component_1 = require("./map.component");
 const registration_component_1 = require("./component/registration/registration.component");
@@ -48,7 +48,10 @@ const appRouters = [
                     },
                     {
                         path: 'journal',
-                        component: journal_component_1.JournalComponent
+                        component: journal_component_1.JournalComponent,
+                        resolve: {
+                            L: journal_component_1.LeafletResolver
+                        },
                     },
                     {
                         path: 'friends',

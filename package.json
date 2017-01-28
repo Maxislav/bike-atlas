@@ -49,6 +49,7 @@
     "socket.io-client": "^1.7.1",
     "socket.io-stream": "^0.9.1",
     "systemjs": "^0.19.40",
+    "systemjs-plugin-css": "^0.1.32",
     "xml2js": "^0.4.17",
     "xmlbuilder": "^8.2.2",
     "zone.js": "0.7.4"
