@@ -41,6 +41,9 @@ let JournalComponent = class JournalComponent {
         this.list = journalService.list;
         const d = new Date();
         this.selectDate = this.journalService.selectDate;
+        if (!this.list.length) {
+            this.stepGo(0);
+        }
     }
     ngOnInit() {
         this.el.nativeElement.getElementsByClassName('scroll')[0].style.maxHeight = window.innerHeight - 200 + 'px';

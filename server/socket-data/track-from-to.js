@@ -8,18 +8,14 @@ class TrackFromTo {
     }
 
     trackFromTo(eName, data) {
-
-
         let _userId;
         util.getUserIdBySocketId(this.connection, this.socket.id)
             .then(userId => {
                 _userId = userId;
+                console.log('user id ->', _userId)
                 return util.getDeviceByUserId(this.connection, userId)
             }).then(devices => {
-
             return devices
-
-
         }).then(devices => {
             const promises = [];
             const tracks = {};

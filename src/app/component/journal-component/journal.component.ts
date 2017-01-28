@@ -53,6 +53,9 @@ export class JournalComponent implements  OnInit{
         this.list = journalService.list;
         const d = new Date();
         this.selectDate = this.journalService.selectDate;
+        if(!this.list.length){
+            this.stepGo(0)
+        }
     }
 
     stepGo(step: number){
