@@ -124,6 +124,19 @@ module.exports = {
             })
         })
     },
+    getLastDateTrack(connection, keys){
+        //'SELECT * FROM `device` WHERE `user_id` IN( '+ids+' )
+        return new Promise((resolve, reject) => {
+            connection.query('SELECT `date` FROM `logger` WHERE `device_key` IN('+keys+') ORDER BY date DESC LIMIT 1' , [], function (err, rows) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows[0])
+            })
+        })
+
+    },
     getUserByHash: function (connection, hash) {
         return new Promise((resolve, reject) => {
             connection.query('SELECT * FROM `user` INNER JOIN `hash` ON hash.user_id = user.id AND hash.key=?', [hash], (err, rows) => {

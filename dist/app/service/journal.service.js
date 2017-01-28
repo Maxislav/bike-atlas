@@ -19,6 +19,10 @@ let JournalService = class JournalService {
         const d = new Date();
         this.selectDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
     }
+    setSelectDate(value) {
+        this.selectDate = value;
+        return value;
+    }
     stepGo(step) {
         const d = this.selectDate;
         this.selectDate = new Date(d.getFullYear(), d.getMonth(), d.getDate() + step);
@@ -42,6 +46,13 @@ let JournalService = class JournalService {
             else {
                 return null;
             }
+        });
+    }
+    getLastDate() {
+        return this.socket
+            .$emit('getLastDate', null)
+            .then((d) => {
+            return d;
         });
     }
     fillList(devices) {

@@ -59,7 +59,7 @@ let LogService = class LogService {
                 image: null
             };
         }
-        console.log(device);
+        // console.log(device);
         if (device && !device.marker) {
             devData.name = device.name;
             device.marker = this.markerService.marker(devData, user);

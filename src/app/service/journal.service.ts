@@ -18,6 +18,11 @@ export class JournalService {
         this.selectDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
     }
 
+    setSelectDate(value){
+        this.selectDate = value;
+        return value
+    }
+
     stepGo(step: number):Date{
         const d = this.selectDate;
         this.selectDate = new Date(d.getFullYear(), d.getMonth(), d.getDate()+step);
@@ -44,6 +49,14 @@ export class JournalService {
                     return null
                 }
 
+            })
+    }
+
+    getLastDate(){
+       return this.socket
+            .$emit('getLastDate', null)
+            .then((d)=>{
+                return d
             })
     }
 

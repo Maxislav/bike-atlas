@@ -4,8 +4,34 @@ class TrackFromTo {
     constructor(socket, connection) {
         this.socket = socket;
         this.connection = connection;
-        socket.on('trackFromTo', this.trackFromTo.bind(this, 'trackFromTo'))
+        socket.on('trackFromTo', this.trackFromTo.bind(this, 'trackFromTo'));
+        socket.on('getLastDate', this.getLastDate.bind(this, 'getLastDate'))
     }
+
+    getLastDate(eName) {
+        let _userId;
+        util.getUserIdBySocketId(this.connection, this.socket.id)
+            .then(userId => {
+                _userId = userId;
+                return util.getDeviceByUserId(this.connection, userId)
+            })
+            .then(devices=>{
+                const keys = []
+                devices.forEach(device=>{
+                        keys.push(device.device_key)
+                });
+                return util.getLastDateTrack(this.connection, keys.join(","))
+            })
+            .then(rows=>{
+                this.socket.emit(eName, rows)
+            })
+            .catch(err => {
+                console.error('Error getLastDate ->', err)
+            })
+
+
+    }
+
 
     trackFromTo(eName, data) {
         let _userId;
@@ -39,7 +65,7 @@ class TrackFromTo {
             })
         })
             .catch(err => {
-                console.error(err)
+                console.error('Error trackFromTo ->', err)
             })
 
 

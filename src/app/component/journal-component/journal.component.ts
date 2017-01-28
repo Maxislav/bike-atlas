@@ -51,10 +51,15 @@ export class JournalComponent implements  OnInit{
 
     constructor(private location: Location, public route:ActivatedRoute,  private journalService: JournalService, private el:ElementRef){
         this.list = journalService.list;
-        const d = new Date();
         this.selectDate = this.journalService.selectDate;
         if(!this.list.length){
-            this.stepGo(0)
+            journalService.getLastDate()
+                .then(d=>{
+                    if(d && d.date){
+                        this.selectDate = this.journalService.setSelectDate(new Date(d.date))
+                        this.stepGo(0)
+                    }
+                })
         }
     }
 
