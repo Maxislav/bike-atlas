@@ -50,55 +50,18 @@ export class JournalComponent implements  OnInit{
     selectDate: Date;
 
     constructor(private location: Location, public route:ActivatedRoute,  private journalService: JournalService, private el:ElementRef){
-
-
-
-        console.log(route.snapshot.data['L'])
-        this.list = [ ];
+        this.list = journalService.list;
         const d = new Date();
-
-
-        this.selectDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-        //this.getTrack(from, to);
-        this.stepGo(0)
-
+        this.selectDate = this.journalService.selectDate;
     }
 
-    stepGo(stap: number){
-        const d = this.selectDate;
-        this.selectDate = new Date(d.getFullYear(), d.getMonth(), d.getDate()+stap);
-        let from =  this.selectDate
-        let to =  new Date(this.selectDate.getFullYear(), this.selectDate.getMonth(), this.selectDate.getDate()+1)
-        this.getTrack(from, to);
-        console.log(from, to)
+    stepGo(step: number){
+        this.selectDate = this.journalService.stepGo(step);
     }
-
-
-
-
-
 
     getTrack(from: Date, to: Date){
-        this.journalService.getTrack(from, to)
-            .then(d=>{
-                if(d){
-                    for(let key in d){
-                        const points: Array<Point> = [];
-                        d[key].forEach(p=>{
-                            const point  = new Point(p.lng, p.lat, p.azimuth);
-                            point.date = p.date;
-                            point.speed = p.speed;
-                            point.id = p.id
-                            points.push(point);
+        this.journalService.getTrack(from, to);
 
-                        });
-                        if(points.length){
-                            this.list.unshift(points)
-                        }
-
-                    }
-                }
-            })
     }
 
 

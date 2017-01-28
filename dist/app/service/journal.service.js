@@ -10,10 +10,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require("@angular/core");
 const socket_oi_service_1 = require("./socket.oi.service");
+const track_var_1 = require("./track.var");
 let JournalService = class JournalService {
     constructor(io) {
         this._devices = {};
         this.socket = io.socket;
+        this.list = [];
+        const d = new Date();
+        this.selectDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    }
+    stepGo(step) {
+        const d = this.selectDate;
+        this.selectDate = new Date(d.getFullYear(), d.getMonth(), d.getDate() + step);
+        let from = this.selectDate;
+        let to = new Date(this.selectDate.getFullYear(), this.selectDate.getMonth(), this.selectDate.getDate() + 1);
+        this.getTrack(from, to);
+        return this.selectDate;
     }
     getTrack(from, to) {
         return this.socket
@@ -22,15 +34,36 @@ let JournalService = class JournalService {
             to
         })
             .then(d => {
-            // console.log(d)
             if (d && d.result == 'ok') {
-                this._devices = d.devices;
+                this.devices = d.devices;
+                this.fillList(this.devices);
                 return this.devices;
             }
             else {
                 return null;
             }
         });
+    }
+    fillList(devices) {
+        for (let key in devices) {
+            const points = [];
+            devices[key].forEach(p => {
+                const point = new track_var_1.Point(p.lng, p.lat, p.azimuth);
+                point.date = p.date;
+                point.speed = p.speed;
+                point.id = p.id;
+                points.push(point);
+            });
+            if (points.length) {
+                this.list.unshift(points);
+            }
+        }
+    }
+    get selectDate() {
+        return this._selectDate;
+    }
+    set selectDate(value) {
+        this._selectDate = value;
     }
     get devices() {
         return this._devices;

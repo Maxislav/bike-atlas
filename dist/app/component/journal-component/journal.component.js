@@ -15,7 +15,6 @@ const core_1 = require("@angular/core");
 const common_1 = require("@angular/common");
 const router_1 = require("@angular/router");
 const journal_service_1 = require("../../service/journal.service");
-const track_var_1 = require("../../service/track.var");
 let LeafletResolver = class LeafletResolver {
     resolve() {
         return System.import('lib/leaflet/leaflet.css')
@@ -39,43 +38,18 @@ let JournalComponent = class JournalComponent {
         this.journalService = journalService;
         this.el = el;
         this.offset = 0;
-        console.log(route.snapshot.data['L']);
-        this.list = [];
+        this.list = journalService.list;
         const d = new Date();
-        this.selectDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-        //this.getTrack(from, to);
-        this.stepGo(0);
+        this.selectDate = this.journalService.selectDate;
     }
     ngOnInit() {
         this.el.nativeElement.getElementsByClassName('scroll')[0].style.maxHeight = window.innerHeight - 200 + 'px';
     }
-    stepGo(stap) {
-        const d = this.selectDate;
-        this.selectDate = new Date(d.getFullYear(), d.getMonth(), d.getDate() + stap);
-        let from = this.selectDate;
-        let to = new Date(this.selectDate.getFullYear(), this.selectDate.getMonth(), this.selectDate.getDate() + 1);
-        this.getTrack(from, to);
-        console.log(from, to);
+    stepGo(step) {
+        this.selectDate = this.journalService.stepGo(step);
     }
     getTrack(from, to) {
-        this.journalService.getTrack(from, to)
-            .then(d => {
-            if (d) {
-                for (let key in d) {
-                    const points = [];
-                    d[key].forEach(p => {
-                        const point = new track_var_1.Point(p.lng, p.lat, p.azimuth);
-                        point.date = p.date;
-                        point.speed = p.speed;
-                        point.id = p.id;
-                        points.push(point);
-                    });
-                    if (points.length) {
-                        this.list.unshift(points);
-                    }
-                }
-            }
-        });
+        this.journalService.getTrack(from, to);
     }
     onClose() {
         this.location.back();
