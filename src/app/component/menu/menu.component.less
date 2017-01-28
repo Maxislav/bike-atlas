@@ -8,6 +8,13 @@
   height: 100%;
   border-bottom: 1px solid @main-border-color;
 }
+.flex{
+  display: flex;
+  align-items: center;
+}
+.name{
+  white-space: nowrap;
+}
 table {
   height: 40px;
   width: 100%;
@@ -27,6 +34,20 @@ table {
       &.enter{
         width: 60px;
       }
+    }
+    .satellite{
+      background: url("src/img/ico-satellite.png") no-repeat center;
+      width: 30px;
+      height: 30px;
+      opacity: 0.8;
+      background-size: auto 80%;
+    }
+    .routs{
+      background: url("src/img/ico-routs.png") no-repeat center;
+      width: 30px;
+      height: 30px;
+      opacity: 0.6;
+      background-size: auto 80%;
     }
     &.icoUser{
       width: 40px;
@@ -73,8 +94,19 @@ table {
     }
   }
 }
+@media screen and (min-width: 450px){
+  .ico{
+    display: none;
+  }
+}
 @media screen and (max-width: 450px){
-  table td.icoUser{
+  table td.button.menu{
+    width: 50px;
+  }
+  table td{
+    padding: 0 5px;
+  }
+  .name{
     display: none;
   }
 }

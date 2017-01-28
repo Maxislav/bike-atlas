@@ -39,6 +39,13 @@ button:active {
   height: 100%;
   border-bottom: 1px solid #9ba8b2;
 }
+.flex {
+  display: flex;
+  align-items: center;
+}
+.name {
+  white-space: nowrap;
+}
 table {
   height: 40px;
   width: 100%;
@@ -60,6 +67,20 @@ table td.button.menu {
 }
 table td.button.enter {
   width: 60px;
+}
+table td .satellite {
+  background: url("src/img/ico-satellite.png") no-repeat center;
+  width: 30px;
+  height: 30px;
+  opacity: 0.8;
+  background-size: auto 80%;
+}
+table td .routs {
+  background: url("src/img/ico-routs.png") no-repeat center;
+  width: 30px;
+  height: 30px;
+  opacity: 0.6;
+  background-size: auto 80%;
 }
 table td.icoUser {
   width: 40px;
@@ -100,8 +121,19 @@ table td.bell .num {
   text-align: center;
   border-radius: 50%;
 }
+@media screen and (min-width: 450px) {
+  .ico {
+    display: none;
+  }
+}
 @media screen and (max-width: 450px) {
-  table td.icoUser {
+  table td.button.menu {
+    width: 50px;
+  }
+  table td {
+    padding: 0 5px;
+  }
+  .name {
     display: none;
   }
 }

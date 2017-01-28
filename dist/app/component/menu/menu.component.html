@@ -1,8 +1,18 @@
 
 <table>
   <tr>
-    <td (click)="onOpenAthlete()" class="button menu">Участники</td>
-    <td (click)="onOpen()" class="button menu">Маршруты</td>
+    <td (click)="onOpenAthlete()" class="button menu">
+      <div class="flex">
+        <div class="satellite ico"></div>
+        <div class="name">На связи</div>
+      </div>
+    </td>
+    <td (click)="onOpen()" class="button menu">
+      <div class="flex">
+        <div class="routs ico"></div>
+        <div class="name">Маршруты</div>
+      </div>
+    </td>
     <td [class.active]="weatherLayer" class="button weather">
       <div (click)="onWeather()" class="weather-ico"></div>
     </td>
@@ -16,6 +26,5 @@
 </table>
 <menu-athlete *ngIf="menuService.menuAthlete"></menu-athlete>
 <menu-track *ngIf="menuService.menuOpen"></menu-track>
-<!--menu-track-load(*ngIf="menuService.menuLoadOpen")-->
 <track-list *ngIf="trackList.length" [style.top]="menuService.menuOpen ?  '150px' : '100%' "></track-list>
 <menu-login *ngIf="menuService.menuOpenLogin"></menu-login>

@@ -1,7 +1,13 @@
 table
     tr
-        td.button.menu((click)="onOpenAthlete()") Участники
-        td.button.menu( (click)="onOpen()" ) Маршруты
+        td.button.menu((click)="onOpenAthlete()")
+            .flex
+                .satellite.ico
+                .name На связи
+        td.button.menu( (click)="onOpen()" )
+            .flex
+                .routs.ico
+                .name Маршруты
         td.button.weather([class.active]="weatherLayer")
             .weather-ico((click)="onWeather()")
         td.fill-space
@@ -13,6 +19,5 @@ table
             |{{user.name || 'Войти' }}
 menu-athlete(*ngIf="menuService.menuAthlete")
 menu-track(*ngIf="menuService.menuOpen")
-//menu-track-load(*ngIf="menuService.menuLoadOpen")
 track-list(*ngIf="trackList.length", [style.top]="menuService.menuOpen ?  '150px' : '100%' ")
 menu-login(*ngIf="menuService.menuOpenLogin")
