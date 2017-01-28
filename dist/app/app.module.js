@@ -49,6 +49,7 @@ const no_found_component_1 = require("./no-found.component");
 const mapbox_gl_directive_2 = require("./directive/mapbox-gl.directive");
 const device_component_2 = require("./component/device/device.component");
 const one_track_component_1 = require("./component/journal-component/one-track.component/one-track.component");
+const journal_service_1 = require("./service/journal.service");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -86,6 +87,7 @@ AppModule = __decorate([
             no_found_component_1.NoFoundComponent
         ],
         providers: [
+            journal_service_1.JournalService,
             journal_component_1.LeafletResolver,
             transaction_resolve_1.TransactionResolver,
             menu_component_1.MenuComponent,

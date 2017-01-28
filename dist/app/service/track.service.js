@@ -202,10 +202,12 @@ let TrackService = TrackService_1 = class TrackService {
                     let index = R.findIndex(R.propEq('id', id))(points);
                     points.splice(index, 1);
                     var find = Array.prototype.find;
-                    const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item => {
-                        return item.getAttribute('id') == id;
-                    }));
-                    trkpt.parentNode.removeChild(trkpt);
+                    if (xmlDoc) {
+                        const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item => {
+                            return item.getAttribute('id') == id;
+                        }));
+                        trkpt.parentNode.removeChild(trkpt);
+                    }
                     update(points);
                     sourceData = TrackService_1.getData(points);
                     map.getSource(layerId).setData(sourceData);

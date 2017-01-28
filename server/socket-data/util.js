@@ -113,6 +113,17 @@ module.exports = {
                 })
             })
     },
+    getTrackFromTo: function (connection, deviceKey, from, to) {
+        return new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM `logger` WHERE `device_key`=? AND date>? AND date<?' , [deviceKey, from, to], function (err, rows) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows)
+            })
+        })
+    },
     getUserByHash: function (connection, hash) {
         return new Promise((resolve, reject) => {
             connection.query('SELECT * FROM `user` INNER JOIN `hash` ON hash.user_id = user.id AND hash.key=?', [hash], (err, rows) => {

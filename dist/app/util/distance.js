@@ -10,7 +10,7 @@ exports.distance = ([lng, lat], [lng2, lat2]) => {
     let dist_sum = 0;
     const R = 6372795; //радиус Земли
     let _lat1, _lat2, _lng1, _lng2;
-    for (const i = 0; i < (arrTrackFull.length - 1); i++) {
+    for (let i = 0; i < (arrTrackFull.length - 1); i++) {
         _lat1 = arrTrackFull[i].lat;
         _lng1 = arrTrackFull[i].lng;
         _lat2 = arrTrackFull[i + 1].lat;

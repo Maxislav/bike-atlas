@@ -66,7 +66,7 @@ export class TrackService {
         this.map = map
     }
 
-    showTrack(points:Array<Point>, xmlDoc) {
+    showTrack(points:Array<Point>, xmlDoc?) {
         const $this = this;
         const coordinates = [];
         const trackList = this.trackList;
@@ -243,10 +243,15 @@ export class TrackService {
 
                     var find = Array.prototype.find;
 
-                    const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item=> {
-                        return item.getAttribute('id') == id
-                    }));
-                    trkpt.parentNode.removeChild(trkpt);
+                    if(xmlDoc){
+                        const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item=> {
+                            return item.getAttribute('id') == id
+                        }));
+                        trkpt.parentNode.removeChild(trkpt);
+
+                    }
+
+
                     update(points);
                     sourceData = TrackService.getData(points);
                     map.getSource(layerId).setData(sourceData);

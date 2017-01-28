@@ -43,6 +43,7 @@ import {NoFoundComponent} from "./no-found.component";
 import {MapboxGlDirective} from "./directive/mapbox-gl.directive";
 import {HelpContainer} from "./component/device/device.component";
 import {OneTrack} from "./component/journal-component/one-track.component/one-track.component";
+import {JournalService} from "./service/journal.service";
 
 @NgModule({
     imports: [
@@ -79,6 +80,7 @@ import {OneTrack} from "./component/journal-component/one-track.component/one-tr
     ],
 
     providers: [
+        JournalService,
         LeafletResolver,
         TransactionResolver,
         MenuComponent,

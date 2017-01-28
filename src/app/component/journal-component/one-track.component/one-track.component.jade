@@ -1,3 +1,7 @@
 .content
-    .info Map {{track}}
+    .info
+        .date
+            |{{ trackDate | date: 'dd/MM/yyyy'}}
+        .show-on-map((click)="showOnMap()") Просмотреть на главной карте
+
     .map

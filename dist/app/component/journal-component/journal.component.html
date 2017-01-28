@@ -3,12 +3,19 @@
   <div>
     <div (click)="onClose()" class="close">&times;</div>
     <div class="row">
-      <p>В разработке</p>
+      <div class="title-row">
+        <p>В разработке</p>
+        <div class="steps">
+          <div (click)="stepGo(-1)" class="back btn">&#9668;</div>
+          <div class="date">{{selectDate | date: 'dd/MM/yyyy'}}</div>
+          <div (click)="stepGo(1)" class="forward btn">&#9658;</div>
+        </div>
+      </div>
     </div>
-    <div class="row">
-      <one-track [track]="list[0]"></one-track>
-      <one-track [track]="list[1]"></one-track>
+    <div class="scroll">
+      <div *ngFor="let item of list; let i = index;" class="row">
+        <one-track [track]="list[i]"></one-track>
+      </div>
     </div>
-    <!-- one-track()-->
   </div>
 </div>

@@ -1,0 +1,54 @@
+* {
+  color: #444a56;
+}
+.button-container > div {
+  float: right;
+  margin-top: 15px;
+}
+.button-container > div button {
+  margin-left: 8px;
+}
+.row {
+  margin-bottom: 15px;
+}
+.table {
+  display: table;
+}
+.table .cell {
+  display: table-cell;
+}
+button {
+  padding: 8px 15px;
+  border: none;
+  background: white;
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+}
+button:active {
+  color: #999999;
+  box-shadow: none;
+}
+:host {
+  display: block;
+  margin: 15px;
+}
+.content {
+  display: flex;
+  justify-content: space-between;
+}
+.info > div {
+  margin-bottom: 15px;
+}
+.date {
+  color: dodgerblue;
+}
+.show-on-map {
+  cursor: pointer;
+}
+.map {
+  width: 300px;
+  height: 150px;
+  background: #dae0ea;
+}

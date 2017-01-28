@@ -12,9 +12,7 @@ export class Point extends Array<number>{
 
     constructor(...args){
         super(...args);
-
     }
-    
 
     get lng() {
         return this[0]
@@ -32,11 +30,9 @@ export class Point extends Array<number>{
     set bearing(val: number){
         this[2] = val
     }
-
     get date():Date | String {
         return this._date;
     }
-
     set date(value: String | Date) {
         this._date = new Date(value);
     }
