@@ -29,6 +29,9 @@ export class TrackList {
             this.stop()
         }
     }
+    saveChange(){
+        this.track.saveChange()
+    }
 
     onGo(_tr: TrackVar){
         this.hideTrack();

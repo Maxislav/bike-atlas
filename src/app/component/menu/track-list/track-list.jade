@@ -4,10 +4,14 @@ div
         li( *ngFor="let track of list\; let i = index" )
             .title
                 .color([style.background]="track.color")
-                .info {{i}}: {{track.distance}} km
+                .info
+                    .date {{track.date | date: 'dd/MM/yyyy'}}
+                    .dist   {{track.distance}} km
                 .del( (click)='hideTrack(track)') &#215;
+
             .action
                 .download((click)="track.download()")
+                .save((click)="saveChange()")
                 .route-points((click)="track.showSrcPoint()")
                 .go( (click)="onGo(track)") Play &#9658;
 

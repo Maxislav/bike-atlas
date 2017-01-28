@@ -67,6 +67,12 @@ button:active {
   height: 30px;
   cursor: pointer;
 }
+.date {
+  color: dodgerblue;
+}
+.dist {
+  font-size: 12px;
+}
 .color {
   margin-left: 5px;
   width: 24px;
@@ -75,13 +81,20 @@ button:active {
 }
 li {
   color: black;
-  border-bottom: 1px solid #9ba8b2;
+  border-top: 1px solid #9ba8b2;
   align-items: center;
 }
 li .download {
   height: 30px;
   width: 30px;
   background: url("src/img/ico-download.png") no-repeat center;
+  background-size: 80%;
+  padding: 0;
+}
+li .save {
+  height: 30px;
+  width: 30px;
+  background: url("src/img/ico-save.png") no-repeat center;
   background-size: 80%;
   padding: 0;
 }

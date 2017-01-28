@@ -1,5 +1,7 @@
 'use strict';
 importScripts('../util/get-color.js', '../../../node_modules/ramda/dist/ramda.min.js');
+declare const R:any;
+
 onmessage = (e)=>{
 
     //console.log(e.data[0])
@@ -24,4 +26,5 @@ onmessage = (e)=>{
     
 
     postMessage([points, resColors]);
+    close()
 };

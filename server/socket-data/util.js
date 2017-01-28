@@ -153,6 +153,33 @@ module.exports = {
             });
 
     },
+
+    getDeviceKeyByPointId(connection, pointId){
+        return new Promise((resolve, reject) => {
+                connection.query('SELECT `device_key` FROM `logger` WHERE id=? LIMIT 1', [pointId], (err, rows) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(rows[0]);
+                })
+        })
+    },
+    delPointsByIds(connection, ids){
+       // DELETE FROM table WHERE (col1,col2) IN ((1,2),(3,4),(5,6))
+        return new Promise((resolve, reject) => {
+            connection.query('DELETE FROM `logger`  WHERE id IN ('+ids+')', [], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows);
+            })
+        })
+    },
+
+
+
     getUserIdBySocketId: function (connection, socket_id) {
         return new Promise((resolve, reject) => {
             connection.query('SELECT * FROM `hash` WHERE `socket_id`=?', [socket_id], (err, rows) => {

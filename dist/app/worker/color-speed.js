@@ -14,5 +14,6 @@ onmessage = (e) => {
         resColors.push([item, item]);
     });
     postMessage([points, resColors]);
+    close();
 };
 //# sourceMappingURL=color-speed.js.map

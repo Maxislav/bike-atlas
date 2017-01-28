@@ -18,18 +18,21 @@ const socket_oi_service_1 = require("./socket.oi.service");
 const map_service_1 = require("./map.service");
 const track_var_1 = require("./track.var");
 const dateformat = require("node_modules/dateformat/lib/dateformat.js");
+const toast_component_1 = require("../component/toast/toast.component");
 //console.log(dateformat)
 const F = parseFloat;
 const I = parseInt;
 let TrackService = TrackService_1 = class TrackService {
-    constructor(io, mapService) {
+    constructor(io, mapService, ts) {
         this.io = io;
         this.mapService = mapService;
+        this.ts = ts;
         this._trackList = [];
+        this.arrayDelPoints = [];
         this.layerIds = [];
         this._trackList = [];
         this.util = new util_1.Util();
-        const socket = io.socket;
+        const socket = this.socket = io.socket;
         socket.on('file', d => {
             let xmlStr = String.fromCharCode.apply(null, new Uint8Array(d));
             this.showGpxTrack(xmlStr);
@@ -37,9 +40,9 @@ let TrackService = TrackService_1 = class TrackService {
     }
     showGpxTrack(xmlStr) {
         const track = [];
-        let parser = new DOMParser();
-        let xmlDoc = parser.parseFromString(xmlStr, "text/xml");
-        var forEach = Array.prototype.forEach;
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlStr, "text/xml");
+        const forEach = Array.prototype.forEach;
         forEach.call(xmlDoc.getElementsByTagName('trkpt'), (item, i) => {
             if (item.getAttribute('lon')) {
                 item.setAttribute('id', i);
@@ -65,7 +68,7 @@ let TrackService = TrackService_1 = class TrackService {
         points.forEach((point) => {
             coordinates.push(point);
         });
-        let layerId = this.getLayerId('track-') + '';
+        let layerId = this.getLayerId('line-') + '';
         const data = {
             "type": "Feature",
             "properties": {},
@@ -92,7 +95,7 @@ let TrackService = TrackService_1 = class TrackService {
                 "line-opacity": 0.8
             }
         });
-        const update = (points) => {
+        const updateLine = (points) => {
             data.geometry.coordinates = points;
             map.getSource(layerId).setData(data);
         };
@@ -113,18 +116,19 @@ let TrackService = TrackService_1 = class TrackService {
                     srcPoints = null;
                 }
                 else {
-                    srcPoints = this.addSrcPoints(points, xmlDoc, update);
+                    srcPoints = this.addSrcPoints(points, xmlDoc, updateLine);
                 }
             },
             hideSrcPoint: () => {
                 srcPoints && srcPoints.remove();
             },
-            update: update,
+            update: updateLine,
             id: layerId,
             coordinates: coordinates,
             points: points,
             color: color,
             distance: 0,
+            date: points[0].date,
             download: () => {
                 this.onDownload(xmlDoc);
             }
@@ -148,11 +152,11 @@ let TrackService = TrackService_1 = class TrackService {
             }
         }
         function download(filename, text) {
-            var pom = document.createElement('a');
+            const pom = document.createElement('a');
             pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
             pom.setAttribute('download', filename);
             if (document.createEvent) {
-                var event = document.createEvent('MouseEvents');
+                const event = document.createEvent('MouseEvents');
                 event.initEvent('click', true, true);
                 pom.dispatchEvent(event);
             }
@@ -185,12 +189,46 @@ let TrackService = TrackService_1 = class TrackService {
             })()
         };
     }
-    addSrcPoints(points, xmlDoc, update) {
+    colorWorker(points) {
+        const worker = new Worker('dist/app/worker/color-speed.js');
+        return new Promise((resolve, reject) => {
+            worker.postMessage([points]);
+            worker.onmessage = resolve;
+        });
+    }
+    addSrcPoints(points, xmlDoc, updateLine) {
         const map = this.mapService.map;
         const layerId = this.getLayerId('cluster-');
         const worker = new Worker('dist/app/worker/color-speed.js');
-        const mapClick = (e) => {
-            var features = map.queryRenderedFeatures(e.point, {
+        let sourceData;
+        const updatePoints = (points) => {
+            const data = TrackService_1.getData(points);
+            map.getSource(layerId).setData(data);
+            updateLine(points);
+        };
+        const delPoint = (id) => {
+            let index = R.findIndex(R.propEq('id', id))(points);
+            points.splice(index, 1);
+            const find = Array.prototype.find;
+            if (xmlDoc) {
+                const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item => {
+                    return item.getAttribute('id') == id;
+                }));
+                trkpt.parentNode.removeChild(trkpt);
+            }
+            else {
+                this.arrayDelPoints.push(id);
+            }
+            this.colorWorker(points)
+                .then(e => {
+                let colorPoints = e.data[0];
+                updatePoints(colorPoints);
+            });
+            sourceData = TrackService_1.getData(points);
+            map.getSource(layerId).setData(sourceData);
+        };
+        const mousemove = (e) => {
+            const features = map.queryRenderedFeatures(e.point, {
                 layers: [layerId],
             });
             if (features.length) {
@@ -199,30 +237,12 @@ let TrackService = TrackService_1 = class TrackService {
                     return item.id == id;
                 });
                 this.createPopupEdit(p, (e) => {
-                    let index = R.findIndex(R.propEq('id', id))(points);
-                    points.splice(index, 1);
-                    var find = Array.prototype.find;
-                    if (xmlDoc) {
-                        const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item => {
-                            return item.getAttribute('id') == id;
-                        }));
-                        trkpt.parentNode.removeChild(trkpt);
-                    }
-                    update(points);
-                    sourceData = TrackService_1.getData(points);
-                    map.getSource(layerId).setData(sourceData);
-                    //map.off('click', mapClick)
+                    delPoint(id);
                 });
             }
         };
-        const mousemove = (e) => {
-            var features = map.queryRenderedFeatures(e.point, {
-                layers: [layerId],
-            });
-        };
-        let sourceData;
-        worker.postMessage([points]);
-        worker.onmessage = (e) => {
+        this.colorWorker(points)
+            .then(e => {
             let colorPoints = e.data[0];
             let stops = e.data[1];
             sourceData = TrackService_1.getData(colorPoints);
@@ -244,19 +264,16 @@ let TrackService = TrackService_1 = class TrackService {
                 layout: {},
                 source: layerId
             });
-            map.on('mousemove', mapClick);
-            map.on('click', mapClick);
-        };
+            map.on('mousemove', mousemove);
+            map.on('click', mousemove);
+        });
         return {
             remove: () => {
-                map.off('click', mapClick);
-                map.off('mousemove', mapClick);
+                map.off('click', mousemove);
+                map.off('mousemove', mousemove);
                 map.removeLayer(layerId);
             },
-            update: (points) => {
-                const data = TrackService_1.getData(points);
-                map.getSource(layerId).setdata(data);
-            }
+            update: updatePoints
         };
     }
     createPopupEdit(point, f) {
@@ -340,7 +357,7 @@ let TrackService = TrackService_1 = class TrackService {
         }
     }
     getRandom(min, max, int) {
-        var rand = min + Math.random() * (max - min);
+        let rand = min + Math.random() * (max - min);
         if (int) {
             rand = Math.round(rand) + '';
         }
@@ -361,8 +378,29 @@ let TrackService = TrackService_1 = class TrackService {
         });
         return '#' + c.join('');
     }
+    saveChange() {
+        console.log(this.arrayDelPoints);
+        if (this.arrayDelPoints.length) {
+            this.socket.$emit('delPoints', this.arrayDelPoints)
+                .then((d) => {
+                this.arrayDelPoints.length = 0;
+                if (d && d.result == 'ok') {
+                    this.ts.show({
+                        type: 'success',
+                        text: 'Изменения сохранены'
+                    });
+                }
+                console.log(d);
+            });
+        }
+        else {
+            this.ts.show({
+                type: 'warning',
+                text: 'Лог не существует в базе или нет изменений'
+            });
+        }
+    }
     set map(value) {
-        //console.log(value)
         this._map = value;
     }
     get map() {
@@ -377,7 +415,7 @@ let TrackService = TrackService_1 = class TrackService {
 };
 TrackService = TrackService_1 = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [socket_oi_service_1.Io, map_service_1.MapService])
+    __metadata("design:paramtypes", [socket_oi_service_1.Io, map_service_1.MapService, toast_component_1.ToastService])
 ], TrackService);
 exports.TrackService = TrackService;
 var TrackService_1;

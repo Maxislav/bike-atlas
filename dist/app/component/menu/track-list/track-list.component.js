@@ -26,6 +26,9 @@ let TrackList = class TrackList {
             this.stop();
         }
     }
+    saveChange() {
+        this.track.saveChange();
+    }
     onGo(_tr) {
         this.hideTrack();
         const $this = this;
