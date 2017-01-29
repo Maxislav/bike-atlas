@@ -68,7 +68,7 @@ class OnAuth {
                         arrLastPosition.push(
                             util.getLastPosition(this.connection, key)
                             .then(row=>{
-                                console.log('key->', key)
+                                console.log('device key->', key)
                                 this.logger.updateDevice(key, this.socket.id)
                                 this.socket.emit('log', row);
                                 return row;

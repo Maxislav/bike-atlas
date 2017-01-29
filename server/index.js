@@ -66,8 +66,12 @@ app.use((req, res, next)=>{
 
   if(req.url.match(/node_modules/)){
    // console.log('node_modules ->', req.url)
-  }else{
-    //console.log('req.url ->', req.url)
+  }else {
+      //console.log('req.url ->', req.url)
+  }
+
+  if(!req.url.match(/^(\/dist|\/src|\/node|\/lib|\/system).+/)){
+      console.log('bot url ->', req.url)
   }
 
 
