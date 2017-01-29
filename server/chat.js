@@ -9,14 +9,22 @@ class Chat{
     }
 
     onAuth(socketId, userId){
-        console.log('chat auth ->', socketId, userId);
         this.user[userId] = this.user[userId] || [];
+
         if(!this.isExist(this.user[userId], socketId)  ){
             this.user[userId].push(socketId);
         }
+        util.getUserNameById(this.connection, userId)
+            .then(name=>{
+                console.log('chat auth ->', name, new Date());
+            });
     }
     onEnter(socketId, userId){
-        console.log('chat enter ->', socketId, userId);
+
+        util.getUserNameBySocketId(this.connection, this.socket.id)
+            .then(name=>{
+                console.log('chat enter ->', socketId, name, new Date());
+            });
         this.user[userId] = this.user[userId] || [];
         if(!this.isExist(this.user[userId], socketId)  ){
             this.user[userId].push(socketId);

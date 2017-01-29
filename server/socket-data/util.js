@@ -190,11 +190,29 @@ module.exports = {
                 if (rows && rows.length) {
                     resolve(rows[0].user_id);
                 } else {
-                    resolve(rows)
+                    reject(rows)
                 }
-
             });
         })
+    },
+
+    getUserNameById: function (connection, userId) {
+        return new Promise((resolve, reject) => {
+            connection.query('SELECT name FROM `user` WHERE `id`=?', [userId], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                if (rows && rows.length) {
+                    resolve(rows[0].name);
+                } else {
+                    reject(rows)
+                }
+            });
+        })
+            .catch(err=>{
+                    console.error('getUserNameBySocketId - >', err)
+            })
     },
     addDeviceBySocketId: function (connection, socket_id, device) {
 
