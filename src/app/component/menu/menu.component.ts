@@ -120,7 +120,7 @@ export class MenuComponent{
 
 
     goToProfile(){
-        if(this.authService.userName){
+        if(this.userService.user && this.userService.user.name){
             this.router.navigate(['/auth/map/profile']);
         }
     }

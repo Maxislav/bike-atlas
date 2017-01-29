@@ -74,8 +74,6 @@ app.use((req, res, next)=>{
       console.log('bot url ->', req.url)
   }
 
-
-  
   if(/sprite/.test(req.url)){
     console.log('sprite', req.url)
   }

@@ -69,7 +69,7 @@ table td.button.enter {
   width: 60px;
 }
 table td .satellite {
-  background: url("src/img/ico-satellite.png") no-repeat center;
+  background: url("src/img/ico-router.png") no-repeat center;
   width: 30px;
   height: 30px;
   opacity: 0.8;
@@ -100,7 +100,7 @@ table td.weather.active {
 table td.weather .weather-ico {
   width: 40px;
   height: 40px;
-  background: url("src/img/weather-ico.png") no-repeat center;
+  background: url("src/img/ico-weather.png") no-repeat center;
   background-size: 80%;
 }
 table td.bell {
