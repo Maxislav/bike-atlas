@@ -12,4 +12,8 @@ nodemon({
     this.stderr.pipe(errS);
 
 
-});
+}).on('stderr', function(e) { // the `readable` event indicates that data is ready to pick up
+
+    console.log('->   ',e)
+
+})
