@@ -9,6 +9,7 @@ export class JournalService {
     private _devices: {[id:string]:Array<any>}  = {};
     public list: Array<Array<Point>>;
     private _selectDate: Date;
+    private dateCache: Array<string> = [];
 
 
     constructor(io: Io) {
@@ -17,6 +18,7 @@ export class JournalService {
         const d = new Date();
         this.selectDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
     }
+
 
     setSelectDate(value){
         this.selectDate = value;
@@ -33,6 +35,12 @@ export class JournalService {
     }
 
     getTrack(from: Date, to: Date): Promise<any> {
+        const fromTo = new Date(from).toISOString()+new Date(to).toISOString();
+        if(-1<this.dateCache.indexOf(fromTo)){
+            return
+        }
+        this.dateCache.push(fromTo);
+
         return this.socket
             .$emit('trackFromTo', {
                 from,

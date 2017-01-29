@@ -14,6 +14,7 @@ const track_var_1 = require("./track.var");
 let JournalService = class JournalService {
     constructor(io) {
         this._devices = {};
+        this.dateCache = [];
         this.socket = io.socket;
         this.list = [];
         const d = new Date();
@@ -32,6 +33,11 @@ let JournalService = class JournalService {
         return this.selectDate;
     }
     getTrack(from, to) {
+        const fromTo = new Date(from).toISOString() + new Date(to).toISOString();
+        if (-1 < this.dateCache.indexOf(fromTo)) {
+            return;
+        }
+        this.dateCache.push(fromTo);
         return this.socket
             .$emit('trackFromTo', {
             from,

@@ -1,3 +1,4 @@
+@import "../css/constant";
 :host {
   display: block;
   position: relative;
@@ -52,6 +53,9 @@
 :host /deep/ .info-point{
   &>div{
     margin: 5px 0;
+    &.time{
+      color: @blue-color;
+    }
   }
   button{
     background: none;
@@ -59,4 +63,7 @@
     border: none;
     outline: none;
   }
+}
+:host /deep/ .mapboxgl-popup-content{
+  background: rgba(255,255,255,0.8);
 }

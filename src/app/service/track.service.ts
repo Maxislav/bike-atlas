@@ -335,7 +335,7 @@ export class TrackService {
         const div = document.createElement('div');
         div.setAttribute('class', 'info-point');
         const btn = document.createElement('button');
-        const content = `<div>${dateformat(point.date, 'mm/dd HH:MM:ss')}</div>`+
+        const content = `<div class="time">${dateformat(point.date, 'HH:MM:ss')}</div>`+
                         `<div>${point.speed.toFixed(1)+'km/h'}</div>`;
         div.innerHTML = content;
         btn.innerHTML = 'Удалить';
@@ -442,9 +442,14 @@ export class TrackService {
 
 
         let c = ['0', '0', '0'];
+        let k = I(this.getRandom(0, 2, true));
 
         c.forEach((r, i) => {
-            r = I(this.getRandom(100, 200, true)).toString(16);
+            if(i!=k){
+                r = I(this.getRandom(0, 255, true)).toString(16);
+            }else{
+                r = (255).toString(16)
+            }
             if (r.length < 2) {
                 c[i] = '0' + r
             } else {

@@ -11,5 +11,6 @@ div.content
                     .forward.btn((click) = "stepGo(1)") &#9658;
         .scroll
             .row(*ngFor="let item of list; let i = index;")
-                one-track([track]="list[i]")
+                div
+                    one-track([track]="list[i]")
 

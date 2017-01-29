@@ -14,7 +14,9 @@
     </div>
     <div class="scroll">
       <div *ngFor="let item of list; let i = index;" class="row">
-        <one-track [track]="list[i]"></one-track>
+        <div>
+          <one-track [track]="list[i]"></one-track>
+        </div>
       </div>
     </div>
   </div>
