@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require("@angular/core");
-const common_1 = require("@angular/common");
+const common_1 = require('@angular/common');
 const friends_service_1 = require("../../service/friends.service");
 const toast_component_1 = require("../toast/toast.component");
 let UsersContainer = class UsersContainer {
@@ -21,8 +21,8 @@ let UsersContainer = class UsersContainer {
 UsersContainer = __decorate([
     core_1.Directive({
         selector: 'users-container',
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, core_1.Renderer])
+    }), 
+    __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer])
 ], UsersContainer);
 exports.UsersContainer = UsersContainer;
 let FriendsComponent = class FriendsComponent {
@@ -84,8 +84,8 @@ FriendsComponent = __decorate([
         moduleId: module.id,
         templateUrl: './friends-component.html',
         styleUrls: ['./friends-component.css'],
-    }),
-    __metadata("design:paramtypes", [common_1.Location, friends_service_1.FriendsService, toast_component_1.ToastService])
+    }), 
+    __metadata('design:paramtypes', [common_1.Location, friends_service_1.FriendsService, toast_component_1.ToastService])
 ], FriendsComponent);
 exports.FriendsComponent = FriendsComponent;
 //# sourceMappingURL=friends-component.js.map

@@ -17,7 +17,8 @@ export class Io{
         this._socket.$emit = (name: string, data: Object)=>{
             return new Promise((resolve, reject)=>{
                 const timeout = setTimeout(()=>{
-                    reject('Error by timeout ')
+
+                    reject('Error by timeout name->'+name)
                 }, 30000);
                 const response = (d) =>{
                     clearTimeout(timeout);

@@ -2,10 +2,11 @@ const util = require('./util');
 const R = require('ramda');
 
 class OnFriend {
-    constructor(socket, connection, logger) {
+    constructor(socket, connection, logger, chat) {
         this.socket = socket;
         this.logger = logger;
         this.connection = connection;
+        this.chat = chat;
         this.socket.on('getAllUsers', this.getAllUsers.bind(this));
         this.socket.on('getInvites', this.getInvites.bind(this));
         this.socket.on('onInvite', this.onInvite.bind(this));
@@ -208,6 +209,9 @@ class OnFriend {
                                         result: 'ok',
                                     });
                                     return util.delInvite(this.connection, rows[0].id)
+                                      .then(d=>{
+                                        return friendId
+                                      })
                                 })
                         } else {
                             this.socket.emit('onAcceptInvite', {
@@ -216,6 +220,9 @@ class OnFriend {
                             })
                         }
                     });
+            })
+            .then(friendId=>{
+                return this.chat.sendUpdateFriends(friendId)
             })
             .catch(err => {
                 this.socket.emit('onAcceptInvite', {
@@ -228,17 +235,21 @@ class OnFriend {
     }
 
 
-    onInvite(d) {
+    onInvite({inviteId}) {
         util.getUserIdBySocketId(this.connection, this.socket.id)
             .then(user_id => {
-                util.onInviteFromToId(this.connection, user_id, d.inviteId)
+                return util.onInviteFromToId(this.connection, user_id, inviteId)
                     .then((d) => {
                         this.socket.emit('onInvite', {
                             result: 'ok'
                         });
+                      return inviteId
                     })
 
             })
+          .then(inviteId=>{
+              this.chat.sendUpdateInvite(inviteId)
+          }) 
             .catch(err => {
                 this.socket.emit('onInvite', {
                     result: false,

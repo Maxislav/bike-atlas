@@ -16,7 +16,7 @@ let Io = class Io {
         this._socket.$emit = (name, data) => {
             return new Promise((resolve, reject) => {
                 const timeout = setTimeout(() => {
-                    reject('Error by timeout ');
+                    reject('Error by timeout name->' + name);
                 }, 30000);
                 const response = (d) => {
                     clearTimeout(timeout);
@@ -36,8 +36,8 @@ let Io = class Io {
     }
 };
 Io = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], Io);
 exports.Io = Io;
 //# sourceMappingURL=socket.oi.service.js.map

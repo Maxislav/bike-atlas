@@ -11,7 +11,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require("@angular/core");
+const core_1 = require('@angular/core');
 const map_service_1 = require("../service/map.service");
 const position_size_service_1 = require("../service/position-size.service");
 class MyEl extends HTMLElement {
@@ -83,8 +83,8 @@ let LeafletMapDirective = class LeafletMapDirective {
 LeafletMapDirective = __decorate([
     core_1.Directive({
         selector: 'leaflet-map',
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, core_1.Renderer, map_service_1.MapService, position_size_service_1.PositionSize])
+    }), 
+    __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer, map_service_1.MapService, position_size_service_1.PositionSize])
 ], LeafletMapDirective);
 exports.LeafletMapDirective = LeafletMapDirective;
 //# sourceMappingURL=leaflet-map.directive.js.map

@@ -14,6 +14,7 @@ class Chat{
         if(!this.isExist(this.user[userId], socketId)  ){
             this.user[userId].push(socketId);
         }
+        console.log('chat user ids->', this.user)
         util.getUserNameById(this.connection, userId)
             .then(name=>{
                 console.log('chat auth ->', name, new Date());
@@ -47,6 +48,27 @@ class Chat{
             }
         },this.user)
     }
+    
+    sendUpdateInvite(inveteId){
+        
+        if(this.user[inveteId]){
+            this.user[inveteId].forEach(socketId=>[
+              this.sockets[socketId].emit('updateInvites', true)
+            ]);
+            return true;
+        }
+        return false;
+    }
+    sendUpdateFriends(friendId){
+        if(this.user[friendId]){
+            this.user[friendId].forEach(socketId=>[
+                this.sockets[socketId].emit('updateFriends', true)
+            ]);
+            return true;
+        }
+        
+    }
+    
 
     set sockets(connected) {
         this._sockets = connected;

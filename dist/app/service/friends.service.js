@@ -23,7 +23,8 @@ let FriendsService = class FriendsService {
         this._users = [];
         this._invites = [];
         this.socket = io.socket;
-        //this.friends = userService.friends;
+        this.socket.on('updateInvites', this.getInvites.bind(this));
+        this.socket.on('updateFriends', this.updateFriends.bind(this));
     }
     getFriends() {
         this.updateFriends();
@@ -144,10 +145,8 @@ let FriendsService = class FriendsService {
     }
 };
 FriendsService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [socket_oi_service_1.Io,
-        local_storage_service_1.LocalStorage,
-        main_user_service_1.UserService])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, main_user_service_1.UserService])
 ], FriendsService);
 exports.FriendsService = FriendsService;
 //# sourceMappingURL=friends.service.js.map

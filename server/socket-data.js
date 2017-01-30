@@ -66,7 +66,7 @@ module.exports = (sever, app) => {
         const device = new Device(socket, connection, logger);
         const onRegist = new OnRegist(socket, connection, logger);
         const onProfile = new OnProfile(socket, connection, logger);
-        const onFriend = new OnFriend(socket, connection, logger);
+        const onFriend = new OnFriend(socket, connection, logger, chat);
         const onPrivateArea = new OnPrivateArea(socket, connection);
         const trackFromTo = new TrackFromTo(socket, connection);
 
