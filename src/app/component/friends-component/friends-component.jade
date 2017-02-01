@@ -34,7 +34,9 @@ div.content
                     div()
                         button( style="float: right", (click)="getAllUsers($event)") Просмотреть всех участников
                 .border-hidden
-            .row(*ngIf="allUsers.length")
+
+            router-outlet
+            //.row(*ngIf="allUsers.length")
                 h4 Все участники
                 table
                     tbody

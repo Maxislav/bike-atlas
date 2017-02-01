@@ -3,6 +3,7 @@ import {Component, Directive, ElementRef, Renderer} from "@angular/core";
 import {Location} from '@angular/common';
 import {FriendsService, User} from "../../service/friends.service";
 import {ToastService} from "../toast/toast.component";
+import {Router} from "@angular/router";
 
 
 @Directive({
@@ -17,9 +18,7 @@ export class UsersContainer{
             g = d.getElementsByTagName('body')[0],
             x = w.innerWidth || e.clientWidth || g.clientWidth,
             y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-
-
-        renderer.setElementStyle(el.nativeElement, 'height', y-160+'px');
+        renderer.setElementStyle(el.nativeElement, 'max-height', y-160+'px');
     }
 }
 declare const module:{
@@ -37,7 +36,7 @@ export class FriendsComponent{
     public invites: Array<User>;
     public friends: Array<User>;
     private myInvites: Array<any>;
-    constructor(private location: Location, private friend: FriendsService, private toast: ToastService ){
+    constructor(private location: Location, private friend: FriendsService, private toast: ToastService,  private router: Router ){
         this.allUsers = friend.users;
         this.invites = friend.invites;
         this.friends = friend.friends;
@@ -51,46 +50,22 @@ export class FriendsComponent{
 
     onDelFriend(friend: User){
         this.friend.onDelFriend(friend.id)
-
     }
     onClose(){
         this.location.back()
     }
     getAllUsers(){
-        this.friend.getAllUsers()
+        this.router.navigate(['/auth/map/friends/all']);
     }
-    sendInvite(user){
-        this.friend.onInvite(user.id)
-    }
+   
     onReject(user){
         this.friend.onRejectInvite(user.id)
     }
 
-    isInviteActive(user: User){
-        let i = 0;
-        while (i<this.myInvites.length){
-            if( this.myInvites[i].invite_user_id == user.id){
-                return true
-            }
-            i++;
-        }
-        return false
-    }
     onCancelInvite(user: User){
         this.friend.onCancelInvite(user.id)
     }
 
-    isFriend(user: User){
-        let i = 0;
-
-        while (i<this.friends.length){
-            if(this.friends[i].id == user.id){
-                return true
-            }
-            i++;
-        }
-
-        return false
-    }
+    
 
 }

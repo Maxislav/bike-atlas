@@ -53,6 +53,7 @@ const mapbox_gl_directive_2 = require("./directive/mapbox-gl.directive");
 const device_component_2 = require("./component/device/device.component");
 const one_track_component_1 = require("./component/journal-component/one-track.component/one-track.component");
 const journal_service_1 = require("./service/journal.service");
+const all_user_component_1 = require("./component/all-user/all-user.component");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -66,6 +67,7 @@ AppModule = __decorate([
          * Компоненты
          */
         declarations: [
+            all_user_component_1.AllUserComponent,
             one_track_component_1.OneTrack,
             friends_component_1.UsersContainer,
             registration_component_1.RegistrationComponent,

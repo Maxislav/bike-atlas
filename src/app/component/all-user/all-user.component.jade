@@ -1,0 +1,13 @@
+h4 Все участники
+table
+    tbody
+        tr(*ngFor="let user of allUsers\; let i = index")
+            td
+                img([src]="user.image || 'src/img/no-avatar.gif' ")
+            td {{user.name}}
+            td
+                .invite(*ngIf="!isFriend(user)")
+                    template([ngIf]="!isInviteActive(user)" )
+                        div((click)="sendInvite(user)") Отправть запрос
+                    template([ngIf]="isInviteActive(user)")
+                        div((click)="onCancelInvite(user)") Запрос отправлен (отменить)

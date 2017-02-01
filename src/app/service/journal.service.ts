@@ -84,7 +84,7 @@ export class JournalService {
 
         }
     }
-]
+    
     get selectDate(): Date {
         return this._selectDate;
     }

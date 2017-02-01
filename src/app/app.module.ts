@@ -44,6 +44,7 @@ import {MapboxGlDirective} from "./directive/mapbox-gl.directive";
 import {HelpContainer} from "./component/device/device.component";
 import {OneTrack} from "./component/journal-component/one-track.component/one-track.component";
 import {JournalService} from "./service/journal.service";
+import {AllUserComponent} from "./component/all-user/all-user.component";
 
 @NgModule({
     imports: [
@@ -55,6 +56,7 @@ import {JournalService} from "./service/journal.service";
      * Компоненты
      */
     declarations: [
+        AllUserComponent,
         OneTrack,
         UsersContainer,
         RegistrationComponent,

@@ -20,6 +20,7 @@ import {FriendsComponent} from "./component/friends-component/friends-component"
 import {PrivateArea} from "./component/private-area/private-area";
 import {MapResolver} from "./directive/mapbox-gl.directive";
 import {NoFoundComponent} from "./no-found.component";
+import {AllUserComponent} from "./component/all-user/all-user.component";
 
 const  appRouters: Routes = [
     {
@@ -67,7 +68,17 @@ const  appRouters: Routes = [
                     },
                     {
                         path: 'friends',
-                        component: FriendsComponent
+                        component: FriendsComponent,
+                        children: [
+                            {
+                                path:'',
+                            },
+                            {
+                                path:'all',
+                                component: AllUserComponent
+                            }
+
+                        ]
                     },
                     {
                         path: 'privatearea',

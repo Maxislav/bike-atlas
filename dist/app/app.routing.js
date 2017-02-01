@@ -11,6 +11,7 @@ const journal_component_1 = require("./component/journal-component/journal.compo
 const friends_component_1 = require("./component/friends-component/friends-component");
 const private_area_1 = require("./component/private-area/private-area");
 const no_found_component_1 = require("./no-found.component");
+const all_user_component_1 = require("./component/all-user/all-user.component");
 const appRouters = [
     {
         path: '',
@@ -55,7 +56,16 @@ const appRouters = [
                     },
                     {
                         path: 'friends',
-                        component: friends_component_1.FriendsComponent
+                        component: friends_component_1.FriendsComponent,
+                        children: [
+                            {
+                                path: '',
+                            },
+                            {
+                                path: 'all',
+                                component: all_user_component_1.AllUserComponent
+                            }
+                        ]
                     },
                     {
                         path: 'privatearea',
