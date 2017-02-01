@@ -70,11 +70,13 @@ class Chat{
     }
 
 
-    onChatSend(opponentId, text){
-        if(this.user[opponentId]){
-            this.user[opponentId].forEach(socketId=>{
+    onChatSend(toUserId, userId, text){
+        if(this.user[toUserId]){
+            this.user[toUserId].forEach(socketId=>{
                 this.sockets[socketId].emit('onChat', {
-                    id: opponentId
+                    id: null,
+                    userId,
+                    text
                 })
             })
         }

@@ -3,29 +3,26 @@
 
 import {Component, Input, OnInit} from "@angular/core";
 import {User} from "../../../service/main.user.service";
-import {Stream} from "stream";
 import {deepCopy} from "../../../util/deep-copy";
 import {ChatService} from "../../../service/chat.service";
 
 
 
-interface Message{
+export interface Message{
     id: number | null,
     text: String,
     isMy: boolean
-    
 }
 
 
-interface Room{
+export interface Room{
     id: number;
     name: string
-    myActiveMess: Message;
     messages: Array<Message>;
     isActive: boolean
 }
 
-
+declare const module: any
 
 @Component({
     moduleId: module.id, 
@@ -36,30 +33,32 @@ interface Room{
 
 })
 export class ChatRoomComponent implements OnInit{
-    ngOnInit():void {
-        this.name= this.room.name;
-        this.messages = this.room.messages
-        this.id = this.room.id
-    }
+    private id: number;
+
     @Input() room: Room;
     name: String;
     messages:Array<Message>;
     myActiveMess: Message;
     constructor(private chatService: ChatService){
             this.myActiveMess = {
-                id:null,
+                id: null,
                 text:'',
                 isMy: true
             }
     }
+    ngOnInit():void {
+        this.name= this.room.name;
+        this.messages = this.room.messages
+        this.id = this.room.id
+    }
     onSend(){
         const mess = deepCopy(this.myActiveMess)
-        this.messages.push(mess);
-        this.myActiveMess.text =''
-        this.chatService.onSend(this.id, mess.text)
-            .then(d=>{
+       // this.messages.push(mess);
+        this.myActiveMess.text ='';
+        this.chatService.onSend(this.id, mess)
+           /* .then(d=>{
                 console.log(d)
-            })
+            })*/
 
 
     }

@@ -11,7 +11,19 @@ class OnChat{
   }
 
   onChatSend(eName, data){
-    this.socket.emit(eName, data)
+    const toUserId = data.id;
+      util.getUserIdBySocketId(this.connection, this.socket.id)
+          .then(userId=>{
+              this.socket.emit(eName, {
+                  toUserId: toUserId,
+                  fromUserId: userId,
+                  time: new Date(),
+                  text:data.text
+              });
+              this.chat.onChatSend(toUserId, userId, data.text)
+          })
+
+
   }
   
   

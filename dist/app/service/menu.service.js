@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 25.11.16.
  */
-const core_1 = require('@angular/core');
+const core_1 = require("@angular/core");
 let MenuService = class MenuService {
     constructor() {
         this._menuOpen = false;
@@ -78,8 +78,8 @@ let MenuService = class MenuService {
     }
 };
 MenuService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
 ], MenuService);
 exports.MenuService = MenuService;
 //# sourceMappingURL=menu.service.js.map
