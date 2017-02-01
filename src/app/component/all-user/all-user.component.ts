@@ -53,5 +53,7 @@ export class AllUserComponent{
 
         return false
     }
-
+    startChat(userId: number): void{
+            console.log(userId)
+    }
 }

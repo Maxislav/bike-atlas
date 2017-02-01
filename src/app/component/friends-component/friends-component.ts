@@ -36,20 +36,20 @@ export class FriendsComponent{
     public invites: Array<User>;
     public friends: Array<User>;
     private myInvites: Array<any>;
-    constructor(private location: Location, private friend: FriendsService, private toast: ToastService,  private router: Router ){
-        this.allUsers = friend.users;
-        this.invites = friend.invites;
-        this.friends = friend.friends;
-        this.myInvites = friend.myInvites;
-        friend.getFriends()
+    constructor(private location: Location, private friendsService: FriendsService, private toast: ToastService,  private router: Router ){
+        this.allUsers = friendsService.users;
+        this.invites = friendsService.invites;
+        this.friends = friendsService.friends;
+        this.myInvites = friendsService.myInvites;
+        friendsService.getFriends()
     }
 
     onAccept(friend: User){
-        this.friend.onAcceptInvite(friend)
+        this.friendsService.onAcceptInvite(friend)
     }
 
     onDelFriend(friend: User){
-        this.friend.onDelFriend(friend.id)
+        this.friendsService.onDelFriend(friend.id)
     }
     onClose(){
         this.location.back()
@@ -59,11 +59,14 @@ export class FriendsComponent{
     }
    
     onReject(user){
-        this.friend.onRejectInvite(user.id)
+        this.friendsService.onRejectInvite(user.id)
     }
 
     onCancelInvite(user: User){
-        this.friend.onCancelInvite(user.id)
+        this.friendsService.onCancelInvite(user.id)
+    }
+    startChat(userId: number): void{
+        console.log(userId)
     }
 
     

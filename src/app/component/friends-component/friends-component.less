@@ -68,12 +68,33 @@ h4{
 table{
   width: 100%;
 }
+table{
+  width: 100%;
+  td:nth-child(1){
+    min-width: 50px;
+    width: 20%;
+  }
+  td:nth-child(2){
+    width: 20%;
+    padding: 0 5px;
+  }
+  td:nth-child(3){
+    min-width: 50px;
+    width: 20%;
+  }
+}
 img{
   width: 60px;
   height: 60px;
   display: block;
 }
-
+.ico-chat{
+  width: 30px;
+  height: 30px;
+  background: url("./src/img/ico-chat.png") no-repeat center;
+  background-size: 80%;
+  cursor: pointer;
+}
 @media screen and (max-width: 600px){
   .content{
     position: relative;
@@ -81,5 +102,9 @@ img{
     min-width: inherit;;
     left: 0;
     margin-left: 0;
+    &>div{
+      position: relative;
+      padding: 15px;
+    }
   }
 }

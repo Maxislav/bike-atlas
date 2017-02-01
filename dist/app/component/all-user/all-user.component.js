@@ -48,6 +48,9 @@ let AllUserComponent = class AllUserComponent {
         }
         return false;
     }
+    startChat(userId) {
+        console.log(userId);
+    }
 };
 AllUserComponent = __decorate([
     core_1.Component({

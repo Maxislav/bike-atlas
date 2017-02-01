@@ -27,22 +27,22 @@ UsersContainer = __decorate([
 ], UsersContainer);
 exports.UsersContainer = UsersContainer;
 let FriendsComponent = class FriendsComponent {
-    constructor(location, friend, toast, router) {
+    constructor(location, friendsService, toast, router) {
         this.location = location;
-        this.friend = friend;
+        this.friendsService = friendsService;
         this.toast = toast;
         this.router = router;
-        this.allUsers = friend.users;
-        this.invites = friend.invites;
-        this.friends = friend.friends;
-        this.myInvites = friend.myInvites;
-        friend.getFriends();
+        this.allUsers = friendsService.users;
+        this.invites = friendsService.invites;
+        this.friends = friendsService.friends;
+        this.myInvites = friendsService.myInvites;
+        friendsService.getFriends();
     }
     onAccept(friend) {
-        this.friend.onAcceptInvite(friend);
+        this.friendsService.onAcceptInvite(friend);
     }
     onDelFriend(friend) {
-        this.friend.onDelFriend(friend.id);
+        this.friendsService.onDelFriend(friend.id);
     }
     onClose() {
         this.location.back();
@@ -51,10 +51,13 @@ let FriendsComponent = class FriendsComponent {
         this.router.navigate(['/auth/map/friends/all']);
     }
     onReject(user) {
-        this.friend.onRejectInvite(user.id);
+        this.friendsService.onRejectInvite(user.id);
     }
     onCancelInvite(user) {
-        this.friend.onCancelInvite(user.id);
+        this.friendsService.onCancelInvite(user.id);
+    }
+    startChat(userId) {
+        console.log(userId);
     }
 };
 FriendsComponent = __decorate([

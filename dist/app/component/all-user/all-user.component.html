@@ -6,6 +6,9 @@
       <td><img [src]="user.image || 'src/img/no-avatar.gif' "/></td>
       <td>{{user.name}}</td>
       <td>
+        <div (click)="startChat(user.id)" class="ico-chat"></div>
+      </td>
+      <td>
         <div *ngIf="!isFriend(user)" class="invite">
           <template [ngIf]="!isInviteActive(user)">
             <div (click)="sendInvite(user)">Отправть запрос</div>
