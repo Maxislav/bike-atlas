@@ -4,6 +4,7 @@ import {Location} from '@angular/common';
 import {FriendsService, User} from "../../service/friends.service";
 import {ToastService} from "../toast/toast.component";
 import {Router} from "@angular/router";
+import {ChatService} from "../../service/chat.service";
 
 
 @Directive({
@@ -36,7 +37,7 @@ export class FriendsComponent{
     public invites: Array<User>;
     public friends: Array<User>;
     private myInvites: Array<any>;
-    constructor(private location: Location, private friendsService: FriendsService, private toast: ToastService,  private router: Router ){
+    constructor(private location: Location, private friendsService: FriendsService, private toast: ToastService,  private router: Router, private chatService: ChatService){
         this.allUsers = friendsService.users;
         this.invites = friendsService.invites;
         this.friends = friendsService.friends;
@@ -65,8 +66,8 @@ export class FriendsComponent{
     onCancelInvite(user: User){
         this.friendsService.onCancelInvite(user.id)
     }
-    startChat(userId: number): void{
-        console.log(userId)
+    startChat(user: User): void{
+        this.chatService.onEnterRoom(user)
     }
 
     

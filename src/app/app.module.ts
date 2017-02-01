@@ -45,6 +45,9 @@ import {HelpContainer} from "./component/device/device.component";
 import {OneTrack} from "./component/journal-component/one-track.component/one-track.component";
 import {JournalService} from "./service/journal.service";
 import {AllUserComponent} from "./component/all-user/all-user.component";
+import {ChatComponent} from "./component/chat-component/chat.component";
+import {ChatRoomComponent} from "./component/chat-component/chat-room/chat-room.component";
+import {ChatService} from "./service/chat.service";
 
 @NgModule({
     imports: [
@@ -56,6 +59,8 @@ import {AllUserComponent} from "./component/all-user/all-user.component";
      * Компоненты
      */
     declarations: [
+        ChatRoomComponent,
+        ChatComponent,
         AllUserComponent,
         OneTrack,
         UsersContainer,
@@ -82,6 +87,7 @@ import {AllUserComponent} from "./component/all-user/all-user.component";
     ],
 
     providers: [
+        ChatService,
         JournalService,
         LeafletResolver,
         TransactionResolver,

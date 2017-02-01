@@ -13,6 +13,7 @@ const common_1 = require('@angular/common');
 const friends_service_1 = require("../../service/friends.service");
 const toast_component_1 = require("../toast/toast.component");
 const router_1 = require("@angular/router");
+const chat_service_1 = require("../../service/chat.service");
 let UsersContainer = class UsersContainer {
     constructor(el, renderer) {
         let w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0], x = w.innerWidth || e.clientWidth || g.clientWidth, y = w.innerHeight || e.clientHeight || g.clientHeight;
@@ -27,11 +28,12 @@ UsersContainer = __decorate([
 ], UsersContainer);
 exports.UsersContainer = UsersContainer;
 let FriendsComponent = class FriendsComponent {
-    constructor(location, friendsService, toast, router) {
+    constructor(location, friendsService, toast, router, chatService) {
         this.location = location;
         this.friendsService = friendsService;
         this.toast = toast;
         this.router = router;
+        this.chatService = chatService;
         this.allUsers = friendsService.users;
         this.invites = friendsService.invites;
         this.friends = friendsService.friends;
@@ -56,8 +58,8 @@ let FriendsComponent = class FriendsComponent {
     onCancelInvite(user) {
         this.friendsService.onCancelInvite(user.id);
     }
-    startChat(userId) {
-        console.log(userId);
+    startChat(user) {
+        this.chatService.onEnterRoom(user);
     }
 };
 FriendsComponent = __decorate([
@@ -67,7 +69,7 @@ FriendsComponent = __decorate([
         templateUrl: './friends-component.html',
         styleUrls: ['./friends-component.css'],
     }), 
-    __metadata('design:paramtypes', [common_1.Location, friends_service_1.FriendsService, toast_component_1.ToastService, router_1.Router])
+    __metadata('design:paramtypes', [common_1.Location, friends_service_1.FriendsService, toast_component_1.ToastService, router_1.Router, chat_service_1.ChatService])
 ], FriendsComponent);
 exports.FriendsComponent = FriendsComponent;
 //# sourceMappingURL=friends-component.js.map

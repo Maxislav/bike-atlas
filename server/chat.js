@@ -68,7 +68,17 @@ class Chat{
         }
         
     }
-    
+
+
+    onChatSend(opponentId, text){
+        if(this.user[opponentId]){
+            this.user[opponentId].forEach(socketId=>{
+                this.sockets[socketId].emit('onChat', {
+                    id: opponentId
+                })
+            })
+        }
+    }
 
     set sockets(connected) {
         this._sockets = connected;

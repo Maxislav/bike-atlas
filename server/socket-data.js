@@ -14,6 +14,7 @@ const OnFriend = require('./socket-data/on-friends');
 const OnPrivateArea = require('./socket-data/on-private-area');
 const Chat = require('./chat');
 const TrackFromTo = require('./socket-data/track-from-to')
+const OnChat = require('./socket-data/on-chat')
 
 const Logger = require('./logger');
 connection.connect((err)=>{
@@ -69,7 +70,7 @@ module.exports = (sever, app) => {
         const onFriend = new OnFriend(socket, connection, logger, chat);
         const onPrivateArea = new OnPrivateArea(socket, connection);
         const trackFromTo = new TrackFromTo(socket, connection);
-
+        const onChat = new OnChat(socket, connection, chat);
         socket.on('disconnect',()=>{
             logger.onDisconnect(socket.id);
             chat.onDisconnect(socket.id);

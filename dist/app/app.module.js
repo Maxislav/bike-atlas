@@ -54,6 +54,9 @@ const device_component_2 = require("./component/device/device.component");
 const one_track_component_1 = require("./component/journal-component/one-track.component/one-track.component");
 const journal_service_1 = require("./service/journal.service");
 const all_user_component_1 = require("./component/all-user/all-user.component");
+const chat_component_1 = require("./component/chat-component/chat.component");
+const chat_room_component_1 = require("./component/chat-component/chat-room/chat-room.component");
+const chat_service_1 = require("./service/chat.service");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -67,6 +70,8 @@ AppModule = __decorate([
          * Компоненты
          */
         declarations: [
+            chat_room_component_1.ChatRoomComponent,
+            chat_component_1.ChatComponent,
             all_user_component_1.AllUserComponent,
             one_track_component_1.OneTrack,
             friends_component_1.UsersContainer,
@@ -92,6 +97,7 @@ AppModule = __decorate([
             no_found_component_1.NoFoundComponent
         ],
         providers: [
+            chat_service_1.ChatService,
             journal_service_1.JournalService,
             journal_component_1.LeafletResolver,
             transaction_resolve_1.TransactionResolver,

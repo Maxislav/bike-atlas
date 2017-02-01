@@ -6,7 +6,7 @@ table
                 img([src]="user.image || 'src/img/no-avatar.gif' ")
             td {{user.name}}
             td
-                .ico-chat((click)="startChat(user.id)")
+                .ico-chat((click)="startChat(user)")
             td
                 .invite(*ngIf="!isFriend(user)")
                     template([ngIf]="!isInviteActive(user)" )

@@ -2,6 +2,7 @@
 import {Component} from "@angular/core";
 import {FriendsService} from "../../service/friends.service";
 import {User} from "../../service/main.user.service";
+import {ChatService} from "../../service/chat.service";
 @Component({
     moduleId: module.id,
     templateUrl: './all-user.component.html',
@@ -14,7 +15,7 @@ export class AllUserComponent{
     private invites;
     private myInvites;
 
-    constructor(private friendsService: FriendsService){
+    constructor(private friendsService: FriendsService, private chatService: ChatService){
         this.allUsers = friendsService.users;
         this.friends = friendsService.friends;
         this.invites = friendsService.invites;
@@ -53,7 +54,7 @@ export class AllUserComponent{
 
         return false
     }
-    startChat(userId: number): void{
-            console.log(userId)
+    startChat(user: User): void{
+        this.chatService.onEnterRoom(user)
     }
 }

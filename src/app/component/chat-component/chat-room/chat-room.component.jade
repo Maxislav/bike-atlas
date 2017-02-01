@@ -1,0 +1,7 @@
+.title {{name}}
+.message(*ngFor="let message of messages; let i = index;", [ngClass]="{'my':message.isMy,'opponent':!message.isMy }")
+     .text {{message.text}}
+.text-area-container
+    textarea([(ngModel)]="myActiveMess.text")
+.buttons-container
+    .send((click)="onSend()") Send

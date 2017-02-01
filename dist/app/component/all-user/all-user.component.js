@@ -10,9 +10,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require("@angular/core");
 const friends_service_1 = require("../../service/friends.service");
+const chat_service_1 = require("../../service/chat.service");
 let AllUserComponent = class AllUserComponent {
-    constructor(friendsService) {
+    constructor(friendsService, chatService) {
         this.friendsService = friendsService;
+        this.chatService = chatService;
         this.allUsers = friendsService.users;
         this.friends = friendsService.friends;
         this.invites = friendsService.invites;
@@ -48,8 +50,8 @@ let AllUserComponent = class AllUserComponent {
         }
         return false;
     }
-    startChat(userId) {
-        console.log(userId);
+    startChat(user) {
+        this.chatService.onEnterRoom(user);
     }
 };
 AllUserComponent = __decorate([
@@ -58,7 +60,7 @@ AllUserComponent = __decorate([
         templateUrl: './all-user.component.html',
         styleUrls: ['./all-user.component.css'],
     }), 
-    __metadata('design:paramtypes', [friends_service_1.FriendsService])
+    __metadata('design:paramtypes', [friends_service_1.FriendsService, chat_service_1.ChatService])
 ], AllUserComponent);
 exports.AllUserComponent = AllUserComponent;
 //# sourceMappingURL=all-user.component.js.map

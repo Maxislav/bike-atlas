@@ -1,0 +1,27 @@
+@import "../../../css/constant";
+:host{
+  background: rgba(255,255,255, 0.8);
+  display: block;
+  min-width: 300px;
+  padding: 15px;
+}
+.title{
+  margin-bottom: 5px;
+}
+textarea{
+  width: 100%;
+}
+.buttons-container{
+  display: flex;
+  justify-content: flex-end;
+}
+.message{
+  margin-bottom: 5px;
+  &.my>*{
+    margin-left: 15px;
+    color: @blue-color;
+  }
+  &.opponent>*{
+    color: @green-color
+  }
+}
