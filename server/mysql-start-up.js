@@ -197,7 +197,7 @@ function createTable() {
           '( `id` INT NOT NULL AUTO_INCREMENT , ' +
           '`from_user_id` INT NOT NULL , ' +
           '`to_user_id` INT NOT NULL , ' +
-          '`text` TEXT NULL DEFAULT NULL, ' +
+          '`text` TEXT COLLATE utf8_general_ci NULL DEFAULT NULL, ' +
           '`viewed` BOOLEAN NOT NULL DEFAULT 0, ' +
           '`date` DATETIME NOT NULL, ' +
           'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
