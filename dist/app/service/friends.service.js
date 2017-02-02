@@ -12,11 +12,13 @@ const core_1 = require("@angular/core");
 const socket_oi_service_1 = require("./socket.oi.service");
 const local_storage_service_1 = require("./local-storage.service");
 const main_user_service_1 = require("./main.user.service");
+const chat_service_1 = require("./chat.service");
 let FriendsService = class FriendsService {
-    constructor(io, ls, userService) {
+    constructor(io, ls, userService, chatService) {
         this.io = io;
         this.ls = ls;
         this.userService = userService;
+        this.chatService = chatService;
         this._friends = [];
         // this._friends = [];
         this._myInvites = [];
@@ -32,15 +34,26 @@ let FriendsService = class FriendsService {
     updateFriends() {
         return this.socket.$emit('getFriends')
             .then(d => {
-            console.log(d);
+            console.log('getFriends ->', d);
             if (d.result == 'ok') {
                 this.friends = d.friends;
                 this.myInvites = d.invites;
+                this.bindChatUnViewed();
                 return this.friends;
             }
             else {
                 return null;
             }
+        });
+    }
+    bindChatUnViewed() {
+        this.chatService.unViewedDefer.promise.then(d => {
+            console.log('unViewedDefer->', d);
+            this.friends.forEach(user => {
+                if (d[user.id]) {
+                    user.chatUnViewed = d[user.id];
+                }
+            });
         });
     }
     onDelFriend(id) {
@@ -145,8 +158,11 @@ let FriendsService = class FriendsService {
     }
 };
 FriendsService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, main_user_service_1.UserService])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io,
+        local_storage_service_1.LocalStorage,
+        main_user_service_1.UserService,
+        chat_service_1.ChatService])
 ], FriendsService);
 exports.FriendsService = FriendsService;
 //# sourceMappingURL=friends.service.js.map

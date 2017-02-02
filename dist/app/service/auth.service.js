@@ -13,12 +13,14 @@ const socket_oi_service_1 = require("./socket.oi.service");
 const local_storage_service_1 = require("./local-storage.service");
 const friends_service_1 = require("./friends.service");
 const main_user_service_1 = require("./main.user.service");
+const chat_service_1 = require("./chat.service");
 let AuthService = class AuthService {
-    constructor(io, ls, friend, userService) {
+    constructor(io, ls, friend, userService, chatService) {
         this.io = io;
         this.ls = ls;
         this.friend = friend;
         this.userService = userService;
+        this.chatService = chatService;
         this._userName = null;
         this._userImage = null;
         this.socket = io.socket;
@@ -46,6 +48,7 @@ let AuthService = class AuthService {
                 this.userService.friends = d.user.friends;
                 this.socket.emit(d.user.hash);
                 this.friend.getInvites();
+                this.chatService.getUnViewed();
             }
             else {
                 this.userName = null;
@@ -80,8 +83,12 @@ let AuthService = class AuthService {
     }
 };
 AuthService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, friends_service_1.FriendsService, main_user_service_1.UserService])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io,
+        local_storage_service_1.LocalStorage,
+        friends_service_1.FriendsService,
+        main_user_service_1.UserService,
+        chat_service_1.ChatService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

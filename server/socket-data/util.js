@@ -607,6 +607,18 @@ module.exports = {
         ])
 
     },
+    chatUnViewed: function(connection, userId){
+       return new Promise((resolve, reject) => {
+            const query = 'SELECT * from `chat` WHERE to_user_id=? AND viewed=? ORDER BY `date` DESC LIMIT 40';
+            connection.query(query, [userId, 0], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows)
+            })
+        })
+    },
 
   /**
    * 

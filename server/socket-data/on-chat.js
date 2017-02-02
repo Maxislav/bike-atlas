@@ -8,6 +8,7 @@ class OnChat {
     this.chat = chat;
     this.socket.on('onChatSend', this.onChatSend.bind(this, 'onChatSend'));
     this.socket.on('chatHistory', this.chatHistory.bind(this, 'chatHistory'));
+    this.socket.on('chatUnViewed', this.chatUnViewed.bind(this, 'chatUnViewed'));
 
 
   }
@@ -65,6 +66,26 @@ class OnChat {
 
 
   }
+    chatUnViewed(eName){
+        util.getUserIdBySocketId(this.connection, this.socket.id)
+            .then(userId=> {
+                return util.chatUnViewed(this.connection, userId)
+                    .then(rows=>{
+                        rows = formatMess(rows);
+                        let userIds = R.uniq(R.pluck('fromUserId')(rows)) || [];
+                        const res = {};
+                        userIds.forEach(id=>{
+                            const mess =  rows.filter(mes=>{
+                                return mes.fromUserId==id
+                            });
+                            res[id] =  R.pluck('id')(mess)
+                        });
+
+                        this.socket.emit(eName, res)
+                    })
+            })
+
+    }
 }
 
 
@@ -76,7 +97,10 @@ function formatMess(mess, own) {
     for(let key in mes){
       _mes[camelCased(key)] = mes[key]
     }
-    _mes['isMy'] = own
+    if(own!==undefined){
+        _mes['isMy'] = own;
+    }
+
     res.push(_mes)
   });
   return res

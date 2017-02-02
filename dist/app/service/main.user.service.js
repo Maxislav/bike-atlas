@@ -78,8 +78,8 @@ let UserService = class UserService {
     }
 };
 UserService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=main.user.service.js.map

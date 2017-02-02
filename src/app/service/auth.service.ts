@@ -6,6 +6,7 @@ import {Resolve} from "@angular/router";
 import {FriendsService} from "./friends.service";
 import {UserService} from "./main.user.service";
 import {LogService} from "./log.service";
+import {ChatService} from "./chat.service";
 
 export interface Setting{
     hill?: boolean;
@@ -29,7 +30,9 @@ export class AuthService implements Resolve<any>{
         private io: Io,
         private ls: LocalStorage,
         private friend: FriendsService,
-        private userService: UserService) {
+        private userService: UserService,
+        private chatService: ChatService
+    ) {
         this.socket = io.socket;
         this._setting = {};
         this.socket.on('connect', this.onConnect.bind(this));
@@ -58,6 +61,7 @@ export class AuthService implements Resolve<any>{
                 this.userService.friends = d.user.friends;
                 this.socket.emit(d.user.hash);
                 this.friend.getInvites();
+                this.chatService.getUnViewed()
             }else{
                 this.userName = null;
             }

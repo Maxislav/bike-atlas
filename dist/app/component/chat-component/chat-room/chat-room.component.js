@@ -38,8 +38,8 @@ let ChatRoomComponent = class ChatRoomComponent {
     }
 };
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Object)
+    core_1.Input(),
+    __metadata("design:type", Object)
 ], ChatRoomComponent.prototype, "room", void 0);
 ChatRoomComponent = __decorate([
     core_1.Component({
@@ -48,8 +48,8 @@ ChatRoomComponent = __decorate([
         //template: '{{userId}}<textarea [(ngModel)]="myActiveMess"></textarea>'
         templateUrl: './chat-room.component.html',
         styleUrls: ['./chat-room.component.css']
-    }), 
-    __metadata('design:paramtypes', [chat_service_1.ChatService])
+    }),
+    __metadata("design:paramtypes", [chat_service_1.ChatService])
 ], ChatRoomComponent);
 exports.ChatRoomComponent = ChatRoomComponent;
 //# sourceMappingURL=chat-room.component.js.map

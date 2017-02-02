@@ -163,8 +163,10 @@ let PrivateAreaService = class PrivateAreaService {
     }
 };
 PrivateAreaService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [map_service_1.MapService, socket_oi_service_1.Io, toast_component_1.ToastService])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [map_service_1.MapService,
+        socket_oi_service_1.Io,
+        toast_component_1.ToastService])
 ], PrivateAreaService);
 exports.PrivateAreaService = PrivateAreaService;
 //# sourceMappingURL=private.area.service.js.map

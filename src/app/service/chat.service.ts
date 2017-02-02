@@ -4,6 +4,7 @@ import {Injectable} from "@angular/core";
 import {Room, Message} from "../component/chat-component/chat-room/chat-room.component";
 import {User} from "./main.user.service";
 import {Io} from "./socket.oi.service";
+import {Deferred} from "../util/deferred";
 
 interface ResMessage {
     userId: number
@@ -22,9 +23,11 @@ export class ChatService{
     messages: {[roomId:number]:Array<Message>}={};
     roomsObj: {[id:number]:Room} = {};
     private socket;
+    unViewedDefer: Deferred;
     constructor(private io: Io){
         this.socket = io.socket;
         this.socket.on('onChat', this.onChat.bind(this))
+        this.unViewedDefer = new Deferred()
     }
 
     onChat(data: ResMessage){
@@ -36,6 +39,17 @@ export class ChatService{
             isMy:false,
             viewed: data.viewed
         })
+    }
+
+    getUnViewed(){
+        if(this.unViewedDefer.status==0){
+            this.socket.$emit('chatUnViewed')
+                .then(d=>{
+                    console.log(d)
+                    this.unViewedDefer.resolve(d)
+                })
+        }
+        return this.unViewedDefer.promise
     }
 
     getMessages(roomId: number){

@@ -13,6 +13,7 @@ div.content
                             td {{user.name}}
                             td
                                 .ico-chat((click)="startChat(user)")
+                                    .ico-un-viewed(*ngIf="user.chatUnViewed && user.chatUnViewed.length") {{user.chatUnViewed.length}}
 
                             td
                                 .invite((click)="onDelFriend(user)")
@@ -25,6 +26,7 @@ div.content
                         tr(*ngFor="let user of invites\; let i = index")
                             td
                                 img([src]="user.image || 'src/img/no-avatar.gif' ")
+
                             td {{user.name}}
                             td
                                 .invite.accept((click)="onAccept(user)")

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require("@angular/core");
 const socket_oi_service_1 = require("./socket.oi.service");
+const deferred_1 = require("../util/deferred");
 let ChatService = class ChatService {
     constructor(io) {
         this.io = io;
@@ -18,6 +19,7 @@ let ChatService = class ChatService {
         this.roomsObj = {};
         this.socket = io.socket;
         this.socket.on('onChat', this.onChat.bind(this));
+        this.unViewedDefer = new deferred_1.Deferred();
     }
     onChat(data) {
         console.log(data);
@@ -28,6 +30,16 @@ let ChatService = class ChatService {
             isMy: false,
             viewed: data.viewed
         });
+    }
+    getUnViewed() {
+        if (this.unViewedDefer.status == 0) {
+            this.socket.$emit('chatUnViewed')
+                .then(d => {
+                console.log(d);
+                this.unViewedDefer.resolve(d);
+            });
+        }
+        return this.unViewedDefer.promise;
     }
     getMessages(roomId) {
         if (!this.messages[roomId]) {
@@ -103,8 +115,8 @@ let ChatService = class ChatService {
     }
 };
 ChatService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [socket_oi_service_1.Io])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io])
 ], ChatService);
 exports.ChatService = ChatService;
 //# sourceMappingURL=chat.service.js.map

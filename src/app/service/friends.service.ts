@@ -6,6 +6,7 @@ import {Io} from "./socket.oi.service";
 import {Marker} from "./marker.service";
 import {LocalStorage} from "./local-storage.service";
 import {UserService} from "./main.user.service";
+import {ChatService} from "./chat.service";
 
 
 export interface User{
@@ -14,6 +15,7 @@ export interface User{
     phone?: string;
     image: string;
     marker ?: Marker;
+    chatUnViewed?: Array<number>
 }
 
 
@@ -39,7 +41,8 @@ export class FriendsService {
     constructor(
         private io: Io,
         private ls: LocalStorage,
-        private userService: UserService
+        private userService: UserService,
+        private chatService: ChatService
     ){
        // this._friends = [];
         this._myInvites = [];
@@ -57,10 +60,11 @@ export class FriendsService {
     updateFriends(){
        return this.socket.$emit('getFriends')
             .then(d=>{
-                console.log(d);
+                console.log('getFriends ->', d);
                 if(d.result == 'ok'){
                     this.friends = d.friends;
                     this.myInvites = d.invites;
+                    this.bindChatUnViewed();
                     return this.friends;
                 }else{
                     return null;
@@ -68,6 +72,20 @@ export class FriendsService {
 
             })
     }
+    bindChatUnViewed(){
+        this.chatService.unViewedDefer.promise.then(d=>{
+            console.log('unViewedDefer->',d)
+            this.friends.forEach(user=>{
+                if(d[user.id]){
+                    user.chatUnViewed = d[user.id]
+                }
+            })
+        })
+
+    }
+
+
+
     onDelFriend(id: number){
         this.socket.$emit('onDelFriend', id)
             .then((d)=>{
@@ -93,7 +111,6 @@ export class FriendsService {
                 this.updateFriends();
                 this.getInvites()
             })
-
 
     }
 
@@ -163,6 +180,7 @@ export class FriendsService {
 
     set friends(value:Array<User>){
         this._friends.length = 0;
+
         if(value){
             value.forEach(item=>{
                 this._friends.push(item)
