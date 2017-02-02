@@ -2,83 +2,102 @@ const util = require('./util');
 const R = require('ramda');
 
 class OnChat {
-  constructor(socket, connection, chat) {
-    this.socket = socket;
-    this.connection = connection;
-    this.chat = chat;
-    this.socket.on('onChatSend', this.onChatSend.bind(this, 'onChatSend'));
-    this.socket.on('chatHistory', this.chatHistory.bind(this, 'chatHistory'));
-    this.socket.on('chatUnViewed', this.chatUnViewed.bind(this, 'chatUnViewed'));
+    constructor(socket, connection, chat) {
+        this.socket = socket;
+        this.connection = connection;
+        this.chat = chat;
+        this.socket.on('onChatSend', this.onChatSend.bind(this, 'onChatSend'));
+        this.socket.on('chatHistory', this.chatHistory.bind(this, 'chatHistory'));
+        this.socket.on('chatUnViewed', this.chatUnViewed.bind(this, 'chatUnViewed'));
+        this.socket.on('chatResolveUnViewed', this.chatResolveUnViewed.bind(this, 'chatResolveUnViewed'));
 
 
-  }
+    }
 
-  onChatSend(eName, data) {
-    const toUserId = data.id;
-    util.getUserIdBySocketId(this.connection, this.socket.id)
-      .then(userId=> {
-        const resData = {
-          toUserId: toUserId,
-          fromUserId: userId,
-          date: new Date(),
-          text: data.text
-        };
-        return util.onChatSend(this.connection, resData)
-          .then(rows=> {
-            resData.id = rows.insertId;
-            this.chat.onChatSend(resData);
-            this.socket.emit(eName, resData);
-          })
-      })
-      .catch(err=> {
-        console.error(eName, '->', err)
-      })
-  }
-
-  chatHistory(eName, opponentId) {
-    util.getUserIdBySocketId(this.connection, this.socket.id)
-      .then(userId=> {
-        return util.chatHistory(this.connection, userId, opponentId)
-          .then(arrRows=> {
-            const ownMess = formatMess(arrRows[0], true);
-            const outMess = formatMess(arrRows[1], false);
-            let result = ownMess.concat(outMess);
-
-            result =  result.sort(function (a, b) {
-            const aTime = new Date(a.date).getTime();
-            const bTime = new Date(b.date).getTime();
-
-              if (aTime > bTime) {
-                return 1;
-              }
-              if (aTime < bTime) {
-                return -1;
-              }
-              return 0;
-            });
-
-            this.socket.emit(eName, result)
-          })
-      })
-      .catch(err=> {
-
-      })
-
-
-  }
-    chatUnViewed(eName){
+    chatResolveUnViewed(eName, mesIds) {
         util.getUserIdBySocketId(this.connection, this.socket.id)
-            .then(userId=> {
-                return util.chatUnViewed(this.connection, userId)
+            .then(userId => {
+                return util.chatResolveUnViewed(this.connection,userId, mesIds.join(","))
                     .then(rows=>{
+                        this.socket.emit(eName, {
+                            result: 'ok'
+                        })
+                    })
+            })
+            .catch(err => {
+                console.error(eName, '->', err)
+            })
+
+
+    }
+
+    onChatSend(eName, data) {
+        const toUserId = data.id;
+        util.getUserIdBySocketId(this.connection, this.socket.id)
+            .then(userId => {
+                const resData = {
+                    toUserId: toUserId,
+                    fromUserId: userId,
+                    date: new Date(),
+                    text: data.text
+                };
+                return util.onChatSend(this.connection, resData)
+                    .then(rows => {
+                        resData.id = rows.insertId;
+                        this.chat.onChatSend(resData);
+                        this.socket.emit(eName, resData);
+                    })
+            })
+            .catch(err => {
+                console.error(eName, '->', err)
+            })
+    }
+
+    chatHistory(eName, opponentId) {
+        util.getUserIdBySocketId(this.connection, this.socket.id)
+            .then(userId => {
+                return util.chatHistory(this.connection, userId, opponentId)
+                    .then(arrRows => {
+                        const ownMess = formatMess(arrRows[0], true);
+                        const outMess = formatMess(arrRows[1], false);
+                        let result = ownMess.concat(outMess);
+
+                        result = result.sort(function (a, b) {
+                            const aTime = new Date(a.date).getTime();
+                            const bTime = new Date(b.date).getTime();
+
+                            if (aTime > bTime) {
+                                return 1;
+                            }
+                            if (aTime < bTime) {
+                                return -1;
+                            }
+                            return 0;
+                        });
+
+                        this.socket.emit(eName, result)
+                    })
+            })
+            .catch(err => {
+
+            })
+
+
+    }
+
+    chatUnViewed(eName) {
+        util.getUserIdBySocketId(this.connection, this.socket.id)
+            .then(userId => {
+                return util.chatUnViewed(this.connection, userId)
+                    .then(rows => {
                         rows = formatMess(rows);
                         let userIds = R.uniq(R.pluck('fromUserId')(rows)) || [];
                         const res = {};
-                        userIds.forEach(id=>{
-                            const mess =  rows.filter(mes=>{
-                                return mes.fromUserId==id
+                        userIds.forEach(id => {
+                            const mess = rows.filter(mes => {
+                                return mes.fromUserId == id
                             });
-                            res[id] =  R.pluck('id')(mess)
+                            res[id] = R.pluck('id')(mess)
                         });
 
                         this.socket.emit(eName, res)
@@ -90,24 +109,26 @@ class OnChat {
 
 
 function formatMess(mess, own) {
-  const  res = [];
+    const res = [];
 
-  mess.forEach(mes=>{
-    const _mes = {};
-    for(let key in mes){
-      _mes[camelCased(key)] = mes[key]
-    }
-    if(own!==undefined){
-        _mes['isMy'] = own;
-    }
+    mess.forEach(mes => {
+        const _mes = {};
+        for (let key in mes) {
+            _mes[camelCased(key)] = mes[key]
+        }
+        if (own !== undefined) {
+            _mes['isMy'] = own;
+        }
 
-    res.push(_mes)
-  });
-  return res
+        res.push(_mes)
+    });
+    return res
 }
 
 function camelCased(myString) {
- return myString.replace(/_([a-z])/g, function (g) { return g[1].toUpperCase(); });
+    return myString.replace(/_([a-z])/g, function (g) {
+        return g[1].toUpperCase();
+    });
 }
 
 module.exports = OnChat;

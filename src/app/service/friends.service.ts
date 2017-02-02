@@ -64,7 +64,7 @@ export class FriendsService {
                 if(d.result == 'ok'){
                     this.friends = d.friends;
                     this.myInvites = d.invites;
-                    this.bindChatUnViewed();
+                    this.bindChatUnViewed(this.friends);
                     return this.friends;
                 }else{
                     return null;
@@ -72,16 +72,35 @@ export class FriendsService {
 
             })
     }
-    bindChatUnViewed(){
+    bindChatUnViewed(user: Array<User>){
         this.chatService.unViewedDefer.promise.then(d=>{
             console.log('unViewedDefer->',d)
-            this.friends.forEach(user=>{
+            user.forEach(user=>{
                 if(d[user.id]){
                     user.chatUnViewed = d[user.id]
                 }
             })
         })
+    }
 
+    unBindChatUnViewed(userId: number){
+        let user = this.users.find(user=>{
+            return user.id==userId
+        });
+        if(!user){
+            user = this.friends.find(user=>{
+                return user.id==userId
+            });
+        }
+        if(user){
+            this.socket.$emit('chatResolveUnViewed', user.chatUnViewed)
+                .then(d=>{
+                    console.log(d);
+                    delete user.chatUnViewed
+                });
+        }
+
+        //console.log(user)
     }
 
 
@@ -120,6 +139,7 @@ export class FriendsService {
                 console.log(d)
                 if(d && d.result=='ok'){
                     this.users = d.users
+                    this.bindChatUnViewed(this.users);
                 }else{
                     console.error('getAllUsers', d)
                 }

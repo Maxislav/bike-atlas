@@ -11,9 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const core_1 = require("@angular/core");
 const deep_copy_1 = require("../../../util/deep-copy");
 const chat_service_1 = require("../../../service/chat.service");
+const friends_service_1 = require("../../../service/friends.service");
 let ChatRoomComponent = class ChatRoomComponent {
-    constructor(chatService) {
+    constructor(chatService, friendService) {
         this.chatService = chatService;
+        this.friendService = friendService;
         this.myActiveMess = {
             id: null,
             text: '',
@@ -26,6 +28,7 @@ let ChatRoomComponent = class ChatRoomComponent {
         this.messages = this.room.messages;
         this.id = this.room.id;
         this.chatService.chatHistory(this.id);
+        this.friendService.unBindChatUnViewed(this.id);
     }
     onSend() {
         const mess = deep_copy_1.deepCopy(this.myActiveMess);
@@ -49,7 +52,7 @@ ChatRoomComponent = __decorate([
         templateUrl: './chat-room.component.html',
         styleUrls: ['./chat-room.component.css']
     }),
-    __metadata("design:paramtypes", [chat_service_1.ChatService])
+    __metadata("design:paramtypes", [chat_service_1.ChatService, friends_service_1.FriendsService])
 ], ChatRoomComponent);
 exports.ChatRoomComponent = ChatRoomComponent;
 //# sourceMappingURL=chat-room.component.js.map

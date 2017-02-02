@@ -5,6 +5,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import {User} from "../../../service/main.user.service";
 import {deepCopy} from "../../../util/deep-copy";
 import {ChatService} from "../../../service/chat.service";
+import {FriendsService} from "../../../service/friends.service";
 
 
 
@@ -41,7 +42,7 @@ export class ChatRoomComponent implements OnInit{
     name: String;
     messages:Array<Message>;
     myActiveMess: Message;
-    constructor(private chatService: ChatService){
+    constructor(private chatService: ChatService, private friendService: FriendsService){
             this.myActiveMess = {
                 id: null,
                 text:'',
@@ -52,8 +53,9 @@ export class ChatRoomComponent implements OnInit{
     ngOnInit():void {
         this.name= this.room.name;
         this.messages = this.room.messages;
-        this.id = this.room.id
+        this.id = this.room.id;
         this.chatService.chatHistory(this.id)
+        this.friendService.unBindChatUnViewed(this.id)
     }
     onSend(){
         const mess = deepCopy(this.myActiveMess);

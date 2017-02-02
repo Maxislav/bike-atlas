@@ -37,7 +37,12 @@ export class FriendsComponent{
     public invites: Array<User>;
     public friends: Array<User>;
     private myInvites: Array<any>;
-    constructor(private location: Location, private friendsService: FriendsService, private toast: ToastService,  private router: Router, private chatService: ChatService){
+    constructor(private location: Location,
+                private friendsService: FriendsService,
+                private toast: ToastService,
+                private router: Router,
+                private chatService: ChatService){
+
         this.allUsers = friendsService.users;
         this.invites = friendsService.invites;
         this.friends = friendsService.friends;

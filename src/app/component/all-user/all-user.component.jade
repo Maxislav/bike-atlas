@@ -7,6 +7,7 @@ table
             td {{user.name}}
             td
                 .ico-chat((click)="startChat(user)")
+                    .ico-un-viewed(*ngIf="user.chatUnViewed && user.chatUnViewed.length") {{user.chatUnViewed.length}}
             td
                 .invite(*ngIf="!isFriend(user)")
                     template([ngIf]="!isInviteActive(user)" )

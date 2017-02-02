@@ -619,6 +619,20 @@ module.exports = {
             })
         })
     },
+    chatResolveUnViewed: function (connection, userId, ids) {
+        //connection.query('SELECT * FROM `device` WHERE `user_id` IN( '+ids+' )', [], function (err, rows) {
+
+        return new Promise((resolve, reject) => {
+            const query ='UPDATE `chat` SET viewed = ? WHERE chat.id IN('+ids+') AND to_user_id=?';
+            connection.query(query, [1, userId], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return
+                }
+                resolve(rows)
+            })
+        })
+    },
 
   /**
    * 

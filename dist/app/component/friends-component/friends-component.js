@@ -69,7 +69,11 @@ FriendsComponent = __decorate([
         templateUrl: './friends-component.html',
         styleUrls: ['./friends-component.css'],
     }),
-    __metadata("design:paramtypes", [common_1.Location, friends_service_1.FriendsService, toast_component_1.ToastService, router_1.Router, chat_service_1.ChatService])
+    __metadata("design:paramtypes", [common_1.Location,
+        friends_service_1.FriendsService,
+        toast_component_1.ToastService,
+        router_1.Router,
+        chat_service_1.ChatService])
 ], FriendsComponent);
 exports.FriendsComponent = FriendsComponent;
 //# sourceMappingURL=friends-component.js.map

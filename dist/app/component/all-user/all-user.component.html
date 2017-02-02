@@ -6,7 +6,9 @@
       <td><img [src]="user.image || 'src/img/no-avatar.gif' "/></td>
       <td>{{user.name}}</td>
       <td>
-        <div (click)="startChat(user)" class="ico-chat"></div>
+        <div (click)="startChat(user)" class="ico-chat">
+          <div *ngIf="user.chatUnViewed &amp;&amp; user.chatUnViewed.length" class="ico-un-viewed">{{user.chatUnViewed.length}}</div>
+        </div>
       </td>
       <td>
         <div *ngIf="!isFriend(user)" class="invite">
