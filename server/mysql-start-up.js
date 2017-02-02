@@ -192,6 +192,27 @@ function createTable() {
         })
     });
 
+    const tableChat = new Promise((res, rej) => {
+        const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`chat` ' +
+          '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+          '`from_user_id` INT NOT NULL , ' +
+          '`to_user_id` INT NOT NULL , ' +
+          '`text` TEXT NULL DEFAULT NULL, ' +
+          '`viewed` BOOLEAN NOT NULL DEFAULT 0, ' +
+          '`date` DATETIME NOT NULL, ' +
+          'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+        connection.query(query, (err) => {
+            if (err) {
+                console.log('Error table chat create');
+                rej(err);
+                return;
+            }
+            res(connection);
+        })
+    });
+
+
+
 
     return Promise.all([
         tableUser, 
@@ -201,6 +222,7 @@ function createTable() {
         tableSetting, 
         tableInvite, 
         tableFriends,
+        tableChat,
         tablePrivateArea])
     //return Promise.all([tableHash])
 

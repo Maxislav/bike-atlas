@@ -42,6 +42,7 @@ button:active {
 }
 textarea {
   width: 100%;
+  height: 80px;
 }
 .buttons-container {
   display: flex;
@@ -53,11 +54,17 @@ textarea {
 .message {
   margin-bottom: 5px;
 }
-.message.my > * {
+.message > .date {
+  color: gray;
+  font-size: 10px;
+}
+.message.my {
   margin-left: 15px;
+}
+.message.my > .text {
   color: dodgerblue;
 }
-.message.opponent > * {
+.message.opponent > .text {
   color: #3a9d31;
 }
 .close {

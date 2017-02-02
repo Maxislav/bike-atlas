@@ -70,13 +70,19 @@ class Chat{
     }
 
 
-    onChatSend(toUserId, userId, text){
+    onChatSend(d){
+
+        const  toUserId = d.toUserId;
+        const  userId = d.fromUserId;
+        const  text = d.text;
+
         if(this.user[toUserId]){
             this.user[toUserId].forEach(socketId=>{
                 this.sockets[socketId].emit('onChat', {
-                    id: null,
+                    id: d.id,
                     userId,
-                    text
+                    text,
+                    date: d.date
                 })
             })
         }

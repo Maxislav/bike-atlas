@@ -17,7 +17,8 @@ let ChatRoomComponent = class ChatRoomComponent {
         this.myActiveMess = {
             id: null,
             text: '',
-            isMy: true
+            isMy: true,
+            viewed: true
         };
     }
     ngOnInit() {

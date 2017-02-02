@@ -11,7 +11,9 @@ import {ChatService} from "../../../service/chat.service";
 export interface Message{
     id: number | null,
     text: String,
-    isMy: boolean
+    isMy: boolean,
+    viewed: boolean,
+    date?: Date
 }
 
 
@@ -43,7 +45,8 @@ export class ChatRoomComponent implements OnInit{
             this.myActiveMess = {
                 id: null,
                 text:'',
-                isMy: true
+                isMy: true,
+                viewed: true
             }
     }
     ngOnInit():void {

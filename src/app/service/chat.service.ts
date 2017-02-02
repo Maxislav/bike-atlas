@@ -9,7 +9,9 @@ interface ResMessage {
     userId: number
     id: number | null
     text: String,
-    isMy: boolean
+    isMy: boolean,
+    date: Date,
+    viewed: boolean
 }
 
 
@@ -30,8 +32,9 @@ export class ChatService{
         this.putMessage(data.userId, {
             id: data.id,
             text: data.text,
-            isMy:false
-
+            date: new Date(data.date),
+            isMy:false,
+            viewed: data.viewed
         })
     }
 
@@ -73,10 +76,13 @@ export class ChatService{
             text:message.text
         })
          .then(d=>{
+             console.log(d)
              this.putMessage(d.toUserId, {
-                 id: null,
+                 id: d.id,
                  text: d.text,
-                 isMy: true
+                 isMy: true,
+                 date: new Date(d.date),
+                 viewed: true
              })
          })
             

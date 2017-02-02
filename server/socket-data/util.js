@@ -582,6 +582,26 @@ module.exports = {
             })
         });
     },
+  /**
+   * 
+   * @param connection
+   * @param {{fromUserId : number, toUserId: number, text: String, date: Date}}data
+   * @returns {Promise}
+   */
+    onChatSend: function(connection, data){
+        return new Promise((resolve, reject) => {
+            connection.query('INSERT INTO `chat` ' +
+              '(`id`, `from_user_id`, `to_user_id`, `text`, `viewed`, `date`) ' +
+              'VALUES (NULL, ?, ?, ?, ?, ?)', [data.fromUserId, data.toUserId, data.text, 0, data.date], (err, results) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(results);
+            })
+        });
+    },
+
     formatDevice: function(d) {
         return {
             id: d.device_key,
