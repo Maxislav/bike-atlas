@@ -4,3 +4,6 @@
   bottom: 0;
   z-index: 2;
 }
+.room:not(:last-child) {
+  margin-bottom: 15px;
+}

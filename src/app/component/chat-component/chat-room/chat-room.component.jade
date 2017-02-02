@@ -1,3 +1,4 @@
+.close((click)="onClose()") &times;
 .title {{name}}
 .message(*ngFor="let message of messages; let i = index;", [ngClass]="{'my':message.isMy,'opponent':!message.isMy }")
      .text {{message.text}}

@@ -1,0 +1,72 @@
+* {
+  color: #444a56;
+}
+.button-container > div {
+  float: right;
+  margin-top: 15px;
+}
+.button-container > div button {
+  margin-left: 8px;
+}
+.row {
+  margin-bottom: 15px;
+}
+.table {
+  display: table;
+}
+.table .cell {
+  display: table-cell;
+}
+button {
+  padding: 8px 15px;
+  border: none;
+  background: white;
+  border-radius: 2px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+}
+button:active {
+  color: #999999;
+  box-shadow: none;
+}
+:host {
+  background: rgba(255, 255, 255, 0.8);
+  display: block;
+  min-width: 300px;
+  padding: 15px;
+  position: relative;
+}
+.title {
+  margin-bottom: 5px;
+}
+textarea {
+  width: 100%;
+}
+.buttons-container {
+  display: flex;
+  justify-content: flex-end;
+}
+.buttons-container > div {
+  cursor: pointer;
+}
+.message {
+  margin-bottom: 5px;
+}
+.message.my > * {
+  margin-left: 15px;
+  color: dodgerblue;
+}
+.message.opponent > * {
+  color: #3a9d31;
+}
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: darkred;
+  cursor: pointer;
+  padding: 15px;
+  font-size: 20px;
+  font: 30px/15px bold;
+}

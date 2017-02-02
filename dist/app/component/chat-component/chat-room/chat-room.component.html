@@ -1,0 +1,12 @@
+
+<div (click)="onClose()" class="close">&times;</div>
+<div class="title">{{name}}</div>
+<div *ngFor="let message of messages; let i = index;" [ngClass]="{'my':message.isMy,'opponent':!message.isMy }" class="message">
+  <div class="text">{{message.text}}</div>
+</div>
+<div class="text-area-container">
+  <textarea [(ngModel)]="myActiveMess.text"></textarea>
+</div>
+<div class="buttons-container">
+  <div (click)="onSend()" class="send">Send</div>
+</div>

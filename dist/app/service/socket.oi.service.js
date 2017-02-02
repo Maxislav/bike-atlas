@@ -36,8 +36,8 @@ let Io = class Io {
     }
 };
 Io = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], Io);
 exports.Io = Io;
 //# sourceMappingURL=socket.oi.service.js.map

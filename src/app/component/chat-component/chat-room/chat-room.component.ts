@@ -48,18 +48,17 @@ export class ChatRoomComponent implements OnInit{
     }
     ngOnInit():void {
         this.name= this.room.name;
-        this.messages = this.room.messages
+        this.messages = this.room.messages;
         this.id = this.room.id
     }
     onSend(){
-        const mess = deepCopy(this.myActiveMess)
+        const mess = deepCopy(this.myActiveMess);
        // this.messages.push(mess);
         this.myActiveMess.text ='';
-        this.chatService.onSend(this.id, mess)
-           /* .then(d=>{
-                console.log(d)
-            })*/
+        this.chatService.onSend(this.id, mess);
 
-
+    }
+    onClose(){
+        this.chatService.closeRoom(this.id)
     }
 }

@@ -81,6 +81,13 @@ export class ChatService{
          })
             
     }
+    closeRoom(id: number){
+        const index = this.rooms.indexOf(this.roomsObj[id]);
+        if(-1<index){
+            this.rooms.splice(index,1)
+            delete this.roomsObj[id]
+        }
+    }
     
 }
 

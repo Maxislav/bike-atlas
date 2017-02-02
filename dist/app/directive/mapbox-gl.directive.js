@@ -8,12 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require("@angular/core");
-const core_2 = require("@angular/core");
+const core_1 = require('@angular/core');
+const core_2 = require('@angular/core');
 //import any = jasmine.any;
 const map_service_1 = require("../service/map.service");
 const position_size_service_1 = require("../service/position-size.service");
-const local_storage_service_1 = require("../service/local-storage.service");
+const local_storage_service_1 = require('../service/local-storage.service');
 const mapboxgl = require("@lib/mapbox-gl/mapbox-gl.js");
 const main_user_service_1 = require("../service/main.user.service");
 let MapResolver = class MapResolver {
@@ -31,8 +31,8 @@ let MapResolver = class MapResolver {
     }
 };
 MapResolver = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], MapResolver);
 exports.MapResolver = MapResolver;
 ;
@@ -167,14 +167,8 @@ let MapboxGlDirective = class MapboxGlDirective {
 MapboxGlDirective = __decorate([
     core_2.Directive({
         selector: 'mapbox-gl',
-    }),
-    __metadata("design:paramtypes", [core_2.ElementRef,
-        core_2.Renderer,
-        map_service_1.MapService,
-        position_size_service_1.PositionSize,
-        local_storage_service_1.LocalStorage,
-        main_user_service_1.UserService,
-        MapResolver])
+    }), 
+    __metadata('design:paramtypes', [core_2.ElementRef, core_2.Renderer, map_service_1.MapService, position_size_service_1.PositionSize, local_storage_service_1.LocalStorage, main_user_service_1.UserService, MapResolver])
 ], MapboxGlDirective);
 exports.MapboxGlDirective = MapboxGlDirective;
 //# sourceMappingURL=mapbox-gl.directive.js.map

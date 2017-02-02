@@ -4,6 +4,9 @@
   display: block;
   min-width: 300px;
   padding: 15px;
+  position: relative;
+
+
 }
 .title{
   margin-bottom: 5px;
@@ -14,6 +17,9 @@ textarea{
 .buttons-container{
   display: flex;
   justify-content: flex-end;
+  &>div{
+    cursor: pointer;
+  }
 }
 .message{
   margin-bottom: 5px;
@@ -24,4 +30,14 @@ textarea{
   &.opponent>*{
     color: @green-color
   }
+}
+.close{
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: darkred;
+  cursor: pointer;
+  padding: 15px;
+  font-size: 20px;
+  font: 30px/15px bold;
 }
