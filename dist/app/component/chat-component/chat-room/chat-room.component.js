@@ -25,6 +25,7 @@ let ChatRoomComponent = class ChatRoomComponent {
         this.name = this.room.name;
         this.messages = this.room.messages;
         this.id = this.room.id;
+        this.chatService.chatHistory(this.id);
     }
     onSend() {
         const mess = deep_copy_1.deepCopy(this.myActiveMess);

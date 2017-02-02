@@ -582,6 +582,32 @@ module.exports = {
             })
         });
     },
+    chatHistory: function (connection, fromUserId, toUserId) {
+        return Promise.all([
+            new Promise((resolve, reject) => {
+                const query = 'SELECT * from `chat` WHERE from_user_id=? AND to_user_id=?  ORDER BY `date` DESC LIMIT 40';
+                connection.query(query, [fromUserId, toUserId], (err, rows) => {
+                    if (err) {
+                        reject(err);
+                        return
+                    }
+                    resolve(rows)
+                })
+            }),
+            new Promise((resolve, reject) => {
+                const query = 'SELECT * from `chat` WHERE from_user_id=? AND to_user_id=? ORDER BY `date` DESC LIMIT 40';
+                connection.query(query, [toUserId, fromUserId], (err, rows) => {
+                    if (err) {
+                        reject(err);
+                        return
+                    }
+                    resolve(rows)
+                })
+            })
+        ])
+
+    },
+
   /**
    * 
    * @param connection

@@ -50,6 +50,9 @@ export class ChatService{
         }
         this.messages[roomId].push(message)
     }
+    clearRoomMessage(roomId: number){
+        this.messages[roomId].length = 0
+    }
 
 
     onEnterRoom(user: User){
@@ -92,7 +95,24 @@ export class ChatService{
         if(-1<index){
             this.rooms.splice(index,1)
             delete this.roomsObj[id]
+            this.clearRoomMessage(id)
         }
+    }
+
+    chatHistory(userId: number){
+        this.socket.$emit('chatHistory', userId)
+            .then(arr=>{
+                arr.forEach(mes=>{
+                    this.putMessage(userId, {
+                        date: new Date(mes.date),
+                        text: mes.text,
+                        isMy: mes.isMy,
+                        id: mes.id,
+                        viewed: mes.viewed
+                    })
+                });
+                console.log(arr)
+            })
     }
     
 }

@@ -41,6 +41,9 @@ let ChatService = class ChatService {
         }
         this.messages[roomId].push(message);
     }
+    clearRoomMessage(roomId) {
+        this.messages[roomId].length = 0;
+    }
     onEnterRoom(user) {
         this.rooms.forEach(room => {
             room.isActive = false;
@@ -80,7 +83,23 @@ let ChatService = class ChatService {
         if (-1 < index) {
             this.rooms.splice(index, 1);
             delete this.roomsObj[id];
+            this.clearRoomMessage(id);
         }
+    }
+    chatHistory(userId) {
+        this.socket.$emit('chatHistory', userId)
+            .then(arr => {
+            arr.forEach(mes => {
+                this.putMessage(userId, {
+                    date: new Date(mes.date),
+                    text: mes.text,
+                    isMy: mes.isMy,
+                    id: mes.id,
+                    viewed: mes.viewed
+                });
+            });
+            console.log(arr);
+        });
     }
 };
 ChatService = __decorate([

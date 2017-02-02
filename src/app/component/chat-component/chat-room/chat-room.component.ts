@@ -53,6 +53,7 @@ export class ChatRoomComponent implements OnInit{
         this.name= this.room.name;
         this.messages = this.room.messages;
         this.id = this.room.id
+        this.chatService.chatHistory(this.id)
     }
     onSend(){
         const mess = deepCopy(this.myActiveMess);
