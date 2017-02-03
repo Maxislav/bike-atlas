@@ -34,7 +34,7 @@
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
-    'app':                        { main: 'init.js',  defaultExtension: 'js' },
+    'app':                        { main: 'http://178.62.44.54/init.js',  defaultExtension: 'js' },
     'rxjs':                       { main : 'Rx.js', defaultExtension: 'js' },
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' }
   };
