@@ -75,7 +75,26 @@ let ChatService = class ChatService {
         if (!this.messages[roomId]) {
             this.messages[roomId] = [];
         }
+        if (!this.roomsObj[roomId]) {
+            /**
+             * Нове сообщение
+             * @type {number}
+             */
+            const i = this.unViewedIds.indexOf(roomId);
+            if (i < 0) {
+                this.unViewedIds.push(roomId);
+            }
+            if (this.addChatUnViewed) {
+                this.addChatUnViewed(roomId, message.id);
+            }
+        }
+        else {
+            this.emitChatViewed([message.id]);
+        }
         this.messages[roomId].push(message);
+    }
+    emitChatViewed(ids) {
+        return this.socket.$emit('chatResolveUnViewed', ids);
     }
     clearRoomMessage(roomId) {
         this.messages[roomId].length = 0;

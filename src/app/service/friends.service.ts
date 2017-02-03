@@ -7,6 +7,7 @@ import {Marker} from "./marker.service";
 import {LocalStorage} from "./local-storage.service";
 import {UserService} from "./main.user.service";
 import {ChatService} from "./chat.service";
+import {Message} from "../component/chat-component/chat-room/chat-room.component";
 
 
 export interface User{
@@ -51,6 +52,7 @@ export class FriendsService {
         this.socket = io.socket;
         this.socket.on('updateInvites', this.getInvites.bind(this));
         this.socket.on('updateFriends', this.updateFriends.bind(this));
+        chatService.addChatUnViewed = this.addChatUnViewed.bind(this)
     }
 
     getFriends(){
@@ -83,12 +85,30 @@ export class FriendsService {
         })
     }
 
+    addChatUnViewed(userId: number, mesId: number){
+        this.friends.forEach(user=>{
+            if(user.id==userId){
+                push(user)
+            }
+        });
+        this.users.forEach(user=>{
+            if(user.id==userId){
+                push(user)
+            }
+        });
+
+        function push(user: User){
+            user.chatUnViewed = user.chatUnViewed || [];
+            user.chatUnViewed.push(mesId)
+        }
+    }
+
     unBindChatUnViewed(userId: number){
         const user = this.users.find(user=>{
             return user.id==userId
         });
         if(user && user.chatUnViewed){
-            this.socket.$emit('chatResolveUnViewed', user.chatUnViewed)
+            this.chatService.emitChatViewed(user.chatUnViewed)
                 .then(d=>{
                     console.log(d);
                     delete user.chatUnViewed;
@@ -98,15 +118,15 @@ export class FriendsService {
             return user.id==userId
         });
         if(friend && friend.chatUnViewed){
-            this.socket.$emit('chatResolveUnViewed', friend.chatUnViewed)
+           this.chatService.emitChatViewed(friend.chatUnViewed)
                 .then(d=>{
                     console.log(d);
                     delete friend.chatUnViewed
                 });
         }
     }
-
-
+    
+   
 
     onDelFriend(id: number){
         this.socket.$emit('onDelFriend', id)

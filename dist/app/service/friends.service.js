@@ -27,6 +27,7 @@ let FriendsService = class FriendsService {
         this.socket = io.socket;
         this.socket.on('updateInvites', this.getInvites.bind(this));
         this.socket.on('updateFriends', this.updateFriends.bind(this));
+        chatService.addChatUnViewed = this.addChatUnViewed.bind(this);
     }
     getFriends() {
         this.updateFriends();
@@ -56,12 +57,28 @@ let FriendsService = class FriendsService {
             });
         });
     }
+    addChatUnViewed(userId, mesId) {
+        this.friends.forEach(user => {
+            if (user.id == userId) {
+                push(user);
+            }
+        });
+        this.users.forEach(user => {
+            if (user.id == userId) {
+                push(user);
+            }
+        });
+        function push(user) {
+            user.chatUnViewed = user.chatUnViewed || [];
+            user.chatUnViewed.push(mesId);
+        }
+    }
     unBindChatUnViewed(userId) {
         const user = this.users.find(user => {
             return user.id == userId;
         });
         if (user && user.chatUnViewed) {
-            this.socket.$emit('chatResolveUnViewed', user.chatUnViewed)
+            this.chatService.emitChatViewed(user.chatUnViewed)
                 .then(d => {
                 console.log(d);
                 delete user.chatUnViewed;
@@ -71,7 +88,7 @@ let FriendsService = class FriendsService {
             return user.id == userId;
         });
         if (friend && friend.chatUnViewed) {
-            this.socket.$emit('chatResolveUnViewed', friend.chatUnViewed)
+            this.chatService.emitChatViewed(friend.chatUnViewed)
                 .then(d => {
                 console.log(d);
                 delete friend.chatUnViewed;
