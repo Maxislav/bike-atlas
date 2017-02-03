@@ -18,6 +18,7 @@
     </td>
     <td class="fill-space"></td>
     <td (click)="goToFriends()" class="bell">
+      <div *ngIf="unViewedIds.length" class="un-viewed-ids">{{unViewedIds.length}}</div>
       <div *ngIf="invites.length" class="num">{{invites.length}}</div>
     </td>
     <td class="icoUser"><img [src]="user.image || 'src/img/no-avatar.gif' " (click)="goToProfile()"/></td>

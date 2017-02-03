@@ -88,5 +88,6 @@ img {
   padding: 5px;
   font: 12px/6px sans-serif;
   font-size: 10px;
-  background: #3a9d31;
+  background: #ff6600;
+  box-shadow: 0 0 4px white;
 }

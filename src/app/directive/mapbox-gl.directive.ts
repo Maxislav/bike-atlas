@@ -45,7 +45,6 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
 
     resolve():Promise<any> {
         return new Promise((resolve, reject)=> {
-
             setTimeout(()=> {
                 resolve()
             }, 5000)

@@ -15,18 +15,25 @@ class OnChat {
     }
 
     chatResolveUnViewed(eName, mesIds) {
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+        if(mesIds){
+          util.getUserIdBySocketId(this.connection, this.socket.id)
             .then(userId => {
-                return util.chatResolveUnViewed(this.connection,userId, mesIds.join(","))
-                    .then(rows=>{
-                        this.socket.emit(eName, {
-                            result: 'ok'
-                        })
-                    })
+              return util.chatResolveUnViewed(this.connection,userId, mesIds.join(","))
+                .then(rows=>{
+                  this.socket.emit(eName, {
+                    result: 'ok'
+                  })
+                })
             })
             .catch(err => {
-                console.error(eName, '->', err)
+              console.error(eName, '->', err)
             })
+        }else{
+          this.socket.emit(eName, {
+            result: 'ok'
+          })
+        }
+        
 
 
     }

@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 22.11.16.
  */
-const core_1 = require("@angular/core");
-const menu_track_component_1 = require("./menu-track/menu-track.component");
+const core_1 = require('@angular/core');
+const menu_track_component_1 = require('./menu-track/menu-track.component');
 //import any = jasmine.any;
 const menu_service_1 = require("app/service/menu.service");
 const track_service_1 = require("../../service/track.service");
@@ -23,8 +23,9 @@ const friends_service_1 = require("../../service/friends.service");
 const main_user_service_1 = require("../../service/main.user.service");
 const toast_component_1 = require("../toast/toast.component");
 const map_service_1 = require("../../service/map.service");
+const chat_service_1 = require("../../service/chat.service");
 let MenuComponent = class MenuComponent {
-    constructor(menuService, track, authService, router, friend, userService, mapService, toast) {
+    constructor(menuService, track, authService, router, friend, userService, mapService, toast, chatService) {
         this.menuService = menuService;
         this.track = track;
         this.authService = authService;
@@ -33,9 +34,11 @@ let MenuComponent = class MenuComponent {
         this.userService = userService;
         this.mapService = mapService;
         this.toast = toast;
+        this.chatService = chatService;
         this.user = userService.user;
         this.invites = friend.invites;
         this.trackList = track.trackList;
+        this.unViewedIds = chatService.unViewedIds;
     }
     onOpen() {
         this.menuService.menuOpen = !this.menuService.menuOpen;
@@ -106,14 +109,8 @@ MenuComponent = __decorate([
         templateUrl: './menu.component.html',
         styleUrls: ['./menu.component.css'],
         providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService, track_list_component_1.TrackList]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof menu_service_1.MenuService !== "undefined" && menu_service_1.MenuService) === "function" && _a || Object, track_service_1.TrackService,
-        auth_service_1.AuthService,
-        router_1.Router,
-        friends_service_1.FriendsService,
-        main_user_service_1.UserService,
-        map_service_1.MapService,
-        toast_component_1.ToastService])
+    }), 
+    __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, track_service_1.TrackService, auth_service_1.AuthService, router_1.Router, friends_service_1.FriendsService, main_user_service_1.UserService, map_service_1.MapService, toast_component_1.ToastService, chat_service_1.ChatService])
 ], MenuComponent);
 exports.MenuComponent = MenuComponent;
 var _a;

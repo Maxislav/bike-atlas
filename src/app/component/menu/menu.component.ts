@@ -16,6 +16,7 @@ import {UserService, User} from "../../service/main.user.service";
 import {ToastService} from "../toast/toast.component";
 import {MapService} from "../../service/map.service";
 import {getimage} from "../../util/get-image";
+import {ChatService} from "../../service/chat.service";
 //import {Track} from "./track";
 
 declare var document: any;
@@ -37,30 +38,32 @@ export class MenuComponent{
     trackList: Array<any>;
     private user: User;
     private weatherLayer: any;
+    private unViewedIds: Array<number>;
 
-    constructor(
-        private menuService: MenuService,
-        private track: TrackService,
-        private authService: AuthService,
-        private router: Router,
-        private friend: FriendsService,
-        private userService: UserService,
-        private mapService: MapService,
-    private toast: ToastService)
+    constructor(private menuService:MenuService,
+                private track:TrackService,
+                private authService:AuthService,
+                private router:Router,
+                private friend:FriendsService,
+                private userService:UserService,
+                private mapService:MapService,
+                private toast:ToastService,
+                private chatService:ChatService) {
 
-    {
         this.user = userService.user;
         this.invites = friend.invites;
         this.trackList = track.trackList;
-
-
+        this.unViewedIds = chatService.unViewedIds
     }
+
     onOpen(){
         this.menuService.menuOpen = !this.menuService.menuOpen;
     }
+
     onOpenLogin(){
         this.menuService.menuOpenLogin = !this.menuService.menuOpenLogin;
     }
+
     onOpenAthlete(){
         if(!this.user.name && !this.userService.other.devices.length){
             this.toast.show({

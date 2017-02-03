@@ -46,6 +46,18 @@ button:active {
 .name {
   white-space: nowrap;
 }
+.un-viewed-ids {
+  font-size: 10px;
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  background-size: 100%;
+  background: #ff6600;
+  padding: 4px;
+  font: 12px/6px sans-serif;
+  text-align: center;
+  border-radius: 50%;
+}
 table {
   height: 40px;
   width: 100%;

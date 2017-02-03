@@ -17,6 +17,7 @@ let ChatService = class ChatService {
         this.rooms = [];
         this.messages = {};
         this.roomsObj = {};
+        this._unViewedIds = [];
         this.socket = io.socket;
         this.socket.on('onChat', this.onChat.bind(this));
         this.unViewedDefer = new deferred_1.Deferred();
@@ -31,11 +32,34 @@ let ChatService = class ChatService {
             viewed: data.viewed
         });
     }
-    getUnViewed() {
-        if (this.unViewedDefer.status == 0) {
+    get unViewedIds() {
+        return this._unViewedIds;
+    }
+    set unViewedIds(ids) {
+        this._unViewedIds.length = 0;
+        ids.forEach(id => {
+            this._unViewedIds.push(id);
+        });
+    }
+    resolveUnViewedIds(userId) {
+        const index = this.unViewedIds.indexOf(userId);
+        if (-1 < index) {
+            this.unViewedIds.splice(index, 1);
+        }
+    }
+    getUnViewed(update) {
+        if (this.unViewedDefer.status == 0 || update) {
+            if (update) {
+                this.unViewedDefer = new deferred_1.Deferred();
+            }
             this.socket.$emit('chatUnViewed')
-                .then(d => {
-                console.log(d);
+                .then((d) => {
+                console.log('chatUnViewed->', d);
+                const ids = [];
+                for (let key in d) {
+                    ids.push(parseFloat(key));
+                }
+                this.unViewedIds = ids;
                 this.unViewedDefer.resolve(d);
             });
         }
@@ -115,8 +139,8 @@ let ChatService = class ChatService {
     }
 };
 ChatService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [socket_oi_service_1.Io])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [socket_oi_service_1.Io])
 ], ChatService);
 exports.ChatService = ChatService;
 //# sourceMappingURL=chat.service.js.map

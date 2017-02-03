@@ -36,11 +36,11 @@ let AuthService = class AuthService {
         });
     }
     onAuth() {
-        this.onConnect();
+        return this.onConnect();
     }
     onConnect() {
         console.info('connect');
-        this.socket.$emit('onAuth', {
+        return this.socket.$emit('onAuth', {
             hash: this.ls.userKey
         }).then(d => {
             if (d.result == 'ok') {
@@ -48,7 +48,7 @@ let AuthService = class AuthService {
                 this.userService.friends = d.user.friends;
                 this.socket.emit(d.user.hash);
                 this.friend.getInvites();
-                this.chatService.getUnViewed();
+                this.chatService.getUnViewed(true);
             }
             else {
                 this.userName = null;
@@ -83,12 +83,8 @@ let AuthService = class AuthService {
     }
 };
 AuthService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [socket_oi_service_1.Io,
-        local_storage_service_1.LocalStorage,
-        friends_service_1.FriendsService,
-        main_user_service_1.UserService,
-        chat_service_1.ChatService])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, friends_service_1.FriendsService, main_user_service_1.UserService, chat_service_1.ChatService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

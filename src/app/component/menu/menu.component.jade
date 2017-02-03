@@ -12,6 +12,7 @@ table
             .weather-ico((click)="onWeather()")
         td.fill-space
         td.bell((click)="goToFriends()")
+            .un-viewed-ids(*ngIf="unViewedIds.length") {{unViewedIds.length}}
             .num(*ngIf="invites.length") {{invites.length}}
         td.icoUser()
             img([src]="user.image || 'src/img/no-avatar.gif' ", (click)="goToProfile()")

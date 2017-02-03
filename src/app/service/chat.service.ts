@@ -24,6 +24,8 @@ export class ChatService{
     roomsObj: {[id:number]:Room} = {};
     private socket;
     unViewedDefer: Deferred;
+    private _unViewedIds: Array<number> = [];
+
     constructor(private io: Io){
         this.socket = io.socket;
         this.socket.on('onChat', this.onChat.bind(this))
@@ -41,11 +43,41 @@ export class ChatService{
         })
     }
 
-    getUnViewed(){
-        if(this.unViewedDefer.status==0){
+    get unViewedIds(): Array<number>{
+        return this._unViewedIds
+    }
+    set unViewedIds(ids: Array<number>){
+        this._unViewedIds.length = 0;
+        ids.forEach(id=>{
+            this._unViewedIds.push(id)
+        })
+    }
+    
+    resolveUnViewedIds(userId: number){
+        const index = this.unViewedIds.indexOf(userId)
+        if(-1<index){
+            this.unViewedIds.splice(index,1)
+        }
+    }
+    
+  
+    getUnViewed(update?: boolean){
+        
+        
+        if(this.unViewedDefer.status==0 || update){
+            
+            if(update){
+                this.unViewedDefer = new Deferred() 
+            }
+            
             this.socket.$emit('chatUnViewed')
-                .then(d=>{
-                    console.log(d)
+                .then((d:{[id: number]: Array<number>})=>{
+                    console.log('chatUnViewed->',d);
+                    const ids = []
+                    for(let key in d){
+                        ids.push(parseFloat(key))
+                    }
+                    this.unViewedIds = ids;
                     this.unViewedDefer.resolve(d)
                 })
         }

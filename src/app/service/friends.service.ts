@@ -84,23 +84,26 @@ export class FriendsService {
     }
 
     unBindChatUnViewed(userId: number){
-        let user = this.users.find(user=>{
+        const user = this.users.find(user=>{
             return user.id==userId
         });
-        if(!user){
-            user = this.friends.find(user=>{
-                return user.id==userId
-            });
-        }
-        if(user){
+        if(user && user.chatUnViewed){
             this.socket.$emit('chatResolveUnViewed', user.chatUnViewed)
                 .then(d=>{
                     console.log(d);
-                    delete user.chatUnViewed
+                    delete user.chatUnViewed;
                 });
         }
-
-        //console.log(user)
+        const friend = this.friends.find(user=>{
+            return user.id==userId
+        });
+        if(friend && friend.chatUnViewed){
+            this.socket.$emit('chatResolveUnViewed', friend.chatUnViewed)
+                .then(d=>{
+                    console.log(d);
+                    delete friend.chatUnViewed
+                });
+        }
     }
 
 

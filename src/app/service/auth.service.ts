@@ -47,13 +47,12 @@ export class AuthService implements Resolve<any>{
     }
 
     onAuth(){
-
-        this.onConnect()
+      return this.onConnect()
     }
 
     onConnect() {
         console.info('connect');
-        this.socket.$emit('onAuth', {
+        return this.socket.$emit('onAuth', {
             hash: this.ls.userKey
         }).then(d => {
             if(d.result =='ok'){
@@ -61,7 +60,7 @@ export class AuthService implements Resolve<any>{
                 this.userService.friends = d.user.friends;
                 this.socket.emit(d.user.hash);
                 this.friend.getInvites();
-                this.chatService.getUnViewed()
+                this.chatService.getUnViewed(true)
             }else{
                 this.userName = null;
             }

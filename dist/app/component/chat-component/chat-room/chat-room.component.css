@@ -51,6 +51,11 @@ textarea {
 .buttons-container > div {
   cursor: pointer;
 }
+.scroll {
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+}
 .message {
   margin-bottom: 5px;
 }

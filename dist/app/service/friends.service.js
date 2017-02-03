@@ -57,22 +57,26 @@ let FriendsService = class FriendsService {
         });
     }
     unBindChatUnViewed(userId) {
-        let user = this.users.find(user => {
+        const user = this.users.find(user => {
             return user.id == userId;
         });
-        if (!user) {
-            user = this.friends.find(user => {
-                return user.id == userId;
-            });
-        }
-        if (user) {
+        if (user && user.chatUnViewed) {
             this.socket.$emit('chatResolveUnViewed', user.chatUnViewed)
                 .then(d => {
                 console.log(d);
                 delete user.chatUnViewed;
             });
         }
-        //console.log(user)
+        const friend = this.friends.find(user => {
+            return user.id == userId;
+        });
+        if (friend && friend.chatUnViewed) {
+            this.socket.$emit('chatResolveUnViewed', friend.chatUnViewed)
+                .then(d => {
+                console.log(d);
+                delete friend.chatUnViewed;
+            });
+        }
     }
     onDelFriend(id) {
         this.socket.$emit('onDelFriend', id)
@@ -177,11 +181,8 @@ let FriendsService = class FriendsService {
     }
 };
 FriendsService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [socket_oi_service_1.Io,
-        local_storage_service_1.LocalStorage,
-        main_user_service_1.UserService,
-        chat_service_1.ChatService])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, main_user_service_1.UserService, chat_service_1.ChatService])
 ], FriendsService);
 exports.FriendsService = FriendsService;
 //# sourceMappingURL=friends.service.js.map

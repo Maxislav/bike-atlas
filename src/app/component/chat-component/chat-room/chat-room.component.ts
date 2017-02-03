@@ -1,7 +1,7 @@
 
 
 
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input, OnInit, AfterViewInit, ElementRef} from "@angular/core";
 import {User} from "../../../service/main.user.service";
 import {deepCopy} from "../../../util/deep-copy";
 import {ChatService} from "../../../service/chat.service";
@@ -24,8 +24,12 @@ export interface Room{
     messages: Array<Message>;
     isActive: boolean
 }
+interface MyNode extends Node{
+    scrollTop: any
+    scrollHeight: any
+}
 
-declare const module: any
+declare const module: any;
 
 @Component({
     moduleId: module.id, 
@@ -35,20 +39,30 @@ declare const module: any
     styleUrls: ['./chat-room.component.css']
 
 })
-export class ChatRoomComponent implements OnInit{
+export class ChatRoomComponent implements OnInit, AfterViewInit{
+
     private id: number;
 
     @Input() room: Room;
     name: String;
     messages:Array<Message>;
     myActiveMess: Message;
-    constructor(private chatService: ChatService, private friendService: FriendsService){
+    private mesLength: number = 0;
+
+   private _keyUp: EventListener;
+    private scrollEl: MyNode;
+
+    constructor(private chatService:ChatService,
+                private friendService:FriendsService,
+                private el:ElementRef) {
+
             this.myActiveMess = {
                 id: null,
                 text:'',
                 isMy: true,
                 viewed: true
-            }
+            };
+        this._keyUp = this.keyUp.bind(this)
     }
     ngOnInit():void {
         this.name= this.room.name;
@@ -56,15 +70,39 @@ export class ChatRoomComponent implements OnInit{
         this.id = this.room.id;
         this.chatService.chatHistory(this.id)
         this.friendService.unBindChatUnViewed(this.id)
+        this.chatService.resolveUnViewedIds(this.room.id)
     }
+    ngAfterViewInit():void {
+        this.scrollEl = this.el.nativeElement.getElementsByClassName('scroll')[0]
+    }
+    ngDoCheck(){
+        if(this.mesLength!=this.messages.length){
+            this.mesLength =  this.messages.length;
+            setTimeout(()=>{
+                this.scrollEl.scrollTop = this.scrollEl.scrollHeight
+            }, 10)
+        }
+    }
+
     onSend(){
         const mess = deepCopy(this.myActiveMess);
-       // this.messages.push(mess);
         this.myActiveMess.text ='';
         this.chatService.onSend(this.id, mess);
 
     }
+    private keyUp(e){
+        if(e.keyCode == 13 && e.ctrlKey){
+            this.onSend()
+        }
+    }
     onClose(){
         this.chatService.closeRoom(this.id)
     }
+    onFocus(){
+        document.addEventListener('keyup', this._keyUp)
+    }
+    onBlur(){
+        document.removeEventListener('keyup', this._keyUp)
+    }
+
 }
