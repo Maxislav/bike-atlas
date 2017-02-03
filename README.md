@@ -1,6 +1,6 @@
 # Atlas-Angular2
 
-![alt tag](ScreenShot.png)
+![](ScreenShot.png=400x200)
 
 ## Required
 MySql, Node
