@@ -65,6 +65,7 @@
   var config = {
     map: map,
     packages: packages,
+      baseURL: 'http://178.62.44.54',
     meta: {
         '*.css': { loader: 'css' }
     }
