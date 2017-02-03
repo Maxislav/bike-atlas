@@ -1,5 +1,7 @@
 # Atlas-Angular2
 
+![alt tag](ScreenShot.png)
+
 ## Required
 MySql, Node
 
