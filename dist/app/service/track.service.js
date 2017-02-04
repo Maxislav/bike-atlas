@@ -22,6 +22,7 @@ const toast_component_1 = require("../component/toast/toast.component");
 //console.log(dateformat)
 const F = parseFloat;
 const I = parseInt;
+console.log(System);
 let TrackService = TrackService_1 = class TrackService {
     constructor(io, mapService, ts) {
         this.io = io;
@@ -37,6 +38,9 @@ let TrackService = TrackService_1 = class TrackService {
             let xmlStr = String.fromCharCode.apply(null, new Uint8Array(d));
             this.showGpxTrack(xmlStr);
         });
+    }
+    resolve() {
+        return undefined;
     }
     showGpxTrack(xmlStr) {
         const track = [];
@@ -162,7 +166,7 @@ let TrackService = TrackService_1 = class TrackService {
         };
     }
     colorWorker(points) {
-        const worker = new Worker('dist/app/worker/color-speed.js');
+        const worker = new Worker(System.baseURL + 'dist/app/worker/color-speed.js');
         return new Promise((resolve, reject) => {
             worker.postMessage([points]);
             worker.onmessage = resolve;
@@ -171,7 +175,7 @@ let TrackService = TrackService_1 = class TrackService {
     addSrcPoints(points, xmlDoc, updateLine) {
         const map = this.mapService.map;
         const layerId = this.getLayerId('cluster-');
-        const worker = new Worker('dist/app/worker/color-speed.js');
+        const worker = new Worker(System.baseURL + 'dist/app/worker/color-speed.js');
         let sourceData;
         const updatePoints = (points) => {
             const data = TrackService_1.getData(points);

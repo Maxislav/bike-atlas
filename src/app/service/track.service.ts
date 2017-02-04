@@ -12,12 +12,19 @@ import * as mapboxgl from "@lib/mapbox-gl/mapbox-gl.js";
 
 import * as dateformat from "node_modules/dateformat/lib/dateformat.js";
 import {ToastService} from "../component/toast/toast.component";
+
+import {Resolve} from "@angular/router";
 //console.log(dateformat)
 const F = parseFloat;
 const I = parseInt;
+declare var System: any;
+console.log(System)
 
 @Injectable()
-export class TrackService {
+export class TrackService implements Resolve<any> {
+    resolve(){
+        return undefined;
+    }
 
     layerIds:Array<String>;
 
@@ -193,7 +200,8 @@ export class TrackService {
     }
 
     private colorWorker(points:Array<Point>): Promise<any>{
-        const worker = new Worker('dist/app/worker/color-speed.js');
+
+        const worker = new Worker(System.baseURL+'dist/app/worker/color-speed.js');
         return new Promise((resolve, reject)=>{
             worker.postMessage([points]);
             worker.onmessage = resolve;
@@ -205,7 +213,7 @@ export class TrackService {
     addSrcPoints(points:Array<Point>, xmlDoc, updateLine: Function) {
         const map = this.mapService.map;
         const layerId = this.getLayerId('cluster-');
-        const worker = new Worker('dist/app/worker/color-speed.js');
+        const worker = new Worker(System.baseURL+'dist/app/worker/color-speed.js');
         let sourceData;
 
         const updatePoints = (points:Array<Point>)=>{

@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
 import {Point} from "./track.var";
 @Injectable()
-export class JournalService {
+export class JournalService  {
 
 
     socket: any;

@@ -12,7 +12,7 @@ declare var System: any;
 
 @Injectable()
 export class LeafletResolver implements Resolve<any>{
-    L: any
+    L: any;
     resolve():Promise<any> {
 
 

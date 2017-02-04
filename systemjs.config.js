@@ -63,6 +63,7 @@
   // Add package entries for angular packages
   ngPackageNames.forEach(setPackageConfig);
   var config = {
+    baseURL:'/',
     map: map,
     packages: packages,
     meta: {
