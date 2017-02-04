@@ -1,5 +1,5 @@
 'use strict';
-importScripts('../util/get-color.js', '../../../node_modules/ramda/dist/ramda.min.js');
+importScripts('http://178.62.44.54/dist/app/util/get-color.js', 'http://178.62.44.54/node_modules/ramda/dist/ramda.min.js');
 onmessage = (e) => {
     //console.log(e.data[0])
     const points = e.data[0];

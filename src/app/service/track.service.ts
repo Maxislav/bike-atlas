@@ -18,7 +18,6 @@ import {Resolve} from "@angular/router";
 const F = parseFloat;
 const I = parseInt;
 declare var System: any;
-console.log(System)
 
 @Injectable()
 export class TrackService implements Resolve<any> {

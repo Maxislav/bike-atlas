@@ -22,7 +22,6 @@ const toast_component_1 = require("../component/toast/toast.component");
 //console.log(dateformat)
 const F = parseFloat;
 const I = parseInt;
-console.log(System);
 let TrackService = TrackService_1 = class TrackService {
     constructor(io, mapService, ts) {
         this.io = io;
