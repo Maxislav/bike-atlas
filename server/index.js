@@ -63,7 +63,7 @@ app.use((req, res, next)=>{
     res.end('olol');
     return;
   }
-
+  res.header("Access-Control-Allow-Origin", "*");
   if(req.url.match(/node_modules/)){
    // console.log('node_modules ->', req.url)
   }else {
