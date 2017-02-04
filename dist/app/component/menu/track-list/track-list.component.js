@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require('@angular/core');
+const core_1 = require("@angular/core");
 const track_service_1 = require("app/service/track.service");
 const util_1 = require("app/service/util");
 const map_service_1 = require("../../../service/map.service");
@@ -122,8 +122,8 @@ TrackList = __decorate([
         //template: "<div>Список</div><ul><li *ngFor='let track of list; let i = index'>{{i}}: {{track.distance}} km<div class='del' (click)='hideTrack(track)'>x</div></li></ul>",
         templateUrl: "./track-list.html",
         styleUrls: ['./track-list.css']
-    }), 
-    __metadata('design:paramtypes', [(typeof (_a = typeof track_service_1.TrackService !== 'undefined' && track_service_1.TrackService) === 'function' && _a) || Object, map_service_1.MapService])
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof track_service_1.TrackService !== "undefined" && track_service_1.TrackService) === "function" && _a || Object, map_service_1.MapService])
 ], TrackList);
 exports.TrackList = TrackList;
 var _a;

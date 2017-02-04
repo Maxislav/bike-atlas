@@ -13,7 +13,7 @@ export class Io{
 
     constructor(){
         //this._socket = io("http://"+window.location.hostname+":8081");
-        this._socket = io("http://"+"178.62.44.54"+":8081");
+        this._socket = io("http://"+"178.62.44.54"+":8080");
 
         this._socket.$emit = (name: string, data: Object)=>{
             return new Promise((resolve, reject)=>{
@@ -31,6 +31,10 @@ export class Io{
                 this.socket.emit(name, data)
             })
         }
+
+        this._socket.on('connect', ()=>{
+
+        })
         this._socket.on('news',(d)=>{
             //console.log(d,'klklttewefewfwe')
         });

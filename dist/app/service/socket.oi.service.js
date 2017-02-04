@@ -12,7 +12,8 @@ const core_1 = require("@angular/core");
 const io = require("socket/socket.io.js");
 let Io = class Io {
     constructor() {
-        this._socket = io("http://" + window.location.hostname + ":8081");
+        //this._socket = io("http://"+window.location.hostname+":8081");
+        this._socket = io("http://" + "178.62.44.54" + ":8080");
         this._socket.$emit = (name, data) => {
             return new Promise((resolve, reject) => {
                 const timeout = setTimeout(() => {
@@ -27,6 +28,8 @@ let Io = class Io {
                 this.socket.emit(name, data);
             });
         };
+        this._socket.on('connect', () => {
+        });
         this._socket.on('news', (d) => {
             //console.log(d,'klklttewefewfwe')
         });
@@ -36,8 +39,8 @@ let Io = class Io {
     }
 };
 Io = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
 ], Io);
 exports.Io = Io;
 //# sourceMappingURL=socket.oi.service.js.map
