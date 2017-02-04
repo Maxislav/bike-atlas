@@ -100,15 +100,12 @@ export class OneItemTrackComponent implements OnInit{
 
         points.forEach((point, i)=>{
             if(i<points.length-1){
-                let distBetween = parseInt(this.util.distanceBetween2(point, points[i+1]));
+                let distBetween = parseInt(this.util.distanceBetween2(point, points[i+1])+'');
                 let arr = fill(point, points[i+1], distBetween)
                 fillTrack = fillTrack.concat(arr);
                 //console.log(distBetween)
             }
         });
-
-
-
         function fill(point1, point2, steps){
             const arr: Point[] = [];
             let lngStep = (point2.lng - point1.lng)/steps;
@@ -125,15 +122,92 @@ export class OneItemTrackComponent implements OnInit{
                 arr.push(point1);
                 arr.push(point2);
             }
-
-
             return arr
+        }
+        return fillTrack
+    }
 
+    onDownload() {
+        const xmlDoc: Document = this.track.xmlDoc;
+        const points:Array<Point> = this.track.points;
+        if(!xmlDoc){
+            this.createXmlDoc(points)
+                .then(this.download)
+                .catch(err=>{
+                    console.warn(err)
+                });
+            return
+        }
+        this.download(xmlDoc);
+
+    }
+
+    private createXmlDoc(points: Array<Point>): Promise<Document>{
+        return new Promise((resolve, reject)=>{
+            const parser = new DOMParser();
+            const xmlDoc: Element = document.createElement('gpx');
+            xmlDoc.setAttribute('xmlns', "http://www.topografix.com/GPX/1/0");
+            xmlDoc.setAttribute('xmlns:xsi', "http://www.w3.org/2001/XMLSchema-instance");
+            xmlDoc.setAttribute('version', "1.0");
+            xmlDoc.setAttribute('creator', "Bike-Atlas");
+
+            const time = document.createElement('time');
+            time.innerText = new Date().toISOString();
+            xmlDoc.appendChild(time);
+
+            const trk   =  document.createElement('trk')
+            xmlDoc.appendChild(trk);
+            const trkseg = document.createElement('trkseg')
+            trk.appendChild(trkseg);
+
+            points.forEach((point: Point)=>{
+               const trkpt = document.createElement('trkpt')
+                trkpt.setAttribute('lat', point.lat.toString());
+                trkpt.setAttribute('lon', point.lng.toString());
+
+                const time = document.createElement('time');
+                time.innerText = new Date(point.date).toISOString();
+                trkpt.appendChild(time);
+
+                const speed = document.createElement('speed');
+                speed.innerText = point.speed.toString();
+                trkpt.appendChild(speed);
+
+                trkseg.appendChild(trkpt)
+            })
+
+
+            resolve(xmlDoc);
+        })
+    }
+
+    private download(xmlDoc: Document){
+        const time = xmlDoc.getElementsByTagName('time')[0];
+        download(time.innerHTML + '.gpx', xml2string(xmlDoc));
+
+        function xml2string(node) {
+            if (typeof(XMLSerializer) !== 'undefined') {
+                const serializer = new XMLSerializer();
+                return serializer.serializeToString(node);
+            } else if (node.xml) {
+                return node.xml;
+            }
         }
 
-        return fillTrack
+        function download(filename, text) {
+            const pom = document.createElement('a');
+            pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            pom.setAttribute('download', filename);
 
-
+            if (document.createEvent) {
+                const event = document.createEvent('MouseEvents');
+                event.initEvent('click', true, true);
+                pom.dispatchEvent(event);
+            }
+            else {
+                pom.click();
+            }
+        }
     }
 
 }

@@ -8,7 +8,8 @@
   <div (click)="hideTrack()" class="del">&#215;</div>
 </div>
 <div class="action">
-  <div (click)="track.download()" class="download"></div>
+  <!--.download((click)="track.download()")-->
+  <div (click)="onDownload()" class="download"></div>
   <div (click)="saveChange()" class="save"></div>
   <div (click)="track.showSrcPoint()" class="route-points"></div>
   <div (click)="onGo(track)" class="go">Play &#9658;</div>

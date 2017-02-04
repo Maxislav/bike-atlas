@@ -47,7 +47,7 @@ export class TrackService {
     showGpxTrack(xmlStr:string) {
         const track = [];
         const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlStr, "text/xml");
+        const xmlDoc: Document = parser.parseFromString(xmlStr, "text/xml");
         const forEach = Array.prototype.forEach;
         forEach.call(xmlDoc.getElementsByTagName('trkpt'), (item, i)=> {
             if (item.getAttribute('lon')) {
@@ -61,7 +61,6 @@ export class TrackService {
             }
         });
         this.showTrack(track, xmlDoc)
-
 
     }
 
@@ -150,10 +149,10 @@ export class TrackService {
             color: color,
             distance: 0,
             date: points[0].date,
-            download: () => {
+            xmlDoc: xmlDoc
+           /* download: () => {
                 this.onDownload(xmlDoc, points)
-            }
-            //distance: (function() { return $this.util.distance(this)})()
+            }*/
         };
 
         tr.distance = this.util.distance(tr);
@@ -166,37 +165,7 @@ export class TrackService {
         return tr
     }
 
-    onDownload(xmlDoc, points?:Array<Point>) {
 
-        const time = xmlDoc.getElementsByTagName('time')[0];
-
-
-        download(time.innerHTML + '.gpx', xml2string(xmlDoc));
-
-        function xml2string(node) {
-            if (typeof(XMLSerializer) !== 'undefined') {
-                const serializer = new XMLSerializer();
-                return serializer.serializeToString(node);
-            } else if (node.xml) {
-                return node.xml;
-            }
-        }
-
-        function download(filename, text) {
-            const pom = document.createElement('a');
-            pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-            pom.setAttribute('download', filename);
-
-            if (document.createEvent) {
-                const event = document.createEvent('MouseEvents');
-                event.initEvent('click', true, true);
-                pom.dispatchEvent(event);
-            }
-            else {
-                pom.click();
-            }
-        }
-    }
 
     private static getData(points){
         return {
@@ -268,10 +237,6 @@ export class TrackService {
             sourceData = TrackService.getData(points);
             map.getSource(layerId).setData(sourceData);
         }
-
-
-
-
         const mousemove = (e)=> {
             const features = map.queryRenderedFeatures(e.point, {
                 layers: [layerId],

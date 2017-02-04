@@ -129,41 +129,13 @@ let TrackService = TrackService_1 = class TrackService {
             color: color,
             distance: 0,
             date: points[0].date,
-            download: () => {
-                this.onDownload(xmlDoc, points);
-            }
+            xmlDoc: xmlDoc
         };
         tr.distance = this.util.distance(tr);
         this.util.bearing(tr.points);
         trackList.push(tr);
         console.log(tr);
         return tr;
-    }
-    onDownload(xmlDoc, points) {
-        const time = xmlDoc.getElementsByTagName('time')[0];
-        download(time.innerHTML + '.gpx', xml2string(xmlDoc));
-        function xml2string(node) {
-            if (typeof (XMLSerializer) !== 'undefined') {
-                const serializer = new XMLSerializer();
-                return serializer.serializeToString(node);
-            }
-            else if (node.xml) {
-                return node.xml;
-            }
-        }
-        function download(filename, text) {
-            const pom = document.createElement('a');
-            pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-            pom.setAttribute('download', filename);
-            if (document.createEvent) {
-                const event = document.createEvent('MouseEvents');
-                event.initEvent('click', true, true);
-                pom.dispatchEvent(event);
-            }
-            else {
-                pom.click();
-            }
-        }
     }
     static getData(points) {
         return {
