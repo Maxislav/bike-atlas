@@ -109,6 +109,9 @@ class OnChat extends ProtoData {
                         this.socket.emit(eName, res)
                     })
             })
+            .catch(err => {
+                console.error('Error',eName,'->', err)
+            })
 
     }
 }

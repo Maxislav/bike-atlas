@@ -8,7 +8,10 @@ import {ToastService} from "../toast/toast.component";
 import {UserService, User} from "../../service/main.user.service";
 import {PrivateAreaService} from "../../service/private.area.service";
 
-
+declare const module: any;
+interface MyNode extends Node{
+    click: Function
+}
 
 @Component({
     moduleId: module.id,
@@ -17,7 +20,7 @@ import {PrivateAreaService} from "../../service/private.area.service";
 })
 export class ProfileComponent implements AfterViewInit{
     private imageurl: string;
-    private inputEl: Element;
+    private inputEl: MyNode;
     private name: string;
     private socket: any;
     private user: User;
@@ -63,7 +66,7 @@ export class ProfileComponent implements AfterViewInit{
         const elCanvas = document.createElement('canvas');
         elCanvas.width = 100;
         elCanvas.height = 100;
-        var context = elCanvas.getContext('2d');
+        const context = elCanvas.getContext('2d');
         function drawClipped(context, myImage) {
             context.save();
             context.beginPath();

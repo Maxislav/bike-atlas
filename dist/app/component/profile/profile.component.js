@@ -54,7 +54,7 @@ let ProfileComponent = class ProfileComponent {
         const elCanvas = document.createElement('canvas');
         elCanvas.width = 100;
         elCanvas.height = 100;
-        var context = elCanvas.getContext('2d');
+        const context = elCanvas.getContext('2d');
         function drawClipped(context, myImage) {
             context.save();
             context.beginPath();
