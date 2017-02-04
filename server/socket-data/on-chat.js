@@ -1,10 +1,9 @@
 const util = require('./util');
 const R = require('ramda');
-
-class OnChat {
+const ProtoData = require('./proto-data');
+class OnChat extends ProtoData {
     constructor(socket, connection, chat) {
-        this.socket = socket;
-        this.connection = connection;
+        super(socket, connection);
         this.chat = chat;
         this.socket.on('onChatSend', this.onChatSend.bind(this, 'onChatSend'));
         this.socket.on('chatHistory', this.chatHistory.bind(this, 'chatHistory'));
@@ -15,32 +14,32 @@ class OnChat {
     }
 
     chatResolveUnViewed(eName, mesIds) {
-        if(mesIds){
-          util.getUserIdBySocketId(this.connection, this.socket.id)
-            .then(userId => {
-              return util.chatResolveUnViewed(this.connection,userId, mesIds.join(","))
-                .then(rows=>{
-                  this.socket.emit(eName, {
-                    result: 'ok'
-                  })
+        if (mesIds) {
+            this.getUserId()
+                .then(userId => {
+                    return util.chatResolveUnViewed(this.connection, userId, mesIds.join(","))
+                        .then(rows => {
+                            this.socket.emit(eName, {
+                                result: 'ok'
+                            })
+                        })
                 })
+                .catch(err => {
+                    console.error(eName, '->', err)
+                })
+        } else {
+            this.socket.emit(eName, {
+                result: 'ok'
             })
-            .catch(err => {
-              console.error(eName, '->', err)
-            })
-        }else{
-          this.socket.emit(eName, {
-            result: 'ok'
-          })
         }
-        
 
 
     }
 
     onChatSend(eName, data) {
         const toUserId = data.id;
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+        //util.getUserIdBySocketId(this.connection, this.socket.id)
+        this.getUserId()
             .then(userId => {
                 const resData = {
                     toUserId: toUserId,
@@ -61,7 +60,7 @@ class OnChat {
     }
 
     chatHistory(eName, opponentId) {
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+        this.getUserId()
             .then(userId => {
                 return util.chatHistory(this.connection, userId, opponentId)
                     .then(arrRows => {
@@ -86,14 +85,14 @@ class OnChat {
                     })
             })
             .catch(err => {
-
+                    console.error('Error chatHistory->', err)
             })
 
 
     }
 
     chatUnViewed(eName) {
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+        this.getUserId()
             .then(userId => {
                 return util.chatUnViewed(this.connection, userId)
                     .then(rows => {
