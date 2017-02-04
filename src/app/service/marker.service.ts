@@ -73,7 +73,8 @@ export class MarkerService {
         const timer = this.timer;
 
 
-        marker.updateSetImage = function (src) {
+        marker.updateSetImage = function (src : string) {
+            src = src || 'src/img/no-avatar.gif';
             img.src = src;
             this.image = src;
         };

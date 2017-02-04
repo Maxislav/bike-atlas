@@ -41,6 +41,7 @@ let MarkerService = class MarkerService {
         let intervalUpdateMarker = null;
         const timer = this.timer;
         marker.updateSetImage = function (src) {
+            src = src || 'src/img/no-avatar.gif';
             img.src = src;
             this.image = src;
         };
@@ -85,8 +86,8 @@ let MarkerService = class MarkerService {
     }
 };
 MarkerService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [map_service_1.MapService, timer_service_1.TimerService])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [map_service_1.MapService, timer_service_1.TimerService])
 ], MarkerService);
 exports.MarkerService = MarkerService;
 //# sourceMappingURL=marker.service.js.map

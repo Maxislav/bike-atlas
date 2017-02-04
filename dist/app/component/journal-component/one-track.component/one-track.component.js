@@ -48,8 +48,8 @@ let OneTrack = class OneTrack {
     }
 };
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Array)
+    core_1.Input(),
+    __metadata("design:type", Array)
 ], OneTrack.prototype, "track", void 0);
 OneTrack = __decorate([
     core_1.Component({
@@ -58,8 +58,8 @@ OneTrack = __decorate([
         moduleId: module.id,
         templateUrl: './one-track.component.html',
         styleUrls: ['./one-track.component.css'],
-    }), 
-    __metadata('design:paramtypes', [core_1.ElementRef, journal_component_1.LeafletResolver, local_storage_service_1.LocalStorage, track_service_1.TrackService])
+    }),
+    __metadata("design:paramtypes", [core_1.ElementRef, journal_component_1.LeafletResolver, local_storage_service_1.LocalStorage, track_service_1.TrackService])
 ], OneTrack);
 exports.OneTrack = OneTrack;
 //# sourceMappingURL=one-track.component.js.map
