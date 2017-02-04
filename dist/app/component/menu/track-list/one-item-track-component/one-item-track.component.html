@@ -1,0 +1,15 @@
+
+<div class="title">
+  <div [style.background]="track.color" class="color"></div>
+  <div class="info">
+    <div class="date">{{track.date | date: 'dd/MM/yyyy'}}</div>
+    <div class="dist">  {{track.distance}} km</div>
+  </div>
+  <div (click)="hideTrack()" class="del">&#215;</div>
+</div>
+<div class="action">
+  <div (click)="track.download()" class="download"></div>
+  <div (click)="saveChange()" class="save"></div>
+  <div (click)="track.showSrcPoint()" class="route-points"></div>
+  <div (click)="onGo(track)" class="go">Play &#9658;</div>
+</div>

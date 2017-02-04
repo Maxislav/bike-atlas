@@ -130,7 +130,7 @@ let TrackService = TrackService_1 = class TrackService {
             distance: 0,
             date: points[0].date,
             download: () => {
-                this.onDownload(xmlDoc);
+                this.onDownload(xmlDoc, points);
             }
         };
         tr.distance = this.util.distance(tr);
@@ -139,12 +139,12 @@ let TrackService = TrackService_1 = class TrackService {
         console.log(tr);
         return tr;
     }
-    onDownload(xmlDoc) {
+    onDownload(xmlDoc, points) {
         const time = xmlDoc.getElementsByTagName('time')[0];
         download(time.innerHTML + '.gpx', xml2string(xmlDoc));
         function xml2string(node) {
             if (typeof (XMLSerializer) !== 'undefined') {
-                var serializer = new XMLSerializer();
+                const serializer = new XMLSerializer();
                 return serializer.serializeToString(node);
             }
             else if (node.xml) {
@@ -208,7 +208,8 @@ let TrackService = TrackService_1 = class TrackService {
         };
         const delPoint = (id) => {
             let index = R.findIndex(R.propEq('id', id))(points);
-            points.splice(index, 1);
+            if (-1 < index)
+                points.splice(index, 1);
             const find = Array.prototype.find;
             if (xmlDoc) {
                 const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item => {
@@ -321,13 +322,13 @@ let TrackService = TrackService_1 = class TrackService {
                 icoEl.style.transform = "rotate(" + I(angle + '') + "deg)";
             },
             update: function (point) {
-                for (let opt in point) {
-                    this[opt] = point[opt];
-                }
+                this.lng = point.lng;
+                this.lat = point.lat;
+                this.bearing = point.bearing;
                 if (point.bearing) {
                     this.rotate();
                 }
-                iconMarker.setLngLat([this.lng, this.lat]);
+                iconMarker.setLngLat([point.lng, point.lat]);
             },
             remove: function () {
                 iconMarker.remove();

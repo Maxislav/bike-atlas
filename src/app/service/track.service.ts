@@ -24,9 +24,8 @@ export class TrackService {
     private util:Util;
     private _trackList:Array<Tr> = [];
     private _map:any;
-    private popupEdit:any;
     private arrayDelPoints: Array<number> = [];
-    private socket: any
+    private socket: any;
 
     constructor(private io:Io, private mapService:MapService,  private ts: ToastService) {
 
@@ -152,7 +151,7 @@ export class TrackService {
             distance: 0,
             date: points[0].date,
             download: () => {
-                this.onDownload(xmlDoc)
+                this.onDownload(xmlDoc, points)
             }
             //distance: (function() { return $this.util.distance(this)})()
         };
@@ -167,16 +166,16 @@ export class TrackService {
         return tr
     }
 
-    onDownload(xmlDoc) {
+    onDownload(xmlDoc, points?:Array<Point>) {
 
-        const time = xmlDoc.getElementsByTagName('time')[0]
+        const time = xmlDoc.getElementsByTagName('time')[0];
 
 
-        download(time.innerHTML + '.gpx', xml2string(xmlDoc))
+        download(time.innerHTML + '.gpx', xml2string(xmlDoc));
 
         function xml2string(node) {
             if (typeof(XMLSerializer) !== 'undefined') {
-                var serializer = new XMLSerializer();
+                const serializer = new XMLSerializer();
                 return serializer.serializeToString(node);
             } else if (node.xml) {
                 return node.xml;
@@ -248,7 +247,8 @@ export class TrackService {
 
         const delPoint = (id:number)=>{
             let index = R.findIndex(R.propEq('id', id))(points);
-            points.splice(index, 1);
+            if(-1<index) points.splice(index, 1);
+
             const find = Array.prototype.find;
             if(xmlDoc){
                 const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item=> {
@@ -384,13 +384,15 @@ export class TrackService {
                 icoEl.style.transform = "rotate(" + I(angle + '') + "deg)"
             },
             update: function (point:Point) {
-                for (let opt in point) {
-                    this[opt] = point[opt];
-                }
+
+                this.lng = point.lng
+                this.lat= point.lat
+                this.bearing= point.bearing
+
                 if (point.bearing) {
                     this.rotate();
                 }
-                iconMarker.setLngLat([this.lng, this.lat])
+                iconMarker.setLngLat([point.lng, point.lat])
             },
             remove: function () {
                 iconMarker.remove();

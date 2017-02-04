@@ -4,8 +4,6 @@ export class Point extends Array<number>{
 
 
     private _date: Date;
-   
-
     public id: number;
     public speed: number;
 

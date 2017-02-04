@@ -23,7 +23,7 @@ const MENU = [
     },
     {
         value: 'load',
-        text: "Загрузить",
+        text: "Загрузить GPX",
         enctype: "multipart/form-data",
     },
     {

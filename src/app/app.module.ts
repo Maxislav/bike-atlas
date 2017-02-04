@@ -48,6 +48,7 @@ import {AllUserComponent} from "./component/all-user/all-user.component";
 import {ChatComponent} from "./component/chat-component/chat.component";
 import {ChatRoomComponent} from "./component/chat-component/chat-room/chat-room.component";
 import {ChatService} from "./service/chat.service";
+import {OneItemTrackComponent} from "./component/menu/track-list/one-item-track-component/one-item-track.component";
 
 @NgModule({
     imports: [
@@ -59,6 +60,7 @@ import {ChatService} from "./service/chat.service";
      * Компоненты
      */
     declarations: [
+        OneItemTrackComponent,
         ChatRoomComponent,
         ChatComponent,
         AllUserComponent,

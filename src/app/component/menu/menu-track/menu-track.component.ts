@@ -33,7 +33,7 @@ const MENU:Item[] = [
     },
     {
         value: 'load',
-        text: "Загрузить",
+        text: "Загрузить GPX",
         enctype: "multipart/form-data",
     },
     {
@@ -42,6 +42,8 @@ const MENU:Item[] = [
     },
 
 ];
+
+declare const module: any;
 
 @Component({
     moduleId: module.id,

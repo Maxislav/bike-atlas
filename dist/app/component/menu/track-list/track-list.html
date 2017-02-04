@@ -3,20 +3,20 @@
 <div>
   <ul>
     <li *ngFor="let track of list; let i = index">
-      <div class="title">
-        <div [style.background]="track.color" class="color"></div>
-        <div class="info">
-          <div class="date">{{track.date | date: 'dd/MM/yyyy'}}</div>
-          <div class="dist">  {{track.distance}} km</div>
-        </div>
-        <div (click)="hideTrack(track)" class="del">&#215;</div>
-      </div>
-      <div class="action">
-        <div (click)="track.download()" class="download"></div>
-        <div (click)="saveChange()" class="save"></div>
-        <div (click)="track.showSrcPoint()" class="route-points"></div>
-        <div (click)="onGo(track)" class="go">Play &#9658;</div>
-      </div>
+      <one-item-track-component [track]="track"></one-item-track-component>
+      <!--   .title
+      .color([style.background]="track.color")
+      .info
+          .date {{track.date | date: 'dd/MM/yyyy'}}
+          .dist   {{track.distance}} km
+      .del( (click)='hideTrack(track)') &#215;
+      -->
+      <!--  .action
+      .download((click)="track.download()")
+      .save((click)="saveChange()")
+      .route-points((click)="track.showSrcPoint()")
+      .go( (click)="onGo(track)") Play &#9658;
+      -->
     </li>
   </ul>
 </div>

@@ -51,8 +51,6 @@ export class OneTrack implements OnInit, AfterViewInit{
     @Input() track: Array<any>;
     constructor(private el:ElementRef, private Leaflet: LeafletResolver, private ls:LocalStorage, private trackService: TrackService){
         this.L = Leaflet.L;
-
-
     }
     showOnMap(){
         this.trackService.showTrack(this.track)

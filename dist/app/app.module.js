@@ -54,6 +54,7 @@ const all_user_component_1 = require("./component/all-user/all-user.component");
 const chat_component_1 = require("./component/chat-component/chat.component");
 const chat_room_component_1 = require("./component/chat-component/chat-room/chat-room.component");
 const chat_service_1 = require("./service/chat.service");
+const one_item_track_component_1 = require("./component/menu/track-list/one-item-track-component/one-item-track.component");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -67,6 +68,7 @@ AppModule = __decorate([
          * Компоненты
          */
         declarations: [
+            one_item_track_component_1.OneItemTrackComponent,
             chat_room_component_1.ChatRoomComponent,
             chat_component_1.ChatComponent,
             all_user_component_1.AllUserComponent,
