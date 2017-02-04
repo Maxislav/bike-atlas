@@ -165,7 +165,22 @@ let TrackService = TrackService_1 = class TrackService {
         };
     }
     colorWorker(points) {
-        const worker = new Worker(System.baseURL + 'dist/app/worker/color-speed.js');
+        let worker;
+        if (System.baseURL.match(/178/)) {
+            worker = {
+                postMessage: () => {
+                    System.import('dist/app/util/get-color.js')
+                        .then(({ Color }) => {
+                        const data = new Color().getColors(points);
+                        worker.onmessage({ data });
+                    });
+                },
+                onmessage: null
+            };
+        }
+        else {
+            worker = new Worker(System.baseURL + 'dist/app/worker/color-speed.js');
+        }
         return new Promise((resolve, reject) => {
             worker.postMessage([points]);
             worker.onmessage = resolve;
@@ -174,8 +189,6 @@ let TrackService = TrackService_1 = class TrackService {
     addSrcPoints(points, xmlDoc, updateLine) {
         const map = this.mapService.map;
         const layerId = this.getLayerId('cluster-');
-        console.log(System.baseURL);
-        const worker = new Worker(System.baseURL + 'dist/app/worker/color-speed.js');
         let sourceData;
         const updatePoints = (points) => {
             const data = TrackService_1.getData(points);

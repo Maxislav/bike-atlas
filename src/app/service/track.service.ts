@@ -200,10 +200,26 @@ export class TrackService implements Resolve<any> {
 
     private colorWorker(points:Array<Point>): Promise<any>{
 
-        const worker = new Worker(System.baseURL+'dist/app/worker/color-speed.js');
+        let worker;
+        if(System.baseURL.match(/178/)){
+            worker = {
+                postMessage: ()=>{
+                    System.import('dist/app/util/get-color.js')
+                        .then(({Color})=>{
+                            const data = new Color().getColors(points)
+                            worker.onmessage({data})
+                        })
+                },
+                onmessage: null
+            }
+
+
+        }else {
+            worker = new Worker(System.baseURL+'dist/app/worker/color-speed.js');
+        }
         return new Promise((resolve, reject)=>{
             worker.postMessage([points]);
-            worker.onmessage = resolve;
+            worker.onmessage = resolve
 
         })
     }
@@ -212,13 +228,14 @@ export class TrackService implements Resolve<any> {
     addSrcPoints(points:Array<Point>, xmlDoc, updateLine: Function) {
         const map = this.mapService.map;
         const layerId = this.getLayerId('cluster-');
-        console.log(System.baseURL);
-        const worker = new Worker(System.baseURL+'dist/app/worker/color-speed.js');
+
+
+
         let sourceData;
 
         const updatePoints = (points:Array<Point>)=>{
             const data = TrackService.getData(points);
-           map.getSource(layerId).setData(data);
+            map.getSource(layerId).setData(data);
             updateLine(points)
         };
 

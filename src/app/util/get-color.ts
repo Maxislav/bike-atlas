@@ -1,3 +1,5 @@
+import * as R from '@ramda/ramda.min.js';
+
 const f = parseFloat;
 
 function  fc () {
@@ -63,6 +65,33 @@ const  getRgbColor2 = (speed, limit, hue) =>{
         return [255,hue,hue]
     }
 };
-export function   getHexColor (speed, limit, hue)  {
+function   getHexColor (speed, limit, hue?: number)  {
     return rgbToHex.apply(this, getRgbColor2(speed, limit, hue))
 }
+
+export  class Color{
+    constructor(){
+
+    }
+    getColors(points){
+        // points = e.data[0];
+
+        const result =  R.sortBy(R.prop('speed'))(points);
+        const max = result[result.length-1].speed;
+
+        points.forEach(point=>{
+            point.color = getHexColor(point.speed, max);
+        })
+
+        const colors = R.uniq(R.pluck('color')(points));
+
+        const resColors = [];
+
+
+        colors.forEach(item=>{
+            resColors.push([item, item])
+        })
+        return [points, resColors]
+    }
+}
+
