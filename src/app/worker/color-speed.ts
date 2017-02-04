@@ -1,5 +1,5 @@
 'use strict';
-importScripts('http://178.62.44.54/dist/app/util/get-color.js', 'http://178.62.44.54/node_modules/ramda/dist/ramda.min.js');
+importScripts('./get-color.js', '../../../node_modules/ramda/dist/ramda.min.js');
 declare const R:any;
 
 onmessage = (e)=>{

@@ -174,6 +174,7 @@ let TrackService = TrackService_1 = class TrackService {
     addSrcPoints(points, xmlDoc, updateLine) {
         const map = this.mapService.map;
         const layerId = this.getLayerId('cluster-');
+        console.log(System.baseURL);
         const worker = new Worker(System.baseURL + 'dist/app/worker/color-speed.js');
         let sourceData;
         const updatePoints = (points) => {

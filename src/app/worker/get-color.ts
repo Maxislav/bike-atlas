@@ -63,6 +63,6 @@ const  getRgbColor2 = (speed, limit, hue) =>{
         return [255,hue,hue]
     }
 };
-export function   getHexColor (speed, limit, hue)  {
+function   getHexColor (speed, limit, hue)  {
     return rgbToHex.apply(this, getRgbColor2(speed, limit, hue))
 }

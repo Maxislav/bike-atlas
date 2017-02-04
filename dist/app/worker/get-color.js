@@ -1,4 +1,3 @@
-"use strict";
 const f = parseFloat;
 function fc() {
     let res = 0;
@@ -65,5 +64,4 @@ const getRgbColor2 = (speed, limit, hue) => {
 function getHexColor(speed, limit, hue) {
     return rgbToHex.apply(this, getRgbColor2(speed, limit, hue));
 }
-exports.getHexColor = getHexColor;
 //# sourceMappingURL=get-color.js.map

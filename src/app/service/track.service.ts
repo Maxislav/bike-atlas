@@ -212,6 +212,7 @@ export class TrackService implements Resolve<any> {
     addSrcPoints(points:Array<Point>, xmlDoc, updateLine: Function) {
         const map = this.mapService.map;
         const layerId = this.getLayerId('cluster-');
+        console.log(System.baseURL);
         const worker = new Worker(System.baseURL+'dist/app/worker/color-speed.js');
         let sourceData;
 
