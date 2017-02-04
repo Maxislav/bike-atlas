@@ -91,7 +91,7 @@ export class ChatRoomComponent implements OnInit, AfterViewInit{
 
     }
     private keyUp(e){
-        if(e.keyCode == 13 && e.ctrlKey){
+        if(e.keyCode == 13 && !e.ctrlKey){
             this.onSend()
         }
     }
