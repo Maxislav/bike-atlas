@@ -7,7 +7,7 @@ module.exports = function (req, res, next) {
     path: '/'+ req.params.z+'/'+req.params.x+'/'+req.params.y,
     headers: req.headers
   };
-  res.header("Access-Control-Allow-Origin", "http://maxislav.github.io");
+  res.header("Access-Control-Allow-Origin", "http://178.62.44.54");
   const proxyRequest = http.request( opt );
   proxyRequest.on( 'response', function ( proxyResponse ) {
     proxyResponse.on( 'data', function ( chunk ) {
@@ -16,9 +16,9 @@ module.exports = function (req, res, next) {
     proxyResponse.on( 'end', function () {
       res.end();
     } );
-      proxyResponse.header("Access-Control-Allow-Origin", "http://maxislav.github.io");
+      proxyResponse.header("Access-Control-Allow-Origin", "http://178.62.44.54");
     res.writeHead( proxyResponse.statusCode, proxyResponse.headers );
-      res.header("Access-Control-Allow-Origin", "http://maxislav.github.io");
+
   } );
   proxyRequest.on('error', function(err){
     res.statusCode = 204;
