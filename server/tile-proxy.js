@@ -18,7 +18,7 @@ module.exports = function (req, res, next) {
     } );
       proxyResponse.header("Access-Control-Allow-Origin", "http://178.62.44.54");
     res.writeHead( proxyResponse.statusCode, proxyResponse.headers );
-      res.header("Access-Control-Allow-Origin", "http://178.62.44.54");
+      res.writeHead("Access-Control-Allow-Origin: http://178.62.44.54");
      // res.header("Access-Control-Allow-Origin", "http://178.62.44.54");
   } );
   proxyRequest.on('error', function(err){
