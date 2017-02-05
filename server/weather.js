@@ -15,6 +15,7 @@ module.exports = (req, res, nest) => {
   console.log('meteoinfo.by ->','try');
   
   isProcess = true;
+  res.header("Access-Control-Allow-Origin", "http://maxislav.github.io");
   
   Jimp.read(path, function (err, image) {
     if (err) {

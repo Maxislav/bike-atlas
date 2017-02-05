@@ -103,7 +103,7 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
                 {
                     "type": "raster",
                     "tiles": [
-                        "hills/{z}/{x}/{y}.png"
+                        "http://178.62.44.54/hills/{z}/{x}/{y}.png"
                     ],
                     "tileSize": 256
                 });

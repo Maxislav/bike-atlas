@@ -7,6 +7,7 @@ module.exports = function (req, res, next) {
     path: '/'+ req.params.z+'/'+req.params.x+'/'+req.params.y,
     headers: req.headers
   };
+  res.header("Access-Control-Allow-Origin", "http://maxislav.github.io");
   const proxyRequest = http.request( opt );
   proxyRequest.on( 'response', function ( proxyResponse ) {
     proxyResponse.on( 'data', function ( chunk ) {
