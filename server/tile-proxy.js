@@ -18,6 +18,7 @@ module.exports = function (req, res, next) {
     } );
       proxyResponse.header("Access-Control-Allow-Origin", "http://maxislav.github.io");
     res.writeHead( proxyResponse.statusCode, proxyResponse.headers );
+      res.header("Access-Control-Allow-Origin", "http://maxislav.github.io");
   } );
   proxyRequest.on('error', function(err){
     res.statusCode = 204;
