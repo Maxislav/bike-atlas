@@ -120,9 +120,43 @@
           border: 1px dotted blue;
       }
       
+      .ico-z {
+          width: 40px;
+          height: 40px;
+          background: url("src/img/ico-z.png") no-repeat center;
+          background-size: 100%;
+          animation: ROTATE 2s infinite;
+          opacity: 0.5;
+          animation-timing-function: linear;
+      
+      }
+      
+      .prelaoder {
+          margin: 40px auto;
+      }
+      
+      .prelaoder > div {
+          margin: auto;
+          text-align: center;
+      }
+      
+      @keyframes ROTATE {
+          0% {
+              transform: rotate(0deg);
+          }
+          100% {
+              transform: rotate(360deg);
+          }
+      }
+      
     </style>
   </head>
 </html>
 <body>
-  <my-app>Loading...</my-app>
+  <my-app>
+    <div class="prelaoder">
+      <div>Loading...</div>
+      <div class="ico-z"></div>
+    </div>
+  </my-app>
 </body>
