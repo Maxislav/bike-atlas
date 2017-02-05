@@ -156,9 +156,7 @@ export class TrackService implements Resolve<any> {
             distance: 0,
             date: points[0].date,
             xmlDoc: xmlDoc
-           /* download: () => {
-                this.onDownload(xmlDoc, points)
-            }*/
+         
         };
 
         tr.distance = this.util.distance(tr);
@@ -206,7 +204,7 @@ export class TrackService implements Resolve<any> {
                 postMessage: ()=>{
                     System.import('dist/app/util/get-color.js')
                         .then(({Color})=>{
-                            const data = new Color().getColors(points)
+                            const data = new Color().getColors(points);
                             worker.onmessage({data})
                         })
                 },
