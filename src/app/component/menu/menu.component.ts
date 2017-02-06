@@ -20,6 +20,7 @@ import {ChatService} from "../../service/chat.service";
 //import {Track} from "./track";
 
 declare var document: any;
+declare const System: any;
 
 
 
@@ -91,7 +92,7 @@ export class MenuComponent{
         const map = this.mapService.map;
         map.addSource('borispol',{
             "type": "image",
-            'url': 'borisbolukbb?date='+new Date().toISOString(),
+            'url': System.baseURL+'borisbolukbb?date='+new Date().toISOString(),
             "coordinates" :[
                 [27.9,52.14],
                 [33.89,52.14],

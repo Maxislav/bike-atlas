@@ -59,8 +59,8 @@ AllUserComponent = __decorate([
         moduleId: module.id,
         templateUrl: './all-user.component.html',
         styleUrls: ['./all-user.component.css'],
-    }),
-    __metadata("design:paramtypes", [friends_service_1.FriendsService, chat_service_1.ChatService])
+    }), 
+    __metadata('design:paramtypes', [friends_service_1.FriendsService, chat_service_1.ChatService])
 ], AllUserComponent);
 exports.AllUserComponent = AllUserComponent;
 //# sourceMappingURL=all-user.component.js.map

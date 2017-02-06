@@ -1,6 +1,6 @@
 # Atlas-Angular2
 
-![](https://github.com/Maxislav/Atlas-Angular2/blob/master/ScreenShot.png?raw=true=400x200)
+![](https://github.com/Maxislav/bike-atlas/blob/master/ScreenShot.png?raw=true=400x200)
 
 ## Required
 MySql, Node
