@@ -118,10 +118,11 @@ export class LogService {
     }
 
     getOtherImage(id) {
-        this.socket.$emit('getUserImage', id)
-            .then(d=> {
-                this.setOtherImage(d.id, d.image)
-            })
+        this.user.getUserImageById(id)
+            .then(image=>{
+                this.setOtherImage(id, image)
+            });
+
     }
 
     getLastPosition() {

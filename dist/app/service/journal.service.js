@@ -46,9 +46,9 @@ let JournalService = class JournalService {
             .then(d => {
             console.log(d);
             if (d && d.result == 'ok') {
-                this.devices = d.devices;
-                this.fillList(this.devices);
-                return this.devices;
+                //this.devices = d.devices;
+                this.fillList(d.list);
+                return d;
             }
             else {
                 return null;
@@ -62,20 +62,35 @@ let JournalService = class JournalService {
             return d;
         });
     }
-    fillList(devices) {
-        for (let key in devices) {
-            const points = [];
-            devices[key].forEach(p => {
-                const point = new track_var_1.Point(p.lng, p.lat, p.azimuth);
-                point.date = p.date;
-                point.speed = p.speed;
-                point.id = p.id;
-                points.push(point);
-            });
-            if (points.length) {
-                this.list.unshift(points);
+    fillList(list) {
+        list.forEach((obj) => {
+            if (obj.points.length) {
+                const points = [];
+                obj.points.forEach(p => {
+                    const point = new track_var_1.Point(p.lng, p.lat, p.azimuth);
+                    point.date = p.date;
+                    point.speed = p.speed;
+                    point.id = p.id;
+                    points.push(point);
+                });
+                obj.points = points;
+                this.list.unshift(obj);
             }
-        }
+        });
+        /* for(let key in devices){
+             const points: Array<Point> = [];
+             devices[key].forEach(p=>{
+                 const point  = new Point(p.lng, p.lat, p.azimuth);
+                 point.date = p.date;
+                 point.speed = p.speed;
+                 point.id = p.id
+                 points.push(point);
+             });
+             if(points.length){
+                 this.list.unshift(points)
+             }
+ 
+         }*/
     }
     get selectDate() {
         return this._selectDate;
@@ -93,8 +108,8 @@ let JournalService = class JournalService {
     }
 };
 JournalService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [socket_oi_service_1.Io])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io])
 ], JournalService);
 exports.JournalService = JournalService;
 //# sourceMappingURL=journal.service.js.map

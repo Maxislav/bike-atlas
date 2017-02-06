@@ -2,6 +2,10 @@
     .info
         .date
             |{{ trackDate | date: 'dd/MM/yyyy'}}
+        .user
+            .user-icon
+                img([src]="image || 'src/img/no-avatar.gif' ")
+            .name {{track.name}}
         .show-on-map((click)="showOnMap()") Просмотреть на главной карте
 
     .map

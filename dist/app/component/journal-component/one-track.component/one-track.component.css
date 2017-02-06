@@ -46,6 +46,14 @@ button:active {
 }
 .date {
   color: dodgerblue;
+  display: flex;
+}
+.user {
+  display: flex;
+  align-items: center;
+}
+.user .name {
+  margin-left: 10px;
 }
 .show-on-map {
   cursor: pointer;

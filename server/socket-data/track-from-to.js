@@ -41,9 +41,38 @@ class TrackFromTo extends  ProtoData{
             this.getUserId(),
             this.getFriendsIds()
         ])
-          .then(result=>[
-            console.log('result ->', result)
-          ])
+          .then(([userId, friendIds])=> {
+              const ids = [].concat([userId]).concat(friendIds)
+              return util.detDeviceByUserId(this.connection, ids.join(','))
+
+          })
+            .then(devices=>{
+                console.log('devices ->', devices)
+                const promises = [];
+                const list = []
+                devices.forEach(device => {
+                    promises.push(util.getTrackFromTo(this.connection, device.device_key, data.from, data.to)
+                        .then(rows=>{
+                            list.push({userId:device.user_id, name: device.name, points:rows});
+                            return rows
+                        })
+                    )
+                })
+                return Promise.all(promises)
+                    .then(rows=>{
+                        return list
+                    })
+
+
+            })
+            .then(list=>{
+                this.socket.emit(eName, {
+                    result: 'ok',
+                    list: list
+                })
+            });
+
+        return;
 
 
         let _userId;

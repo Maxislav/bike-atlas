@@ -1,13 +1,20 @@
 import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
 import {Point} from "./track.var";
+
+interface Track{
+    userId: number,
+    points: Array<any>,
+    name: String
+}
+
 @Injectable()
 export class JournalService  {
 
 
     socket: any;
     private _devices: {[id:string]:Array<any>}  = {};
-    public list: Array<Array<Point>>;
+    public list: Array<Track>;
     private _selectDate: Date;
     private dateCache: Array<string> = [];
 
@@ -50,10 +57,10 @@ export class JournalService  {
                 console.log(d)
                 
                 if(d && d.result == 'ok'){
-                    this.devices = d.devices;
-                    this.fillList(this.devices);
+                    //this.devices = d.devices;
+                    this.fillList(d.list);
                    
-                    return this.devices;
+                    return d;
 
                 }else {
                     return null
@@ -70,8 +77,24 @@ export class JournalService  {
             })
     }
 
-    fillList(devices){
-        for(let key in devices){
+    fillList(list){
+
+        list.forEach((obj: Track)=>{
+            if(obj.points.length) {
+                const points: Array<Point> = [];
+                obj.points.forEach(p=>{
+                    const point  = new Point(p.lng, p.lat, p.azimuth);
+                    point.date = p.date;
+                    point.speed = p.speed;
+                    point.id = p.id
+                    points.push(point);
+                });
+                obj.points = points;
+                this.list.unshift(obj);
+            }
+        });
+
+       /* for(let key in devices){
             const points: Array<Point> = [];
             devices[key].forEach(p=>{
                 const point  = new Point(p.lng, p.lat, p.azimuth);
@@ -84,7 +107,7 @@ export class JournalService  {
                 this.list.unshift(points)
             }
 
-        }
+        }*/
     }
     
     get selectDate(): Date {

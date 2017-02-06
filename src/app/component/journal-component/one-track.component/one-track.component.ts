@@ -5,6 +5,8 @@ import {JournalService} from "../../../service/journal.service";
 import {LocalStorage} from "../../../service/local-storage.service";
 import * as dateformat from "node_modules/dateformat/lib/dateformat.js";
 import {TrackService} from "../../../service/track.service";
+import {UserService} from "../../../service/main.user.service";
+declare const module: any
 @Component({
     //noinspection TypeScriptUnresolvedVariable
     selector: 'one-track',
@@ -16,6 +18,7 @@ export class OneTrack implements OnInit, AfterViewInit{
     L: any;
     mapEL: Node;
     trackDate: Date;
+    image: String;
 
 
     ngAfterViewInit(): void {
@@ -29,28 +32,36 @@ export class OneTrack implements OnInit, AfterViewInit{
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
-        if(!this.track.length){
+        if(!this.track.points.length){
            return
         }
 
         const latlngs = [];
-        this.track.forEach(point=>{
+        this.track.points.forEach(point=>{
             latlngs.push([point.lat, point.lng])
         });
-        this.trackDate = new Date(this.track[0].date);
+        this.trackDate = new Date(this.track.points[0].date);
         const polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
         map.fitBounds(polyline.getBounds());
 
     }
     ngOnInit(): void {
-        //console.log(this.track)
+        this.userService.getUserImageById(this.track.userId)
+            .then(image=>{
+                this.image = image;
+            })
     }
     index: number;
-    @Input() track: Array<any>;
-    constructor(private el:ElementRef, private Leaflet: LeafletResolver, private ls:LocalStorage, private trackService: TrackService){
+    @Input() track: {points:Array<any>, userId: number};
+    constructor(private el:ElementRef,
+                private Leaflet: LeafletResolver,
+                private ls:LocalStorage,
+                private trackService: TrackService,
+                private userService: UserService
+    ){
         this.L = Leaflet.L;
     }
     showOnMap(){
-        this.trackService.showTrack(this.track)
+        this.trackService.showTrack(this.track.points)
     }
 }

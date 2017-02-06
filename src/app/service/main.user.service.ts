@@ -1,6 +1,7 @@
 
 import {Injectable} from "@angular/core";
 import {Device} from "./device.service";
+import {Io} from "./socket.oi.service";
 
 
 export interface User{
@@ -21,7 +22,10 @@ export class UserService{
     private _user: User;
     private _friends: Array<User> = [];
     private _other: User;
-    constructor(){
+    private socket: any;
+    private images: {[userId:number]: String} ={};
+    constructor(private io: Io){
+        this.socket = io.socket;
         this._user = {
             name: null,
             id: null,
@@ -33,8 +37,6 @@ export class UserService{
             image: null,
             devices: []
         };
-        
-
     }
 
     clearUser(){
@@ -64,6 +66,19 @@ export class UserService{
     createDeviceOther(device){
         this._other.devices.push(device);
         return device
+    }
+
+    getUserImageById(id: number) {
+        if(this.images[id]){
+            return Promise.resolve(this.images[id])
+        }else{
+            return this.socket.$emit('getUserImage', id)
+                .then(data=>{
+                    this.images[data.id] = data.image;
+                    return data.image;
+                })
+        }
+
     }
 
     get other():User {

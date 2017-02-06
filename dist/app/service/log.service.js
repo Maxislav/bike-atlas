@@ -94,9 +94,9 @@ let LogService = class LogService {
         }
     }
     getOtherImage(id) {
-        this.socket.$emit('getUserImage', id)
-            .then(d => {
-            this.setOtherImage(d.id, d.image);
+        this.user.getUserImageById(id)
+            .then(image => {
+            this.setOtherImage(id, image);
         });
     }
     getLastPosition() {
@@ -116,8 +116,8 @@ let LogService = class LogService {
     }
 };
 LogService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [socket_oi_service_1.Io, main_user_service_1.UserService, marker_service_1.MarkerService])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io, main_user_service_1.UserService, marker_service_1.MarkerService])
 ], LogService);
 exports.LogService = LogService;
 //# sourceMappingURL=log.service.js.map

@@ -9,9 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require("@angular/core");
+const socket_oi_service_1 = require("./socket.oi.service");
 let UserService = class UserService {
-    constructor() {
+    constructor(io) {
+        this.io = io;
         this._friends = [];
+        this.images = {};
+        this.socket = io.socket;
         this._user = {
             name: null,
             id: null,
@@ -51,6 +55,18 @@ let UserService = class UserService {
         this._other.devices.push(device);
         return device;
     }
+    getUserImageById(id) {
+        if (this.images[id]) {
+            return Promise.resolve(this.images[id]);
+        }
+        else {
+            return this.socket.$emit('getUserImage', id)
+                .then(data => {
+                this.images[data.id] = data.image;
+                return data.image;
+            });
+        }
+    }
     get other() {
         return this._other;
     }
@@ -78,8 +94,8 @@ let UserService = class UserService {
     }
 };
 UserService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=main.user.service.js.map
