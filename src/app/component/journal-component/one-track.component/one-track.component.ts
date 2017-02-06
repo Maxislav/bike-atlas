@@ -37,9 +37,7 @@ export class OneTrack implements OnInit, AfterViewInit{
         this.track.forEach(point=>{
             latlngs.push([point.lat, point.lng])
         });
-        this.trackDate = new Date(this.track[0].date)
-
-
+        this.trackDate = new Date(this.track[0].date);
         const polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
         map.fitBounds(polyline.getBounds());
 

@@ -1,10 +1,10 @@
 const util = require('./util');
+const ProtoData = require('./proto-data');
 const R = require('ramda');
 
-class TrackFromTo {
+class TrackFromTo extends  ProtoData{
     constructor(socket, connection) {
-        this.socket = socket;
-        this.connection = connection;
+        super(socket, connection);
         socket.on('trackFromTo', this.trackFromTo.bind(this, 'trackFromTo'));
         socket.on('getLastDate', this.getLastDate.bind(this, 'getLastDate'));
         socket.on('delPoints', this.delPoints.bind(this, 'delPoints'));
@@ -12,7 +12,7 @@ class TrackFromTo {
 
     getLastDate(eName) {
         let _userId;
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+        this.getUserId()
             .then(userId => {
                 _userId = userId;
                 return util.getDeviceByUserId(this.connection, userId)
@@ -36,8 +36,18 @@ class TrackFromTo {
 
 
     trackFromTo(eName, data) {
+
+        Promise.all([
+            this.getUserId(),
+            this.getFriendsIds()
+        ])
+          .then(result=>[
+            console.log('result ->', result)
+          ])
+
+
         let _userId;
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+        this.getUserId()
             .then(userId => {
                 _userId = userId;
                 return util.getDeviceByUserId(this.connection, userId)
@@ -74,7 +84,7 @@ class TrackFromTo {
 
     delPoints(eName, points){
         let _userId;
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+        this.getUserId()
             .then(userId => {
                 _userId = userId;
                 return util.getDeviceByUserId(this.connection, userId)

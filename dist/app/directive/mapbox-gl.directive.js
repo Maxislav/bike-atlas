@@ -148,7 +148,7 @@ let MapboxGlDirective = class MapboxGlDirective {
             this.map.addSource('hill', {
                 "type": "raster",
                 "tiles": [
-                    "http://178.62.44.54/hills/{z}/{x}/{y}.png"
+                    System.baseURL + "hills/{z}/{x}/{y}.png"
                 ],
                 "tileSize": 256
             });

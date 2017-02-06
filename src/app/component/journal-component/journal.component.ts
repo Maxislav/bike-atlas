@@ -69,7 +69,6 @@ export class JournalComponent implements  OnInit{
 
     getTrack(from: Date, to: Date){
         this.journalService.getTrack(from, to);
-
     }
 
 

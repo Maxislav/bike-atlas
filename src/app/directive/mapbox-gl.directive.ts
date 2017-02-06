@@ -13,6 +13,7 @@ import {UserService} from "../service/main.user.service";
 declare var L:any;
 declare var gl:any;
 declare var mapboxgl:any;
+declare var System:any;
 
 @Injectable()
 export class MapResolver implements Resolve<any> {
@@ -103,7 +104,7 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
                 {
                     "type": "raster",
                     "tiles": [
-                        "http://178.62.44.54/hills/{z}/{x}/{y}.png"
+                        System.baseURL+"hills/{z}/{x}/{y}.png"
                     ],
                     "tileSize": 256
                 });

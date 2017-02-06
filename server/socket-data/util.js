@@ -582,6 +582,19 @@ module.exports = {
             })
         });
     },
+    getFriendIds: function (connection, userId) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT `friend_id` FROM `friends` WHERE user_id=?';
+              connection.query(query, [userId], (err, rows) => {
+                  if (err) {
+                      reject(err);
+                      return
+                  }
+                  resolve(rows)
+              })
+        })
+
+    },
     chatHistory: function (connection, fromUserId, toUserId) {
         return Promise.all([
             new Promise((resolve, reject) => {

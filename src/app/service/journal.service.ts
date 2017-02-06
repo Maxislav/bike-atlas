@@ -47,10 +47,12 @@ export class JournalService  {
                 to
             })
             .then(d => {
+                console.log(d)
+                
                 if(d && d.result == 'ok'){
                     this.devices = d.devices;
-                    this.fillList(this.devices)
-
+                    this.fillList(this.devices);
+                   
                     return this.devices;
 
                 }else {
