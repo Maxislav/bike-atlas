@@ -130,12 +130,17 @@
       
       }
       .prelaoder{
-          margin: 40px auto;
+          padding: 40px 0 ;
+          margin: 0 auto;
       }
       
       .prelaoder>div{
-          margin: auto;
+          color: gray;
+          margin: 20px auto;
           text-align: center;
+      }
+      .prelaoder>.loading{
+          margin-left: 10px;
       }
       @keyframes ROTATE {
           0%   { transform: rotate(0deg); }
@@ -149,7 +154,7 @@
 <body>
   <my-app>
     <div class="prelaoder">
-      <div>Loading...</div>
+      <div class="loading">Loading...</div>
       <div class="ico-z"></div>
     </div>
   </my-app>

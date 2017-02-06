@@ -133,12 +133,17 @@ html(lang='en')
 
             }
             .prelaoder{
-                margin: 40px auto;
+                padding: 40px 0 ;
+                margin: 0 auto;
             }
 
             .prelaoder>div{
-                margin: auto;
+                color: gray;
+                margin: 20px auto;
                 text-align: center;
+            }
+            .prelaoder>.loading{
+                margin-left: 10px;
             }
             @keyframes ROTATE {
                 0%   { transform: rotate(0deg); }
@@ -149,5 +154,5 @@ html(lang='en')
 body
         my-app
             .prelaoder
-                div Loading...
+                .loading Loading...
                 .ico-z
