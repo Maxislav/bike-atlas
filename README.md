@@ -1,6 +1,11 @@
-# Atlas-Angular2
+# Bike-Atlas
 
 ![](https://github.com/Maxislav/bike-atlas/blob/master/ScreenShot.png?raw=true=400x200)
+
+
+####[Bike-Atlas http://maxislav.github.io/bike-atlas](http://maxislav.github.io/bike-atlas/ "Bike-Atlas")
+
+***
 
 ## Required
 MySql, Node
