@@ -46,8 +46,8 @@ MenuAthleteComponent = __decorate([
         selector: 'menu-athlete',
         templateUrl: './menu.athlete.component.html',
         styleUrls: ['./menu.athlete.component.css'],
-    }),
-    __metadata("design:paramtypes", [main_user_service_1.UserService, map_service_1.MapService])
+    }), 
+    __metadata('design:paramtypes', [main_user_service_1.UserService, map_service_1.MapService])
 ], MenuAthleteComponent);
 exports.MenuAthleteComponent = MenuAthleteComponent;
 //# sourceMappingURL=menu.athlete.component.js.map

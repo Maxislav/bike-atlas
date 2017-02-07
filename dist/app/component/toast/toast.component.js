@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require("@angular/core");
+const core_1 = require('@angular/core');
 ;
 let ToastService = class ToastService {
     constructor() {
@@ -33,8 +33,8 @@ let ToastService = class ToastService {
     }
 };
 ToastService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], ToastService);
 exports.ToastService = ToastService;
 let ToastComponent = class ToastComponent {
@@ -50,8 +50,8 @@ ToastComponent = __decorate([
         styleUrls: [
             'dist/app/component/toast/toast.component.css',
         ]
-    }),
-    __metadata("design:paramtypes", [ToastService])
+    }), 
+    __metadata('design:paramtypes', [ToastService])
 ], ToastComponent);
 exports.ToastComponent = ToastComponent;
 ;
