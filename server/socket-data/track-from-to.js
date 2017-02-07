@@ -47,10 +47,10 @@ class TrackFromTo extends ProtoData {
 
 			})
 			.then(devices=> {
-				console.log('devices ->', devices)
 				const promises = [];
-				const list = []
-				devices.forEach(device => {
+				const list = [];
+
+				devices.forEach(/** @param {{device_key: String}} device */(device) => {
 					promises.push(util.getTrackFromTo(this.connection, device.device_key, data.from, data.to)
 						.then(rows=> {
 							list.push({userId: device.user_id, name: device.name, points: rows});
@@ -79,26 +79,23 @@ class TrackFromTo extends ProtoData {
 	}
 
 	delPoints(eName, points) {
-		let _userId;
 		this.getUserId()
 			.then(userId => {
-				_userId = userId;
 				return util.getDeviceByUserId(this.connection, userId)
-			}).then(devices => {
-			return devices
-		}).then(devices => {
-			const deviceKeys = R.pluck('device_key')(devices);
-			const arrPromise = [];
+			})
+			.then(devices => {
+				const deviceKeys = R.pluck('device_key')(devices);
+				const arrPromise = [];
 
-			points.forEach(pointId=> {
-				arrPromise.push(util.getDeviceKeyByPointId(this.connection, pointId)
-					.then(device=> {
-						return deviceKeys.indexOf(device.device_key)
-					})
-				)
-			});
-			return Promise.all(arrPromise);
-		})
+				points.forEach(pointId=> {
+					arrPromise.push(util.getDeviceKeyByPointId(this.connection, pointId)
+						.then(device=> {
+							return deviceKeys.indexOf(device.device_key)
+						})
+					)
+				});
+				return Promise.all(arrPromise);
+			})
 			.then(arr=> {
 				if (arr.find((a)=>a == -1)) {
 					return Promise.reject('no found link device')
