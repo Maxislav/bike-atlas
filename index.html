@@ -120,7 +120,7 @@
           border: 1px dotted blue;
       }
       
-      .ico-z {
+       .ico-z {
           width: 40px;
           height: 40px;
           background: url("src/img/ico-z.png") no-repeat center;
@@ -130,23 +130,22 @@
           animation-timing-function: linear;
       
       }
-      
-      .prelaoder {
-          padding: 60px 0;
+      .prelaoder{
+          padding: 40px 0 ;
+          margin: 0 auto;
       }
       
-      .prelaoder > div {
+      .prelaoder>div{
+          color: gray;
           margin: 20px auto;
           text-align: center;
       }
-      
+      .prelaoder>.loading{
+          margin-left: 10px;
+      }
       @keyframes ROTATE {
-          0% {
-              transform: rotate(0deg);
-          }
-          100% {
-              transform: rotate(360deg);
-          }
+          0%   { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
       }
       
     </style>
