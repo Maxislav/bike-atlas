@@ -14,9 +14,7 @@ class ProtoData{
         this.socket = socket;
         this.util = util;
         
-        //todo удалить
-        this.connection = null
-
+     
     }
     getUserId() {
         return this.util.getUserIdBySocketId(this.socket.id)
@@ -30,7 +28,7 @@ class ProtoData{
                })
           })
 
-
     }
+   
 }
 module.exports = ProtoData;
