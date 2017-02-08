@@ -25,22 +25,23 @@ let promiseExport = new Promise((resolve, reject)=>{
 let socketData;
 class SocketData{
     constructor(server, app, connection){
+        this.connection = connection;
         const ioServer = io(server);
         const logger = new Logger(app, ioServer, connection);
         const chat = new Chat(connection);
 
-        ioServer.on('connection', function (socket) {
+        ioServer.on('connection',  (socket) => {
             logger.sockets = ioServer.sockets.connected;
             chat.sockets = ioServer.sockets.connected;
-            const onEnter = new OnEnter(socket, connection, logger, chat);
-            const onAuth = new OnAuth(socket, connection, chat, logger);
-            const device = new Device(socket, connection, logger);
-            const onRegist = new OnRegist(socket, connection, logger);
-            const onProfile = new OnProfile(socket, connection, logger);
-            const onFriend = new OnFriend(socket, connection, logger, chat);
-            const onPrivateArea = new OnPrivateArea(socket, connection);
-            const trackFromTo = new TrackFromTo(socket, connection);
-            const onChat = new OnChat(socket, connection, chat);
+            const onEnter = new OnEnter(socket, this.connection, logger, chat);
+            const onAuth = new OnAuth(socket, this.connection, chat, logger);
+            const device = new Device(socket, this.connection, logger);
+            const onRegist = new OnRegist(socket, this.connection, logger);
+            const onProfile = new OnProfile(socket, this.connection, logger);
+            const onFriend = new OnFriend(socket, this.connection, logger, chat);
+            const onPrivateArea = new OnPrivateArea(socket, this.connection);
+            const trackFromTo = new TrackFromTo(socket, this.connection);
+            const onChat = new OnChat(socket, this.connection, chat);
             socket.on('disconnect',()=>{
                 logger.onDisconnect(socket.id);
                 chat.onDisconnect(socket.id);
@@ -60,6 +61,9 @@ class SocketData{
 
         });
 
+    }
+    updateConnect(connection){
+        this.connection = connection;
     }
 }
 
@@ -93,7 +97,12 @@ const connectionConnect = ()=>{
             .then(d=>{
                 server = d.server;
                 app = d.app;
-                socketData = new SocketData(server, app, connection)
+                if(socketData){
+                    socketData.updateConnect(connection)
+                }else{
+                    socketData = new SocketData(server, app, connection)    
+                }
+                
             });
     })
     
