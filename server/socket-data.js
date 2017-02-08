@@ -4,7 +4,8 @@ const mysql = require('mysql');
 const config = require('./mysql.config.json');
 const io = require('socket.io')
 config.mysql['database'] = 'monitoring';
-const connection = mysql.createConnection(config.mysql);
+//let connection = mysql.createConnection(config.mysql);
+
 const OnEnter = require('./socket-data/on-enter');
 const OnAuth = require('./socket-data/on-auth');
 const Device = require('./socket-data/device');
@@ -15,15 +16,92 @@ const OnPrivateArea = require('./socket-data/on-private-area');
 const Chat = require('./chat');
 const TrackFromTo = require('./socket-data/track-from-to')
 const OnChat = require('./socket-data/on-chat')
-
 const Logger = require('./logger');
-connection.connect((err)=>{
-    if (err) {
-        console.error('error connecting: ' + err.stack);
-        return;
-    }
-    console.log('connected as id ' + connection.threadId);
+let connection, server, app;
+let resolveExport;
+let promiseExport = new Promise((resolve, reject)=>{
+    resolveExport = resolve
 });
+let socketData;
+class SocketData{
+    constructor(server, app, connection){
+        const ioServer = io(server);
+        const logger = new Logger(app, ioServer, connection);
+        const chat = new Chat(connection);
+
+        ioServer.on('connection', function (socket) {
+            logger.sockets = ioServer.sockets.connected;
+            chat.sockets = ioServer.sockets.connected;
+            const onEnter = new OnEnter(socket, connection, logger, chat);
+            const onAuth = new OnAuth(socket, connection, chat, logger);
+            const device = new Device(socket, connection, logger);
+            const onRegist = new OnRegist(socket, connection, logger);
+            const onProfile = new OnProfile(socket, connection, logger);
+            const onFriend = new OnFriend(socket, connection, logger, chat);
+            const onPrivateArea = new OnPrivateArea(socket, connection);
+            const trackFromTo = new TrackFromTo(socket, connection);
+            const onChat = new OnChat(socket, connection, chat);
+            socket.on('disconnect',()=>{
+                logger.onDisconnect(socket.id);
+                chat.onDisconnect(socket.id);
+            });
+
+            socketStream(socket).on('file', function (stream) {
+                let data = [];
+                stream.on('data', (d) => {
+                    data.push(d);
+                });
+                stream.on('end', (e, d) => {
+                    console.log("file send")
+                    socket.emit('file', Buffer.concat(data));
+                });
+            });
+
+
+        });
+
+    }
+}
+
+
+    
+
+const connectionConnect = ()=>{
+    connection = mysql.createConnection(config.mysql);
+    connection.on('error', (err)=>{
+        console.log(err);
+        if(err.code == 'PROTOCOL_CONNECTION_LOST'){
+            console.error('PROTOCOL_CONNECTION_LOST ->' + err);
+            connection.end();
+            setTimeout(connectionConnect, 10000)
+        }
+    });
+    
+    connection.on('connect', (err)=>{
+        if(err){
+            console.log('err.connect -> ', err)
+            return;
+        }
+        
+        console.log('connected connect ->');
+
+    });
+    connection.connect((err)=>{
+        if (err) throw err;
+        console.log('connected as id ->' + connection.threadId);
+        promiseExport
+            .then(d=>{
+                server = d.server;
+                app = d.app;
+                socketData = new SocketData(server, app, connection)
+            });
+    })
+    
+};
+connectionConnect();
+
+
+
 
 
 
@@ -54,41 +132,12 @@ function onRegist(data) {
 }
 
 
-module.exports = (sever, app) => {
-    const ioServer = io(sever);
-    const logger = new Logger(app, ioServer, connection);
-    const  chat = new Chat(connection);
+module.exports = (server, app) => {
+    //server = _server; app = _app;
+    resolveExport({server, app})
+    
+   // socketData =   new SocketData(server, app, connection)
 
-    ioServer.on('connection', function (socket) {
-        logger.sockets = ioServer.sockets.connected;
-        chat.sockets = ioServer.sockets.connected;
-        const onEnter = new OnEnter(socket, connection, logger, chat);
-        const onAuth = new OnAuth(socket, connection, chat, logger);
-        const device = new Device(socket, connection, logger);
-        const onRegist = new OnRegist(socket, connection, logger);
-        const onProfile = new OnProfile(socket, connection, logger);
-        const onFriend = new OnFriend(socket, connection, logger, chat);
-        const onPrivateArea = new OnPrivateArea(socket, connection);
-        const trackFromTo = new TrackFromTo(socket, connection);
-        const onChat = new OnChat(socket, connection, chat);
-        socket.on('disconnect',()=>{
-            logger.onDisconnect(socket.id);
-            chat.onDisconnect(socket.id);
-        });
-
-        socketStream(socket).on('file', function (stream) {
-            let data = [];
-            stream.on('data', (d) => {
-                data.push(d);
-            });
-            stream.on('end', (e, d) => {
-                console.log("file send")
-                socket.emit('file', Buffer.concat(data));
-            });
-        });
-
-
-    });
 
 
     //INSERT INTO `user` (`id`, `name`, `pass`, `opt`) VALUES (NULL, 'max', 'eeew', NULL);

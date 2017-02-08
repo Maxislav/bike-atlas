@@ -4,7 +4,7 @@ const util = require('./socket-data/util');
 const http = require( "http" );
 const distance = require('./distance');
 const Robot = require('./robot');
-module.exports = class Logger {
+class Logger {
     /** @namespace this.connection */
 
     //  /log?id=862614000171302&dev=862614000171302&acct=862614000171302&batt=0&code=0xF020&alt=0.0&gprmc=$GPRMC,111925,A,5023.32022,N,3029.64240,E,0.000000,0.000000,050117,,*29
@@ -193,3 +193,5 @@ function minToDec(src) {
     suffix = suffix.replace('.', '');
     return parseFloat(prefix+'.'+suffix).toFixed(6);
 }
+
+module.exports = Logger;
