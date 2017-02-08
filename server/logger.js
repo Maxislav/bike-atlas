@@ -1,6 +1,6 @@
 let app, ioServer;
 const dateFormat = require('dateformat');
-const util = require('./socket-data/util');
+//const util = require('./socket-data/util');
 const http = require( "http" );
 const distance = require('./distance');
 const Robot = require('./robot');
@@ -8,19 +8,22 @@ class Logger {
     /** @namespace this.connection */
 
     //  /log?id=862614000171302&dev=862614000171302&acct=862614000171302&batt=0&code=0xF020&alt=0.0&gprmc=$GPRMC,111925,A,5023.32022,N,3029.64240,E,0.000000,0.000000,050117,,*29
-    constructor(_app, _ioServer, connection) {
+    constructor(_app, _ioServer, util) {
         app = _app;
         ioServer = _ioServer;
+        this.util = util; 
        
-        this.connection = connection;
-        this.robot = new Robot(connection);
+        //this.connection = connection;
+        
+        
+        this.robot = new Robot(util);
         this._sockets = {};
         this.devices = {};
         app.get('/log*', this.onLog.bind(this))
     }
 
     onLog(req, res, next) {
-
+        const util = this.util    
 
         const device_id = req.query.id;
         let data = null;
@@ -48,7 +51,10 @@ class Logger {
             res.end();
         }
         if(data){
-            util.insertLog(this.connection, data)
+            util.insertLog(data)
+                .catch(err=>[
+                    console.error('insertLog error ->', err)
+                ])
         }
 
         console.log('onLog ->', data);
@@ -71,12 +77,14 @@ class Logger {
         let _name;
         let _userId;
         let _setting;
-        util.getOwnerDevice(this.connection, device.device_key)
+        const util = this.util;
+        
+        this.util.getOwnerDevice(device.device_key)
           .then(rows=>{
               if(rows && rows.length){
                   _userId = rows[0].id;
                   _name = rows[0].name;
-                  return util.getUserSettingByUserId(this.connection, _userId)
+                  return util.getUserSettingByUserId(_userId)
                     .then(setting=>{
                         return setting
                     })
@@ -87,7 +95,7 @@ class Logger {
               console.log('setting ->', setting)
               if(setting && setting.lock == 0){
                   _setting = setting;
-                  return util.getPrivateArea(this.connection, _userId)
+                  return util.getPrivateArea(_userId)
               }
               return false
           })
@@ -135,7 +143,7 @@ class Logger {
                 }
             }
         }
-        console.log('onDisconnect', this.devices)
+        //console.log('logger onDisconnect ->', this.devices)
     }
 
     // $GPRMC,153946,A,5023.31220,N,3029.63150,E,0.000000,0.000000,030117,,*2A

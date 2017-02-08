@@ -1,11 +1,10 @@
-const util = require('./util');
 const R = require('ramda');
+const ProtoData = require('./proto-data');
 
-class OnFriend {
-    constructor(socket, connection, logger, chat) {
-        this.socket = socket;
+class OnFriend extends ProtoData{
+    constructor(socket, util, logger, chat) {
+        super(socket, util);
         this.logger = logger;
-        this.connection = connection;
         this.chat = chat;
         this.socket.on('getAllUsers', this.getAllUsers.bind(this));
         this.socket.on('getInvites', this.getInvites.bind(this));
@@ -19,9 +18,9 @@ class OnFriend {
     }
 
     onCancelInvite(eName, enemy_id) {
-        return util.getUserIdBySocketId(this.connection, this.socket.id)
+        return this.util.getUserIdBySocketId(this.socket.id)
             .then(user_id=>{
-                return util.onCancelInvite(this.connection, user_id, enemy_id)
+                return this.util.onCancelInvite(user_id, enemy_id)
             })
             .then(d=>{
                 this.socket.emit(eName, {
@@ -42,7 +41,7 @@ class OnFriend {
     }
 
     getUserImage(eName, user_id) {
-        return util.getUserImageById(this.connection, user_id)
+        return this.util.getUserImageById(user_id)
             .then(image => {
                 this.socket.emit(eName, {
                     id: user_id,
@@ -57,16 +56,16 @@ class OnFriend {
 
     onRejectInvite(enemy_id) {
 
-        return util.getUserIdBySocketId(this.connection, this.socket.id)
+        return this.util.getUserIdBySocketId(this.socket.id)
             .then(user_id => {
-                return util.getInvites(this.connection, user_id)
+                return this.util.getInvites( user_id)
                     .then((rows) => {
                         const enemy = R.find(item => {
                             return item.user_id == enemy_id
                         })(rows);
 
                         if (enemy) {
-                            util.delInviteByUserId(this.connection, enemy.user_id)
+                            this.util.delInviteByUserId(enemy.user_id)
                                 .then(d => {
                                     this.socket.emit('onRejectInvite', {
                                         result: 'ok'
@@ -92,14 +91,14 @@ class OnFriend {
      * @param {boolean}isOnDelFriend
      */
     getFriends(isOnDelFriend) {
-        const user = util.getUserIdBySocketId(this.connection, this.socket.id)
+        const user = this.util.getUserIdBySocketId(this.socket.id)
             .then(user_id => {
-                return util.getFriends(this.connection, user_id)
+                return this.util.getFriends(user_id)
             });
 
-        const myInvites = util.getUserIdBySocketId(this.connection, this.socket.id)
+        const myInvites = this.util.getUserIdBySocketId(this.socket.id)
             .then(user_id => {
-                return util.getMyInvites(this.connection, user_id)
+                return this.util.getMyInvites( user_id)
             });
 
         return Promise.all([user, myInvites])
@@ -131,7 +130,7 @@ class OnFriend {
 
 
     getAllUsers({hash, id}) {
-        util.getUsersNotSelf(this.connection, id)
+        this.util.getUsersNotSelf(id)
             .then(d => {
                 this.socket.emit('getAllUsers', {
                     result: 'ok',
@@ -149,7 +148,7 @@ class OnFriend {
     }
 
     onDelFriend(friend_id) {
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+        this.util.getUserIdBySocketId(this.socket.id)
             .then(user_id => {
                 return this.getFriends(true)
                     .then(friends => {
@@ -157,7 +156,7 @@ class OnFriend {
                             return item.id == friend_id;
                         });
                         if (friend) {
-                            return util.delFriend(this.connection, user_id, friend_id)
+                            return this.util.delFriend(user_id, friend_id)
                                 .then(d => {
                                     this.socket.emit('onDelFriend', {
                                         user_id,
@@ -174,9 +173,9 @@ class OnFriend {
     }
 
     getInvites(d) {
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+        this.util.getUserIdBySocketId(this.socket.id)
             .then(user_id => {
-                return util.getInvites(this.connection, user_id)
+                return this.util.getInvites(user_id)
                     .then(rows => {
                         rows.forEach(item => {
                             item.id = item.user_id;
@@ -198,17 +197,17 @@ class OnFriend {
 
 
     onAcceptInvite(friendId) {
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+        this.util.getUserIdBySocketId(this.socket.id)
             .then(userId => {
-                return util.getInviteByOwnerId(this.connection, userId, friendId)
+                return this.util.getInviteByOwnerId(userId, friendId)
                     .then(rows => {
                         if (rows.length) {
-                            return util.setFriends(this.connection, userId, friendId)
+                            return this.util.setFriends(userId, friendId)
                                 .then(d => {
                                     this.socket.emit('onAcceptInvite', {
                                         result: 'ok',
                                     });
-                                    return util.delInvite(this.connection, rows[0].id)
+                                    return this.util.delInvite(rows[0].id)
                                       .then(d=>{
                                         return friendId
                                       })
@@ -236,9 +235,9 @@ class OnFriend {
 
 
     onInvite({inviteId}) {
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+       this.util.getUserIdBySocketId(this.socket.id)
             .then(user_id => {
-                return util.onInviteFromToId(this.connection, user_id, inviteId)
+                return this.util.onInviteFromToId(user_id, inviteId)
                     .then((d) => {
                         this.socket.emit('onInvite', {
                             result: 'ok'

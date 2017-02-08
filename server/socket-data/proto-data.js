@@ -1,18 +1,30 @@
 const util = require('./util');
 const R = require('ramda');
 
+/**
+ * 
+ */
 class ProtoData{
-    constructor(socket, connection) {
+	/**
+     * 
+     * @param socket
+     * @param {Util} util
+     */
+    constructor(socket, util) {
         this.socket = socket;
-        this.connection = connection;
+        this.util = util;
+        
+        //todo удалить
+        this.connection = null
+
     }
     getUserId() {
-        return util.getUserIdBySocketId(this.connection, this.socket.id)
+        return this.util.getUserIdBySocketId(this.socket.id)
     }
     getFriendsIds(){
         return this.getUserId()
           .then(userId=>{
-             return util.getFriendIds(this.connection, userId)
+             return this.util.getFriendIds( userId)
                .then(rows=>{
                    return R.pluck('friend_id')(rows)
                })

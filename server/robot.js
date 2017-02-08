@@ -3,11 +3,12 @@ const parseString = require('xml2js').parseString;
 
 
 class Robot {
-  constructor(connection) {
-    this.connection = connection;
+  constructor(util) {
+    this.util = util;
+    //this.connection = util.connection;
     this.ownerId = null;
 
-    this.getDemoId(connection)
+    this.util.getDemoId()
       .then(owner_id=>{
         this.ownerId = owner_id;
         return this.getPoints()
@@ -25,24 +26,9 @@ class Robot {
     
   }
 
-  getDemoId(connection){
-    return new Promise((resolve, reject)=>{
-      connection.query('SELECT id FROM `user` WHERE `name`=?', ['demo'], function (err, rows) {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve(rows[0].id)
-      });
-    })
-  }
-
-  
   tick(points){
     const tick = (i)=>{
-      
       let timeout = 30000;
-
       try{
         timeout = points[i].timeout;
         if(30000<timeout){

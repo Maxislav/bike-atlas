@@ -1,52 +1,73 @@
-const util = require('./socket-data/util');
 const R = require('ramda');
 
 class Chat{
-    constructor(connection){
-        this.connection = connection;
+    constructor(util){
+        this.util = util;
         this._sockets = {};
+	    /**
+         *
+         * @type {{[userId:number]:[]}}
+         */
         this.user = {};
     }
 
     onAuth(socketId, userId){
+        const util = this.util;
         this.user[userId] = this.user[userId] || [];
 
         if(!this.isExist(this.user[userId], socketId)  ){
             this.user[userId].push(socketId);
         }
         console.log('chat user ids->', this.user)
-        util.getUserNameById(this.connection, userId)
+        util.getUserNameById(userId)
             .then(name=>{
                 console.log('chat auth ->', name, new Date());
             });
     }
     onEnter(socketId, userId){
-
-        util.getUserNameBySocketId(this.connection, this.socket.id)
-            .then(name=>{
-                console.log('chat enter ->', socketId, name, new Date());
-            });
         this.user[userId] = this.user[userId] || [];
+        console.log('chat enter ->', userId);
         if(!this.isExist(this.user[userId], socketId)  ){
             this.user[userId].push(socketId);
         }
     }
     onExit(socketId){
         console.log('chat exit ->', socketId);
-        this.clearSocket(socketId)
+        const userId = this.clearSocket(socketId);
+        if(userId){
+            this.util.getUserById(userId)
+                .then(user=>{
+                    console.log('chat exit - >',  user.name)
+                })
+                .catch(err => {
+                    console.error('Error getUserById ->', err)
+                });
+        }
     }
     onDisconnect(socketId){
-        console.log('chat disconnect ->', socketId);
+        this.util.getUserIdBySocketId(socketId)
+            .then(userId=>{
+               return this.util.getUserNameById(userId)
+            })
+            .then(name=>{
+                console.log('chat disconnect ->', name);
+            });
         this.clearSocket(socketId)
     }
 
     clearSocket(socketId){
-        R.map((item)=>{
-            const intex = item.indexOf(socketId);
-            if(-1<intex){
-                item.splice(intex,1)
+
+        let userId = null;
+        R.mapObjIndexed((item, key)=>{
+            const index = item.indexOf(socketId);
+            if(-1<index){
+                item.splice(index,1)
+                userId = key
             }
-        },this.user)
+        }, this.user);
+
+        return userId;
+
     }
     
     sendUpdateInvite(inveteId){

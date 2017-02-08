@@ -1,16 +1,17 @@
-const util = require('./util');
+const Protodata = require('./proto-data')
 
 
-class OnRegist {
-    constructor(socket, connection, logger) {
-        this.socket = socket;
-        this.connection = connection;
+class OnRegist extends Protodata{
+    constructor(socket, util, logger) {
+        super(socket, util);
+       
         this.logger = logger;
         socket.on('onRegist', this.onRegist.bind(this))
     }
 
     onRegist(d) {
-        util.onRegist(this.connection, d)
+        
+        this.util.onRegist(d)
             .then(d => {
                 if(d && d.result == 'ok'){
                     this.socket.emit('onRegist', {

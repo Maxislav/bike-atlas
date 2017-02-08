@@ -1,13 +1,11 @@
-let connection;
 const util = require('./util');
+const ProtoData = require('./proto-data');
 
-
-class OnAuth {
-    constructor(socket, _connection, chat, logger) {
-        this.socket = socket;
+class OnAuth extends ProtoData{
+    constructor(socket, util, chat, logger) {
+        super(socket, util);
         this.chat = chat;
         this.logger = logger;
-        this.connection = connection = _connection;
         this.socket.on('onAuth', this.onAuth.bind(this, 'onAuth'));
     }
 
@@ -15,8 +13,9 @@ class OnAuth {
         let _user;
         let _userDevices;
         let _friends;
+        const util = this.util;
         util
-            .getUserByHash(connection, data.hash)
+            .getUserByHash(data.hash)
             .then(user => {
                 _user = user;
                 /**
@@ -24,20 +23,20 @@ class OnAuth {
                  */
 
                 this.chat.onAuth(this.socket.id, _user.user_id);
-                return util.updateSocketIdByHash(connection, data.hash, this.socket.id)
+                return util.updateSocketIdByHash(data.hash, this.socket.id)
             })
             .then(d=>{
-                return util.getDeviceByUserId(this.connection, _user.user_id)
+                return util.getDeviceByUserId(_user.user_id)
             })
             .then(userDevices=>{
                 _userDevices = userDevices;
-                return util.getFriends(this.connection, _user.user_id)
+                return util.getFriends(_user.user_id)
             })
             .then(friends => {
                 _friends = friends;
                 const arrDevicesPromise = [];
                 friends.forEach(friend=>{
-                    arrDevicesPromise.push( util.getDeviceByUserId(this.connection, friend.id)
+                    arrDevicesPromise.push( util.getDeviceByUserId(friend.id)
                         .then(devices=>{
                             return friend.devices = devices;
                         }))
@@ -45,7 +44,7 @@ class OnAuth {
                 return arrDevicesPromise;
             })
             .then(d=>{
-                return util.getUserSettingByUserId(connection, _user.user_id)
+                return util.getUserSettingByUserId(_user.user_id)
             })
             .then(setting => {
                 const hash = util.getHash();
@@ -66,9 +65,9 @@ class OnAuth {
                     util.clearHash(hash);
                     deviceKeys.forEach(key=>{
                         arrLastPosition.push(
-                            util.getLastPosition(this.connection, key)
+                            util.getLastPosition(key)
                             .then(row=>{
-                                console.log('device key->', key)
+                                //console.log('device key->', key)
                                 this.logger.updateDevice(key, this.socket.id)
                                 this.socket.emit('log', row);
                                 return row;

@@ -1,9 +1,8 @@
-const util = require('./util');
 const R = require('ramda');
 const ProtoData = require('./proto-data');
 class OnChat extends ProtoData {
-    constructor(socket, connection, chat) {
-        super(socket, connection);
+    constructor(socket, util, chat) {
+        super(socket, util);
         this.chat = chat;
         this.socket.on('onChatSend', this.onChatSend.bind(this, 'onChatSend'));
         this.socket.on('chatHistory', this.chatHistory.bind(this, 'chatHistory'));
@@ -17,7 +16,7 @@ class OnChat extends ProtoData {
         if (mesIds) {
             this.getUserId()
                 .then(userId => {
-                    return util.chatResolveUnViewed(this.connection, userId, mesIds.join(","))
+                    return this.util.chatResolveUnViewed(userId, mesIds.join(","))
                         .then(rows => {
                             this.socket.emit(eName, {
                                 result: 'ok'
@@ -47,7 +46,7 @@ class OnChat extends ProtoData {
                     date: new Date(),
                     text: data.text
                 };
-                return util.onChatSend(this.connection, resData)
+                return this.util.onChatSend(resData)
                     .then(rows => {
                         resData.id = rows.insertId;
                         this.chat.onChatSend(resData);
@@ -62,7 +61,7 @@ class OnChat extends ProtoData {
     chatHistory(eName, opponentId) {
         this.getUserId()
             .then(userId => {
-                return util.chatHistory(this.connection, userId, opponentId)
+                return this.util.chatHistory(userId, opponentId)
                     .then(arrRows => {
                         const ownMess = formatMess(arrRows[0], true);
                         const outMess = formatMess(arrRows[1], false);
@@ -94,7 +93,7 @@ class OnChat extends ProtoData {
     chatUnViewed(eName) {
         this.getUserId()
             .then(userId => {
-                return util.chatUnViewed(this.connection, userId)
+                return this.util.chatUnViewed(userId)
                     .then(rows => {
                         rows = formatMess(rows);
                         let userIds = R.uniq(R.pluck('fromUserId')(rows)) || [];

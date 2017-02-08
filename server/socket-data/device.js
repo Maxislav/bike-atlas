@@ -1,11 +1,11 @@
 const util = require('./util');
+const ProtoData = require('./proto-data');
 
-class Device {
+class Device extends ProtoData{
 
-  constructor(socket, connection, logger) {
+  constructor(socket, util, logger) {
+    super(socket, util);
     this.logger = logger;
-    this.socket = socket;
-    this.connection = connection;
     socket.on('getDevice', this.getDevice.bind(this));
     socket.on('onAddDevice', this.onAddDevice.bind(this, 'onAddDevice'));
     socket.on('onDelDevice', this.onDelDevice.bind(this));
@@ -18,10 +18,11 @@ class Device {
    * @returns {Promise<R>}
    */
   getDevice(isLastPosition) {
-    return util.getUserIdBySocketId(this.connection, this.socket.id)
+    const util = this.util;
+    return util.getUserIdBySocketId(this.socket.id)
       .then(user_id=> {
 
-        return util.getDeviceByUserId(this.connection, user_id)
+        return util.getDeviceByUserId(user_id)
           .then(rows=> {
             this.socket.emit('getDevice', {
               result: 'ok',
@@ -43,7 +44,8 @@ class Device {
 
    }*/
   onAddDevice(eName, device) {
-    util.getDeviceByKey(this.connection, device.id)
+    const util = this.util;
+    util.getDeviceByKey(device.id)
       .then(rows=> {
         if (rows && rows.length) {
           return false;
@@ -54,7 +56,7 @@ class Device {
       })
       .then(d=> {
         if (d) {
-          return util.addDeviceBySocketId(this.connection, this.socket.id, device)
+          return util.addDeviceBySocketId(this.socket.id, device)
             .then(d=> {
               this.socket.emit(eName, {
                 result: 'ok'
@@ -80,10 +82,11 @@ class Device {
 
   onDelDevice(device) {
     console.log('onDelDevice->', device.device_key)
+    const util = this.util;
 
-    util.getUserIdBySocketId(this.connection, this.socket.id)
+    util.getUserIdBySocketId(this.socket.id)
       .then(user_id=> {
-        util.delDeviceByUserDeviceKey(this.connection, user_id, device.device_key)
+        util.delDeviceByUserDeviceKey(user_id, device.device_key)
           .then((d)=> {
             this.socket.emit('onDelDevice', {
               result: 'ok'
@@ -99,29 +102,6 @@ class Device {
       })
 
   }
-
-  /* getLastPosition(){
-   this.getDevice(true)
-   .then(devices=>{
-   const arrPromise = [];
-   devices.forEach(device=>{
-   arrPromise.push(util.getLastPosition(this.connection, device));
-   });
-   Promise.all(arrPromise)
-   .then(devices=>{
-   const devi = [];
-   devices.forEach(row=>{
-   if(row){
-   devi.push(util.formatDevice(row));
-   }
-   });
-   this.socket.emit('getLastPosition', devi)
-   })
-   .catch(err=>{
-   console.error('Error emitLastPosition->', err)
-   })
-   })
-   }*/
 }
 
 

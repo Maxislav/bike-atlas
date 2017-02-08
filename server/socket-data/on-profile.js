@@ -1,19 +1,17 @@
-const util = require('./util');
+const  ProtoData = require('./proto-data')
 
 
-class OnProfile {
-    constructor(socket, connection, logger) {
-        this.socket = socket;
+class OnProfile extends ProtoData{
+    constructor(socket, util, logger) {
+        super(socket, util)
         this.logger = logger;
-        this.connection = connection;
         this.socket.on('onImage', this.onImage.bind(this));
     }
 
     onImage(base64){
-      //  console.log(base64)
-        util.getUserIdBySocketId(this.connection, this.socket.id)
+        this.util.getUserIdBySocketId(this.socket.id)
             .then(user_id=>{
-                util.setImageProfile(this.connection, user_id, base64)
+                this.util.setImageProfile(user_id, base64)
                     .then(d=>{
                         this.socket.emit('onImage', {
                             result: 'ok',

@@ -17,31 +17,37 @@ const Chat = require('./chat');
 const TrackFromTo = require('./socket-data/track-from-to')
 const OnChat = require('./socket-data/on-chat')
 const Logger = require('./logger');
+const Util = require('./socket-data/util')
 let connection, server, app;
 let resolveExport;
 let promiseExport = new Promise((resolve, reject)=>{
     resolveExport = resolve
 });
 let socketData;
+
+
+
+
 class SocketData{
     constructor(server, app, connection){
         this.connection = connection;
+        const util = new Util(connection);
         const ioServer = io(server);
-        const logger = new Logger(app, ioServer, connection);
-        const chat = new Chat(connection);
+        const logger = new Logger(app, ioServer, util);
+        const chat = new Chat(util);
 
         ioServer.on('connection',  (socket) => {
             logger.sockets = ioServer.sockets.connected;
             chat.sockets = ioServer.sockets.connected;
-            const onEnter = new OnEnter(socket, this.connection, logger, chat);
-            const onAuth = new OnAuth(socket, this.connection, chat, logger);
-            const device = new Device(socket, this.connection, logger);
-            const onRegist = new OnRegist(socket, this.connection, logger);
-            const onProfile = new OnProfile(socket, this.connection, logger);
-            const onFriend = new OnFriend(socket, this.connection, logger, chat);
-            const onPrivateArea = new OnPrivateArea(socket, this.connection);
-            const trackFromTo = new TrackFromTo(socket, this.connection);
-            const onChat = new OnChat(socket, this.connection, chat);
+            const onEnter = new OnEnter(socket, util, logger, chat);
+            const onAuth = new OnAuth(socket, util, chat, logger);
+            const device = new Device(socket, util, logger);
+            const onRegist = new OnRegist(socket, util, logger);
+            const onProfile = new OnProfile(socket, util, logger);
+            const onFriend = new OnFriend(socket, util, logger, chat);
+            const onPrivateArea = new OnPrivateArea(socket, util);
+            const trackFromTo = new TrackFromTo(socket, util);
+            const onChat = new OnChat(socket, util, chat);
             socket.on('disconnect',()=>{
                 logger.onDisconnect(socket.id);
                 chat.onDisconnect(socket.id);
@@ -61,10 +67,13 @@ class SocketData{
 
         });
 
+        this.updateConnect = (connection) =>{
+            this.connection = connection;
+            util.updateConnect(connection)
+        }
+
     }
-    updateConnect(connection){
-        this.connection = connection;
-    }
+
 }
 
 

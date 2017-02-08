@@ -1,11 +1,9 @@
-const util = require('./util');
+const ProtoData = require('./proto-data')
 
-
-class OnPrivateArea {
+class OnPrivateArea extends ProtoData{
 
   constructor(socket, connection) {
-    this.socket = socket;
-    this.connection = connection;
+    super(socket, connection);
     this.socket.on('savePrivateArea', this.savePrivateArea.bind(this))
     this.socket.on('getPrivateArea', this.getPrivateArea.bind(this))
     this.socket.on('removeArea', this.removeArea.bind(this))
@@ -13,9 +11,9 @@ class OnPrivateArea {
   }
 
   lockPrivateArea(eName, val){
-    util.getUserIdBySocketId(this.connection, this.socket.id)
+    this.util.getUserIdBySocketId(this.socket.id)
       .then(user_id=>{
-        return util.lockPrivateArea(this.connection, user_id, val)
+        return this.util.lockPrivateArea(user_id, val)
       })
       .then(d=>{
         this.socket.emit(eName, {
@@ -28,11 +26,9 @@ class OnPrivateArea {
       })
   }
   removeArea(area_id) {
-    util.getUserIdBySocketId(this.connection, this.socket.id)
+    this.util.getUserIdBySocketId(this.socket.id)
       .then(user_id=> {
-        return util.getPrivateArea(this.connection, user_id)
-
-
+        return this.util.getPrivateArea(user_id)
       })
       .then(areas=> {
         const area = areas.find(item=> {
@@ -44,7 +40,7 @@ class OnPrivateArea {
       })
       .then(area=> {
         if (area) {
-          return util.removePrivateArea(this.connection, area.id)
+          return this.util.removePrivateArea(this.connection, area.id)
         } else {
           this.socket.emit('removeArea', {
             result: false,
@@ -69,9 +65,9 @@ class OnPrivateArea {
   }
 
   getPrivateArea() {
-    util.getUserIdBySocketId(this.connection, this.socket.id)
+    this.util.getUserIdBySocketId(this.socket.id)
       .then(user_id=> {
-        return util.getPrivateArea(this.connection, user_id)
+        return this.util.getPrivateArea(user_id)
       })
       .then(rows=> {
         this.socket.emit('getPrivateArea', {
@@ -89,9 +85,9 @@ class OnPrivateArea {
   }
 
   savePrivateArea(area) {
-    util.getUserIdBySocketId(this.connection, this.socket.id)
+    this.util.getUserIdBySocketId(this.socket.id)
       .then(user_id=> {
-        return util.addPrivateArea(this.connection, user_id, area)
+        return util.addPrivateArea(user_id, area)
       })
       .then(d=> {
         this.socket.emit('savePrivateArea', {

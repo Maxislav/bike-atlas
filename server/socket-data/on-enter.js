@@ -1,9 +1,9 @@
 /**
  * Created by maxislav on 29.12.16.
  */
-let connection;
 const hashKeys = [];
 const util = require('./util');
+const ProtoData = require('./proto-data');
 
 function getRandom(min, max, int) {
     var rand = min + Math.random() * (max - min);
@@ -14,61 +14,73 @@ function getRandom(min, max, int) {
 }
 
 
-class OnEnter {
-    constructor(socket, _connection, logger, chat) {
-
-        this.logger = logger
-        this.socket = socket;
+class OnEnter extends ProtoData{
+    constructor(socket, util, logger, chat) {
+        super(socket, util);
+        
+        this.logger = logger;
         this.chat = chat;
-        this.connection = connection = _connection;
         this.setHashKeys();
         socket.on('onEnter', this.onEnter.bind(this));
         socket.on('onExit', this.onExit.bind(this));
     }
 
     onEnter(data) {
+        
+        this.util.getUserByName(data.name)
+            .then(rows=>{
+                if (rows.length) {
+                    if (rows.length == 1 && rows[0].pass == data.pass) {
+                        this.setHash(rows[0].id)
+                            .then(hash => {
+                                const user = rows[0] || {};
+                                this.socket.emit('onEnter', {
+                                    result: 'ok',
+                                    hash: hash,
+                                    user:{
+                                        id: user.id,
+                                        name: user.name,
+                                        image: user.image
+                                    }
 
-        const query = 'SELECT * from user WHERE `name`=? order by `id` desc limit 150';
+                                });
+                                this.chat.onEnter(this.socket.id, user.id)
+                            })
+                            .catch(err => {
+                                console.error(err)
+                            })
+                    } else {
+                        this.socket.emit('onEnter', {
+                            result: false,
+                            message: 'user or password incorrect'
+                        })
+                    }
+
+                } else {
+                    this.socket.emit('onEnter', {
+                        result: false,
+                        message: 'User not exist'
+                    })
+                }
+            })
+            .catch(err=>{
+                console.log('Errr onEnter ->', err);
+            })
+        
+        //const connection = this.util.connection; 
+        
+        
+        
+        
+        /*const query = 'SELECT * from user WHERE `name`=? order by `id` desc limit 150';
         connection.query(query, [data.name], (err, rows) => {
             if (err) {
                 console.error('onEnter ->', err);
                 return
             }
             console.log('onEnter ->', rows.length ? rows[0].name : null);
-            if (rows.length) {
-                if (rows.length == 1 && rows[0].pass == data.pass) {
-                    this.setHash(rows[0].id)
-                        .then(hash => {
-                            const user = rows[0] || {};
-                            this.socket.emit('onEnter', {
-                                result: 'ok',
-                                hash: hash,
-                                user:{
-                                    id: user.id,
-                                    name: user.name,
-                                    image: user.image
-                                }
-
-                            });
-                            this.chat.onEnter(this.socket.id, user.id)
-                        })
-                        .catch(err => {
-                            console.error(err)
-                        })
-                } else {
-                    this.socket.emit('onEnter', {
-                        result: false,
-                        message: 'user or password incorrect'
-                    })
-                }
-
-            } else {
-                this.socket.emit('onEnter', {
-                    result: false,
-                    message: 'User not exist'
-                })
-            }
-        })
+            
+        })*/
     }
 
     getHash() {
@@ -85,6 +97,7 @@ class OnEnter {
     }
 
     setHash(user_id) {
+        const connection = this.util.connection;
         const hash = this.getHash();
         console.log('setHash->', this.socket.id)
         return new Promise((resolve, reject) => {
@@ -100,7 +113,7 @@ class OnEnter {
     }
 
     onExit(data) {
-        util.deleteHashRow(connection, data.hash)
+        this.util.deleteHashRow(data.hash)
             .then((d) => {
                 this.socket.emit('onExit', {
                     result: 'ok'
@@ -125,7 +138,7 @@ class OnEnter {
 
     setHashKeys() {
         const query = 'SELECT * FROM `hash`';
-        this.connection.query(query, (err, rows) => {
+        this.util.connection.query(query, (err, rows) => {
             if (err) {
                 console.error('SELECT * FROM `hash', err)
                 return;
