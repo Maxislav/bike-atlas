@@ -183,8 +183,8 @@ let OneItemTrackComponent = class OneItemTrackComponent {
     }
 };
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Object)
+    core_1.Input(),
+    __metadata("design:type", Object)
 ], OneItemTrackComponent.prototype, "track", void 0);
 OneItemTrackComponent = __decorate([
     core_1.Component({
@@ -192,8 +192,8 @@ OneItemTrackComponent = __decorate([
         selector: 'one-item-track-component',
         templateUrl: "./one-item-track.component.html",
         styleUrls: ['./one-item-track.component.css']
-    }), 
-    __metadata('design:paramtypes', [track_service_1.TrackService, map_service_1.MapService])
+    }),
+    __metadata("design:paramtypes", [track_service_1.TrackService, map_service_1.MapService])
 ], OneItemTrackComponent);
 exports.OneItemTrackComponent = OneItemTrackComponent;
 //# sourceMappingURL=one-item-track.component.js.map

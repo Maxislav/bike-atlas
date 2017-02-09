@@ -1,5 +1,5 @@
 "use strict";
-const R = require('@ramda/ramda.min.js');
+const R = require("@ramda/ramda.min.js");
 const f = parseFloat;
 function fc() {
     let res = 0;
