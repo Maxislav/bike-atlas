@@ -49,17 +49,21 @@ import {ChatComponent} from "./component/chat-component/chat.component";
 import {ChatRoomComponent} from "./component/chat-component/chat-room/chat-room.component";
 import {ChatService} from "./service/chat.service";
 import {OneItemTrackComponent} from "./component/menu/track-list/one-item-track-component/one-item-track.component";
+import {RouterStateSnapshot} from "@angular/router";
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
+
+        
         routing
     ],
     /**
      * Компоненты
      */
     declarations: [
+
         OneItemTrackComponent,
         ChatRoomComponent,
         ChatComponent,

@@ -9,11 +9,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require("@angular/core");
-const common_1 = require("@angular/common");
+const common_1 = require('@angular/common');
 const friends_service_1 = require("../../service/friends.service");
 const toast_component_1 = require("../toast/toast.component");
 const router_1 = require("@angular/router");
 const chat_service_1 = require("../../service/chat.service");
+const app_component_1 = require("../../app.component");
 let UsersContainer = class UsersContainer {
     constructor(el, renderer) {
         let w = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0], x = w.innerWidth || e.clientWidth || g.clientWidth, y = w.innerHeight || e.clientHeight || g.clientHeight;
@@ -23,14 +24,16 @@ let UsersContainer = class UsersContainer {
 UsersContainer = __decorate([
     core_1.Directive({
         selector: 'users-container',
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, core_1.Renderer])
+    }), 
+    __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer])
 ], UsersContainer);
 exports.UsersContainer = UsersContainer;
 let FriendsComponent = class FriendsComponent {
-    constructor(location, friendsService, toast, router, chatService) {
+    constructor(location, friendsService, lh, route, toast, router, chatService) {
         this.location = location;
         this.friendsService = friendsService;
+        this.lh = lh;
+        this.route = route;
         this.toast = toast;
         this.router = router;
         this.chatService = chatService;
@@ -47,7 +50,12 @@ let FriendsComponent = class FriendsComponent {
         this.friendsService.onDelFriend(friend.id);
     }
     onClose() {
-        this.location.back();
+        if (this.lh.is) {
+            this.location.back();
+        }
+        else {
+            this.router.navigate(['/auth/map']);
+        }
     }
     getAllUsers() {
         this.router.navigate(['/auth/map/friends/all']);
@@ -68,12 +76,8 @@ FriendsComponent = __decorate([
         moduleId: module.id,
         templateUrl: './friends-component.html',
         styleUrls: ['./friends-component.css'],
-    }),
-    __metadata("design:paramtypes", [common_1.Location,
-        friends_service_1.FriendsService,
-        toast_component_1.ToastService,
-        router_1.Router,
-        chat_service_1.ChatService])
+    }), 
+    __metadata('design:paramtypes', [common_1.Location, friends_service_1.FriendsService, app_component_1.NavigationHistory, router_1.ActivatedRoute, toast_component_1.ToastService, router_1.Router, chat_service_1.ChatService])
 ], FriendsComponent);
 exports.FriendsComponent = FriendsComponent;
 //# sourceMappingURL=friends-component.js.map

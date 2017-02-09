@@ -9,12 +9,10 @@ div.content
                     tbody
                         tr(*ngFor="let user of friends\; let i = index")
                             td
-                                img([src]="user.image || 'src/img/no-avatar.gif' ")
-                            td {{user.name}}
+                                include img-container.jade
                             td
-                                .ico-chat((click)="startChat(user)")
-                                    .ico-un-viewed(*ngIf="user.chatUnViewed && user.chatUnViewed.length") {{user.chatUnViewed.length}}
-
+                                include user-data-container.jade
+                                //{{user.name}} {{user.lastVisit | date: 'dd/MM/yyyy HH:mm:ss'}}
                             td
                                 .invite((click)="onDelFriend(user)")
                                     | Удалить
@@ -25,9 +23,9 @@ div.content
                     tbody
                         tr(*ngFor="let user of invites\; let i = index")
                             td
-                                img([src]="user.image || 'src/img/no-avatar.gif' ")
-
-                            td {{user.name}}
+                                include img-container.jade
+                            td
+                                include user-data-container.jade
                             td
                                 .invite.accept((click)="onAccept(user)")
                                     | Принять

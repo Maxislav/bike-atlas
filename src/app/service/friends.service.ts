@@ -161,6 +161,7 @@ export class FriendsService {
             .then(d=>{
                 console.log(d)
                 if(d && d.result=='ok'){
+                    console.log('getAllUsers->', d)
                     this.users = d.users
                     this.bindChatUnViewed(this.users);
                 }else{

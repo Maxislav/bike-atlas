@@ -8,12 +8,16 @@
         <table>
           <tbody>
             <tr *ngFor="let user of friends; let i = index">
-              <td><img [src]="user.image || 'src/img/no-avatar.gif' "/></td>
-              <td>{{user.name}}</td>
               <td>
-                <div (click)="startChat(user)" class="ico-chat">
+                <div class="img-container"><img [src]="user.image || 'src/img/no-avatar.gif' "/>
+                  <div (click)="startChat(user)" [ngClass]="{'chat-un-viewed': user.chatUnViewed &amp;&amp; user.chatUnViewed.length}" title="отправить личное сообщение" class="ico-chat"></div>
                   <div *ngIf="user.chatUnViewed &amp;&amp; user.chatUnViewed.length" class="ico-un-viewed">{{user.chatUnViewed.length}}</div>
                 </div>
+              </td>
+              <td>
+                <div class="name">{{user.name}}</div>
+                <div class="last-visit">Last visit {{user.lastVisit | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+                <!--{{user.name}} {{user.lastVisit | date: 'dd/MM/yyyy HH:mm:ss'}}-->
               </td>
               <td>
                 <div (click)="onDelFriend(user)" class="invite">Удалить</div>
@@ -27,8 +31,16 @@
         <table>
           <tbody>
             <tr *ngFor="let user of invites; let i = index">
-              <td><img [src]="user.image || 'src/img/no-avatar.gif' "/></td>
-              <td>{{user.name}}</td>
+              <td>
+                <div class="img-container"><img [src]="user.image || 'src/img/no-avatar.gif' "/>
+                  <div (click)="startChat(user)" [ngClass]="{'chat-un-viewed': user.chatUnViewed &amp;&amp; user.chatUnViewed.length}" title="отправить личное сообщение" class="ico-chat"></div>
+                  <div *ngIf="user.chatUnViewed &amp;&amp; user.chatUnViewed.length" class="ico-un-viewed">{{user.chatUnViewed.length}}</div>
+                </div>
+              </td>
+              <td>
+                <div class="name">{{user.name}}</div>
+                <div class="last-visit">Last visit {{user.lastVisit | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+              </td>
               <td>
                 <div (click)="onAccept(user)" class="invite accept">Принять</div>
                 <div (click)="onReject(user)" class="invite reject">Отклонить</div>

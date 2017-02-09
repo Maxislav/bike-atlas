@@ -3,11 +3,9 @@ table
     tbody
         tr(*ngFor="let user of allUsers\; let i = index")
             td
-                img([src]="user.image || 'src/img/no-avatar.gif' ")
-            td {{user.name}}
+                include ../friends-component/img-container.jade
             td
-                .ico-chat((click)="startChat(user)")
-                    .ico-un-viewed(*ngIf="user.chatUnViewed && user.chatUnViewed.length") {{user.chatUnViewed.length}}
+                include ../friends-component/user-data-container.jade
             td
                 .invite(*ngIf="!isFriend(user)")
                     template([ngIf]="!isInviteActive(user)" )

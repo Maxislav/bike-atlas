@@ -102,9 +102,9 @@ class OnFriend extends ProtoData{
             });
 
         return Promise.all([user, myInvites])
-            .then(d => {
-                const rows = d[0];
-                const invites = d[1];
+            .then(([friends, invites]) => {
+                const rows = friends =ProtoData.toCamelCaseArrObj(friends);
+
                 if (!isOnDelFriend) {
                     this.socket.emit('getFriends', {
                         result: 'ok',
@@ -112,7 +112,7 @@ class OnFriend extends ProtoData{
                         invites: invites
                     })
                 } else {
-                    return d[0]
+                    return friends
                 }
             })
             .catch(err => {
@@ -134,7 +134,7 @@ class OnFriend extends ProtoData{
             .then(d => {
                 this.socket.emit('getAllUsers', {
                     result: 'ok',
-                    users: d
+                    users: ProtoData.toCamelCaseArrObj(d)
                 })
             })
             .catch(err => {

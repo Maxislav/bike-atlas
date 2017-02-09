@@ -3,8 +3,9 @@ import {Component, Directive, ElementRef, Renderer} from "@angular/core";
 import {Location} from '@angular/common';
 import {FriendsService, User} from "../../service/friends.service";
 import {ToastService} from "../toast/toast.component";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {ChatService} from "../../service/chat.service";
+import {NavigationHistory} from "../../app.component";
 
 
 @Directive({
@@ -39,6 +40,8 @@ export class FriendsComponent{
     private myInvites: Array<any>;
     constructor(private location: Location,
                 private friendsService: FriendsService,
+                private lh: NavigationHistory ,
+                private route: ActivatedRoute,
                 private toast: ToastService,
                 private router: Router,
                 private chatService: ChatService){
@@ -58,7 +61,11 @@ export class FriendsComponent{
         this.friendsService.onDelFriend(friend.id)
     }
     onClose(){
-        this.location.back()
+        if(this.lh.is){
+            this.location.back()
+        }else{
+            this.router.navigate(['/auth/map']);
+        }
     }
     getAllUsers(){
         this.router.navigate(['/auth/map/friends/all']);

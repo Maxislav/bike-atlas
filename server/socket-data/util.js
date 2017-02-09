@@ -456,7 +456,7 @@ class Util {
 
 	getUsersNotSelf(user_id) {
 		return new Promise((resolve, reject) => {
-			const query = 'SELECT `id`,`name`,`image` from `user` WHERE `id` != ? order by `id` desc limit 150';
+			const query = 'SELECT user.id, `name`,`image`, `last_visit` from `user` INNER JOIN `setting` ON user.id = setting.user_id AND user.id != ? order by `id` desc limit 150';
 			this.connection.query(query, [user_id], (err, rows) => {
 				if (err) {
 					reject(err);
@@ -640,7 +640,7 @@ class Util {
 
 	getFriends(user_id) {
 		return new Promise((resolve, reject) => {
-			const query = 'SELECT user.id, image, name from `user` INNER JOIN `friends` ON friends.friend_id = user.id AND friends.user_id = ?';
+			const query = 'SELECT user.id, image, name, setting.last_visit FROM `user` INNER JOIN `friends` ON friends.friend_id = user.id INNER JOIN `setting` ON friends.friend_id = setting.user_id  AND friends.user_id = ?';
 			this.connection.query(query, [user_id], (err, rows) => {
 				if (err) {
 					reject(err);
