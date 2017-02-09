@@ -131,6 +131,7 @@ function createTable() {
             '`map` VARCHAR(16) NULL DEFAULT NULL, ' +
             '`hill` BOOLEAN NOT NULL DEFAULT 0, ' +
             '`lock` BOOLEAN NOT NULL DEFAULT 0, ' +
+            '`last_visit` DATETIME NULL DEFAULT NULL,' +
             'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
         connection.query(query, (err) => {
             if (err) {

@@ -35,6 +35,9 @@ class Chat{
         console.log('chat exit ->', socketId);
         const userId = this.clearSocket(socketId);
         if(userId){
+            
+            this.util.chatLeave(userId, new Date());
+            
             this.util.getUserById(userId)
                 .then(user=>{
                     console.log('chat exit - >',  user.name)
@@ -47,11 +50,15 @@ class Chat{
     onDisconnect(socketId){
         this.util.getUserIdBySocketId(socketId)
             .then(userId=>{
+                this.util.chatLeave(userId, new Date());
                return this.util.getUserNameById(userId)
             })
             .then(name=>{
                 console.log('chat disconnect ->', name);
-            });
+            })
+            .catch(err=>{
+                console.error('Err chat disconnect ->', err)
+            });        
         this.clearSocket(socketId)
     }
 
@@ -61,7 +68,7 @@ class Chat{
         R.mapObjIndexed((item, key)=>{
             const index = item.indexOf(socketId);
             if(-1<index){
-                item.splice(index,1)
+                item.splice(index,1);
                 userId = key
             }
         }, this.user);

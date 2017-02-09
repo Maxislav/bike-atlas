@@ -739,6 +739,24 @@ class Util {
 		});
 	}
 
+	/**
+	 *
+	 * @param {Date}date
+	 * @param {number}userId
+	 */
+	chatLeave(userId, date){
+		return new Promise((resolve, reject) => {
+			const query = 'UPDATE `setting` SET last_visit = ? WHERE user_id=?';
+			this.connection.query(query, [date, userId], (err, rows) => {
+				if (err) {
+					reject(err);
+					return
+				}
+				resolve(rows)
+			})
+		})
+	}
+
 	getDemoId(){
 		return new Promise((resolve, reject)=>{
 			this.connection.query('SELECT id FROM `user` WHERE `name`=?', ['demo'], function (err, rows) {
