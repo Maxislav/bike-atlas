@@ -12,6 +12,7 @@ const friends_component_1 = require("./component/friends-component/friends-compo
 const private_area_1 = require("./component/private-area/private-area");
 const no_found_component_1 = require("./no-found.component");
 const all_user_component_1 = require("./component/all-user/all-user.component");
+const strava_component_1 = require("./component/strava-component/strava-component");
 const appRouters = [
     {
         path: '',
@@ -70,7 +71,11 @@ const appRouters = [
                     {
                         path: 'privatearea',
                         component: private_area_1.PrivateArea,
-                    }
+                    },
+                    {
+                        path: 'strava-invite/:id',
+                        component: strava_component_1.StravaComponent
+                    },
                 ]
             }
         ]

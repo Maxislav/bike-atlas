@@ -23,9 +23,7 @@ export class UsersContainer{
         renderer.setElementStyle(el.nativeElement, 'max-height', y-160+'px');
     }
 }
-declare const module:{
-    id: any
-};
+
 
 @Component({
     //noinspection TypeScriptUnresolvedVariable

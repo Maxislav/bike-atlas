@@ -21,6 +21,7 @@ import {PrivateArea} from "./component/private-area/private-area";
 import {MapResolver} from "./directive/mapbox-gl.directive";
 import {NoFoundComponent} from "./no-found.component";
 import {AllUserComponent} from "./component/all-user/all-user.component";
+import {StravaComponent} from "./component/strava-component/strava-component";
 
 const  appRouters: Routes = [
     {
@@ -42,7 +43,6 @@ const  appRouters: Routes = [
             {
                 path:'map',
                 component: MapComponent,
-
                 children: [
                     {
                         path: ''
@@ -84,12 +84,17 @@ const  appRouters: Routes = [
                         path: 'privatearea',
                         component: PrivateArea,
 
-                    }
+                    },
+                    {
+                        path:'strava-invite/:id',
+                        component: StravaComponent
+                    },
                 ]
             }
         ]
         
     },
+
     {
         path:'404',
         component: NoFoundComponent
