@@ -86,7 +86,7 @@ const  appRouters: Routes = [
 
                     },
                     {
-                        path:'strava-invite/:id',
+                        path:'strava-invite',
                         component: StravaComponent
                     },
                 ]

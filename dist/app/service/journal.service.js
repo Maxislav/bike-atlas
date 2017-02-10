@@ -108,8 +108,8 @@ let JournalService = class JournalService {
     }
 };
 JournalService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [socket_oi_service_1.Io])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io])
 ], JournalService);
 exports.JournalService = JournalService;
 //# sourceMappingURL=journal.service.js.map

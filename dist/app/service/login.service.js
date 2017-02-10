@@ -65,8 +65,13 @@ let LoginService = class LoginService {
     }
 };
 LoginService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [socket_oi_service_1.Io, local_storage_service_1.LocalStorage, auth_service_1.AuthService, toast_component_1.ToastService, device_service_1.DeviceService, main_user_service_1.UserService])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io,
+        local_storage_service_1.LocalStorage,
+        auth_service_1.AuthService,
+        toast_component_1.ToastService,
+        device_service_1.DeviceService,
+        main_user_service_1.UserService])
 ], LoginService);
 exports.LoginService = LoginService;
 //# sourceMappingURL=login.service.js.map
