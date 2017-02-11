@@ -26,17 +26,17 @@
       <div class="border-hidden"></div>
     </div>
     <div class="row">
-      <div class="cell gray">В разработке *</div>
+      <div class="flex-cell gray">В разработке *</div>
     </div>
     <div class="flex center row space-between">
-      <div class="cell">
+      <div class="flex-cell">
         <div class="ico-strava"></div>
       </div>
-      <label class="cell">ID клиента</label>
-      <div class="cell">
+      <label class="flex-cell">ID клиента</label>
+      <div class="flex-cell">
         <input [(ngModel)]="stravaClientId" type="number" name="stravaClientId" class="input"/>
       </div>
-      <div class="cell">
+      <div class="flex-cell">
         <div class="button primary"><a [ngClass]="{'blue':stravaClientId, 'gray':!stravaClientId}" href="{{stravaHref}}" (click)="$event.preventDefault(); goToStrava()">cвязать</a></div>
       </div>
     </div>

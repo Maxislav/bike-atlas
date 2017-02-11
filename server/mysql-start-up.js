@@ -211,6 +211,24 @@ function createTable() {
             res(connection);
         })
     });
+    const tableStrava = new Promise((res, rej) => {
+        const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`strava` ' +
+            '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+            '`user_id` INT NOT NULL , ' +
+            '`strava_client_id` INT NOT NULL , ' +
+            '`atlas_token` VARCHAR(32) NOT NULL, ' +
+            '`strava_code` VARCHAR(32) NULL DEFAULT NULL, ' +
+            '`date` DATETIME NULL DEFAULT NULL,' +
+            'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+        connection.query(query, (err) => {
+            if (err) {
+                console.log('Error table chat create');
+                rej(err);
+                return;
+            }
+            res(connection);
+        })
+    });
 
 
 
@@ -224,7 +242,8 @@ function createTable() {
         tableInvite, 
         tableFriends,
         tableChat,
-        tablePrivateArea])
+        tablePrivateArea,
+        tableStrava])
     //return Promise.all([tableHash])
 
 

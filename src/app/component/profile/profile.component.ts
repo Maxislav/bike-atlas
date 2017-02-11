@@ -148,7 +148,19 @@ export class ProfileComponent implements AfterViewInit{
             '&approval_prompt=force'
     }
     goToStrava(){
+            if (this.stravaClientId){
 
+                this.socket.$emit('onStrava', {
+                    stravaClientId: this.stravaClientId,
+                    atlasToken: this.token
+                })
+                    .then(d=>{
+                        console.log(d)
+                        window.location.href = this.stravaHref.toString()
+                    })
+
+
+            }
     }
 
 }

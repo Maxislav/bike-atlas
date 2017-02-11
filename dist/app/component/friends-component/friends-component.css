@@ -23,7 +23,7 @@
 .flex.center {
   align-items: center;
 }
-.flex .cell {
+.flex .flex-cell {
   padding: 0 10px;
 }
 .flex.space-between {
@@ -43,7 +43,6 @@ button,
   border-radius: 2px;
   cursor: pointer;
   outline: none;
-  font-weight: bold;
 }
 button:active,
 .button:active {
@@ -188,6 +187,9 @@ img {
   font-size: 10px;
   background: #ff8b15;
   box-shadow: 0 0 4px white;
+}
+.row {
+  margin: 0;
 }
 @media screen and (max-width: 600px) {
   .content {

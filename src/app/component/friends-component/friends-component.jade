@@ -4,33 +4,35 @@ div.content
 
         users-container
             .row
-                h4 Друзья
-                table
-                    tbody
-                        tr(*ngFor="let user of friends\; let i = index")
-                            td
-                                include img-container.jade
-                            td
-                                include user-data-container.jade
-                                //{{user.name}} {{user.lastVisit | date: 'dd/MM/yyyy HH:mm:ss'}}
-                            td
-                                .invite((click)="onDelFriend(user)")
-                                    | Удалить
+                .flex-cell
+                    h4 Друзья
+                    table
+                        tbody
+                            tr(*ngFor="let user of friends\; let i = index")
+                                td
+                                    include img-container.jade
+                                td
+                                    include user-data-container.jade
+                                    //{{user.name}} {{user.lastVisit | date: 'dd/MM/yyyy HH:mm:ss'}}
+                                td
+                                    .invite((click)="onDelFriend(user)")
+                                        | Удалить
 
             .row(*ngIf="invites.length")
-                h4 Запросы
-                table
-                    tbody
-                        tr(*ngFor="let user of invites\; let i = index")
-                            td
-                                include img-container.jade
-                            td
-                                include user-data-container.jade
-                            td
-                                .invite.accept((click)="onAccept(user)")
-                                    | Принять
-                                .invite.reject((click)="onReject(user)")
-                                    | Отклонить
+                .flex-cell
+                    h4 Запросы
+                    table
+                        tbody
+                            tr(*ngFor="let user of invites\; let i = index")
+                                td
+                                    include img-container.jade
+                                td
+                                    include user-data-container.jade
+                                td
+                                    .invite.accept((click)="onAccept(user)")
+                                        | Принять
+                                    .invite.reject((click)="onReject(user)")
+                                        | Отклонить
 
             .row
                 .border-hidden

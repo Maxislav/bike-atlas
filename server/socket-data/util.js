@@ -768,6 +768,20 @@ class Util {
 			});
 		})
 	}
+	onStrava(userId, stravaClientId, atlasToken){
+        return new Promise((resolve, reject) => {
+            this.connection.query('INSERT INTO `strava` ' +
+                '(`id`, `user_id`, `strava_client_id`, `atlas_token`, `date`) ' +
+                'VALUES (NULL, ?, ?, ?, ?)', [userId, stravaClientId, atlasToken, new Date()], (err, results) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(results);
+            })
+        })
+
+	}
 
 	formatDevice(d) {
 		return {

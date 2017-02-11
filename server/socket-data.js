@@ -18,6 +18,7 @@ const TrackFromTo = require('./socket-data/track-from-to')
 const OnChat = require('./socket-data/on-chat')
 const Logger = require('./logger');
 const Util = require('./socket-data/util')
+const OnStrava = require('./socket-data/on-strava');
 let connection, server, app;
 let resolveExport;
 let promiseExport = new Promise((resolve, reject)=>{
@@ -48,6 +49,7 @@ class SocketData{
             const onPrivateArea = new OnPrivateArea(socket, util);
             const trackFromTo = new TrackFromTo(socket, util);
             const onChat = new OnChat(socket, util, chat);
+            const onStrava = new OnStrava(socket, util);
             socket.on('disconnect',()=>{
                 logger.onDisconnect(socket.id);
                 chat.onDisconnect(socket.id);
