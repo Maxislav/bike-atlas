@@ -13,15 +13,6 @@
   color: darkgray;
 }
 
-users-container{
-  display: block;
-  overflow-y: auto;
-  td{
-    width: 33.3%;
-    border-bottom: 1px solid #cfdcef;
-    padding: 5px 0;
-  }
-}
 h4{
   padding: 8px 0;
 }
@@ -63,7 +54,28 @@ h4{
   font-size: 20px;
   font: 30px/15px bold;
 }
-
+.ico-strava{
+  width: 80px;
+  height: 20px;
+  background: url("./src/img/ico-strava-text.png") no-repeat center;
+  background-size: 100%;
+}
+a{
+  font-size: 14px;
+}
+table.strava{
+  width: 100%;
+  td{
+    vertical-align: middle;
+    padding: 10px 5px;
+    &:nth-child(2){
+      width: 80%;
+    }
+  }
+}
+.input{
+  width: 100%;
+}
 
 @media screen and (max-width: 600px){
   .content{

@@ -18,6 +18,10 @@ const ss = require('node_modules/socket.io-stream/socket.io-stream.js');
 const log = console.log;
 const MENU = [
     {
+        value: 'strava',
+        text: "Strava"
+    },
+    {
         value: 'journal',
         text: "Журнал"
     },
@@ -54,7 +58,10 @@ let MenuTrackComponent = class MenuTrackComponent {
             case 'journal':
                 this.router.navigate(['/auth/map/journal']);
                 this.ms.menuOpen = false;
-                //this.importFile($event);
+                break;
+            case 'strava':
+                this.router.navigate(['/auth/map/strava-invite']);
+                this.ms.menuOpen = false;
                 break;
             default:
                 return null;

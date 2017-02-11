@@ -22,15 +22,14 @@ interface MyNode extends Node{
 })
 export class ProfileComponent implements AfterViewInit{
 
+
     private imageurl: string;
     private inputEl: MyNode;
     private name: string;
     private socket: any;
     private user: User;
     private setting;
-    private _stravaClientId: number = null;
-    private stravaHref: String = null;
-    private token: String = hashgeneral();
+
     constructor(private location: Location,
                 private elRef: ElementRef,
                 private router:Router,
@@ -132,36 +131,7 @@ export class ProfileComponent implements AfterViewInit{
                 }
             })
     }
-    get stravaClientId(): number {
-        return this._stravaClientId;
-    }
 
-    set stravaClientId(value: number) {
-        this._stravaClientId = value;
-        this.stravaHref =
-            'https://www.strava.com/oauth/authorize?'+
-            'client_id='+value+
-            '&response_type=code'+
-            '&redirect_uri='+System.baseURL+'%23/'+ 'auth/map/strava-invite/'+this.token+
-            '&scope=write'+
-            '&state=strava'+
-            '&approval_prompt=force'
-    }
-    goToStrava(){
-            if (this.stravaClientId){
-
-                this.socket.$emit('onStrava', {
-                    stravaClientId: this.stravaClientId,
-                    atlasToken: this.token
-                })
-                    .then(d=>{
-                        console.log(d)
-                        window.location.href = this.stravaHref.toString()
-                    })
-
-
-            }
-    }
 
 }
 

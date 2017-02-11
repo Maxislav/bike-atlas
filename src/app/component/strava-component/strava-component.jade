@@ -1,8 +1,34 @@
 div.content
     div
-        .close((click)="onClose()") &times;
-    div
-        label user id
-        input([(ngModel)]="userId")
-     div
-         a(href="{{href}}") Enter
+        div
+            .close((click)="onClose()") &times;
+        .row
+            .flex-cell.gray
+                | В разработке *
+        .flex.center.row.space-between
+            .flex-cell
+                .ico-strava
+        table.strava
+            tr
+                td
+                    label.flex-cell() ID клиента:
+                td
+                    input.input([(ngModel)]="stravaClientId", type='number', name="stravaClientId")
+            tr
+                td
+                    label.flex-cell() Client Secret:
+                td
+                    input.input([(ngModel)]="stravaClientSecret", name="stravaClientSecret")
+            tr
+                td
+                    label.flex-cell() Code:
+                td
+                    |{{code}}
+
+        .flex.flex-end
+            .flex-cell
+                .button.primary(*ngIf="!code")
+                    a([ngClass]="{'blue':stravaClientId && stravaClientSecret}",  href="{{stravaHref}}", (click)="$event.preventDefault(); goToStrava()") cвязать
+                .button.primary(*ngIf="code", (click)="stravaOauth()") Авторизация
+
+

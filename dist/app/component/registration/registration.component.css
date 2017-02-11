@@ -26,6 +26,9 @@
 .flex .flex-cell {
   padding: 0 10px;
 }
+.flex.flex-end {
+  justify-content: flex-end;
+}
 .flex.space-between {
   justify-content: space-between;
 }

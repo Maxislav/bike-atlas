@@ -768,19 +768,51 @@ class Util {
 			});
 		})
 	}
-	onStrava(userId, stravaClientId, atlasToken){
+	onStrava(userId, stravaClientId, stravaClientSecret, atlasToken){
         return new Promise((resolve, reject) => {
             this.connection.query('INSERT INTO `strava` ' +
-                '(`id`, `user_id`, `strava_client_id`, `atlas_token`, `date`) ' +
-                'VALUES (NULL, ?, ?, ?, ?)', [userId, stravaClientId, atlasToken, new Date()], (err, results) => {
+                '(`id`, `user_id`, `strava_client_id`, `atlas_token`, `strava_client_secret`,`date`) ' +
+                'VALUES (NULL, ?, ?, ?, ?, ?)', [userId, stravaClientId, atlasToken, stravaClientSecret, new Date()], (err, results) => {
                 if (err) {
-                    reject(err);
-                    return;
+                    if(err.code == 'ER_DUP_ENTRY'){
+                        this.connection.query('UPDATE `strava` SET  `strava_client_id`=?, `atlas_token`=?, `strava_client_secret`=?, `date`=? WHERE user_id=?',
+						[stravaClientId, atlasToken, stravaClientSecret, new Date(), userId], (err, result)=>{
+                        		if(err){
+                        			reject(err);
+                        			return;
+								}
+								resolve(result)
+							});
+					}else{
+                        reject(err);
+					}
                 }
                 resolve(results);
             })
         })
 
+	}
+	getStrava(userId){
+        return new Promise((resolve, reject)=>{
+            this.connection.query('SELECT * FROM `strava` WHERE `user_id`=?', [userId], function (err, rows) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows[0])
+            });
+        })
+	}
+    stravaUpdateCode(userId, code){
+        return new Promise((resolve, reject) => {
+            this.connection.query('UPDATE `strava` SET  `strava_code`=? WHERE user_id=?',[code, userId], (err, rows)=>{
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows)
+            })
+        })
 	}
 
 	formatDevice(d) {

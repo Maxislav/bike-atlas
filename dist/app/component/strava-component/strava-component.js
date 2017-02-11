@@ -11,12 +11,52 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const core_1 = require("@angular/core");
 const router_1 = require("@angular/router");
 const hash_1 = require("../../util/hash");
+const socket_oi_service_1 = require("../../service/socket.oi.service");
 let StravaComponent = class StravaComponent {
-    constructor(router) {
+    constructor(router, io, activatedRoute) {
         this.router = router;
+        this.io = io;
+        this.activatedRoute = activatedRoute;
         this._userId = null;
+        this._stravaClientId = null;
+        this._stravaClientSecret = null;
+        this.stravaHref = null;
         this.token = hash_1.hashgeneral();
         this.href = null;
+        this.socket = io.socket;
+        this.getStrava();
+    }
+    ngOnInit() {
+        this.router.routerState.root.queryParams.subscribe(data => {
+            this.code = data['code'];
+            if (this.code) {
+                this.socket.$emit('stravaUpdateCode', this.code)
+                    .then(d => {
+                    console.log('stravaUpdateCode->', d);
+                });
+            }
+            console.log(this.code);
+        });
+    }
+    stravaOauth() {
+        console.log('stravaOauth->');
+        this.socket.$emit('stravaOauth', {
+            stravaClientId: this.stravaClientId,
+            stravaClientSecret: this.stravaClientSecret,
+            stravaCode: this.code
+        })
+            .then(d => {
+            console.log('stravaOauth->', d);
+        });
+    }
+    getStrava() {
+        this.socket.$emit('getStrava')
+            .then(d => {
+            if (d && d.result == 'ok' && d.data) {
+                this.stravaClientId = d.data.stravaClientId;
+                this.stravaClientSecret = d.data.stravaClientSecret;
+            }
+        });
     }
     get href() {
         return this._href;
@@ -47,6 +87,41 @@ let StravaComponent = class StravaComponent {
     onClose() {
         this.router.navigate(['/auth/map']);
     }
+    get stravaClientId() {
+        return this._stravaClientId;
+    }
+    set stravaClientId(value) {
+        this._stravaClientId = value;
+        this.stravaHref =
+            'https://www.strava.com/oauth/authorize?' +
+                'client_id=' + value +
+                '&response_type=code' +
+                '&redirect_uri=' + System.baseURL + '%23/' + 'auth/map/strava-invite/' + this.token +
+                '&scope=write' +
+                '&state=strava' +
+                '&approval_prompt=force';
+    }
+    get stravaClientSecret() {
+        return this._stravaClientSecret;
+    }
+    set stravaClientSecret(value) {
+        this._stravaClientSecret = value;
+    }
+    goToStrava() {
+        if (this.stravaClientId && this.stravaClientSecret) {
+            this.socket.$emit('onStrava', {
+                stravaClientId: this.stravaClientId,
+                stravaClientSecret: this.stravaClientSecret,
+                atlasToken: this.token
+            })
+                .then(d => {
+                console.log('goToStrava->', d);
+                if (d.result == 'ok') {
+                    window.location.href = this.stravaHref.toString();
+                }
+            });
+        }
+    }
 };
 StravaComponent = __decorate([
     core_1.Component({
@@ -54,7 +129,9 @@ StravaComponent = __decorate([
         templateUrl: "./strava-component.html",
         styleUrls: ['./strava-component.css'],
     }),
-    __metadata("design:paramtypes", [router_1.Router])
+    __metadata("design:paramtypes", [router_1.Router,
+        socket_oi_service_1.Io,
+        router_1.ActivatedRoute])
 ], StravaComponent);
 exports.StravaComponent = StravaComponent;
 //# sourceMappingURL=strava-component.js.map

@@ -20,17 +20,5 @@ div.content
                 div()
                     button.primary( style="float: right", (click)="onSave($event)") Сохранить
             .border-hidden
-        .row
-            .flex-cell.gray
-                | В разработке *
-        .flex.center.row.space-between
-            .flex-cell
-                .ico-strava
-            label.flex-cell() ID клиента
-            .flex-cell
-                input.input([(ngModel)]="stravaClientId", type='number', name="stravaClientId")
-             .flex-cell
-                 .button.primary
-                    a([ngClass]="{'blue':stravaClientId, 'gray':!stravaClientId}",  href="{{stravaHref}}", (click)="$event.preventDefault(); goToStrava()") cвязать
 
         .border-hidden

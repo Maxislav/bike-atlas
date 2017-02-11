@@ -28,6 +28,10 @@ interface myEvent extends Event {
 
 const MENU:Item[] = [
     {
+        value: 'strava',
+        text: "Strava"
+    },
+    {
         value: 'journal',
         text: "Журнал"
     },
@@ -75,7 +79,10 @@ export class MenuTrackComponent {
             case 'journal':
                 this.router.navigate(['/auth/map/journal']);
                 this.ms.menuOpen = false;
-                //this.importFile($event);
+                break;
+            case 'strava':
+                this.router.navigate(['/auth/map/strava-invite']);
+                this.ms.menuOpen = false;
                 break;
             default:
                 return null

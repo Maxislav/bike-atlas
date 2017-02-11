@@ -16,7 +16,6 @@ const socket_oi_service_1 = require("../../service/socket.oi.service");
 const toast_component_1 = require("../toast/toast.component");
 const main_user_service_1 = require("../../service/main.user.service");
 const private_area_service_1 = require("../../service/private.area.service");
-const hash_1 = require("../../util/hash");
 let ProfileComponent = class ProfileComponent {
     constructor(location, elRef, router, lh, io, toast, areaService, userService) {
         this.location = location;
@@ -26,9 +25,6 @@ let ProfileComponent = class ProfileComponent {
         this.io = io;
         this.toast = toast;
         this.areaService = areaService;
-        this._stravaClientId = null;
-        this.stravaHref = null;
-        this.token = hash_1.hashgeneral();
         this.user = userService.user;
         this.setting = userService.user.setting;
         this.socket = io.socket;
@@ -113,32 +109,6 @@ let ProfileComponent = class ProfileComponent {
                 });
             }
         });
-    }
-    get stravaClientId() {
-        return this._stravaClientId;
-    }
-    set stravaClientId(value) {
-        this._stravaClientId = value;
-        this.stravaHref =
-            'https://www.strava.com/oauth/authorize?' +
-                'client_id=' + value +
-                '&response_type=code' +
-                '&redirect_uri=' + System.baseURL + '%23/' + 'auth/map/strava-invite/' + this.token +
-                '&scope=write' +
-                '&state=strava' +
-                '&approval_prompt=force';
-    }
-    goToStrava() {
-        if (this.stravaClientId) {
-            this.socket.$emit('onStrava', {
-                stravaClientId: this.stravaClientId,
-                atlasToken: this.token
-            })
-                .then(d => {
-                console.log(d);
-                window.location.href = this.stravaHref.toString();
-            });
-        }
     }
 };
 ProfileComponent = __decorate([

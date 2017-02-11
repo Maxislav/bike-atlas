@@ -178,7 +178,7 @@ function createTable() {
     const tablePrivateArea = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`private_area` ' +
             '( `id` INT NOT NULL AUTO_INCREMENT , ' +
-            '`user_id` INT NOT NULL , ' +
+            '`user_id` INT NOT NULL UNIQUE, ' +
             '`lng` FLOAT(10,8) NOT NULL, ' +
             '`lat` FLOAT(10,8) NOT NULL  , ' +
             '`radius` INT NOT NULL, ' +
@@ -214,10 +214,11 @@ function createTable() {
     const tableStrava = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`strava` ' +
             '( `id` INT NOT NULL AUTO_INCREMENT , ' +
-            '`user_id` INT NOT NULL , ' +
-            '`strava_client_id` INT NOT NULL , ' +
+            '`user_id` INT NOT NULL UNIQUE, ' +
+            '`strava_client_id` INT NOT NULL UNIQUE, ' +
             '`atlas_token` VARCHAR(32) NOT NULL, ' +
-            '`strava_code` VARCHAR(32) NULL DEFAULT NULL, ' +
+            '`strava_code` VARCHAR(40) NULL DEFAULT NULL, ' +
+            '`strava_client_secret` VARCHAR(40) NOT NULL, ' +
             '`date` DATETIME NULL DEFAULT NULL,' +
             'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
         connection.query(query, (err) => {
