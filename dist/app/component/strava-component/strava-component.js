@@ -13,10 +13,9 @@ const router_1 = require("@angular/router");
 const hash_1 = require("../../util/hash");
 const socket_oi_service_1 = require("../../service/socket.oi.service");
 let StravaComponent = class StravaComponent {
-    constructor(router, io, activatedRoute) {
+    constructor(router, io) {
         this.router = router;
         this.io = io;
-        this.activatedRoute = activatedRoute;
         this._userId = null;
         this._stravaClientId = null;
         this._stravaClientSecret = null;
@@ -25,29 +24,6 @@ let StravaComponent = class StravaComponent {
         this.href = null;
         this.socket = io.socket;
         this.getStrava();
-    }
-    ngOnInit() {
-        this.router.routerState.root.queryParams.subscribe(data => {
-            this.code = data['code'];
-            if (this.code) {
-                this.socket.$emit('stravaUpdateCode', this.code)
-                    .then(d => {
-                    console.log('stravaUpdateCode->', d);
-                });
-            }
-            console.log(this.code);
-        });
-    }
-    stravaOauth() {
-        console.log('stravaOauth->');
-        this.socket.$emit('stravaOauth', {
-            stravaClientId: this.stravaClientId,
-            stravaClientSecret: this.stravaClientSecret,
-            stravaCode: this.code
-        })
-            .then(d => {
-            console.log('stravaOauth->', d);
-        });
     }
     getStrava() {
         this.socket.$emit('getStrava')
@@ -130,8 +106,7 @@ StravaComponent = __decorate([
         styleUrls: ['./strava-component.css'],
     }),
     __metadata("design:paramtypes", [router_1.Router,
-        socket_oi_service_1.Io,
-        router_1.ActivatedRoute])
+        socket_oi_service_1.Io])
 ], StravaComponent);
 exports.StravaComponent = StravaComponent;
 //# sourceMappingURL=strava-component.js.map

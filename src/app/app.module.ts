@@ -51,6 +51,7 @@ import {ChatService} from "./service/chat.service";
 import {OneItemTrackComponent} from "./component/menu/track-list/one-item-track-component/one-item-track.component";
 import {RouterStateSnapshot} from "@angular/router";
 import {StravaComponent} from "./component/strava-component/strava-component";
+import {StravaAuthComponent} from "./component/strava-component/strava-auth-component";
 
 @NgModule({
     imports: [
@@ -64,6 +65,7 @@ import {StravaComponent} from "./component/strava-component/strava-component";
      * Компоненты
      */
     declarations: [
+        StravaAuthComponent,
         StravaComponent,
         OneItemTrackComponent,
         ChatRoomComponent,

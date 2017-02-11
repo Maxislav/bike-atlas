@@ -13,6 +13,7 @@ const private_area_1 = require("./component/private-area/private-area");
 const no_found_component_1 = require("./no-found.component");
 const all_user_component_1 = require("./component/all-user/all-user.component");
 const strava_component_1 = require("./component/strava-component/strava-component");
+const strava_auth_component_1 = require("./component/strava-component/strava-auth-component");
 const appRouters = [
     {
         path: '',
@@ -78,7 +79,7 @@ const appRouters = [
                     },
                     {
                         path: 'strava-invite/:token',
-                        component: strava_component_1.StravaComponent
+                        component: strava_auth_component_1.StravaAuthComponent
                     },
                 ]
             }

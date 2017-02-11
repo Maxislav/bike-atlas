@@ -12,7 +12,7 @@ declare const System: any;
     templateUrl: "./strava-component.html",
     styleUrls: ['./strava-component.css'],
 })
-export class StravaComponent  implements OnChanges, OnInit {
+export class StravaComponent  implements OnChanges {
 
 
     private _href: string;
@@ -27,7 +27,6 @@ export class StravaComponent  implements OnChanges, OnInit {
 
     constructor(private router: Router,
                 private io : Io,
-                private activatedRoute: ActivatedRoute
     ) {
         this.href = null;
         this.socket = io.socket;
@@ -35,33 +34,7 @@ export class StravaComponent  implements OnChanges, OnInit {
 
     }
 
-    ngOnInit(): void {
 
-       this.router.routerState.root.queryParams.subscribe(
-            data =>{
-                this.code = data['code'];
-                if(this.code){
-                    this.socket.$emit('stravaUpdateCode', this.code)
-                        .then(d=>{
-                            console.log('stravaUpdateCode->',d)
-                        })
-                }
-                console.log(this.code)
-            })
-
-    }
-
-    stravaOauth(){
-        console.log('stravaOauth->')
-        this.socket.$emit('stravaOauth',{
-            stravaClientId: this.stravaClientId,
-            stravaClientSecret: this.stravaClientSecret,
-            stravaCode: this.code
-        })
-            .then(d=>{
-                console.log('stravaOauth->', d)
-            })
-    }
 
     getStrava(){
         this.socket.$emit('getStrava')
@@ -143,10 +116,7 @@ export class StravaComponent  implements OnChanges, OnInit {
                     if(d.result=='ok'){
                         window.location.href = this.stravaHref.toString()
                     }
-
                 })
-
-
         }
     }
 }

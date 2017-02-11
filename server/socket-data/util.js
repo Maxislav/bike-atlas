@@ -815,6 +815,7 @@ class Util {
         })
 	}
 
+
 	formatDevice(d) {
 		return {
 			id: d.device_key,

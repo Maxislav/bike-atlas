@@ -29,17 +29,18 @@
           <input [(ngModel)]="stravaClientSecret" name="stravaClientSecret" class="input"/>
         </td>
       </tr>
-      <tr>
-        <td>
-          <label class="flex-cell">Code:</label>
-        </td>
-        <td>{{code}}</td>
-      </tr>
+      <!--tr
+      td
+          label.flex-cell() Code:
+      td
+          |{{code}}
+      
+      -->
     </table>
     <div class="flex flex-end">
       <div class="flex-cell">
-        <div *ngIf="!code" class="button primary"><a [ngClass]="{'blue':stravaClientId &amp;&amp; stravaClientSecret}" href="{{stravaHref}}" (click)="$event.preventDefault(); goToStrava()">cвязать</a></div>
-        <div *ngIf="code" (click)="stravaOauth()" class="button primary">Авторизация</div>
+        <div *ngIf="!code" class="button primary"><a [ngClass]="{'blue':stravaClientId &amp;&amp; stravaClientSecret}" href="{{stravaHref}}" (click)="$event.preventDefault(); goToStrava()">Авторизация</a></div>
+        <div *ngIf="code" (click)="stravaOauth()" class="button primary">Авторизацияjk</div>
       </div>
     </div>
   </div>

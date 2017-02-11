@@ -12,52 +12,77 @@ class OnStrava extends ProtoData{
 
     }
 
-    stravaOauth(eNAme, {stravaClientId, stravaClientSecret, stravaCode}){
-        const data = querystring.stringify({
-            client_id: stravaClientId,
-            client_secret: stravaClientSecret,
-            code: stravaCode
-        });
+    stravaOauth(eNAme, {stravaCode}){
+
+        this.getUserId()
+            .then(userId=>{
+                return this.util.getStrava(userId)
+                    .then(row=>{
+
+                        row = ProtoData.toCamelCaseObj(row)
+
+                        const data = querystring.stringify({
+                            client_id: row.stravaClientId,
+                            client_secret: row.stravaClientSecret,
+                            code: row.stravaCode
+                        });
 
 
-        const options = {
-            port: 443,
-            hostname: 'www.strava.com',
-            method: 'POST',
-            //path: '/oauth/token?client_id='+stravaClientId+"&client_secret="+stravaClientSecret+"&code="+stravaCode
-            path: '/oauth/token',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Content-Length': Buffer.byteLength(data)
-            }
-        };
-           let resData = '';
+                        const options = {
+                            port: 443,
+                            hostname: 'www.strava.com',
+                            method: 'POST',
+                            path: '/oauth/token',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'Content-Length': Buffer.byteLength(data)
+                            }
+                        };
+                        let resData = '';
 
-        const req = https.request(options, (res)=> {
-            res.setEncoding('utf8');
-            res.on('data',  (chunk) =>{
-                resData+=chunk;
-            });
-            res.on('end', ()=>{
-                let jsonRes ={};
-                try {
-                    jsonRes = JSON.parse(resData)
-                }catch (err){
-                    console.log('Error parse Json->', err)
-                    this.socket.emit(eNAme,{
-                        result: false,
-                        data: err
-                    });
-                    return;
-                }
-                this.socket.emit(eNAme,{
-                    result: 'ok',
-                    data: jsonRes
-                });
+                        const req = https.request(options, (res)=> {
+                            res.setEncoding('utf8');
+                            res.on('data',  (chunk) =>{
+                                resData+=chunk;
+                            });
+                            res.on('end', ()=>{
+                                let jsonRes ={};
+                                try {
+                                    jsonRes = JSON.parse(resData)
+                                }catch (err){
+                                    console.log('Error parse Json->', err)
+
+
+                                    this.socket.emit(eNAme,{
+                                        result: false,
+                                        data: err
+                                    });
+                                    return;
+                                }
+
+                                if(jsonRes.access_token){
+                                    this.socket.emit(eNAme,{
+                                        result: 'ok',
+                                        data: jsonRes
+                                    });
+                                }else{
+                                    this.socket.emit(eNAme,{
+                                        result: false,
+                                        data: jsonRes
+                                    });
+                                }
+
+                            })
+                        });
+                        req.write(data);
+                        req.end()
+
+
+
+                    })
             })
-        });
-        req.write(data);
-        req.end()
+
+
 
 
     }

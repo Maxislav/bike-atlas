@@ -59,6 +59,7 @@ const chat_room_component_1 = require("./component/chat-component/chat-room/chat
 const chat_service_1 = require("./service/chat.service");
 const one_item_track_component_1 = require("./component/menu/track-list/one-item-track-component/one-item-track.component");
 const strava_component_1 = require("./component/strava-component/strava-component");
+const strava_auth_component_1 = require("./component/strava-component/strava-auth-component");
 let AppModule = class AppModule {
     constructor() {
     }
@@ -74,6 +75,7 @@ AppModule = __decorate([
          * Компоненты
          */
         declarations: [
+            strava_auth_component_1.StravaAuthComponent,
             strava_component_1.StravaComponent,
             one_item_track_component_1.OneItemTrackComponent,
             chat_room_component_1.ChatRoomComponent,

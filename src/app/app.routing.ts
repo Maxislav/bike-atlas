@@ -22,6 +22,7 @@ import {MapResolver} from "./directive/mapbox-gl.directive";
 import {NoFoundComponent} from "./no-found.component";
 import {AllUserComponent} from "./component/all-user/all-user.component";
 import {StravaComponent} from "./component/strava-component/strava-component";
+import {StravaAuthComponent} from "./component/strava-component/strava-auth-component";
 
 const  appRouters: Routes = [
     {
@@ -91,7 +92,7 @@ const  appRouters: Routes = [
                     },
                     {
                         path:'strava-invite/:token',
-                        component: StravaComponent
+                        component: StravaAuthComponent
                     },
                 ]
             }

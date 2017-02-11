@@ -19,7 +19,7 @@ div.content
                     label.flex-cell() Client Secret:
                 td
                     input.input([(ngModel)]="stravaClientSecret", name="stravaClientSecret")
-            tr
+            //tr
                 td
                     label.flex-cell() Code:
                 td
@@ -28,7 +28,7 @@ div.content
         .flex.flex-end
             .flex-cell
                 .button.primary(*ngIf="!code")
-                    a([ngClass]="{'blue':stravaClientId && stravaClientSecret}",  href="{{stravaHref}}", (click)="$event.preventDefault(); goToStrava()") cвязать
-                .button.primary(*ngIf="code", (click)="stravaOauth()") Авторизация
+                    a([ngClass]="{'blue':stravaClientId && stravaClientSecret}",  href="{{stravaHref}}", (click)="$event.preventDefault(); goToStrava()") Авторизация
+                .button.primary(*ngIf="code", (click)="stravaOauth()") Авторизацияjk
 
 
