@@ -4,7 +4,7 @@ div.content
         .row
             p
                 | Профиль
-        .row
+        .row.border
             .load-img
                 img([src]="user.image || 'src/img/no-avatar.gif' ", (click)="onOpenImage()")
                 .row {{user.name}}
@@ -16,7 +16,21 @@ div.content
                     .help(*ngIf="!setting.lock") поставьте галочку чтобы запретить показ моего местоположения всем кроме друзей
 
                 input(type="file" id="files" name="files[]" multiple="", style="display: none")
-        .border-hidden
-            div()
-                button( style="float: right", (click)="onSave($event)") Сохранить
+            .border-hidden
+                div()
+                    button.primary( style="float: right", (click)="onSave($event)") Сохранить
+            .border-hidden
+        .row
+            .cell.gray
+                | В разработке *
+        .flex.center.row.space-between
+            .cell
+                .ico-strava
+            label.cell() ID клиента
+            .cell
+                input.input([(ngModel)]="stravaClientId", type='number', name="stravaClientId")
+             .cell
+                 .button.primary
+                    a([ngClass]="{'blue':stravaClientId, 'gray':!stravaClientId}",  href="{{stravaHref}}", (click)="$event.preventDefault(); goToStrava()") cвязать
+
         .border-hidden

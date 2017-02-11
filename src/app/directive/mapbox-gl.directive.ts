@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, Injectable} from '@angular/core';
+import {Component, AfterViewInit, Injectable, NgZone} from '@angular/core';
 import {Directive, ElementRef, Input, Renderer} from '@angular/core';
 //import any = jasmine.any;
 import {MapService} from "../service/map.service";
@@ -69,68 +69,13 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
     private _mapboxgl:any;
     private styleSource:any;
     private layers:Array<{}>;
-
-    ngAfterViewInit():void {
-
-        var localStorageCenter = this.ls.mapCenter;
-
-        let el = this.el;
-        el.nativeElement.innerHTML = '';
-        mapboxgl.accessToken = "pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA";
-        this.map = new mapboxgl.Map({
-            container: el.nativeElement,
-            center: [localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
-            zoom: localStorageCenter.zoom || 8,
-            style: 'mapbox://styles/mapbox/streets-v9',
-
-            _style: {
-                "version": 8,
-                "name": "plastun",
-                "sprite": "http://" + window.location.hostname + "/src/sprite/sprite",
-                "sources": this.styleSource,
-                "layers": this.layers
-            }
-        });
-
-        this.map.addControl(new mapboxgl.NavigationControl({
-            position: 'top-right',
-            maxWidth: 80
-        }));
-
-
-        this.map.on('load', ()=> {
-            this.mapResolver.onLoad(this.map);
-            this.map.addSource('hill',
-                {
-                    "type": "raster",
-                    "tiles": [
-                        System.baseURL+"hills/{z}/{x}/{y}.png"
-                    ],
-                    "tileSize": 256
-                });
-
-            this.map.addLayer({
-                'id': 'urban-areas-fill',
-                'type': 'raster',
-                "minzoom": 7,
-                "maxzoom": 14,
-                'source': 'hill'
-
-            })
-        });
-
-        this.mapService.setMap(this.map);
-
-    };
-
-
     constructor(el:ElementRef,
                 renderer:Renderer,
                 mapService:MapService,
                 positionSiz:PositionSize,
                 private ls:LocalStorage,
                 private userService: UserService,
-               // private su:AuthService,
+                public ngZone: NgZone,
                 private mapResolver : MapResolver) {
 
         this.setting = userService.user.setting || {};
@@ -206,6 +151,63 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
 
 
     }
+
+    ngAfterViewInit():void {
+        this.ngZone.runOutsideAngular(() => {
+            const localStorageCenter = this.ls.mapCenter;
+            let el = this.el;
+            el.nativeElement.innerHTML = '';
+            mapboxgl.accessToken = "pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA";
+            this.map = new mapboxgl.Map({
+                container: el.nativeElement,
+                center: [localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
+                zoom: localStorageCenter.zoom || 8,
+                style: 'mapbox://styles/mapbox/streets-v9',
+
+                _style: {
+                    "version": 8,
+                    "name": "plastun",
+                    "sprite": "http://" + window.location.hostname + "/src/sprite/sprite",
+                    "sources": this.styleSource,
+                    "layers": this.layers
+                }
+            });
+
+            this.map.addControl(new mapboxgl.NavigationControl({
+                position: 'top-right',
+                maxWidth: 80
+            }));
+
+
+            this.map.on('load', ()=> {
+                this.mapResolver.onLoad(this.map);
+                this.map.addSource('hill',
+                    {
+                        "type": "raster",
+                        "tiles": [
+                            System.baseURL+"hills/{z}/{x}/{y}.png"
+                        ],
+                        "tileSize": 256
+                    });
+
+                this.map.addLayer({
+                    'id': 'urban-areas-fill',
+                    'type': 'raster',
+                    "minzoom": 7,
+                    "maxzoom": 14,
+                    'source': 'hill'
+
+                })
+            });
+            this.mapService.setMap(this.map);
+
+
+        });
+
+    };
+
+
+
 
 
 }

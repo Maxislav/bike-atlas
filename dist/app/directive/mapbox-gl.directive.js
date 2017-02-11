@@ -37,11 +37,10 @@ MapResolver = __decorate([
 exports.MapResolver = MapResolver;
 ;
 let MapboxGlDirective = class MapboxGlDirective {
-    constructor(el, renderer, mapService, positionSiz, ls, userService, 
-        // private su:AuthService,
-        mapResolver) {
+    constructor(el, renderer, mapService, positionSiz, ls, userService, ngZone, mapResolver) {
         this.ls = ls;
         this.userService = userService;
+        this.ngZone = ngZone;
         this.mapResolver = mapResolver;
         this.setting = {};
         this.setting = userService.user.setting || {};
@@ -122,45 +121,47 @@ let MapboxGlDirective = class MapboxGlDirective {
         this._mapboxgl = value;
     }
     ngAfterViewInit() {
-        var localStorageCenter = this.ls.mapCenter;
-        let el = this.el;
-        el.nativeElement.innerHTML = '';
-        mapboxgl.accessToken = "pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA";
-        this.map = new mapboxgl.Map({
-            container: el.nativeElement,
-            center: [localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
-            zoom: localStorageCenter.zoom || 8,
-            style: 'mapbox://styles/mapbox/streets-v9',
-            _style: {
-                "version": 8,
-                "name": "plastun",
-                "sprite": "http://" + window.location.hostname + "/src/sprite/sprite",
-                "sources": this.styleSource,
-                "layers": this.layers
-            }
-        });
-        this.map.addControl(new mapboxgl.NavigationControl({
-            position: 'top-right',
-            maxWidth: 80
-        }));
-        this.map.on('load', () => {
-            this.mapResolver.onLoad(this.map);
-            this.map.addSource('hill', {
-                "type": "raster",
-                "tiles": [
-                    System.baseURL + "hills/{z}/{x}/{y}.png"
-                ],
-                "tileSize": 256
+        this.ngZone.runOutsideAngular(() => {
+            const localStorageCenter = this.ls.mapCenter;
+            let el = this.el;
+            el.nativeElement.innerHTML = '';
+            mapboxgl.accessToken = "pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA";
+            this.map = new mapboxgl.Map({
+                container: el.nativeElement,
+                center: [localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
+                zoom: localStorageCenter.zoom || 8,
+                style: 'mapbox://styles/mapbox/streets-v9',
+                _style: {
+                    "version": 8,
+                    "name": "plastun",
+                    "sprite": "http://" + window.location.hostname + "/src/sprite/sprite",
+                    "sources": this.styleSource,
+                    "layers": this.layers
+                }
             });
-            this.map.addLayer({
-                'id': 'urban-areas-fill',
-                'type': 'raster',
-                "minzoom": 7,
-                "maxzoom": 14,
-                'source': 'hill'
+            this.map.addControl(new mapboxgl.NavigationControl({
+                position: 'top-right',
+                maxWidth: 80
+            }));
+            this.map.on('load', () => {
+                this.mapResolver.onLoad(this.map);
+                this.map.addSource('hill', {
+                    "type": "raster",
+                    "tiles": [
+                        System.baseURL + "hills/{z}/{x}/{y}.png"
+                    ],
+                    "tileSize": 256
+                });
+                this.map.addLayer({
+                    'id': 'urban-areas-fill',
+                    'type': 'raster',
+                    "minzoom": 7,
+                    "maxzoom": 14,
+                    'source': 'hill'
+                });
             });
+            this.mapService.setMap(this.map);
         });
-        this.mapService.setMap(this.map);
     }
     ;
 };
@@ -174,6 +175,7 @@ MapboxGlDirective = __decorate([
         position_size_service_1.PositionSize,
         local_storage_service_1.LocalStorage,
         main_user_service_1.UserService,
+        core_1.NgZone,
         MapResolver])
 ], MapboxGlDirective);
 exports.MapboxGlDirective = MapboxGlDirective;

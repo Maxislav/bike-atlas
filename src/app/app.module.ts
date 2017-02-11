@@ -1,7 +1,7 @@
 /**
  * Created by maxislav on 16.08.16.
  */
-import {NgModule}      from '@angular/core';
+import {NgModule, NgZone}      from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule}   from '@angular/forms';
 
@@ -122,4 +122,7 @@ import {StravaComponent} from "./component/strava-component/strava-component";
     ]
 })
 export class AppModule {
+    constructor(){
+
+    }
 }

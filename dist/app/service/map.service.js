@@ -42,6 +42,7 @@ let MapService = class MapService {
         map.on('mousemove', (e) => {
             this.lat = e.lngLat.lat.toFixed(4);
             this.lng = e.lngLat.lng.toFixed(4);
+            this.ref.tick();
         });
         map.on('move', (e) => {
             //console.log()
@@ -51,6 +52,7 @@ let MapService = class MapService {
             let LngLat = map.getCenter();
             this.lngMap = LngLat.lng.toFixed(4);
             this.latMap = LngLat.lat.toFixed(4);
+            this.ref.tick();
         });
         map.on('moveend', () => {
             let LngLat = map.getCenter();

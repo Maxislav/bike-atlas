@@ -30,13 +30,16 @@ let StravaComponent = class StravaComponent {
             'https://www.strava.com/oauth/authorize?' +
                 'client_id=' + this.userId +
                 '&response_type=code' +
-                '&redirect_uri=http://localhost/' + this.token +
+                '&redirect_uri=' + System.baseURL + '/%23/' + this.token +
                 '&scope=write' +
                 '&state=strava' +
-                '&approval_prompt=auto';
+                '&approval_prompt=force';
     }
     get userId() {
         return this._userId;
+    }
+    ngDoCheck() {
+        // console.log(++i)
     }
     ngOnChanges(changes) {
         console.log(changes);

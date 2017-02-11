@@ -1,9 +1,10 @@
 @menu-hover: white;
 @main-menu-color: linear-gradient(to bottom, #dae0ea 0%, #e9ebee 20%, #e9ebee 100%);
 @main-background-color: #dae0ea;// linear-gradient(to bottom, #dae0ea 0%, #e9ebee 20%, #e9ebee 100%);
-@main-border-color: #9ba8b2;
-@main-border-color: #9ba8b2;
+@main-border-color: #cfdcef;
 @green-color: #3a9d31;
+@gray-color: #b2b4b7;
+
 @blue-color: dodgerblue;
 @main-text-color: #444a56;
 @danger-background: red;
@@ -42,17 +43,49 @@
     display: table-cell;
   }
 }
-
-button{
+.flex{
+  display: flex;
+  &.center{
+    align-items: center;
+  }
+  .cell{
+    padding: 0 10px;
+  }
+  &.space-between{
+    justify-content: space-between;
+  }
+}
+.blue{
+  color: @blue-color
+}
+.gray{
+  color:@gray-color
+}
+button, .button{
   padding: 8px 15px;
   border: none;
-  background: white;
+  background: transparent;
   border-radius: 2px;
   cursor: pointer;
   outline:none;
-  box-shadow: 1px 2px 5px rgba(0,0,0,0.3);
+  font-weight: bold;
+ // box-shadow: 1px 2px 5px rgba(0,0,0,0.3);
   &:active{
     color: #999999;
     box-shadow: none;
   }
+  &.primary{
+    color: @blue-color;
+  }
+
+}
+.row{
+  margin: 15px -10px;
+}
+input.input{
+  border: none;
+  border-bottom: 1px solid @main-border-color;
+  padding: 5px 10px;
+  outline: none;
+  background: transparent;
 }

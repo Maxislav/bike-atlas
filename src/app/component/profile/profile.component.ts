@@ -7,8 +7,10 @@ import {Io} from "../../service/socket.oi.service";
 import {ToastService} from "../toast/toast.component";
 import {UserService, User} from "../../service/main.user.service";
 import {PrivateAreaService} from "../../service/private.area.service";
+import {hashgeneral} from "../../util/hash";
 
 declare const module: any;
+declare const System: any;
 interface MyNode extends Node{
     click: Function
 }
@@ -19,12 +21,16 @@ interface MyNode extends Node{
     styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements AfterViewInit{
+
     private imageurl: string;
     private inputEl: MyNode;
     private name: string;
     private socket: any;
     private user: User;
     private setting;
+    private _stravaClientId: number = null;
+    private stravaHref: String = null;
+    private token: String = hashgeneral();
     constructor(private location: Location,
                 private elRef: ElementRef,
                 private router:Router,
@@ -125,6 +131,24 @@ export class ProfileComponent implements AfterViewInit{
                     //this.user.image = this.i
                 }
             })
+    }
+    get stravaClientId(): number {
+        return this._stravaClientId;
+    }
+
+    set stravaClientId(value: number) {
+        this._stravaClientId = value;
+        this.stravaHref =
+            'https://www.strava.com/oauth/authorize?'+
+            'client_id='+value+
+            '&response_type=code'+
+            '&redirect_uri='+System.baseURL+'%23/'+ 'auth/map/strava-invite/'+this.token+
+            '&scope=write'+
+            '&state=strava'+
+            '&approval_prompt=force'
+    }
+    goToStrava(){
+
     }
 
 }

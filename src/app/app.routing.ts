@@ -89,6 +89,10 @@ const  appRouters: Routes = [
                         path:'strava-invite',
                         component: StravaComponent
                     },
+                    {
+                        path:'strava-invite/:token',
+                        component: StravaComponent
+                    },
                 ]
             }
         ]
