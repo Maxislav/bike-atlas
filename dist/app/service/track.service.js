@@ -34,7 +34,11 @@ let TrackService = TrackService_1 = class TrackService {
         this.util = new util_1.Util();
         const socket = this.socket = io.socket;
         socket.on('file', d => {
-            let xmlStr = String.fromCharCode.apply(null, new Uint8Array(d));
+            let xmlStr = '';
+            const unit8Array = new Uint8Array(d);
+            unit8Array.forEach(unit => {
+                xmlStr += String.fromCharCode(unit);
+            });
             this.showGpxTrack(xmlStr);
         });
     }
