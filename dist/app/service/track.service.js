@@ -17,6 +17,7 @@ const util_1 = require("./util");
 const socket_oi_service_1 = require("./socket.oi.service");
 const map_service_1 = require("./map.service");
 const track_var_1 = require("./track.var");
+const distance_1 = require("../util/distance");
 const dateformat = require("node_modules/dateformat/lib/dateformat.js");
 const toast_component_1 = require("../component/toast/toast.component");
 //console.log(dateformat)
@@ -50,13 +51,27 @@ let TrackService = TrackService_1 = class TrackService {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xmlStr, "text/xml");
         const forEach = Array.prototype.forEach;
+        const arrTrkpt = [];
         forEach.call(xmlDoc.getElementsByTagName('trkpt'), (item, i) => {
+            arrTrkpt.push(item);
+        });
+        arrTrkpt.forEach((item, i) => {
             if (item.getAttribute('lon')) {
                 item.setAttribute('id', i);
                 const ele = item.getElementsByTagName('ele') ? item.getElementsByTagName('ele')[0] : null;
                 const point = new track_var_1.Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')), ele ? F(ele.innerHTML) : null);
                 point.date = item.getElementsByTagName('time')[0].innerHTML;
                 point.id = i;
+                if (!item.getElementsByTagName('speed')[0] && 0 < i) {
+                    const speed = document.createElement('speed');
+                    const point1 = new track_var_1.Point(F(arrTrkpt[i - 1].getAttribute('lon')), F(arrTrkpt[i - 1].getAttribute('lat')), ele ? F(ele.innerHTML) : null);
+                    const point2 = new track_var_1.Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')), ele ? F(ele.innerHTML) : null);
+                    const dist = distance_1.distance(point1, point2) * 1000;
+                    const t1 = new Date(arrTrkpt[i - 1].getElementsByTagName('time')[0].innerHTML).getTime() / 1000;
+                    const t2 = new Date(item.getElementsByTagName('time')[0].innerHTML).getTime() / 1000;
+                    speed.innerHTML = dist / (t2 - t1) + '';
+                    item.appendChild(speed);
+                }
                 point.speed = item.getElementsByTagName('speed')[0] ? F(item.getElementsByTagName('speed')[0].innerHTML) * 3.6 : 0;
                 track.push(point);
             }
