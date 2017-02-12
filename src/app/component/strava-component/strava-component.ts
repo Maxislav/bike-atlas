@@ -16,7 +16,6 @@ export class StravaComponent  implements OnChanges {
 
 
     private _href: string;
-    private _userId: number = null;
 
     private _stravaClientId: number = null;
     private _stravaClientSecret: string = null;
@@ -54,21 +53,6 @@ export class StravaComponent  implements OnChanges {
         this._href = value;
     }
 
-    set userId(value: number){
-        this._userId = value;
-        this.href =
-                'https://www.strava.com/oauth/authorize?'+
-                'client_id='+this.userId+
-                '&response_type=code'+
-                '&redirect_uri='+System.baseURL+'/%23/'+ this.token+
-                '&scope=write'+
-                '&state=strava'+
-                '&approval_prompt=force'
-
-    }
-    get userId(){
-        return this._userId
-    }
     ngDoCheck(){
        // console.log(++i)
     }
@@ -91,7 +75,7 @@ export class StravaComponent  implements OnChanges {
             'https://www.strava.com/oauth/authorize?'+
             'client_id='+value+
             '&response_type=code'+
-            '&redirect_uri='+System.baseURL+'%23/'+ 'auth/map/strava-invite/'+this.token+
+            '&redirect_uri='+'http://maxislav.github.io/bike-atlas/'+'%23/'+ 'auth/map/strava-invite/'+this.token+
             '&scope=write'+
             '&state=strava'+
             '&approval_prompt=force'

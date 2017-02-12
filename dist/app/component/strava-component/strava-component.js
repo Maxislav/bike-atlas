@@ -16,7 +16,6 @@ let StravaComponent = class StravaComponent {
     constructor(router, io) {
         this.router = router;
         this.io = io;
-        this._userId = null;
         this._stravaClientId = null;
         this._stravaClientSecret = null;
         this.stravaHref = null;
@@ -40,20 +39,6 @@ let StravaComponent = class StravaComponent {
     set href(value) {
         this._href = value;
     }
-    set userId(value) {
-        this._userId = value;
-        this.href =
-            'https://www.strava.com/oauth/authorize?' +
-                'client_id=' + this.userId +
-                '&response_type=code' +
-                '&redirect_uri=' + System.baseURL + '/%23/' + this.token +
-                '&scope=write' +
-                '&state=strava' +
-                '&approval_prompt=force';
-    }
-    get userId() {
-        return this._userId;
-    }
     ngDoCheck() {
         // console.log(++i)
     }
@@ -72,7 +57,7 @@ let StravaComponent = class StravaComponent {
             'https://www.strava.com/oauth/authorize?' +
                 'client_id=' + value +
                 '&response_type=code' +
-                '&redirect_uri=' + System.baseURL + '%23/' + 'auth/map/strava-invite/' + this.token +
+                '&redirect_uri=' + 'http://maxislav.github.io/bike-atlas/' + '%23/' + 'auth/map/strava-invite/' + this.token +
                 '&scope=write' +
                 '&state=strava' +
                 '&approval_prompt=force';
