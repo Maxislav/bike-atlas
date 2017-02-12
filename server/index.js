@@ -58,8 +58,10 @@ app.post('/import/kml-data',kmlData);
 //http://178.62.44.54/?state=&code=5f2bb3d2417d2834a1f0cf240a9d6c7a9ee12558
 app.use((req, res, next)=>{
  // console.log('req.query.state->',req.query.state)
-  if(req.query.code){
-    res.send('<a href="http://localhost/#/auth/map/strava-invite/'+req.query.code+'">accept</a>')
+  if(req.query.gprmc){
+
+    //res.send('<a href="http://localhost/#/auth/map/strava-invite/'+req.query.code+'">accept</a>')
+      next();
     return
   }
 
