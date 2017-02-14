@@ -1,4 +1,5 @@
-export const distance = ([lng, lat], [lng2, lat2])=>{
+import {Point} from "../service/track.var";
+export const distance = ([lng, lat]:Array<number>|Point, [lng2, lat2]: Array<number>|Point)=>{
 
     const arrTrackFull = [{
         lng,

@@ -13,10 +13,12 @@ const track_var_1 = require("../../../../service/track.var");
 const track_service_1 = require("../../../../service/track.service");
 const map_service_1 = require("../../../../service/map.service");
 const util_1 = require("../../../../service/util");
+const toast_component_1 = require("../../../toast/toast.component");
 let OneItemTrackComponent = class OneItemTrackComponent {
-    constructor(trackService, mapService) {
+    constructor(trackService, mapService, toast) {
         this.trackService = trackService;
         this.mapService = mapService;
+        this.toast = toast;
         this.util = new util_1.Util();
     }
     ngOnInit() {
@@ -27,11 +29,32 @@ let OneItemTrackComponent = class OneItemTrackComponent {
         this.track.hide();
     }
     saveChange() {
-        this.trackService.saveChange();
+        if (this.track.xmlDoc) {
+            this.trackService.downloadTrack(this.track.points)
+                .then(d => {
+                if (d && d.result == 'ok') {
+                    this.toast.show({
+                        type: 'success',
+                        text: "Трек успешно загружен в базу"
+                    });
+                }
+                else if (d && !d.result) {
+                    if (d.message == 'point exist') {
+                        this.toast.show({
+                            type: 'error',
+                            text: "Некоторые точки из днного трека были сохранены ранее"
+                        });
+                    }
+                }
+                console.log(d);
+            });
+        }
+        else {
+            this.trackService.saveChange();
+        }
     }
     onGo(_tr) {
         this.stop && this.stop();
-        //this.hideTrack();
         const $this = this;
         const map = this.mapService.map;
         const points = this.fillTrack(_tr.points);
@@ -183,8 +206,8 @@ let OneItemTrackComponent = class OneItemTrackComponent {
     }
 };
 __decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
+    core_1.Input(), 
+    __metadata('design:type', Object)
 ], OneItemTrackComponent.prototype, "track", void 0);
 OneItemTrackComponent = __decorate([
     core_1.Component({
@@ -192,8 +215,8 @@ OneItemTrackComponent = __decorate([
         selector: 'one-item-track-component',
         templateUrl: "./one-item-track.component.html",
         styleUrls: ['./one-item-track.component.css']
-    }),
-    __metadata("design:paramtypes", [track_service_1.TrackService, map_service_1.MapService])
+    }), 
+    __metadata('design:paramtypes', [track_service_1.TrackService, map_service_1.MapService, toast_component_1.ToastService])
 ], OneItemTrackComponent);
 exports.OneItemTrackComponent = OneItemTrackComponent;
 //# sourceMappingURL=one-item-track.component.js.map

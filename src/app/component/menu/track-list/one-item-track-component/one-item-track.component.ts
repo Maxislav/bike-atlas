@@ -4,6 +4,7 @@ import {Track, Point} from "../../../../service/track.var";
 import {TrackService} from "../../../../service/track.service";
 import {MapService} from "../../../../service/map.service";
 import {Util} from "../../../../service/util";
+import {ToastService} from "../../../toast/toast.component";
 declare const module: any;
 @Component({
     moduleId: module.id,
@@ -16,7 +17,10 @@ export class OneItemTrackComponent implements OnInit{
     @Input() track: Track;
     private util: Util;
     stop: Function;
-    constructor(  private trackService:TrackService, private mapService: MapService){
+    constructor(  private trackService:TrackService,
+                  private mapService: MapService,
+                  private toast:ToastService
+    ){
         this.util = new Util();
 
     }
@@ -29,11 +33,32 @@ export class OneItemTrackComponent implements OnInit{
         this.track.hide();
     }
     saveChange(){
-        this.trackService.saveChange()
+        if(this.track.xmlDoc){
+            this.trackService.downloadTrack(this.track.points)
+                .then(d=>{
+                    if(d && d.result=='ok'){
+                        this.toast.show({
+                            type: 'success',
+                            text: "Трек успешно загружен в базу"
+                        });
+                    } else if(d && !d.result){
+
+                      if(d.message == 'point exist'){
+                          this.toast.show({
+                              type: 'error',
+                              text: "Некоторые точки из днного трека были сохранены ранее"
+                          });
+                      }
+                    }
+                    console.log(d)
+                })
+        }else {
+            this.trackService.saveChange()
+        }
+
     }
     onGo(_tr: Track){
-        this.stop &&  this.stop()
-        //this.hideTrack();
+        this.stop &&  this.stop();
         const $this = this;
         const map = this.mapService.map;
         const points = this.fillTrack(_tr.points);

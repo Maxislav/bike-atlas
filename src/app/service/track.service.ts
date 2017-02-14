@@ -49,11 +49,11 @@ export class TrackService implements Resolve<any> {
             unit8Array.forEach(unit => {
                 xmlStr += String.fromCharCode(unit)
             });
-            this.showGpxTrack(xmlStr);
+            this.showGpxTrack(xmlStr, 'load');
         });
     }
 
-    showGpxTrack(xmlStr:string) {
+    showGpxTrack(xmlStr:string, src: string) {
         const track = [];
         const parser = new DOMParser();
         const xmlDoc: Document = parser.parseFromString(xmlStr, "text/xml");
@@ -61,7 +61,6 @@ export class TrackService implements Resolve<any> {
         const arrTrkpt =[];
         forEach.call(xmlDoc.getElementsByTagName('trkpt'), (item, i)=>{
             arrTrkpt.push(item);
-
         });
 
         arrTrkpt.forEach((item, i)=> {
@@ -179,8 +178,8 @@ export class TrackService implements Resolve<any> {
             color: color,
             distance: 0,
             date: points[0].date,
-            xmlDoc: xmlDoc
-         
+            xmlDoc: xmlDoc,
+
         };
 
         tr.distance = this.util.distance(tr);
@@ -497,6 +496,27 @@ export class TrackService implements Resolve<any> {
             })
         }
     }
+
+    downloadTrack(points: Array<Point>){
+       return this.socket.$emit('downloadTrack', this.formatBeforeSend(points))
+            .then(d=>{
+                console.log(d)
+                return d
+            })
+        
+    }
+    private formatBeforeSend(points){
+        return R.map(point=>{
+            return {
+                lng: point.lng,
+                lat: point.lat,
+                date:point.date,
+                speed: point.speed
+            }
+        }, points)
+
+    }
+    
 
     set map(value:any) {
         this._map = value;

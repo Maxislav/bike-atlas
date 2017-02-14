@@ -814,6 +814,44 @@ class Util {
             })
         })
 	}
+	downloadTrack(deviceKey, point){
+
+		return this.checkExistPoint(deviceKey, point.lng, point.date)
+			.then(res=>{
+				if(res){
+					return Promise.reject('point exist')
+				}else {
+					return new Promise((resolve, reject) => {
+						this.connection.query('INSERT INTO `logger` ' +
+							'(`id`, `device_key`, `lng`, `lat`, `speed`, `date`) VALUES (NULL, ?, ?, ?, ?, ?)',
+							[deviceKey,  point.lng, point.lat, point.speed, new Date(point.date)], (err, results) => {
+								if(err){
+									reject(err); return;
+								}
+								resolve(results)
+							})
+					})
+				}
+			});
+	}
+	checkExistPoint(deviceKey, lng, date){
+
+		return new Promise((resolve, reject) => {
+			this.connection.query('SELECT * FROM `logger` WHERE `device_key`=? AND date=?', [deviceKey, new Date(date)], function (err, rows) {
+				if(err){
+					reject(err)
+					return;
+				}
+				if(rows && rows.length){
+					resolve(true)
+				}else{
+					resolve(false)
+				}
+			
+			})
+		})
+		
+	}
 
 
 	formatDevice(d) {

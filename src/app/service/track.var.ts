@@ -56,7 +56,8 @@ export  interface Track {
     points: Array<Point>,
     color: String,
     distance: number,
-    xmlDoc: Document
+    xmlDoc: Document,
+    src?: string
 }
 
 

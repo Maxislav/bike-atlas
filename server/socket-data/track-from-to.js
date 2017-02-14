@@ -7,7 +7,10 @@ class TrackFromTo extends ProtoData {
 		socket.on('trackFromTo', this.trackFromTo.bind(this, 'trackFromTo'));
 		socket.on('getLastDate', this.getLastDate.bind(this, 'getLastDate'));
 		socket.on('delPoints', this.delPoints.bind(this, 'delPoints'));
+		socket.on('downloadTrack', this.downloadTrack.bind(this, 'downloadTrack'));
 	}
+
+
 
 	getLastDate(eName) {
 		let _userId;
@@ -116,7 +119,47 @@ class TrackFromTo extends ProtoData {
 			})
 	}
 
+	downloadTrack(eName, points){
+		this.getUserId()
+			.then(userId => {
+				return this.util.getDeviceByUserId(userId)
+			})
+			.then(devices=>{
+				if(!devices.length){
+					this.socket.emit( eName,{
+						result: false,
+						message: 'devices empty'
+					});
+					return Promise.reject('devices empty')
+				}else{
+					return  devices[0].device_key
+				}
+			})
+			.then(deviceKey=>{
+				return Promise.all(points.map(point=>{
+					return this.util.downloadTrack(deviceKey, point)
+				}))
+			})
+			.then(dd=>{
+				this.socket.emit(eName, {
+					result: 'ok'
+				})
+			})
+			.catch(err=>{
+				if(err){
+					this.socket.emit(eName, {
+						result: false,
+						message: err
+					})
+				}
+				console.log('Error downloadTrack->', err)
+			})
 
+	}
+	checkPointExist(){
+		
+	}
+	
 }
 
 module.exports = TrackFromTo;

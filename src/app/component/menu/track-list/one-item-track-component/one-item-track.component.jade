@@ -6,7 +6,7 @@
     .del( (click)='hideTrack()') &#215;
 .action
     //.download((click)="track.download()")
-    .download((click)="onDownload()")
-    .save((click)="saveChange()")
+    .download((click)="onDownload()", title='Скачать на комп')
+    .save((click)="saveChange()", title="сохранить трек")
     .route-points((click)="track.showSrcPoint()")
     .go( (click)="onGo(track)") Play &#9658;

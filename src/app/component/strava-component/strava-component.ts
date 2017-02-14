@@ -25,7 +25,7 @@ export class StravaComponent  implements OnChanges {
     private code: string;
 
     constructor(private router: Router,
-                private io : Io,
+                private io : Io
     ) {
         this.href = null;
         this.socket = io.socket;
