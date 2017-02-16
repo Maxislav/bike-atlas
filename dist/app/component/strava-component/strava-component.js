@@ -23,6 +23,20 @@ let StravaComponent = class StravaComponent {
         this.href = null;
         this.socket = io.socket;
         this.getStrava();
+        switch (true) {
+            case /maxislav/.test(window.location.hostname):
+                this.myLocation = 'http://' + window.location.hostname + '/bike-atlas/';
+                break;
+            default:
+                this.myLocation = 'http://' + window.location.hostname + '/';
+        }
+        this.isAuthorize();
+    }
+    isAuthorize() {
+        this.socket.$emit('isAuthorizeStrava')
+            .then(d => {
+            console.log(d);
+        });
     }
     getStrava() {
         this.socket.$emit('getStrava')
@@ -57,7 +71,7 @@ let StravaComponent = class StravaComponent {
             'https://www.strava.com/oauth/authorize?' +
                 'client_id=' + value +
                 '&response_type=code' +
-                '&redirect_uri=' + 'http://maxislav.github.io/bike-atlas/' + '%23/' + 'auth/map/strava-invite/' + this.token +
+                '&redirect_uri=' + this.myLocation + '%23/' + 'auth/map/strava-invite/' + this.token +
                 '&scope=write' +
                 '&state=strava' +
                 '&approval_prompt=force';

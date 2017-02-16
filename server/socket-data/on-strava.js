@@ -9,17 +9,22 @@ class OnStrava extends ProtoData{
         socket.on('getStrava', this.getStrava.bind(this, 'getStrava'));
         socket.on('stravaUpdateCode', this.stravaUpdateCode.bind(this, 'stravaUpdateCode'))
         socket.on('stravaOauth', this.stravaOauth.bind(this, 'stravaOauth'))
+        socket.on('isAuthorizeStrava', this.isAuthorize.bind(this, 'isAuthorizeStrava'))
 
     }
 
-    stravaOauth(eNAme, {stravaCode}){
+    isAuthorize(eName){
+       this.stravaOauth(eName);
+    }
+
+    stravaOauth(eNAme){
 
         this.getUserId()
             .then(userId=>{
                 return this.util.getStrava(userId)
                     .then(row=>{
 
-                        row = ProtoData.toCamelCaseObj(row)
+                        row = ProtoData.toCamelCaseObj(row);
 
                         const data = querystring.stringify({
                             client_id: row.stravaClientId,
