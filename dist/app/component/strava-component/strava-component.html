@@ -12,6 +12,29 @@
         <div class="ico-strava"></div>
       </div>
     </div>
+    <div *ngIf="authInProgress" class="flex row center">
+      <div class="flex-cell">Авторизация..</div>
+      <div class="flex-cell">
+        <div class="ico-z"></div>
+      </div>
+    </div>
+    <div *ngIf="athlete.firstName" class="flex row center">
+      <table class="athlete">
+        <tr>
+          <td rowspan="3"><img [src]="athlete.profile" class="profile"/></td>
+          <td>FirstName</td>
+          <td>{{athlete.firstName}}</td>
+        </tr>
+        <tr>
+          <td>LastName</td>
+          <td>{{athlete.lastName}}</td>
+        </tr>
+        <tr>
+          <td>City</td>
+          <td>{{athlete.city}}</td>
+        </tr>
+      </table>
+    </div>
     <table class="strava">
       <tr>
         <td>

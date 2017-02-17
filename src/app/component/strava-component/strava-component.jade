@@ -8,6 +8,26 @@ div.content
         .flex.center.row.space-between
             .flex-cell
                 .ico-strava
+        .flex.row.center(*ngIf="authInProgress")
+            .flex-cell
+                | Авторизация..
+            .flex-cell
+                .ico-z
+
+        .flex.row.center(*ngIf="athlete.firstName")
+            table.athlete
+                tr
+                    td(rowspan='3')
+                        img.profile([src]="athlete.profile")
+                    td FirstName
+                    td {{athlete.firstName}}
+                tr
+                    td LastName
+                    td {{athlete.lastName}}
+                tr
+                    td City
+                    td {{athlete.city}}
+
         table.strava
             tr
                 td

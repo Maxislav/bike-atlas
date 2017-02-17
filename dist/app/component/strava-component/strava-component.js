@@ -20,9 +20,16 @@ let StravaComponent = class StravaComponent {
         this._stravaClientSecret = null;
         this.stravaHref = null;
         this.token = hash_1.hashgeneral();
+        this.athlete = {
+            firstName: null,
+            lastName: null,
+            city: null,
+            profile: null
+        };
         this.href = null;
         this.socket = io.socket;
         this.getStrava();
+        this.authInProgress = true;
         switch (true) {
             case /maxislav/.test(window.location.hostname):
                 this.myLocation = 'http://' + window.location.hostname + '/bike-atlas/';
@@ -36,6 +43,15 @@ let StravaComponent = class StravaComponent {
         this.socket.$emit('isAuthorizeStrava')
             .then(d => {
             console.log(d);
+            if (d.result && d.result == 'ok') {
+                const athlete = d.data.athlete;
+                this.athlete.firstName = athlete.firstname;
+                this.athlete.lastName = athlete.lastname;
+                ;
+                this.athlete.profile = athlete.profile;
+                this.athlete.city = athlete.city;
+            }
+            this.authInProgress = false;
         });
     }
     getStrava() {

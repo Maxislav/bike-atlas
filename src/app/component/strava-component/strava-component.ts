@@ -6,6 +6,13 @@ import {Io} from "../../service/socket.oi.service";
 declare const module: any;
 declare const System: any;
 
+interface Athlete{
+    firstName: string;
+    lastName: string;
+    city: string;
+    profile: string;
+}
+
 
 @Component({
     moduleId: module.id,
@@ -24,6 +31,13 @@ export class StravaComponent  implements OnChanges {
     private socket: any;
     private code: string;
     private myLocation: string;
+    private authInProgress: boolean;
+    private athlete: Athlete = {
+        firstName: null,
+        lastName: null,
+        city: null,
+        profile: null
+    };
 
     constructor(private router: Router,
                 private io : Io
@@ -31,6 +45,8 @@ export class StravaComponent  implements OnChanges {
         this.href = null;
         this.socket = io.socket;
         this.getStrava();
+
+        this.authInProgress = true
 
         switch (true){
             case /maxislav/.test(window.location.hostname):
@@ -47,6 +63,14 @@ export class StravaComponent  implements OnChanges {
         this.socket.$emit('isAuthorizeStrava')
             .then(d=>{
                 console.log(d)
+                if(d.result && d.result == 'ok'){
+                    const athlete = d.data.athlete;
+                    this.athlete.firstName = athlete.firstname;
+                    this.athlete.lastName = athlete.lastname;;
+                    this.athlete.profile = athlete.profile;
+                    this.athlete.city = athlete.city;
+                }
+                this.authInProgress = false
             })
     }
 

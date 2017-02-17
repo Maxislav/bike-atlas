@@ -15,7 +15,7 @@ connect()
         console.log(err);
         connection.end()
     });
-
+//ALTER TABLE `logger` CHANGE `date` `date` datetime(2) NOT NULL
 
 function connect() {
     connection = mysql.createConnection(config.mysql);
