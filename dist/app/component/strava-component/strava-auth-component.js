@@ -54,6 +54,9 @@ let StravaAuthComponent = class StravaAuthComponent {
     onClose() {
         this.router.navigate(['/auth/map']);
     }
+    goNext() {
+        this.router.navigate(['/auth/map/strava-invite']);
+    }
 };
 StravaAuthComponent = __decorate([
     core_1.Component({

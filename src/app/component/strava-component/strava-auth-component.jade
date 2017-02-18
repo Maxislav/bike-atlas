@@ -7,7 +7,7 @@ div.content
                 | В разработке *
         .flex.center.row.space-between
             .flex-cell
-                .ico-strava
+                .ico-strava-text
         .flex.row.center(*ngIf="authInProgress")
             .flex-cell
                 | Авторизация..
@@ -30,6 +30,6 @@ div.content
 
         .flex.flex-end
             .flex-cell
-                .button.primary(*ngIf="code", (click)="goToAuth()") Авторизироваться повторно
+                .button.primary(*ngIf="code", (click)="goNext()") Продолжить
 
 

@@ -5,6 +5,8 @@ import {TrackService} from "../../../../service/track.service";
 import {MapService} from "../../../../service/map.service";
 import {Util} from "../../../../service/util";
 import {ToastService} from "../../../toast/toast.component";
+import {StravaService} from "../../../../service/strava.service";
+import {Router} from "@angular/router";
 declare const module: any;
 @Component({
     moduleId: module.id,
@@ -19,7 +21,9 @@ export class OneItemTrackComponent implements OnInit{
     stop: Function;
     constructor(  private trackService:TrackService,
                   private mapService: MapService,
-                  private toast:ToastService
+                  private toast:ToastService,
+                  private router: Router,
+                  private stravaService: StravaService
     ){
         this.util = new Util();
 
@@ -199,9 +203,7 @@ export class OneItemTrackComponent implements OnInit{
                 trkpt.appendChild(speed);
 
                 trkseg.appendChild(trkpt)
-            })
-
-
+            });
             resolve(xmlDoc);
         })
     }
@@ -233,6 +235,10 @@ export class OneItemTrackComponent implements OnInit{
                 pom.click();
             }
         }
+    }
+    stravaExport(){
+        this.stravaService.addToExport(this.track);
+        this.router.navigate(['/auth/map/strava-invite']);
     }
 
 }

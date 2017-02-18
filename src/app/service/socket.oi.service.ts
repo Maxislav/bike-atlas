@@ -4,12 +4,19 @@ import * as io from "socket/socket.io.js";
 
 declare const io: any;
 
+interface Socket{
+    emit: Function;
+    $emit: Function;
+    on: Function;
+    off: Function;
+}
+
 
 @Injectable()
 export class Io{
    
 
-    private _socket: any;
+    private _socket: Socket;
 
     constructor(){
 
@@ -40,7 +47,7 @@ export class Io{
             //console.log(d,'klklttewefewfwe')
         });
     }
-    get socket():any {
+    get socket():Socket {
         return this._socket;
     }
     

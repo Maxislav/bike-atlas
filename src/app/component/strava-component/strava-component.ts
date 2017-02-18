@@ -2,6 +2,8 @@ import {Component, Input, OnChanges, OnInit} from "@angular/core";
 import {Router, ActivatedRoute, Params, Route} from "@angular/router";
 import {hashgeneral} from "../../util/hash";
 import {Io} from "../../service/socket.oi.service";
+import {StravaService, StravaD} from "../../service/strava.service";
+import {Track} from "../../service/track.var";
 //import {module} from "@angular/upgrade/src/angular_js";
 declare const module: any;
 declare const System: any;
@@ -38,15 +40,30 @@ export class StravaComponent  implements OnChanges {
         city: null,
         profile: null
     };
+   
+    private authorization: string
+
+    
+    private docsFor: Array<Track>;
 
     constructor(private router: Router,
-                private io : Io
+                private io : Io,
+                private stravaService: StravaService
     ) {
+        this.docsFor = stravaService.docsFor;
         this.href = null;
         this.socket = io.socket;
-        this.getStrava();
+        this.getStrava()
+            .then(d=>{
+                if(d.result && d.result == 'ok'){
+                    this.isAuthorize()
+                }
+            })
+            .catch(d=>{
+                this.authInProgress = false;
+            });
 
-        this.authInProgress = true
+        this.authInProgress = true;
 
         switch (true){
             case /maxislav/.test(window.location.hostname):
@@ -55,7 +72,6 @@ export class StravaComponent  implements OnChanges {
             default:
                 this.myLocation = 'http://'+ window.location.hostname+'/';
         }
-        this.isAuthorize()
 
     }
 
@@ -66,9 +82,11 @@ export class StravaComponent  implements OnChanges {
                 if(d.result && d.result == 'ok'){
                     const athlete = d.data.athlete;
                     this.athlete.firstName = athlete.firstname;
-                    this.athlete.lastName = athlete.lastname;;
+                    this.athlete.lastName = athlete.lastname;
                     this.athlete.profile = athlete.profile;
                     this.athlete.city = athlete.city;
+
+                    this.authorization = d.data.token_type+ " "+d.data.access_token
                 }
                 this.authInProgress = false
             })
@@ -77,11 +95,14 @@ export class StravaComponent  implements OnChanges {
 
 
     getStrava(){
-        this.socket.$emit('getStrava')
+       return this.socket.$emit('getStrava')
             .then(d=>{
                 if(d && d.result =='ok' && d.data){
                     this.stravaClientId = d.data.stravaClientId;
-                    this.stravaClientSecret = d.data.stravaClientSecret
+                    this.stravaClientSecret = d.data.stravaClientSecret;
+                    return d
+                }else{
+                    return Promise.reject('no auth')
                 }
             })
     }
@@ -143,5 +164,13 @@ export class StravaComponent  implements OnChanges {
                     }
                 })
         }
+    }
+    sendTrackToStrava(track: Track){
+        
+        this.stravaService.sendTrackToStrava(track, this.authorization )
+            .then(d=>{
+                console.log(d)
+            })
+        
     }
 }

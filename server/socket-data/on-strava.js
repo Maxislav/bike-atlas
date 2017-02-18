@@ -1,3 +1,4 @@
+const FormData = require('form-data');
 const  ProtoData = require('./proto-data');
 const https = require('https');
 var querystring = require('querystring');
@@ -10,14 +11,91 @@ class OnStrava extends ProtoData{
         socket.on('stravaUpdateCode', this.stravaUpdateCode.bind(this, 'stravaUpdateCode'))
         socket.on('stravaOauth', this.stravaOauth.bind(this, 'stravaOauth'))
         socket.on('isAuthorizeStrava', this.isAuthorize.bind(this, 'isAuthorizeStrava'))
+        socket.on('sendTrackToStrava', this.sendTrackToStrava.bind(this, 'sendTrackToStrava'))
 
+    }
+
+
+    sendTrackToStrava(eName, d){
+
+
+
+            const data = querystring.stringify({
+                activity_type: 'ride',
+
+                data_type: 'gpx',
+                //file: d.file
+            });
+
+        const form = new FormData();
+        form.append( 'activity_type', 'ride')
+        form.append( 'data_type', 'gpx')
+        form.append( 'file', 'gpx');
+        form.append( 'Authorization', d.authorization);
+
+            const options = {
+                port: 443,
+                hostname: 'www.strava.com',
+                method: 'POST',
+                path: '/api/v3/uploads',
+                headers: form.getHeaders()
+            };
+
+        options.headers['Authorization'] = d.authorization
+
+
+
+
+
+
+
+            let resData = '';
+            const req = https.request(options, (res)=> {
+                res.setEncoding('utf8');
+                res.on('data', (chunk) => {
+                    resData += chunk;
+                });
+                res.on('end', ()=>{
+                    let jsonRes ={};
+                    try {
+                        jsonRes = JSON.parse(resData)
+                    }catch (err){
+                        this.socket.emit(eName,{
+                            result: false,
+                            data: err
+                        });
+                        return
+                    }
+                    console.log(jsonRes)
+
+
+                    this.socket.emit(eName,{
+                        result: 'ok',
+                        data: jsonRes
+                    });
+                })
+            });
+        form.pipe(req);
+            //const form = req.form()
+          /*  req.write(data);
+            req.end();*/
+
+
+
+
+
+       /* this.socket.emit(eName, {
+            result: 'ok',
+            data
+
+        })*/
     }
 
     isAuthorize(eName){
        this.stravaOauth(eName);
     }
 
-    stravaOauth(eNAme){
+    stravaOauth(eName){
 
         this.getUserId()
             .then(userId=>{
@@ -26,6 +104,7 @@ class OnStrava extends ProtoData{
 
                         row = ProtoData.toCamelCaseObj(row);
 
+                        // -F
                         const data = querystring.stringify({
                             client_id: row.stravaClientId,
                             client_secret: row.stravaClientSecret,
@@ -58,7 +137,7 @@ class OnStrava extends ProtoData{
                                     console.log('Error parse Json->', err)
 
 
-                                    this.socket.emit(eNAme,{
+                                    this.socket.emit(eName,{
                                         result: false,
                                         data: err
                                     });
@@ -66,12 +145,12 @@ class OnStrava extends ProtoData{
                                 }
 
                                 if(jsonRes.access_token){
-                                    this.socket.emit(eNAme,{
+                                    this.socket.emit(eName,{
                                         result: 'ok',
                                         data: jsonRes
                                     });
                                 }else{
-                                    this.socket.emit(eNAme,{
+                                    this.socket.emit(eName,{
                                         result: false,
                                         data: jsonRes
                                     });

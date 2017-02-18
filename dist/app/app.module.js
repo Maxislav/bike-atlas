@@ -60,6 +60,7 @@ const chat_service_1 = require("./service/chat.service");
 const one_item_track_component_1 = require("./component/menu/track-list/one-item-track-component/one-item-track.component");
 const strava_component_1 = require("./component/strava-component/strava-component");
 const strava_auth_component_1 = require("./component/strava-component/strava-auth-component");
+const strava_service_1 = require("./service/strava.service");
 let AppModule = class AppModule {
     constructor() {
     }
@@ -104,7 +105,9 @@ AppModule = __decorate([
             private_area_1.PrivateArea,
             no_found_component_1.NoFoundComponent
         ],
+        /** Сервисы */
         providers: [
+            strava_service_1.StravaService,
             chat_service_1.ChatService,
             journal_service_1.JournalService,
             journal_component_1.LeafletResolver,

@@ -65,5 +65,8 @@ export class StravaAuthComponent implements OnInit{
     onClose() {
         this.router.navigate(['/auth/map']);
     }
+    goNext(){
+        this.router.navigate(['/auth/map/strava-invite']);
+    }
 
 }

@@ -9,7 +9,7 @@
     </div>
     <div class="flex center row space-between">
       <div class="flex-cell">
-        <div class="ico-strava"></div>
+        <div class="ico-strava-text"></div>
       </div>
     </div>
     <div *ngIf="authInProgress" class="flex row center">
@@ -37,7 +37,7 @@
     </div>
     <div class="flex flex-end">
       <div class="flex-cell">
-        <div *ngIf="code" (click)="goToAuth()" class="button primary">Авторизироваться повторно</div>
+        <div *ngIf="code" (click)="goNext()" class="button primary">Продолжить</div>
       </div>
     </div>
   </div>

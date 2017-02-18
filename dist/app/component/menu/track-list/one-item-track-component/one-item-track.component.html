@@ -1,16 +1,17 @@
 
+<div (click)="hideTrack()" class="close">&times;</div>
 <div class="title">
   <div [style.background]="track.color" class="color"></div>
-  <div class="info">
-    <div class="date">{{track.date | date: 'dd/MM/yyyy'}}</div>
-    <div class="dist">  {{track.distance}} km</div>
-  </div>
-  <div (click)="hideTrack()" class="del">&#215;</div>
+  <div class="date">{{track.date | date: 'dd/MM/yyyy'}}</div>
+</div>
+<div class="info"> Дистанция<b>{{track.distance}} km</b></div>
+<div class="info">Точек<b>{{track.points.length}}</b></div>
+<div class="action">
+  <div (click)="track.showSrcPoint()" title="Показать исходные точки" class="route-points"></div>
+  <div (click)="onGo(track)" class="go">Play &#9658;</div>
 </div>
 <div class="action">
-  <!--.download((click)="track.download()")-->
   <div (click)="onDownload()" title="Скачать на комп" class="download"></div>
   <div (click)="saveChange()" title="сохранить трек" class="save"></div>
-  <div (click)="track.showSrcPoint()" class="route-points"></div>
-  <div (click)="onGo(track)" class="go">Play &#9658;</div>
+  <div (click)="stravaExport()" title="отправить в Strava" class="strava-export"></div>
 </div>

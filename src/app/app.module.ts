@@ -52,6 +52,7 @@ import {OneItemTrackComponent} from "./component/menu/track-list/one-item-track-
 import {RouterStateSnapshot} from "@angular/router";
 import {StravaComponent} from "./component/strava-component/strava-component";
 import {StravaAuthComponent} from "./component/strava-component/strava-auth-component";
+import {StravaService} from "./service/strava.service";
 
 @NgModule({
     imports: [
@@ -95,8 +96,9 @@ import {StravaAuthComponent} from "./component/strava-component/strava-auth-comp
         NoFoundComponent
     ],
 
+    /** Сервисы */
     providers: [
-
+        StravaService,
         ChatService,
         JournalService,
         LeafletResolver,

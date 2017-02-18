@@ -14,11 +14,15 @@ const track_service_1 = require("../../../../service/track.service");
 const map_service_1 = require("../../../../service/map.service");
 const util_1 = require("../../../../service/util");
 const toast_component_1 = require("../../../toast/toast.component");
+const strava_service_1 = require("../../../../service/strava.service");
+const router_1 = require("@angular/router");
 let OneItemTrackComponent = class OneItemTrackComponent {
-    constructor(trackService, mapService, toast) {
+    constructor(trackService, mapService, toast, router, stravaService) {
         this.trackService = trackService;
         this.mapService = mapService;
         this.toast = toast;
+        this.router = router;
+        this.stravaService = stravaService;
         this.util = new util_1.Util();
     }
     ngOnInit() {
@@ -204,6 +208,10 @@ let OneItemTrackComponent = class OneItemTrackComponent {
             }
         }
     }
+    stravaExport() {
+        this.stravaService.addToExport(this.track);
+        this.router.navigate(['/auth/map/strava-invite']);
+    }
 };
 __decorate([
     core_1.Input(), 
@@ -216,7 +224,7 @@ OneItemTrackComponent = __decorate([
         templateUrl: "./one-item-track.component.html",
         styleUrls: ['./one-item-track.component.css']
     }), 
-    __metadata('design:paramtypes', [track_service_1.TrackService, map_service_1.MapService, toast_component_1.ToastService])
+    __metadata('design:paramtypes', [track_service_1.TrackService, map_service_1.MapService, toast_component_1.ToastService, router_1.Router, strava_service_1.StravaService])
 ], OneItemTrackComponent);
 exports.OneItemTrackComponent = OneItemTrackComponent;
 //# sourceMappingURL=one-item-track.component.js.map

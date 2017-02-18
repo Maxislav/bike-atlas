@@ -12,10 +12,12 @@ const core_1 = require("@angular/core");
 const router_1 = require("@angular/router");
 const hash_1 = require("../../util/hash");
 const socket_oi_service_1 = require("../../service/socket.oi.service");
+const strava_service_1 = require("../../service/strava.service");
 let StravaComponent = class StravaComponent {
-    constructor(router, io) {
+    constructor(router, io, stravaService) {
         this.router = router;
         this.io = io;
+        this.stravaService = stravaService;
         this._stravaClientId = null;
         this._stravaClientSecret = null;
         this.stravaHref = null;
@@ -26,9 +28,18 @@ let StravaComponent = class StravaComponent {
             city: null,
             profile: null
         };
+        this.docsFor = stravaService.docsFor;
         this.href = null;
         this.socket = io.socket;
-        this.getStrava();
+        this.getStrava()
+            .then(d => {
+            if (d.result && d.result == 'ok') {
+                this.isAuthorize();
+            }
+        })
+            .catch(d => {
+            this.authInProgress = false;
+        });
         this.authInProgress = true;
         switch (true) {
             case /maxislav/.test(window.location.hostname):
@@ -37,7 +48,6 @@ let StravaComponent = class StravaComponent {
             default:
                 this.myLocation = 'http://' + window.location.hostname + '/';
         }
-        this.isAuthorize();
     }
     isAuthorize() {
         this.socket.$emit('isAuthorizeStrava')
@@ -47,19 +57,23 @@ let StravaComponent = class StravaComponent {
                 const athlete = d.data.athlete;
                 this.athlete.firstName = athlete.firstname;
                 this.athlete.lastName = athlete.lastname;
-                ;
                 this.athlete.profile = athlete.profile;
                 this.athlete.city = athlete.city;
+                this.authorization = d.data.token_type + " " + d.data.access_token;
             }
             this.authInProgress = false;
         });
     }
     getStrava() {
-        this.socket.$emit('getStrava')
+        return this.socket.$emit('getStrava')
             .then(d => {
             if (d && d.result == 'ok' && d.data) {
                 this.stravaClientId = d.data.stravaClientId;
                 this.stravaClientSecret = d.data.stravaClientSecret;
+                return d;
+            }
+            else {
+                return Promise.reject('no auth');
             }
         });
     }
@@ -113,6 +127,12 @@ let StravaComponent = class StravaComponent {
             });
         }
     }
+    sendTrackToStrava(track) {
+        this.stravaService.sendTrackToStrava(track, this.authorization)
+            .then(d => {
+            console.log(d);
+        });
+    }
 };
 StravaComponent = __decorate([
     core_1.Component({
@@ -120,7 +140,7 @@ StravaComponent = __decorate([
         templateUrl: "./strava-component.html",
         styleUrls: ['./strava-component.css'],
     }), 
-    __metadata('design:paramtypes', [router_1.Router, socket_oi_service_1.Io])
+    __metadata('design:paramtypes', [router_1.Router, socket_oi_service_1.Io, strava_service_1.StravaService])
 ], StravaComponent);
 exports.StravaComponent = StravaComponent;
 //# sourceMappingURL=strava-component.js.map
