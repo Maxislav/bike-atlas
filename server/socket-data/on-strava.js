@@ -21,8 +21,9 @@ class OnStrava extends ProtoData {
 
     sendTrackToStrava(eName, d) {
 
+        const filePath = './temp-gpx/'+ this.util.getHash()+'.gpx';
 
-        //d.file.data = new Date()
+
         const data = querystring.stringify({
             activity_type: 'ride',
             data_type: 'gpx',
@@ -31,10 +32,10 @@ class OnStrava extends ProtoData {
 
         const formData = new FormData();
 
-        const ws = fs.createWriteStream('./temp-gpx/temp.gpx');
+        const ws = fs.createWriteStream(filePath);
 
         ws.on('finish', ()=>{
-           const rs =  fs.createReadStream('./temp-gpx/temp.gpx');
+            const rs =  fs.createReadStream(filePath);
             formData.append('file', rs);
             formData.append('data_type', 'gpx');
             formData.append('activity_type', 'ride');
@@ -61,7 +62,7 @@ class OnStrava extends ProtoData {
                     console.log(err)
                 });
                 res.on('end', () => {
-                    fs.unlink('./temp-gpx/temp.gpx')
+                    fs.unlink(filePath)
                     let jsonRes = {};
                     try {
                         jsonRes = JSON.parse(resData)
@@ -90,7 +91,9 @@ class OnStrava extends ProtoData {
             formData.pipe(req);
         });
 
-        ws.end(d.file)
+        ws.end(d.file, (err, result)=>{
+
+        });
 
 
 

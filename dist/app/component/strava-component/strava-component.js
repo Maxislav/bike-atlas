@@ -13,11 +13,13 @@ const router_1 = require("@angular/router");
 const hash_1 = require("../../util/hash");
 const socket_oi_service_1 = require("../../service/socket.oi.service");
 const strava_service_1 = require("../../service/strava.service");
+const toast_component_1 = require("../toast/toast.component");
 let StravaComponent = class StravaComponent {
-    constructor(router, io, stravaService) {
+    constructor(router, io, stravaService, toast) {
         this.router = router;
         this.io = io;
         this.stravaService = stravaService;
+        this.toast = toast;
         this._stravaClientId = null;
         this._stravaClientSecret = null;
         this.stravaHref = null;
@@ -131,6 +133,13 @@ let StravaComponent = class StravaComponent {
         this.stravaService.sendTrackToStrava(track, this.authorization)
             .then(d => {
             console.log(d);
+            if (d && d.result == 'ok' && d.data.id) {
+                this.toast.show({
+                    type: 'success',
+                    text: "Отправлен на обработку в Strava"
+                });
+                this.stravaService.removeTrack(track);
+            }
         });
     }
 };
@@ -142,7 +151,8 @@ StravaComponent = __decorate([
     }),
     __metadata("design:paramtypes", [router_1.Router,
         socket_oi_service_1.Io,
-        strava_service_1.StravaService])
+        strava_service_1.StravaService,
+        toast_component_1.ToastService])
 ], StravaComponent);
 exports.StravaComponent = StravaComponent;
 //# sourceMappingURL=strava-component.js.map

@@ -4,6 +4,7 @@ import {hashgeneral} from "../../util/hash";
 import {Io} from "../../service/socket.oi.service";
 import {StravaService, StravaD} from "../../service/strava.service";
 import {Track} from "../../service/track.var";
+import {ToastService} from "../toast/toast.component";
 //import {module} from "@angular/upgrade/src/angular_js";
 declare const module: any;
 declare const System: any;
@@ -48,7 +49,8 @@ export class StravaComponent  implements OnChanges {
 
     constructor(private router: Router,
                 private io : Io,
-                private stravaService: StravaService
+                private stravaService: StravaService,
+                private toast:ToastService,
     ) {
         this.docsFor = stravaService.docsFor;
         this.href = null;
@@ -170,6 +172,13 @@ export class StravaComponent  implements OnChanges {
         this.stravaService.sendTrackToStrava(track, this.authorization )
             .then(d=>{
                 console.log(d)
+                if(d && d.result =='ok' && d.data.id){
+                    this.toast.show({
+                        type: 'success',
+                        text: "Отправлен на обработку в Strava"
+                    });
+                    this.stravaService.removeTrack(track)
+                }
             })
         
     }

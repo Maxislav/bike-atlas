@@ -30,6 +30,11 @@ let StravaService = class StravaService {
             //console.log(xmlDpc)
         });
     }
+    removeTrack(track) {
+        if (-1 < this.docsFor.indexOf(track)) {
+            this.docsFor.splice(this.docsFor.indexOf(track), 1);
+        }
+    }
 };
 StravaService = __decorate([
     core_1.Injectable(),

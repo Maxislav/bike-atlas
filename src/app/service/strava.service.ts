@@ -37,4 +37,9 @@ export class StravaService{
 
         
     }
+    removeTrack(track: Track){
+        if( -1<this.docsFor.indexOf(track)){
+            this.docsFor.splice(this.docsFor.indexOf(track), 1)
+        }
+    }
 }
