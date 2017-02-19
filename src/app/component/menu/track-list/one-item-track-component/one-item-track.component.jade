@@ -1,15 +1,23 @@
 .close((click)="hideTrack()") &times;
 .title
-    .color([style.background]="track.color")
+    div
+        .color([style.background]="track.color")
     .date {{track.date | date: 'dd/MM/yyyy'}}
 
 
-.info  Дистанция
-    b {{track.distance}} km
-.info Точек
-    b {{track.points.length}}
 .action
-    .route-points((click)="track.showSrcPoint()", title='Показать исходные точки')
+    div Дистанция
+    b {{track.distance}} km
+.action
+    div Макс скорость
+    b {{maxSpeed}} km/h
+.action
+    div Точек
+    b {{track.points.length}}
+    div
+        .route-points((click)="track.showSrcPoint()", title='Показать исходные точки')
+.action
+
     .go( (click)="onGo(track)") Play &#9658;
 .action
     .download((click)="onDownload()", title='Скачать на комп')

@@ -7,6 +7,7 @@ import {Util} from "../../../../service/util";
 import {ToastService} from "../../../toast/toast.component";
 import {StravaService} from "../../../../service/strava.service";
 import {Router} from "@angular/router";
+import * as R from '@ramda/ramda.min.js';
 declare const module: any;
 @Component({
     moduleId: module.id,
@@ -19,6 +20,7 @@ export class OneItemTrackComponent implements OnInit{
     @Input() track: Track;
     private util: Util;
     stop: Function;
+    private maxSpeed: number;
     constructor(  private trackService:TrackService,
                   private mapService: MapService,
                   private toast:ToastService,
@@ -26,10 +28,13 @@ export class OneItemTrackComponent implements OnInit{
                   private stravaService: StravaService
     ){
         this.util = new Util();
-
     }
     ngOnInit(): void {
-        console.log(this.track)
+        console.log(this.track);
+        const arrSpeed = R.pluck('speed')(this.track.points);
+        this.maxSpeed = Math.max.apply(null,arrSpeed)
+
+
     }
 
     hideTrack(){

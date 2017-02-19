@@ -104,7 +104,11 @@ b {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 0;
+  margin: 10px -10px;
+}
+.title > *,
+.action > * {
+  padding: 0 10px;
 }
 .title {
   margin-right: 30px;

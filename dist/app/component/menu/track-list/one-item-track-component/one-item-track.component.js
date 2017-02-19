@@ -16,6 +16,7 @@ const util_1 = require("../../../../service/util");
 const toast_component_1 = require("../../../toast/toast.component");
 const strava_service_1 = require("../../../../service/strava.service");
 const router_1 = require("@angular/router");
+const R = require("@ramda/ramda.min.js");
 let OneItemTrackComponent = class OneItemTrackComponent {
     constructor(trackService, mapService, toast, router, stravaService) {
         this.trackService = trackService;
@@ -27,6 +28,8 @@ let OneItemTrackComponent = class OneItemTrackComponent {
     }
     ngOnInit() {
         console.log(this.track);
+        const arrSpeed = R.pluck('speed')(this.track.points);
+        this.maxSpeed = Math.max.apply(null, arrSpeed);
     }
     hideTrack() {
         this.stop && this.stop();
