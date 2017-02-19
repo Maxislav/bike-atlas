@@ -22,6 +22,7 @@
 .action
     .download((click)="onDownload()", title='Скачать на комп')
     .save((click)="saveChange()", title="сохранить трек")
-    .strava-export((click)="stravaExport()", title="отправить в Strava")
+    .strava-export(*ngIf="stravaService.athlete", (click)="stravaExport()", title="отправить в Strava")
+    .strava-export.opacity-0-5(*ngIf="!stravaService.athlete", (click)="stravaExport()", title="Авторизироваться в Strava")
 
 

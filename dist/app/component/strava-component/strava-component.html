@@ -4,16 +4,13 @@
     <div>
       <div (click)="onClose()" class="close">&times;</div>
     </div>
-    <div class="row">
-      <div class="flex-cell gray">В разработке *</div>
-    </div>
     <div class="flex center row space-between">
       <div class="flex-cell">
         <div class="ico-strava-text"></div>
       </div>
     </div>
     <div *ngIf="authInProgress" class="flex row center">
-      <div class="flex-cell">Авторизация..</div>
+      <div class="flex-cell">Проверка авторизации..</div>
       <div class="flex-cell">
         <div class="ico-z"></div>
       </div>
@@ -61,13 +58,17 @@
       -->
     </table>
     <div class="flex">
+      <div *ngIf="!docsFor.length" class="flex-cell gray">Нет фалов для отправки</div>
+      <div *ngIf="docsFor.length" class="flex-cell">Для отправки кликни файл</div>
+    </div>
+    <div class="flex">
       <div *ngFor="let track of docsFor; let i = index" class="flex-cell">
         <div title="отправить" (click)="sendTrackToStrava(track)" class="ico-routs">{{track.date | date: 'dd/MM/yyyy'}}</div>
       </div>
     </div>
     <div class="flex flex-end">
       <div class="flex-cell">
-        <div *ngIf="!authInProgress" class="button primary"><a [ngClass]="{'blue':stravaClientId &amp;&amp; stravaClientSecret}" href="{{stravaHref}}" (click)="$event.preventDefault(); goToStrava()">Авторизация</a></div>
+        <div *ngIf="!authInProgress &amp;&amp; !athlete.firstName" class="button primary"><a [ngClass]="{'blue':stravaClientId &amp;&amp; stravaClientSecret}" href="{{stravaHref}}" (click)="$event.preventDefault(); goToStrava()">Авторизироваться</a></div>
         <!--.button.primary(*ngIf="code", (click)="stravaOauth()") Авторизацияjk-->
         
       </div>

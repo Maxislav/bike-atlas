@@ -24,5 +24,6 @@
 <div class="action">
   <div (click)="onDownload()" title="Скачать на комп" class="download"></div>
   <div (click)="saveChange()" title="сохранить трек" class="save"></div>
-  <div (click)="stravaExport()" title="отправить в Strava" class="strava-export"></div>
+  <div *ngIf="stravaService.athlete" (click)="stravaExport()" title="отправить в Strava" class="strava-export"></div>
+  <div *ngIf="!stravaService.athlete" (click)="stravaExport()" title="Авторизироваться в Strava" class="strava-export opacity-0-5"></div>
 </div>

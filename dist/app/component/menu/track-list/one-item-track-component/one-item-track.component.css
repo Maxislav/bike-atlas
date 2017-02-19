@@ -132,6 +132,9 @@ b {
   height: 24px;
   border-radius: 50%;
 }
+.opacity-0-5 {
+  opacity: 0.3;
+}
 .download {
   height: 30px;
   width: 30px;

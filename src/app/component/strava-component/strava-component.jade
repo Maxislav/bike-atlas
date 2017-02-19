@@ -2,15 +2,13 @@ div.content
     div
         div
             .close((click)="onClose()") &times;
-        .row
-            .flex-cell.gray
-                | В разработке *
+
         .flex.center.row.space-between
             .flex-cell
                 .ico-strava-text
         .flex.row.center(*ngIf="authInProgress")
             .flex-cell
-                | Авторизация..
+                | Проверка авторизации..
             .flex-cell
                 .ico-z
 
@@ -46,13 +44,16 @@ div.content
                     |{{code}}
 
         .flex
+            .flex-cell.gray(*ngIf="!docsFor.length") Нет фалов для отправки
+            .flex-cell(*ngIf="docsFor.length") Для отправки кликни файл
+        .flex
             .flex-cell(*ngFor="let track of docsFor\; let i = index" )
                 .ico-routs(title="отправить", (click)="sendTrackToStrava(track)") {{track.date | date: 'dd/MM/yyyy'}}
 
         .flex.flex-end
             .flex-cell
-                .button.primary(*ngIf="!authInProgress")
-                    a([ngClass]="{'blue':stravaClientId && stravaClientSecret}",  href="{{stravaHref}}", (click)="$event.preventDefault(); goToStrava()") Авторизация
+                .button.primary(*ngIf="!authInProgress && !athlete.firstName")
+                    a([ngClass]="{'blue':stravaClientId && stravaClientSecret}",  href="{{stravaHref}}", (click)="$event.preventDefault(); goToStrava()") Авторизироваться
                 //.button.primary(*ngIf="code", (click)="stravaOauth()") Авторизацияjk
 
 

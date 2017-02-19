@@ -35,9 +35,10 @@ let StravaComponent = class StravaComponent {
         this.socket = io.socket;
         this.getStrava()
             .then(d => {
-            if (d.result && d.result == 'ok') {
-                this.isAuthorize();
-            }
+            return this.isAuthorize();
+        })
+            .then(d => {
+            this.authInProgress = false;
         })
             .catch(d => {
             this.authInProgress = false;
@@ -52,31 +53,20 @@ let StravaComponent = class StravaComponent {
         }
     }
     isAuthorize() {
-        this.socket.$emit('isAuthorizeStrava')
-            .then(d => {
-            console.log(d);
-            if (d.result && d.result == 'ok') {
-                const athlete = d.data.athlete;
-                this.athlete.firstName = athlete.firstname;
-                this.athlete.lastName = athlete.lastname;
-                this.athlete.profile = athlete.profile;
-                this.athlete.city = athlete.city;
-                this.authorization = d.data.token_type + " " + d.data.access_token;
-            }
-            this.authInProgress = false;
+        return this.stravaService.isAuthorize()
+            .then(athlete => {
+            this.athlete.firstName = athlete.firstName;
+            this.athlete.lastName = athlete.lastName;
+            this.athlete.profile = athlete.profile;
+            this.athlete.city = athlete.city;
+            this.authorization = athlete.authorization;
         });
     }
     getStrava() {
-        return this.socket.$emit('getStrava')
+        return this.stravaService.getStrava()
             .then(d => {
-            if (d && d.result == 'ok' && d.data) {
-                this.stravaClientId = d.data.stravaClientId;
-                this.stravaClientSecret = d.data.stravaClientSecret;
-                return d;
-            }
-            else {
-                return Promise.reject('no auth');
-            }
+            this.stravaClientId = d.stravaClientId;
+            this.stravaClientSecret = d.stravaClientSecret;
         });
     }
     get href() {

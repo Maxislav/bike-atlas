@@ -21,6 +21,7 @@ export class OneItemTrackComponent implements OnInit{
     private util: Util;
     stop: Function;
     private maxSpeed: number;
+    private isAuthStrava: boolean
     constructor(  private trackService:TrackService,
                   private mapService: MapService,
                   private toast:ToastService,
@@ -28,6 +29,7 @@ export class OneItemTrackComponent implements OnInit{
                   private stravaService: StravaService
     ){
         this.util = new Util();
+        //this.isAuthStrava = !!stravaService.athlete;
     }
     ngOnInit(): void {
         console.log(this.track);

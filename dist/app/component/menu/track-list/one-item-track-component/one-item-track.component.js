@@ -25,6 +25,7 @@ let OneItemTrackComponent = class OneItemTrackComponent {
         this.router = router;
         this.stravaService = stravaService;
         this.util = new util_1.Util();
+        //this.isAuthStrava = !!stravaService.athlete;
     }
     ngOnInit() {
         console.log(this.track);
