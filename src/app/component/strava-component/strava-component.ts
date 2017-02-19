@@ -35,6 +35,7 @@ export class StravaComponent  implements OnChanges {
     private code: string;
     private myLocation: string;
     private authInProgress: boolean;
+    private showHelp: boolean;
     private athlete: Athlete = {
         firstName: null,
         lastName: null,
@@ -52,6 +53,7 @@ export class StravaComponent  implements OnChanges {
                 private stravaService: StravaService,
                 private toast:ToastService,
     ) {
+        this.showHelp = false;
         this.docsFor = stravaService.docsFor;
         this.href = null;
         this.socket = io.socket;
@@ -76,6 +78,9 @@ export class StravaComponent  implements OnChanges {
                 this.myLocation = 'http://'+ window.location.hostname+'/';
         }
 
+    }
+    onShowHelp(){
+        this.showHelp=!this.showHelp
     }
 
     isAuthorize(){

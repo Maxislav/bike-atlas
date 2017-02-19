@@ -1,5 +1,5 @@
 div.content
-    div
+     div
         div
             .close((click)="onClose()") &times;
 
@@ -54,6 +54,20 @@ div.content
             .flex-cell
                 .button.primary(*ngIf="!authInProgress && !athlete.firstName")
                     a([ngClass]="{'blue':stravaClientId && stravaClientSecret}",  href="{{stravaHref}}", (click)="$event.preventDefault(); goToStrava()") Авторизироваться
-                //.button.primary(*ngIf="code", (click)="stravaOauth()") Авторизацияjk
 
+        .flex.flex-end
+            .flex-cell
+                .bnt-help((click)="onShowHelp()", title="Просмотреть справку по привязке") &#9660; ?
+
+        .scroll(*ngIf="showHelp")
+            .strava-help
+                .row
+                    .row-cell Перейти
+                         a(href="https://www.strava.com/settings/api", target="_blank") Strava API https://www.strava.com/settings/api
+                .row
+                    .row-cell
+                        img(src="src/img/strava-help/01.png")
+                .row
+                    .row-cell
+                        img(src="src/img/strava-help/02.png")
 

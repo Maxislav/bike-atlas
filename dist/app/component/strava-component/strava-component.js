@@ -30,6 +30,7 @@ let StravaComponent = class StravaComponent {
             city: null,
             profile: null
         };
+        this.showHelp = false;
         this.docsFor = stravaService.docsFor;
         this.href = null;
         this.socket = io.socket;
@@ -51,6 +52,9 @@ let StravaComponent = class StravaComponent {
             default:
                 this.myLocation = 'http://' + window.location.hostname + '/';
         }
+    }
+    onShowHelp() {
+        this.showHelp = !this.showHelp;
     }
     isAuthorize() {
         return this.stravaService.isAuthorize()

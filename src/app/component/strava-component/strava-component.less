@@ -34,6 +34,7 @@ h4{
   position: absolute;
   background: rgba(255, 255, 255, 0.9);
   min-width: 600px;
+  max-width: 600px;
   margin-left: -300px;
   padding: 0;
   left: 50%;
@@ -70,6 +71,9 @@ h4{
 }
 a{
   font-size: 14px;
+  cursor: pointer;
+  color: @blue-color;
+  margin-left: 5px
 }
 table.strava{
   width: 100%;
@@ -95,7 +99,24 @@ table.athlete{
 .input{
   width: 100%;
 }
-
+.bnt-help{
+  cursor: pointer;
+}
+.strava-help{
+  padding: 10px;
+  img{
+    width: 100%;
+  }
+}
+.scroll{
+  max-height: 300px;
+  overflow-y: auto;
+}
+@media screen and (max-height: 600px){
+  .scroll{
+    max-height: 100px;
+  }
+}
 @media screen and (max-width: 600px){
   .content{
     position: relative;

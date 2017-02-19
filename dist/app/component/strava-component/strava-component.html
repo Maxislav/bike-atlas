@@ -69,8 +69,24 @@
     <div class="flex flex-end">
       <div class="flex-cell">
         <div *ngIf="!authInProgress &amp;&amp; !athlete.firstName" class="button primary"><a [ngClass]="{'blue':stravaClientId &amp;&amp; stravaClientSecret}" href="{{stravaHref}}" (click)="$event.preventDefault(); goToStrava()">Авторизироваться</a></div>
-        <!--.button.primary(*ngIf="code", (click)="stravaOauth()") Авторизацияjk-->
-        
+      </div>
+    </div>
+    <div class="flex flex-end">
+      <div class="flex-cell">
+        <div (click)="onShowHelp()" title="Просмотреть справку по привязке" class="bnt-help">&#9660; ?</div>
+      </div>
+    </div>
+    <div *ngIf="showHelp" class="scroll">
+      <div class="strava-help">
+        <div class="row">
+          <div class="row-cell">Перейти<a href="https://www.strava.com/settings/api" target="_blank">Strava API https://www.strava.com/settings/api</a></div>
+        </div>
+        <div class="row">
+          <div class="row-cell"><img src="src/img/strava-help/01.png"/></div>
+        </div>
+        <div class="row">
+          <div class="row-cell"><img src="src/img/strava-help/02.png"/></div>
+        </div>
       </div>
     </div>
   </div>
