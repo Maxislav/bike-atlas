@@ -11,7 +11,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require('@angular/core');
+const core_1 = require("@angular/core");
 const hero_1 = require("./hero");
 let TransactionResolver = class TransactionResolver {
     constructor() {
@@ -25,8 +25,8 @@ let TransactionResolver = class TransactionResolver {
     }
 };
 TransactionResolver = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
 ], TransactionResolver);
 exports.TransactionResolver = TransactionResolver;
 //# sourceMappingURL=transaction.resolve.js.map

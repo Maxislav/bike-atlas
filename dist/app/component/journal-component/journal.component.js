@@ -12,7 +12,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by max on 05.01.17.
  */
 const core_1 = require("@angular/core");
-const common_1 = require('@angular/common');
+const common_1 = require("@angular/common");
 const router_1 = require("@angular/router");
 const journal_service_1 = require("../../service/journal.service");
 let LeafletResolver = class LeafletResolver {
@@ -28,8 +28,7 @@ let LeafletResolver = class LeafletResolver {
     }
 };
 LeafletResolver = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [])
+    core_1.Injectable()
 ], LeafletResolver);
 exports.LeafletResolver = LeafletResolver;
 let JournalComponent = class JournalComponent {
@@ -70,8 +69,8 @@ JournalComponent = __decorate([
         moduleId: module.id,
         templateUrl: './journal.component.html',
         styleUrls: ['./journal.component.css'],
-    }), 
-    __metadata('design:paramtypes', [common_1.Location, router_1.ActivatedRoute, journal_service_1.JournalService, core_1.ElementRef])
+    }),
+    __metadata("design:paramtypes", [common_1.Location, router_1.ActivatedRoute, journal_service_1.JournalService, core_1.ElementRef])
 ], JournalComponent);
 exports.JournalComponent = JournalComponent;
 //# sourceMappingURL=journal.component.js.map

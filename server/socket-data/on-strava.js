@@ -1,9 +1,12 @@
 const FormData = require('form-data');
-const  ProtoData = require('./proto-data');
+const ProtoData = require('./proto-data');
 const https = require('https');
+const Stream = require('stream');
+const request = require('request');
 var querystring = require('querystring');
+const fs = require('fs');
 
-class OnStrava extends ProtoData{
+class OnStrava extends ProtoData {
     constructor(socket, util) {
         super(socket, util);
         socket.on('onStrava', this.onStrava.bind(this, 'onStrava'))
@@ -16,91 +19,109 @@ class OnStrava extends ProtoData{
     }
 
 
-    sendTrackToStrava(eName, d){
+    sendTrackToStrava(eName, d) {
 
 
+        //d.file.data = new Date()
+        const data = querystring.stringify({
+            activity_type: 'ride',
+            data_type: 'gpx',
+        });
 
-            const data = querystring.stringify({
-                activity_type: 'ride',
 
-                data_type: 'gpx',
-                //file: d.file
-            });
+        const formData = new FormData();
 
-        const form = new FormData();
-        form.append( 'activity_type', 'ride')
-        form.append( 'data_type', 'gpx')
-        form.append( 'file', 'gpx');
-        form.append( 'Authorization', d.authorization);
+        const ws = fs.createWriteStream('./temp-gpx/temp.gpx');
+
+        ws.on('finish', ()=>{
+           const rs =  fs.createReadStream('./temp-gpx/temp.gpx');
+            formData.append('file', rs);
+            formData.append('data_type', 'gpx');
+            formData.append('activity_type', 'ride');
+
 
             const options = {
                 port: 443,
                 hostname: 'www.strava.com',
                 method: 'POST',
                 path: '/api/v3/uploads',
-                headers: form.getHeaders()
+                headers: formData.getHeaders()
             };
 
-        options.headers['Authorization'] = d.authorization
-
-
-
-
-
+            options.headers['Authorization'] = d.authorization
 
 
             let resData = '';
-            const req = https.request(options, (res)=> {
+            const req = https.request(options, (res) => {
                 res.setEncoding('utf8');
                 res.on('data', (chunk) => {
                     resData += chunk;
                 });
-                res.on('end', ()=>{
-                    let jsonRes ={};
+                res.on('error', (err) => {
+                    console.log(err)
+                });
+                res.on('end', () => {
+                    fs.unlink('./temp-gpx/temp.gpx')
+                    let jsonRes = {};
                     try {
                         jsonRes = JSON.parse(resData)
-                    }catch (err){
-                        this.socket.emit(eName,{
+                    } catch (err) {
+                        this.socket.emit(eName, {
                             result: false,
                             data: err
                         });
                         return
                     }
-                    console.log(jsonRes)
+                    console.log(jsonRes);
+                    if(jsonRes.id){
+                        this.socket.emit(eName, {
+                            result: 'ok',
+                            data: jsonRes
+                        });
+                    }else {
+                        this.socket.emit(eName, {
+                            result: false,
+                            data: jsonRes
+                        });
+                    }
 
-
-                    this.socket.emit(eName,{
-                        result: 'ok',
-                        data: jsonRes
-                    });
                 })
             });
-        form.pipe(req);
-            //const form = req.form()
-          /*  req.write(data);
-            req.end();*/
+            formData.pipe(req);
+        });
+
+        ws.end(d.file)
 
 
 
 
 
-       /* this.socket.emit(eName, {
-            result: 'ok',
-            data
 
-        })*/
+        /*  req.file = d.file
+         req.write(data)
+         req.end()*/
+        //const form = req.form()
+        /*  req.write(data);
+         req.end();*/
+
+
+        /* this.socket.emit(eName, {
+         result: 'ok',
+         data
+
+         })*/
     }
 
-    isAuthorize(eName){
-       this.stravaOauth(eName);
+    isAuthorize(eName) {
+        this.stravaOauth(eName);
     }
 
-    stravaOauth(eName){
+    stravaOauth(eName) {
 
         this.getUserId()
-            .then(userId=>{
+            .then(userId => {
                 return this.util.getStrava(userId)
-                    .then(row=>{
+                    .then(row => {
 
                         row = ProtoData.toCamelCaseObj(row);
 
@@ -124,33 +145,33 @@ class OnStrava extends ProtoData{
                         };
                         let resData = '';
 
-                        const req = https.request(options, (res)=> {
+                        const req = https.request(options, (res) => {
                             res.setEncoding('utf8');
-                            res.on('data',  (chunk) =>{
-                                resData+=chunk;
+                            res.on('data', (chunk) => {
+                                resData += chunk;
                             });
-                            res.on('end', ()=>{
-                                let jsonRes ={};
+                            res.on('end', () => {
+                                let jsonRes = {};
                                 try {
                                     jsonRes = JSON.parse(resData)
-                                }catch (err){
+                                } catch (err) {
                                     console.log('Error parse Json->', err)
 
 
-                                    this.socket.emit(eName,{
+                                    this.socket.emit(eName, {
                                         result: false,
                                         data: err
                                     });
                                     return;
                                 }
 
-                                if(jsonRes.access_token){
-                                    this.socket.emit(eName,{
+                                if (jsonRes.access_token) {
+                                    this.socket.emit(eName, {
                                         result: 'ok',
                                         data: jsonRes
                                     });
-                                }else{
-                                    this.socket.emit(eName,{
+                                } else {
+                                    this.socket.emit(eName, {
                                         result: false,
                                         data: jsonRes
                                     });
@@ -162,60 +183,57 @@ class OnStrava extends ProtoData{
                         req.end()
 
 
-
                     })
             })
 
 
-
-
     }
 
-    stravaUpdateCode(eName, code){
+    stravaUpdateCode(eName, code) {
         this.getUserId()
-            .then(userId=>{
+            .then(userId => {
                 return this.util.stravaUpdateCode(userId, code)
-                    .then(d=>{
+                    .then(d => {
                         this.socket.emit(eName, {
                             result: 'ok'
                         })
                     })
             })
-            .catch(error=>{
+            .catch(error => {
                 console.error('Error stravaUpdateCode ->', error)
             })
 
     }
-    onStrava(eName, {stravaClientId, stravaClientSecret, atlasToken}){
+
+    onStrava(eName, {stravaClientId, stravaClientSecret, atlasToken}) {
         this.getUserId()
-            .then(userId=>{
+            .then(userId => {
                 return this.util.onStrava(userId, stravaClientId, stravaClientSecret, atlasToken)
             })
-            .then(d=>{
-                this.socket.emit(eName,{
+            .then(d => {
+                this.socket.emit(eName, {
                     result: 'ok'
                 })
             })
-            .catch(error=>{
+            .catch(error => {
                 console.error('Error onStrava ->', error)
             })
 
 
-
     }
-    getStrava(eName){
+
+    getStrava(eName) {
         this.getUserId()
-            .then(userId=>{
+            .then(userId => {
                 return this.util.getStrava(userId)
 
             })
-            .then(row=>{
-                this.socket.emit(eName,{
+            .then(row => {
+                this.socket.emit(eName, {
                     result: 'ok',
-                    data: row ? ProtoData.toCamelCaseObj(row): null
+                    data: row ? ProtoData.toCamelCaseObj(row) : null
                 })
             })
-
 
 
     }
