@@ -53,14 +53,25 @@ import {RouterStateSnapshot} from "@angular/router";
 import {StravaComponent} from "./component/strava-component/strava-component";
 import {StravaAuthComponent} from "./component/strava-component/strava-auth-component";
 import {StravaService} from "./service/strava.service";
+import {TranslateModule, TranslateLoader, TranslateStaticLoader} from "ng2-translate/index";
+import {Http} from "@angular/http";
+
+
+export function createTranslateLoader(http: Http) {
+    return new TranslateStaticLoader(http, './langs/', '.json');
+}
+
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
-
-        
-        routing
+        routing,
+        TranslateModule.forRoot({
+            provide: TranslateLoader,
+            useFactory: (createTranslateLoader),
+            deps: [Http]
+        })
     ],
     /**
      * Компоненты
