@@ -140,7 +140,16 @@ export function createTranslateLoader(http: Http) {
 })
 export class AppModule {
     constructor(private translate: TranslateService){
-        translate.addLangs(['ru']);
-        translate.setDefaultLang('ru')
+        const userLang = navigator.language || navigator.userLanguage;
+        const lang = userLang.match(/^\D{2}/)[0];
+        switch (lang){
+            case'ru':
+                translate.setDefaultLang('ru');
+                break;
+            case 'en':
+            default:
+                translate.setDefaultLang('en');
+        }
+
     }
 }

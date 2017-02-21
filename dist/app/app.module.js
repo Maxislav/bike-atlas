@@ -11,11 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 16.08.16.
  */
-const core_1 = require('@angular/core');
-const platform_browser_1 = require('@angular/platform-browser');
-const forms_1 = require('@angular/forms');
-const app_component_1 = require('./app.component');
-const app_routing_1 = require('./app.routing');
+const core_1 = require("@angular/core");
+const platform_browser_1 = require("@angular/platform-browser");
+const forms_1 = require("@angular/forms");
+const app_component_1 = require("./app.component");
+const app_routing_1 = require("./app.routing");
 const heroes_component_1 = require("./heroes.component");
 const transaction_resolve_1 = require("./transaction.resolve");
 const auth_component_1 = require("./component/auth-component/auth.component");
@@ -70,8 +70,16 @@ exports.createTranslateLoader = createTranslateLoader;
 let AppModule = class AppModule {
     constructor(translate) {
         this.translate = translate;
-        translate.addLangs(['ru']);
-        translate.setDefaultLang('ru');
+        const userLang = navigator.language || navigator.userLanguage;
+        const lang = userLang.match(/^\D{2}/)[0];
+        switch (lang) {
+            case 'ru':
+                translate.setDefaultLang('ru');
+                break;
+            case 'en':
+            default:
+                translate.setDefaultLang('en');
+        }
     }
 };
 AppModule = __decorate([
@@ -149,8 +157,8 @@ AppModule = __decorate([
         bootstrap: [
             app_component_1.AppComponent
         ]
-    }), 
-    __metadata('design:paramtypes', [ng2_translate_1.TranslateService])
+    }),
+    __metadata("design:paramtypes", [ng2_translate_1.TranslateService])
 ], AppModule);
 exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map

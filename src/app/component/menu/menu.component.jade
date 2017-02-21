@@ -3,11 +3,11 @@ table
         td.button.menu((click)="onOpenAthlete()")
             .flex
                 .satellite.ico
-                .name На связи
+                .name {{'IN_CONNECTION'|translate}}
         td.button.menu( (click)="onOpen()" )
             .flex
                 .routs.ico
-                .name Маршруты
+                .name {{'ROUTS'|translate}}
         td.button.weather([class.active]="weatherLayer")
             .weather-ico((click)="onWeather()")
         td.fill-space
@@ -17,7 +17,7 @@ table
         td.icoUser()
             img([src]="user.image || 'src/img/no-avatar.gif' ", (click)="goToProfile()")
         td.button.enter( (click)="onOpenLogin()")
-            |{{user.name || 'Войти' }}
+            |{{user.name || ('SIGN_IN' | translate)}}
 menu-athlete(*ngIf="menuService.menuAthlete")
 menu-track(*ngIf="menuService.menuOpen")
 track-list(*ngIf="trackList.length", [style.top]="menuService.menuOpen ?  '150px' : '100%' ")
