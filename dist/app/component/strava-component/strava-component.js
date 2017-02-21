@@ -137,7 +137,14 @@ let StravaComponent = class StravaComponent {
         });
     }
     onDeauthorize() {
-        this.stravaService.onDeauthorize();
+        this.stravaService.onDeauthorize()
+            .then(d => {
+            if (d && d.result == 'ok') {
+                for (var opt in this.athlete) {
+                    this.athlete[opt] = null;
+                }
+            }
+        });
     }
 };
 StravaComponent = __decorate([

@@ -26,9 +26,9 @@ div.content
                 tr
                     td City
                     td {{athlete.city}}
-        .flex.row.flex-end
+        .flex.row.flex-end(*ngIf="athlete.firstName")
             .flex-cell
-                .button.primary(*ngIf="athlete.firstName", (click)="onDeauthorize()") Выйти
+                .button.primary((click)="onDeauthorize()") Выйти
         .scroll
             div
                 .flex.row

@@ -106,7 +106,10 @@ export class StravaService {
     onDeauthorize(){
         return this.socket.$emit('onDeauthorizeStrava', this.athlete.authorization)
             .then(d=>{
-                console.log(d)
+                if(d && d.result =='ok'){
+                    this.athlete = undefined
+                }
+                return d;
             })
     }
 

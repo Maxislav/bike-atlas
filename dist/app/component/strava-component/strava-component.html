@@ -32,9 +32,9 @@
         </tr>
       </table>
     </div>
-    <div class="flex row flex-end">
+    <div *ngIf="athlete.firstName" class="flex row flex-end">
       <div class="flex-cell">
-        <div *ngIf="athlete.firstName" (click)="onDeauthorize()" class="button primary">Выйти</div>
+        <div (click)="onDeauthorize()" class="button primary">Выйти</div>
       </div>
     </div>
     <div class="scroll">
