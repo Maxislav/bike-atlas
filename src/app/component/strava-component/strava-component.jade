@@ -1,5 +1,6 @@
 div.content
-     div
+    div
+
         div
             .close((click)="onClose()") &times;
 
@@ -25,49 +26,48 @@ div.content
                 tr
                     td City
                     td {{athlete.city}}
-
-        table.strava
-            tr
-                td
-                    label.flex-cell() ID клиента:
-                td
-                    input.input([(ngModel)]="stravaClientId", type='number', name="stravaClientId")
-            tr
-                td
-                    label.flex-cell() Client Secret:
-                td
-                    input.input([(ngModel)]="stravaClientSecret", name="stravaClientSecret", type="password")
-            //tr
-                td
-                    label.flex-cell() Code:
-                td
-                    |{{code}}
-
-        .flex
-            .flex-cell.gray(*ngIf="!docsFor.length") Нет фалов для отправки
-            .flex-cell(*ngIf="docsFor.length") Для отправки кликни файл
-        .flex
-            .flex-cell(*ngFor="let track of docsFor\; let i = index" )
-                .ico-routs(title="отправить", (click)="sendTrackToStrava(track)") {{track.date | date: 'dd/MM/yyyy'}}
-
-        .flex.flex-end
+        .flex.row.flex-end
             .flex-cell
-                .button.primary(*ngIf="!authInProgress && !athlete.firstName")
-                    a([ngClass]="{'blue':stravaClientId && stravaClientSecret}",  href="{{stravaHref}}", (click)="$event.preventDefault(); goToStrava()") Авторизироваться
+                .button.primary(*ngIf="athlete.firstName", (click)="onDeauthorize()") Выйти
+        .scroll
+            div
+                .flex.row
+                    table.strava
+                        tr
+                            td
+                                label ID клиента:
+                            td
+                                input.input([(ngModel)]="stravaClientId", type='number', name="stravaClientId")
+                        tr
+                            td
+                                label Client Secret:
+                            td
+                                input.input([(ngModel)]="stravaClientSecret", name="stravaClientSecret", type="password")
+                .row.flex
+                    .flex-cell.gray(*ngIf="!docsFor.length") Нет фалов для отправки
+                    .flex-cell(*ngIf="docsFor.length") Для отправки кликни файл
+                .flex
+                    .flex-cell(*ngFor="let track of docsFor\; let i = index" )
+                        .ico-routs(title="отправить", (click)="sendTrackToStrava(track)") {{track.date | date: 'dd/MM/yyyy'}}
 
-        .flex.flex-end
-            .flex-cell
-                .bnt-help((click)="onShowHelp()", title="Просмотреть справку по привязке") &#9660; ?
+                .flex.flex-end
+                    .flex-cell
+                        .button.primary(*ngIf="!authInProgress && !athlete.firstName")
+                            a([ngClass]="{'blue':stravaClientId && stravaClientSecret}",  href="{{stravaHref}}", (click)="$event.preventDefault(); goToStrava()") Авторизироваться
 
-        .scroll(*ngIf="showHelp")
-            .strava-help
-                .row
-                    .row-cell Перейти
-                         a(href="https://www.strava.com/settings/api", target="_blank") Strava API https://www.strava.com/settings/api
-                .row
-                    .row-cell
-                        img(src="src/img/strava-help/01.png")
-                .row
-                    .row-cell
-                        img(src="src/img/strava-help/02.png")
+                .flex.flex-end
+                    .flex-cell
+                        .bnt-help((click)="onShowHelp()", title="Просмотреть справку по привязке") &#9660; ?
+
+
+                .strava-help(*ngIf="showHelp")
+                    .row
+                        .row-cell Перейти
+                             a(href="https://www.strava.com/settings/api", target="_blank") Strava API https://www.strava.com/settings/api
+                    .row
+                        .row-cell
+                            img(src="src/img/strava-help/01.png")
+                    .row
+                        .row-cell
+                            img(src="src/img/strava-help/02.png")
 

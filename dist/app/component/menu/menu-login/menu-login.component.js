@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require("@angular/core");
+const core_1 = require('@angular/core');
 //import { Rp } from '@angular/core';
 const menu_service_1 = require("app/service/menu.service");
 const router_1 = require("@angular/router");
@@ -78,17 +78,8 @@ MenuLoginComponent = __decorate([
         //directives: [RouterLink],
         templateUrl: './menu-login.component.html',
         styleUrls: ['./menu-login.css'],
-    }),
-    __metadata("design:paramtypes", [router_1.Router, typeof (_a = typeof menu_service_1.MenuService !== "undefined" && menu_service_1.MenuService) === "function" && _a || Object, socket_oi_service_1.Io,
-        md5_service_1.Md5,
-        local_storage_service_1.LocalStorage,
-        auth_service_1.AuthService,
-        device_service_1.DeviceService,
-        toast_component_1.ToastService,
-        log_service_1.LogService,
-        friends_service_1.FriendsService,
-        login_service_1.LoginService,
-        main_user_service_1.UserService])
+    }), 
+    __metadata('design:paramtypes', [router_1.Router, (typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, socket_oi_service_1.Io, md5_service_1.Md5, local_storage_service_1.LocalStorage, auth_service_1.AuthService, device_service_1.DeviceService, toast_component_1.ToastService, log_service_1.LogService, friends_service_1.FriendsService, login_service_1.LoginService, main_user_service_1.UserService])
 ], MenuLoginComponent);
 exports.MenuLoginComponent = MenuLoginComponent;
 var _a;

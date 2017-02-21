@@ -155,7 +155,7 @@ export class StravaComponent  implements OnChanges {
                 atlasToken: this.token
             })
                 .then(d=>{
-                    console.log('goToStrava->', d)
+                    console.log('goToStrava->', d);
                     if(d.result=='ok'){
                         window.location.href = this.stravaHref.toString()
                     }
@@ -176,5 +176,8 @@ export class StravaComponent  implements OnChanges {
                 }
             })
         
+    }
+    onDeauthorize(){
+        this.stravaService.onDeauthorize()
     }
 }

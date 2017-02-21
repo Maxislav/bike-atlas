@@ -134,6 +134,9 @@ h4 {
   color: dodgerblue;
   cursor: pointer;
 }
+table.strava label {
+  white-space: nowrap;
+}
 a {
   font-size: 14px;
   cursor: pointer;
@@ -145,7 +148,7 @@ table.strava {
 }
 table.strava td {
   vertical-align: middle;
-  padding: 10px 5px;
+  padding: 10px;
 }
 table.strava td:nth-child(2) {
   width: 80%;
@@ -155,7 +158,7 @@ table.athlete {
 }
 table.athlete td {
   vertical-align: middle;
-  padding: 10px 5px;
+  padding: 10px;
 }
 .profile {
   width: 80px;
@@ -167,15 +170,15 @@ table.athlete td {
 .bnt-help {
   cursor: pointer;
 }
-.strava-help {
-  padding: 10px;
-}
 .strava-help img {
   width: 100%;
 }
 .scroll {
-  max-height: 300px;
+  max-height: 560px;
   overflow-y: auto;
+}
+.scroll > * {
+  padding: 10px;
 }
 @media screen and (max-height: 600px) {
   .scroll {

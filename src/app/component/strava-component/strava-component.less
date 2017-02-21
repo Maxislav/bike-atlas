@@ -69,6 +69,11 @@ h4{
   cursor: pointer;
 
 }
+table.strava{
+  label{
+    white-space: nowrap;
+  }
+}
 a{
   font-size: 14px;
   cursor: pointer;
@@ -79,7 +84,7 @@ table.strava{
   width: 100%;
   td{
     vertical-align: middle;
-    padding: 10px 5px;
+    padding: 10px;
     &:nth-child(2){
       width: 80%;
     }
@@ -89,7 +94,7 @@ table.athlete{
   width: 100%;
   td{
     vertical-align: middle;
-    padding: 10px 5px;
+    padding: 10px;
   }
 }
 .profile{
@@ -103,13 +108,16 @@ table.athlete{
   cursor: pointer;
 }
 .strava-help{
-  padding: 10px;
+
   img{
     width: 100%;
   }
 }
 .scroll{
-  max-height: 300px;
+  &>*{
+    padding: 10px;
+  }
+  max-height: 560px;
   overflow-y: auto;
 }
 @media screen and (max-height: 600px){

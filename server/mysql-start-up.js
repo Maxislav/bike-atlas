@@ -216,9 +216,9 @@ function createTable() {
             '( `id` INT NOT NULL AUTO_INCREMENT , ' +
             '`user_id` INT NOT NULL UNIQUE, ' +
             '`strava_client_id` INT NOT NULL UNIQUE, ' +
-            '`atlas_token` VARCHAR(32) NOT NULL, ' +
+            '`atlas_token` VARCHAR(32) NULL DEFAULT NULL, ' +
             '`strava_code` VARCHAR(40) NULL DEFAULT NULL, ' +
-            '`strava_client_secret` VARCHAR(40) NOT NULL, ' +
+            '`strava_client_secret` VARCHAR(40) NULL DEFAULT NULL, ' +
             '`strava_access_token` VARCHAR(40) NULL DEFAULT NULL, ' +
             '`date` DATETIME NULL DEFAULT NULL,' +
             'PRIMARY KEY (`id`)) ENGINE = InnoDB;';

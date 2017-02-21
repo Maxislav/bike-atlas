@@ -86,10 +86,16 @@ let StravaService = class StravaService {
             });
         }
     }
+    onDeauthorize() {
+        return this.socket.$emit('onDeauthorizeStrava', this.athlete.authorization)
+            .then(d => {
+            console.log(d);
+        });
+    }
 };
 StravaService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [socket_oi_service_1.Io])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [socket_oi_service_1.Io])
 ], StravaService);
 exports.StravaService = StravaService;
 //# sourceMappingURL=strava.service.js.map

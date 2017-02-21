@@ -32,60 +32,62 @@
         </tr>
       </table>
     </div>
-    <table class="strava">
-      <tr>
-        <td>
-          <label class="flex-cell">ID клиента:</label>
-        </td>
-        <td>
-          <input [(ngModel)]="stravaClientId" type="number" name="stravaClientId" class="input"/>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label class="flex-cell">Client Secret:</label>
-        </td>
-        <td>
-          <input [(ngModel)]="stravaClientSecret" name="stravaClientSecret" type="password" class="input"/>
-        </td>
-      </tr>
-      <!--tr
-      td
-          label.flex-cell() Code:
-      td
-          |{{code}}
-      
-      -->
-    </table>
-    <div class="flex">
-      <div *ngIf="!docsFor.length" class="flex-cell gray">Нет фалов для отправки</div>
-      <div *ngIf="docsFor.length" class="flex-cell">Для отправки кликни файл</div>
-    </div>
-    <div class="flex">
-      <div *ngFor="let track of docsFor; let i = index" class="flex-cell">
-        <div title="отправить" (click)="sendTrackToStrava(track)" class="ico-routs">{{track.date | date: 'dd/MM/yyyy'}}</div>
-      </div>
-    </div>
-    <div class="flex flex-end">
+    <div class="flex row flex-end">
       <div class="flex-cell">
-        <div *ngIf="!authInProgress &amp;&amp; !athlete.firstName" class="button primary"><a [ngClass]="{'blue':stravaClientId &amp;&amp; stravaClientSecret}" href="{{stravaHref}}" (click)="$event.preventDefault(); goToStrava()">Авторизироваться</a></div>
+        <div *ngIf="athlete.firstName" (click)="onDeauthorize()" class="button primary">Выйти</div>
       </div>
     </div>
-    <div class="flex flex-end">
-      <div class="flex-cell">
-        <div (click)="onShowHelp()" title="Просмотреть справку по привязке" class="bnt-help">&#9660; ?</div>
-      </div>
-    </div>
-    <div *ngIf="showHelp" class="scroll">
-      <div class="strava-help">
-        <div class="row">
-          <div class="row-cell">Перейти<a href="https://www.strava.com/settings/api" target="_blank">Strava API https://www.strava.com/settings/api</a></div>
+    <div class="scroll">
+      <div>
+        <div class="flex row">
+          <table class="strava">
+            <tr>
+              <td>
+                <label>ID клиента:</label>
+              </td>
+              <td>
+                <input [(ngModel)]="stravaClientId" type="number" name="stravaClientId" class="input"/>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Client Secret:</label>
+              </td>
+              <td>
+                <input [(ngModel)]="stravaClientSecret" name="stravaClientSecret" type="password" class="input"/>
+              </td>
+            </tr>
+          </table>
         </div>
-        <div class="row">
-          <div class="row-cell"><img src="src/img/strava-help/01.png"/></div>
+        <div class="row flex">
+          <div *ngIf="!docsFor.length" class="flex-cell gray">Нет фалов для отправки</div>
+          <div *ngIf="docsFor.length" class="flex-cell">Для отправки кликни файл</div>
         </div>
-        <div class="row">
-          <div class="row-cell"><img src="src/img/strava-help/02.png"/></div>
+        <div class="flex">
+          <div *ngFor="let track of docsFor; let i = index" class="flex-cell">
+            <div title="отправить" (click)="sendTrackToStrava(track)" class="ico-routs">{{track.date | date: 'dd/MM/yyyy'}}</div>
+          </div>
+        </div>
+        <div class="flex flex-end">
+          <div class="flex-cell">
+            <div *ngIf="!authInProgress &amp;&amp; !athlete.firstName" class="button primary"><a [ngClass]="{'blue':stravaClientId &amp;&amp; stravaClientSecret}" href="{{stravaHref}}" (click)="$event.preventDefault(); goToStrava()">Авторизироваться</a></div>
+          </div>
+        </div>
+        <div class="flex flex-end">
+          <div class="flex-cell">
+            <div (click)="onShowHelp()" title="Просмотреть справку по привязке" class="bnt-help">&#9660; ?</div>
+          </div>
+        </div>
+        <div *ngIf="showHelp" class="strava-help">
+          <div class="row">
+            <div class="row-cell">Перейти<a href="https://www.strava.com/settings/api" target="_blank">Strava API https://www.strava.com/settings/api</a></div>
+          </div>
+          <div class="row">
+            <div class="row-cell"><img src="src/img/strava-help/01.png"/></div>
+          </div>
+          <div class="row">
+            <div class="row-cell"><img src="src/img/strava-help/02.png"/></div>
+          </div>
         </div>
       </div>
     </div>

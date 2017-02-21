@@ -41,7 +41,7 @@ export class StravaService {
                 const file = xml2string(xmlDpc)
                 return this.socket.$emit('sendTrackToStrava', {
                     file, authorization
-                })
+                });
                 //console.log(xmlDpc)
             })
 
@@ -102,9 +102,12 @@ export class StravaService {
                     }
                 })
         }
-
-
-
+    }
+    onDeauthorize(){
+        return this.socket.$emit('onDeauthorizeStrava', this.athlete.authorization)
+            .then(d=>{
+                console.log(d)
+            })
     }
 
 }

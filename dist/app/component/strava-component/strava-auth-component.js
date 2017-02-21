@@ -63,9 +63,8 @@ StravaAuthComponent = __decorate([
         moduleId: module.id,
         templateUrl: "./strava-auth-component.html",
         styleUrls: ['./strava-component.css'],
-    }),
-    __metadata("design:paramtypes", [router_1.Router,
-        socket_oi_service_1.Io])
+    }), 
+    __metadata('design:paramtypes', [router_1.Router, socket_oi_service_1.Io])
 ], StravaAuthComponent);
 exports.StravaAuthComponent = StravaAuthComponent;
 //# sourceMappingURL=strava-auth-component.js.map

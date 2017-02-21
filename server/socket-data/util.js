@@ -792,27 +792,42 @@ class Util {
         })
 
 	}
-	getStrava(userId){
-        return new Promise((resolve, reject)=>{
-            this.connection.query('SELECT * FROM `strava` WHERE `user_id`=?', [userId], function (err, rows) {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(rows[0])
-            });
-        })
+
+	getStrava(userId) {
+		return new Promise((resolve, reject)=> {
+			this.connection.query('SELECT * FROM `strava` WHERE `user_id`=?', [userId], function (err, rows) {
+				if (err) {
+					reject(err);
+					return;
+				}
+				resolve(rows[0])
+			});
+		})
 	}
-    stravaUpdateCode(userId, code){
-        return new Promise((resolve, reject) => {
-            this.connection.query('UPDATE `strava` SET  `strava_code`=? WHERE user_id=?',[code, userId], (err, rows)=>{
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(rows)
-            })
-        })
+
+	stravaUpdateCode(userId, code) {
+		return new Promise((resolve, reject) => {
+			this.connection.query('UPDATE `strava` SET  `strava_code`=? WHERE user_id=?', [code, userId], (err, rows)=> {
+				if (err) {
+					reject(err);
+					return;
+				}
+				resolve(rows)
+			})
+		})
+	}
+
+
+	onDeauthorizeStrava(userId){
+		return new Promise((resolve, reject) => {
+			this.connection.query('UPDATE `strava` SET  `strava_code`=?, `atlas_token`=?, `strava_client_secret`=? WHERE user_id=?', [null, null, null, userId], (err, rows)=> {
+				if (err) {
+					reject(err);
+					return;
+				}
+				resolve(rows)
+			})
+		})
 	}
 	downloadTrack(deviceKey, point){
 

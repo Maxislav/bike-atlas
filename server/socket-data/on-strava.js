@@ -15,6 +15,7 @@ class OnStrava extends ProtoData {
         socket.on('stravaOauth', this.stravaOauth.bind(this, 'stravaOauth'))
         socket.on('isAuthorizeStrava', this.isAuthorize.bind(this, 'isAuthorizeStrava'))
         socket.on('sendTrackToStrava', this.sendTrackToStrava.bind(this, 'sendTrackToStrava'))
+        socket.on('onDeauthorizeStrava', this.onDeauthorizeStrava.bind(this, 'onDeauthorizeStrava'))
 
     }
 
@@ -95,24 +96,6 @@ class OnStrava extends ProtoData {
 
         });
 
-
-
-
-
-
-        /*  req.file = d.file
-         req.write(data)
-         req.end()*/
-        //const form = req.form()
-        /*  req.write(data);
-         req.end();*/
-
-
-        /* this.socket.emit(eName, {
-         result: 'ok',
-         data
-
-         })*/
     }
 
     isAuthorize(eName) {
@@ -239,6 +222,62 @@ class OnStrava extends ProtoData {
             })
 
 
+    }
+    onDeauthorizeStrava(eName, authorization){
+
+      /*  const data = querystring.stringify({
+            client_id: row.stravaClientId,
+            client_secret: row.stravaClientSecret,
+            code: row.stravaCode
+        });*/
+
+
+        const options = {
+            port: 443,
+            hostname: 'www.strava.com',
+            method: 'POST',
+            path: '/oauth/deauthorize',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': authorization
+            }
+        };
+        
+        let resData = '';
+
+        const req = https.request(options, (res) => {
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => {
+                resData += chunk;
+            });
+            res.on('end', () => {
+                let jsonRes = {};
+                try {
+                    jsonRes = JSON.parse(resData)
+                } catch (err) {
+                    console.log('Error parse Json->', err)
+
+                    this.socket.emit(eName, {
+                        result: false,
+                        data: err
+                    });
+                    return;
+                }
+
+                this.socket.emit(eName, {
+                    result: 'ok',
+                    data: jsonRes
+                });
+            })
+        });
+        req.end();
+        this.getUserId()
+          .then(userId => {
+              this.util.onDeauthorizeStrava(userId)
+          })
+          .catch(error => {
+              console.error('Error onDeauthorizeStrava ->', error)
+          })
     }
 
 }
