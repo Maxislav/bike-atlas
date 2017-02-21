@@ -9,6 +9,8 @@
     '@lib':                        'lib', // 'dist',
     '@ramda':                      'node_modules/ramda/dist', // 'dist',
     '@angular':                   'node_modules/@angular',
+    '@ngx-translate':              'node_modules/@ngx-translate',
+    'ng2-translate':              'node_modules/ng2-translate',
     'socket':                     'node_modules/socket.io-client/dist',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'rxjs':                       'node_modules/rxjs',
@@ -35,6 +37,7 @@
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
     'app':                        { main: 'init.js',  defaultExtension: 'js' },
+    'ng2-translate':                        { main: 'bundles/ng2-translate.umd.js',  defaultExtension: 'js' },
     'rxjs':                       { main : 'Rx.js', defaultExtension: 'js' },
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' }
   };
@@ -47,16 +50,22 @@
     'platform-browser',
     'platform-browser-dynamic',
     'router',
+    'http-loader',
    // 'router-deprecated',
     'upgrade'
   ];
   // Individual files (~300 requests):
   function packIndex(pkgName) {
     packages['@angular/'+pkgName] = { main: 'index.js', defaultExtension: 'js' };
+    packages['@ngx-translate/'+pkgName] = { main: 'index.js', defaultExtension: 'js' };
+    packages['ng2-translate/'+pkgName] = { main: 'index.js', defaultExtension: 'js' };
   }
   // Bundled (~40 requests):
   function packUmd(pkgName) {
     packages['@angular/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.min.js', defaultExtension: 'js' };
+    packages['ng2-translate/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
+    packages['@ngx-translate/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
+
   }
   // Most environments should use UMD; some (Karma) need the individual index files
   var setPackageConfig = System.packageWithIndex ? packIndex : packUmd;

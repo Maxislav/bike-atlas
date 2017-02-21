@@ -61,14 +61,17 @@ const one_item_track_component_1 = require("./component/menu/track-list/one-item
 const strava_component_1 = require("./component/strava-component/strava-component");
 const strava_auth_component_1 = require("./component/strava-component/strava-auth-component");
 const strava_service_1 = require("./service/strava.service");
-const index_1 = require("ng2-translate/index");
+const ng2_translate_1 = require("ng2-translate");
 const http_1 = require("@angular/http");
 function createTranslateLoader(http) {
-    return new index_1.TranslateStaticLoader(http, './langs/', '.json');
+    return new ng2_translate_1.TranslateStaticLoader(http, './langs', '.json');
 }
 exports.createTranslateLoader = createTranslateLoader;
 let AppModule = class AppModule {
-    constructor() {
+    constructor(translate) {
+        this.translate = translate;
+        translate.addLangs(['ru']);
+        translate.setDefaultLang('ru');
     }
 };
 AppModule = __decorate([
@@ -77,8 +80,8 @@ AppModule = __decorate([
             platform_browser_1.BrowserModule,
             forms_1.FormsModule,
             app_routing_1.routing,
-            index_1.TranslateModule.forRoot({
-                provide: index_1.TranslateLoader,
+            ng2_translate_1.TranslateModule.forRoot({
+                provide: ng2_translate_1.TranslateLoader,
                 useFactory: (createTranslateLoader),
                 deps: [http_1.Http]
             })
@@ -118,6 +121,8 @@ AppModule = __decorate([
         ],
         /** Сервисы */
         providers: [
+            //ConnectionBackend,
+            ng2_translate_1.TranslateService,
             strava_service_1.StravaService,
             chat_service_1.ChatService,
             journal_service_1.JournalService,
@@ -145,7 +150,7 @@ AppModule = __decorate([
             app_component_1.AppComponent
         ]
     }), 
-    __metadata('design:paramtypes', [])
+    __metadata('design:paramtypes', [ng2_translate_1.TranslateService])
 ], AppModule);
 exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map

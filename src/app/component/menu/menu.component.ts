@@ -17,6 +17,7 @@ import {ToastService} from "../toast/toast.component";
 import {MapService} from "../../service/map.service";
 import {getimage} from "../../util/get-image";
 import {ChatService} from "../../service/chat.service";
+import {TranslateService} from "ng2-translate";
 //import {Track} from "./track";
 
 declare var document: any;
@@ -49,7 +50,8 @@ export class MenuComponent{
                 private userService:UserService,
                 private mapService:MapService,
                 private toast:ToastService,
-                private chatService:ChatService) {
+                private chatService:ChatService,
+                ) {
 
         this.user = userService.user;
         this.invites = friend.invites;

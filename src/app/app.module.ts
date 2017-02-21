@@ -53,12 +53,12 @@ import {RouterStateSnapshot} from "@angular/router";
 import {StravaComponent} from "./component/strava-component/strava-component";
 import {StravaAuthComponent} from "./component/strava-component/strava-auth-component";
 import {StravaService} from "./service/strava.service";
-import {TranslateModule, TranslateLoader, TranslateStaticLoader} from "ng2-translate/index";
-import {Http} from "@angular/http";
+import {TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService} from "ng2-translate";
+import {Http, ConnectionBackend} from "@angular/http";
 
 
 export function createTranslateLoader(http: Http) {
-    return new TranslateStaticLoader(http, './langs/', '.json');
+    return new TranslateStaticLoader(http, './langs', '.json');
 }
 
 
@@ -109,6 +109,8 @@ export function createTranslateLoader(http: Http) {
 
     /** Сервисы */
     providers: [
+        //ConnectionBackend,
+        TranslateService,
         StravaService,
         ChatService,
         JournalService,
@@ -137,7 +139,8 @@ export function createTranslateLoader(http: Http) {
     ]
 })
 export class AppModule {
-    constructor(){
-
+    constructor(private translate: TranslateService){
+        translate.addLangs(['ru']);
+        translate.setDefaultLang('ru')
     }
 }

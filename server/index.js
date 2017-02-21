@@ -77,7 +77,7 @@ app.use((req, res, next)=>{
       //console.log('req.url ->', req.url)
   }
 
-  if(!req.url.match(/^(\/dist|\/src|\/node|\/lib|\/system).+/)){
+  if(!req.url.match(/^(\/dist|\/src|\/node|\/lib|\/system|\/langs).+/)){
       console.log('bot url ->', req.url)
   }
 
