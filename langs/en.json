@@ -13,5 +13,6 @@
   "ON_SAVE": "Save",
   "REGISTRATION": "Registration",
   "NAME": "Name",
-  "PASS": "Pass"
+  "PASS": "Pass",
+  "NOT_LOGGED": "You are not logged in"
 }

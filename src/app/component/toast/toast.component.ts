@@ -1,10 +1,25 @@
 import { Component, Injectable} from '@angular/core';
 
-interface Message{
+
+export class Message{
+    type: string;
+    className: string;
+    text: string;
+    translate: string | undefined;
+    constructor(type, className, text, translate?){
+        this.type = type || 'default';
+        this.className = type || 'default';
+        this.text = text;
+        if(translate)  this.translate = translate;
+    }
+    remove(){}
+}
+
+interface  M{
     type?: string;
     className?: string;
-    text: string;
-    remove?: Function
+    text?: string;
+    translate?: string;
 };
 
 @Injectable()
@@ -15,18 +30,21 @@ export class ToastService{
     }
 
 
-    show(message: Message){
-        message.className = message.type || 'default';
-        this.messages.push(message);
+    show(message: M){
+        const  mess: Message = new Message(message.type, message.className, message.text, message.translate);
+        //message.className = message.type || 'default';
+
         const res = {
             remove:  () => {
-                const index = this.messages.indexOf(message);
+                const index = this.messages.indexOf(mess);
                 if(-1<index){
                     this.messages.splice(index, 1)    
                 }
             }
         };
-        message.remove = res.remove;
+
+        mess.remove = res.remove;
+        this.messages.push(mess);
         
         setTimeout(()=>{
             res.remove();

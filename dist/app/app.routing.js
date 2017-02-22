@@ -14,6 +14,7 @@ const no_found_component_1 = require("./no-found.component");
 const all_user_component_1 = require("./component/all-user/all-user.component");
 const strava_component_1 = require("./component/strava-component/strava-component");
 const strava_auth_component_1 = require("./component/strava-component/strava-auth-component");
+const main_user_service_1 = require("./service/main.user.service");
 const appRouters = [
     {
         path: '',
@@ -43,15 +44,18 @@ const appRouters = [
                     },
                     {
                         path: 'device',
-                        component: device_component_1.DeviceComponent
+                        component: device_component_1.DeviceComponent,
+                        canActivate: [main_user_service_1.UserService]
                     },
                     {
                         path: 'profile',
-                        component: profile_component_1.ProfileComponent
+                        component: profile_component_1.ProfileComponent,
+                        canActivate: [main_user_service_1.UserService]
                     },
                     {
                         path: 'journal',
                         component: journal_component_1.JournalComponent,
+                        canActivate: [main_user_service_1.UserService],
                         resolve: {
                             L: journal_component_1.LeafletResolver
                         },
@@ -72,14 +76,17 @@ const appRouters = [
                     {
                         path: 'privatearea',
                         component: private_area_1.PrivateArea,
+                        canActivate: [main_user_service_1.UserService]
                     },
                     {
                         path: 'strava-invite',
-                        component: strava_component_1.StravaComponent
+                        component: strava_component_1.StravaComponent,
+                        canActivate: [main_user_service_1.UserService]
                     },
                     {
                         path: 'strava-invite/:token',
-                        component: strava_auth_component_1.StravaAuthComponent
+                        component: strava_auth_component_1.StravaAuthComponent,
+                        canActivate: [main_user_service_1.UserService]
                     },
                 ]
             }

@@ -23,6 +23,7 @@ import {NoFoundComponent} from "./no-found.component";
 import {AllUserComponent} from "./component/all-user/all-user.component";
 import {StravaComponent} from "./component/strava-component/strava-component";
 import {StravaAuthComponent} from "./component/strava-component/strava-auth-component";
+import {UserService} from "./service/main.user.service";
 
 const  appRouters: Routes = [
     {
@@ -54,15 +55,18 @@ const  appRouters: Routes = [
                     },
                     {
                         path:'device',
-                        component: DeviceComponent
+                        component: DeviceComponent,
+                        canActivate:[UserService]
                     },
                     {
                         path: 'profile',
-                        component:ProfileComponent
+                        component:ProfileComponent,
+                        canActivate:[UserService]
                     },
                     {
                         path: 'journal',
                         component: JournalComponent,
+                        canActivate:[UserService],
                         resolve:  {
                             L : LeafletResolver
                         },
@@ -84,15 +88,18 @@ const  appRouters: Routes = [
                     {
                         path: 'privatearea',
                         component: PrivateArea,
+                        canActivate:[UserService]
 
                     },
                     {
                         path:'strava-invite',
-                        component: StravaComponent
+                        component: StravaComponent,
+                        canActivate:[UserService]
                     },
                     {
                         path:'strava-invite/:token',
-                        component: StravaAuthComponent
+                        component: StravaAuthComponent,
+                        canActivate:[UserService]
                     },
                 ]
             }

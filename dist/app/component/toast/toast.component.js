@@ -9,23 +9,35 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require('@angular/core');
+class Message {
+    constructor(type, className, text, translate) {
+        this.type = type || 'default';
+        this.className = type || 'default';
+        this.text = text;
+        if (translate)
+            this.translate = translate;
+    }
+    remove() { }
+}
+exports.Message = Message;
 ;
 let ToastService = class ToastService {
     constructor() {
         this.messages = [];
     }
     show(message) {
-        message.className = message.type || 'default';
-        this.messages.push(message);
+        const mess = new Message(message.type, message.className, message.text, message.translate);
+        //message.className = message.type || 'default';
         const res = {
             remove: () => {
-                const index = this.messages.indexOf(message);
+                const index = this.messages.indexOf(mess);
                 if (-1 < index) {
                     this.messages.splice(index, 1);
                 }
             }
         };
-        message.remove = res.remove;
+        mess.remove = res.remove;
+        this.messages.push(mess);
         setTimeout(() => {
             res.remove();
         }, 5000);

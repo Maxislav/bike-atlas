@@ -1,10 +1,14 @@
 import {Component, Input, OnChanges, OnInit} from "@angular/core";
-import {Router, ActivatedRoute, Params, Route} from "@angular/router";
+import {
+    Router, ActivatedRoute, Params, Route, CanActivate, RouterStateSnapshot,
+    ActivatedRouteSnapshot
+} from "@angular/router";
 import {hashgeneral} from "../../util/hash";
 import {Io} from "../../service/socket.oi.service";
 import {StravaService, StravaD} from "../../service/strava.service";
 import {Track} from "../../service/track.var";
 import {ToastService} from "../toast/toast.component";
+import {UserService} from "../../service/main.user.service";
 //import {module} from "@angular/upgrade/src/angular_js";
 declare const module: any;
 declare const System: any;
@@ -23,6 +27,7 @@ interface Athlete{
     styleUrls: ['./strava-component.css'],
 })
 export class StravaComponent  implements OnChanges {
+    
 
 
     private _href: string;
@@ -43,20 +48,37 @@ export class StravaComponent  implements OnChanges {
         profile: null
     };
    
-    private authorization: string
+    private authorization: string;
 
     
     private docsFor: Array<Track>;
 
     constructor(private router: Router,
                 private io : Io,
+                private userService: UserService,
                 private stravaService: StravaService,
-                private toast:ToastService,
+                private toast:ToastService
     ) {
         this.showHelp = false;
         this.docsFor = stravaService.docsFor;
+
+        if(!this.userService.user.id){
+
+            this.toast.show({
+                type: 'warning',
+                //text: "Отправлен на обработку в Strava",
+                translate: "Отправлен на обработку в Strava"
+            });
+            return
+        }
+        //console.log(this.userService.user)
+
+
         this.href = null;
         this.socket = io.socket;
+
+
+
         this.getStrava()
             .then(d=>{
                 return this.isAuthorize()

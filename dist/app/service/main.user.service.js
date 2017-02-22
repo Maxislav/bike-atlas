@@ -10,9 +10,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require("@angular/core");
 const socket_oi_service_1 = require("./socket.oi.service");
+const toast_component_1 = require("../component/toast/toast.component");
+const router_1 = require("@angular/router");
 let UserService = class UserService {
-    constructor(io) {
+    constructor(io, toast, router) {
         this.io = io;
+        this.toast = toast;
+        this.router = router;
         this._friends = [];
         this.images = {};
         this.socket = io.socket;
@@ -27,6 +31,17 @@ let UserService = class UserService {
             image: null,
             devices: []
         };
+    }
+    canActivate(route, state) {
+        console.log(route, state);
+        if (!this.user.id) {
+            this.toast.show({
+                type: 'warning',
+                translate: 'NOT_LOGGED'
+            });
+            this.router.navigate(['/auth/map']);
+        }
+        return !!this.user.id;
     }
     clearUser() {
         for (let opt in this._user) {
@@ -95,7 +110,7 @@ let UserService = class UserService {
 };
 UserService = __decorate([
     core_1.Injectable(), 
-    __metadata('design:paramtypes', [socket_oi_service_1.Io])
+    __metadata('design:paramtypes', [socket_oi_service_1.Io, toast_component_1.ToastService, router_1.Router])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=main.user.service.js.map

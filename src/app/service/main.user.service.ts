@@ -1,7 +1,10 @@
 
 import {Injectable} from "@angular/core";
 import {Device} from "./device.service";
+import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot} from "@angular/router";
 import {Io} from "./socket.oi.service";
+import {ToastService} from "../component/toast/toast.component";
+import {Router} from "@angular/router";
 
 
 export interface User{
@@ -15,8 +18,18 @@ export interface User{
 
 
 @Injectable()
-
-export class UserService{
+export class UserService implements CanActivate{
+    canActivate(   route: ActivatedRouteSnapshot,state: RouterStateSnapshot) {
+        console.log(route, state);
+        if(!this.user.id){
+            this.toast.show({
+                type: 'warning',
+                translate: 'NOT_LOGGED'
+            });
+            this.router.navigate(['/auth/map']);
+        }
+        return !!this.user.id;
+    }
     
 
     private _user: User;
@@ -24,7 +37,7 @@ export class UserService{
     private _other: User;
     private socket: any;
     private images: {[userId:number]: String} ={};
-    constructor(private io: Io){
+    constructor(private io: Io, private toast:ToastService, private router: Router){
         this.socket = io.socket;
         this._user = {
             name: null,
