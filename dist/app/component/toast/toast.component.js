@@ -57,10 +57,11 @@ let ToastComponent = class ToastComponent {
 };
 ToastComponent = __decorate([
     core_1.Component({
+        moduleId: module.id,
         selector: 'toast-component',
-        templateUrl: '/dist/app/component/toast/toast-component.html',
+        templateUrl: './toast-component.html',
         styleUrls: [
-            'dist/app/component/toast/toast.component.css',
+            './toast.component.css',
         ]
     }), 
     __metadata('design:paramtypes', [ToastService])

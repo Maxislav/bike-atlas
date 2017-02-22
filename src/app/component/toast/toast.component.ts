@@ -56,10 +56,11 @@ export class ToastService{
 
 
 @Component({
+    moduleId: module.id,
     selector: 'toast-component',
-    templateUrl: '/dist/app/component/toast/toast-component.html',
+    templateUrl: './toast-component.html',
     styleUrls: [
-        'dist/app/component/toast/toast.component.css',
+        './toast.component.css',
     ]
 })
 export class ToastComponent{
