@@ -57,7 +57,7 @@ export class ToastService{
 
 @Component({
     selector: 'toast-component',
-    templateUrl: 'dist/app/component/toast/toast-component.html',
+    templateUrl: '/dist/app/component/toast/toast-component.html',
     styleUrls: [
         'dist/app/component/toast/toast.component.css',
     ]
