@@ -3,6 +3,19 @@
  * Adjust as necessary for your application needs.
  */
 (function(global) {
+  
+   var SystemImport = System.import;
+  System.import = function (name, options) {
+    if (Object.prototype.toString.call(name) !== '[object Array]')
+      return SystemImport.apply(this, arguments);
+    var self = this;
+    return Promise.all(name.map(function (name) {
+      return SystemImport.call(self, name); // should i pass options ?
+    }));
+
+  };
+
+  
   // map tells the System loader where to look for things
   var map = {
     'app':                        'dist/app', // 'dist',
