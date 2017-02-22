@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require("@angular/core");
-const common_1 = require("@angular/common");
+const core_1 = require('@angular/core');
+const common_1 = require('@angular/common');
 const router_1 = require("@angular/router");
 const device_service_1 = require("../../service/device.service");
 const app_component_1 = require("../../app.component");
@@ -24,8 +24,8 @@ let HelpContainer = class HelpContainer {
 HelpContainer = __decorate([
     core_1.Directive({
         selector: 'help-container',
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, core_1.Renderer])
+    }), 
+    __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer])
 ], HelpContainer);
 exports.HelpContainer = HelpContainer;
 let IsOwner = class IsOwner {
@@ -43,8 +43,8 @@ IsOwner = __decorate([
     core_1.Pipe({
         name: 'isOwner',
         pure: false
-    }),
-    __metadata("design:paramtypes", [main_user_service_1.UserService])
+    }), 
+    __metadata('design:paramtypes', [main_user_service_1.UserService])
 ], IsOwner);
 exports.IsOwner = IsOwner;
 let DeviceComponent = class DeviceComponent {
@@ -135,13 +135,8 @@ DeviceComponent = __decorate([
         styleUrls: [
             'device.component.css',
         ]
-    }),
-    __metadata("design:paramtypes", [common_1.Location,
-        router_1.Router,
-        main_user_service_1.UserService,
-        device_service_1.DeviceService,
-        toast_component_1.ToastService,
-        app_component_1.NavigationHistory])
+    }), 
+    __metadata('design:paramtypes', [common_1.Location, router_1.Router, main_user_service_1.UserService, device_service_1.DeviceService, toast_component_1.ToastService, app_component_1.NavigationHistory])
 ], DeviceComponent);
 exports.DeviceComponent = DeviceComponent;
 //# sourceMappingURL=device.component.js.map

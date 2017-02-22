@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 20.10.16.
  */
-const core_1 = require("@angular/core");
+const core_1 = require('@angular/core');
 let Mercator = class Mercator {
     constructor() {
         this.getYpixel = (fi, z) => {
@@ -32,8 +32,8 @@ let Mercator = class Mercator {
     }
 };
 Mercator = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], Mercator);
 exports.Mercator = Mercator;
 //# sourceMappingURL=mercator.service.js.map
