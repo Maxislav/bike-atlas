@@ -1,6 +1,17 @@
 {
   "ROUTS": "Routs",
   "IN_CONNECTION": "Connection",
-  "SIGN_IN": "Sign in"
-
+  "SIGN_IN": "Sign in",
+  "JOURNAL": "Journal",
+  "DOWNLOAD_GPX": "Download GPX",
+  "IMPORT_FROM_GOOGLE_KML": "Import from Google KML",
+  "PROFILE": "Profile",
+  "FRIENDS": "Friends",
+  "PRIVATE_AREA": "Private area",
+  "DEVICES": "Devices",
+  "ON_EXIT": "Exit",
+  "ON_SAVE": "Save",
+  "REGISTRATION": "Registration",
+  "NAME": "Name",
+  "PASS": "Pass"
 }

@@ -33,16 +33,16 @@ const MENU:Item[] = [
     },
     {
         value: 'journal',
-        text: "Журнал"
+        text: "JOURNAL"
     },
     {
         value: 'load',
-        text: "Загрузить GPX",
+        text: "DOWNLOAD_GPX",
         enctype: "multipart/form-data",
     },
     {
         value: 'import',
-        text: "Импорт from Google KML"
+        text: "IMPORT_FROM_GOOGLE_KML"
     },
 
 ];

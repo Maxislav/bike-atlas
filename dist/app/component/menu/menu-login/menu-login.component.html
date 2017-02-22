@@ -4,17 +4,17 @@
     <div *ngIf="!user.name">
       <ul>
         <li>
-          <label>Имя</label>
+          <label>{{'NAME' | translate}}</label>
           <input type="text" [(ngModel)]="name" name="name"/>
         </li>
         <li>
-          <label>Пароль</label>
+          <label>{{'PASS' | translate}}</label>
           <input type="password" [(ngModel)]="pass" name="pass"/>
         </li>
         <li>
-          <button (click)="onEnter($event)">Вход</button>
+          <button (click)="onEnter($event)">{{'ON_EXIT' | translate}}</button>
         </li>
-        <li><a (click)="goToReg()">Регистрация</a></li>
+        <li><a (click)="goToReg()">{{'REGISTRATION' | translate}}</a></li>
       </ul>
     </div>
   </form>
@@ -22,19 +22,19 @@
   <template [ngIf]="user.name">
     <ul>
       <li (click)="goToProfile()">
-        <div>Профиль</div>
+        <div>{{ 'PROFILE' | translate }}</div>
       </li>
       <li (click)="goToFriends()">
-        <div>Друзья</div>
+        <div>{{'FRIENDS'| translate}}</div>
       </li>
       <li (click)="goToPrivateArea()">
-        <div>Приватные зоны</div>
+        <div>{{'PRIVATE_AREA'| translate}}</div>
       </li>
       <li (click)="goDevice()">
-        <div>Устройства</div>
+        <div>{{'DEVICES'| translate}}</div>
       </li>
       <li>
-        <div (click)="onExit($event)">Выйти</div>
+        <div (click)="onExit($event)">{{'ON_EXIT'| translate }}</div>
       </li>
     </ul>
   </template>

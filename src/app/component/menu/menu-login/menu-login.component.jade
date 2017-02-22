@@ -3,30 +3,30 @@ div((click)="$event.stopPropagation();$event.preventDefault()" )
         div(*ngIf="!user.name")
             ul
                 li
-                    label Имя
+                    label {{'NAME' | translate}}
                     input(type="text", [(ngModel)]="name", name='name')
                 li
-                    label Пароль
+                    label {{'PASS' | translate}}
                     input( type="password", [(ngModel)]="pass", name='pass')
                 li()
-                    button((click)="onEnter($event)") Вход
+                    button((click)="onEnter($event)") {{'ON_EXIT' | translate}}
                 li
-                    a((click)="goToReg()") Регистрация
+                    a((click)="goToReg()") {{'REGISTRATION' | translate}}
     .border-hidden
     template([ngIf]="user.name")
         ul
             li((click)="goToProfile()")
-                div() Профиль
+                div() {{ 'PROFILE' | translate }}
 
             li((click)="goToFriends()")
-                div Друзья
+                div {{'FRIENDS'| translate}}
 
             li((click)="goToPrivateArea()")
-                div Приватные зоны
+                div {{'PRIVATE_AREA'| translate}}
 
             li((click)="goDevice()")
-                div Устройства
+                div {{'DEVICES'| translate}}
             li
-                div((click)="onExit($event)") Выйти
+                div((click)="onExit($event)") {{'ON_EXIT'| translate }}
 
 

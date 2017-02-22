@@ -1,6 +1,6 @@
 ul
     li( *ngFor="let item of menu", (click)="onSelect(item\, $event, $this)")
-        div {{item.text}}
+        div {{item.text | translate}}
         form(enctype="multipart/form-data", action="php/upload.php" method="POST", style="display: none")
             div Допускается *.gpx файл
             input(type="hidden" name="afile" value="30000")

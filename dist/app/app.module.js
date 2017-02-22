@@ -64,7 +64,7 @@ const strava_service_1 = require("./service/strava.service");
 const ng2_translate_1 = require("ng2-translate");
 const http_1 = require("@angular/http");
 function createTranslateLoader(http) {
-    return new ng2_translate_1.TranslateStaticLoader(http, './langs', '.json');
+    return new ng2_translate_1.TranslateStaticLoader(http, System.baseURL + '/langs', '.json');
 }
 exports.createTranslateLoader = createTranslateLoader;
 let AppModule = class AppModule {

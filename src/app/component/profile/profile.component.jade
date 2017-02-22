@@ -3,7 +3,7 @@ div.content
         .close((click)="onClose()") &times;
         .row
             p
-                | Профиль
+                | {{'PROFILE' | translate}}
         .row.border
             .load-img
                 img([src]="user.image || 'src/img/no-avatar.gif' ", (click)="onOpenImage()")
@@ -18,7 +18,6 @@ div.content
                 input(type="file" id="files" name="files[]" multiple="", style="display: none")
             .border-hidden
                 div()
-                    button.primary( style="float: right", (click)="onSave($event)") Сохранить
+                    button.primary( style="float: right", (click)="onSave($event)") {{'ON_SAVE'| translate}}
             .border-hidden
-
         .border-hidden

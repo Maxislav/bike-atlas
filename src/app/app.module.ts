@@ -56,9 +56,10 @@ import {StravaService} from "./service/strava.service";
 import {TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService} from "ng2-translate";
 import {Http, ConnectionBackend} from "@angular/http";
 
+declare const System: any;
 
 export function createTranslateLoader(http: Http) {
-    return new TranslateStaticLoader(http, './langs', '.json');
+    return new TranslateStaticLoader(http, System.baseURL+'/langs', '.json');
 }
 
 

@@ -3,7 +3,7 @@
   <div>
     <div (click)="onClose()" class="close">&times;</div>
     <div class="row">
-      <p>Профиль</p>
+      <p>{{'PROFILE' | translate}}</p>
     </div>
     <div class="row border">
       <div class="load-img"><img [src]="user.image || 'src/img/no-avatar.gif' " (click)="onOpenImage()"/>
@@ -20,7 +20,7 @@
       </div>
       <div class="border-hidden">
         <div>
-          <button style="float: right" (click)="onSave($event)" class="primary">Сохранить</button>
+          <button style="float: right" (click)="onSave($event)" class="primary">{{'ON_SAVE'| translate}}</button>
         </div>
       </div>
       <div class="border-hidden"></div>
