@@ -17,13 +17,10 @@ const router_1 = require("@angular/router");
 const journal_service_1 = require("../../service/journal.service");
 let LeafletResolver = class LeafletResolver {
     resolve() {
-        return System.import('lib/leaflet/leaflet.css')
-            .then((css) => {
-            return System.import("lib/leaflet/leaflet-src.js")
-                .then(L => {
-                this.L = L;
-                return L;
-            });
+        return System.import(["lib/leaflet/leaflet-src.js", 'lib/leaflet/leaflet.css'])
+            .then(([L]) => {
+            this.L = L;
+            return L;
         });
     }
 };

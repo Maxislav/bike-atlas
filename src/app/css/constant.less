@@ -12,19 +12,6 @@
 @orange-color: #ff8b15;
 @success-background: #7ddc74;
 @box-shadow: 1px 1px 3px rgba(0,0,0,0.4);
-*{
-  color: @main-text-color;
-}
-.button-container>div{
-  float: right;
-  margin-top: 15px;
-  &:not(:first-child){
-
-  }
-  button{
-    margin-left: 8px;
-  };
-}
 .ul-li(){
   cursor: pointer;
   background-color:  rgba(255, 255, 255, 0.8);
@@ -33,61 +20,4 @@
   &:hover{
     background-color: @menu-hover;
   }
-}
-.row{
-  margin-bottom: 15px;
-}
-.table{
-  display: table;
-  .cell{
-    display: table-cell;
-  }
-}
-.flex{
-  display: flex;
-  &.center{
-    align-items: center;
-  }
-  .flex-cell{
-    padding: 0 10px;
-  }
-  &.flex-end{
-    justify-content: flex-end;
-  }
-  &.space-between{
-    justify-content: space-between;
-  }
-}
-.blue{
-  color: @blue-color
-}
-.gray{
-  color:@gray-color
-}
-button, .button{
-  padding: 8px 15px;
-  border: none;
-  background: transparent;
-  border-radius: 2px;
-  cursor: pointer;
-  outline:none;
- // box-shadow: 1px 2px 5px rgba(0,0,0,0.3);
-  &:active{
-    color: #999999;
-    box-shadow: none;
-  }
-  &.primary{
-    color: @blue-color;
-  }
-
-}
-.row{
-  margin: 15px -10px;
-}
-input.input{
-  border: none;
-  border-bottom: 1px solid @main-border-color;
-  padding: 5px 10px;
-  outline: none;
-  background: transparent;
 }

@@ -1,0 +1,210 @@
+@import "constant";
+*{
+  color: @main-text-color;
+}
+.button-container>div{
+  float: right;
+  margin-top: 15px;
+  &:not(:first-child){
+
+  }
+  button{
+    margin-left: 8px;
+  };
+}
+
+.row{
+  margin-bottom: 15px;
+}
+.table{
+  display: table;
+  .cell{
+    display: table-cell;
+  }
+}
+.flex{
+  display: flex;
+  &.center{
+    align-items: center;
+  }
+  .flex-cell{
+    padding: 0 10px;
+  }
+  &.flex-end{
+    justify-content: flex-end;
+  }
+  &.space-between{
+    justify-content: space-between;
+  }
+}
+.blue{
+  color: @blue-color
+}
+.gray{
+  color:@gray-color
+}
+button, .button{
+  padding: 8px 15px;
+  border: none;
+  background: transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  outline:none;
+  &:active{
+    color: #999999;
+    box-shadow: none;
+  }
+  &.primary{
+    color: @blue-color;
+  }
+
+}
+.row{
+  margin: 15px -10px;
+}
+input.input{
+  border: none;
+  border-bottom: 1px solid @main-border-color;
+  padding: 5px 10px;
+  outline: none;
+  background: transparent;
+}
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Geneva, Arial, Helvetica, sans-serif;
+
+}
+li{
+  list-style-type: none;
+}
+table{
+  border-spacing: 0;
+}
+table tr td{
+  border-collapse: collapse;
+  border: none;
+  border-spacing: 0;
+}
+html, body{
+  width: 100%;
+  height: 100%;
+}
+my-app{
+  display: block;
+  opacity: 1;
+}
+
+
+.gray{
+  color: darkgray;
+}
+.clear, .border-hidden {
+  float: none!important;
+  clear: both!important;
+  border-bottom: 1px solid transparent;
+  margin-top: -1px;
+}
+
+/* Base for label styling */
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+  position: absolute;
+  left: -9999px;
+}
+
+[type="checkbox"]:not(:checked) + label,
+[type="checkbox"]:checked + label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+  padding-top: 5px;
+}
+
+/* checkbox aspect */
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 17px;
+  height: 17px;
+  border: 1px solid #aaa;
+  background: #f8f8f8;
+  border-radius: 3px;
+  /*box-shadow: inset 0 1px 3px rgba(0, 0, 0, .3)*/
+}
+
+/* checked mark aspect */
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after {
+  content: '✔';
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  font-size: 18px;
+  line-height: 0.8;
+  color: #09ad7e;
+  transition: all .2s;
+}
+
+/* checked mark aspect changes */
+[type="checkbox"]:not(:checked) + label:after {
+  opacity: 0;
+  transform: scale(0);
+}
+
+[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* disabled checkbox */
+[type="checkbox"]:disabled:not(:checked) + label:before,
+[type="checkbox"]:disabled:checked + label:before {
+  box-shadow: none;
+  border-color: #bbb;
+  background-color: #ddd;
+}
+
+[type="checkbox"]:disabled:checked + label:after {
+  color: #999;
+}
+
+[type="checkbox"]:disabled + label {
+  color: #aaa;
+}
+
+/* accessibility */
+[type="checkbox"]:checked:focus + label:before,
+[type="checkbox"]:not(:checked):focus + label:before {
+  border: 1px dotted blue;
+}
+.ico-z {
+  width: 40px;
+  height: 40px;
+  background: url("/src/img/ico-z.png") no-repeat center;
+  background-size: 100%;
+  animation: ROTATE 2s infinite;
+  opacity: 0.5;
+  animation-timing-function: linear;
+
+}
+.prelaoder{
+  padding: 40px 0 ;
+  margin: 0 auto;
+}
+
+.prelaoder>div{
+  color: gray;
+  margin: 20px auto;
+  text-align: center;
+}
+.prelaoder>.loading{
+  margin-left: 10px;
+}
+@keyframes ROTATE {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

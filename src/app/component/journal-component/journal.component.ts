@@ -11,22 +11,15 @@ import {Point} from "../../service/track.var";
 declare var System: any;
 
 @Injectable()
-export class LeafletResolver implements Resolve<any>{
-    L: any;
+export class LeafletResolver implements Resolve<any> {
+    L:any;
+
     resolve():Promise<any> {
-
-
-
-        return System.import('lib/leaflet/leaflet.css')
-            .then((css)=>{
-            return  System.import("lib/leaflet/leaflet-src.js")
-                .then(L=>{
-                    this.L = L;
-                    return L
-                })
+        return System.import(["lib/leaflet/leaflet-src.js", 'lib/leaflet/leaflet.css'])
+            .then(([L])=> {
+                this.L = L;
+                return L
             })
-
-
     }
 }
 
