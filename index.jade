@@ -15,7 +15,7 @@ html(lang='en')
         script(src='systemjs.config.js')
         script.
             System
-                    .import(['./dist/app/css/index.css','lib/mapbox-gl/mapbox-gl.css', 'app'])
+                    .import(['dist/app/css/index.css','lib/mapbox-gl/mapbox-gl.css', 'app'])
                     .catch(function(err){ console.error(err); });
         style.
             my-app {

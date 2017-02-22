@@ -9,7 +9,7 @@ div((click)="$event.stopPropagation();$event.preventDefault()" )
                     label {{'PASS' | translate}}
                     input( type="password", [(ngModel)]="pass", name='pass')
                 li()
-                    button((click)="onEnter($event)") {{'ON_EXIT' | translate}}
+                    button((click)="onEnter($event)") {{'SIGN_IN' | translate}}
                 li
                     a((click)="goToReg()") {{'REGISTRATION' | translate}}
     .border-hidden
