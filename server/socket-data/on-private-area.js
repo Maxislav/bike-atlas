@@ -87,7 +87,7 @@ class OnPrivateArea extends ProtoData{
   savePrivateArea(area) {
     this.util.getUserIdBySocketId(this.socket.id)
       .then(user_id=> {
-        return util.addPrivateArea(user_id, area)
+        return this.util.addPrivateArea(user_id, area)
       })
       .then(d=> {
         this.socket.emit('savePrivateArea', {
