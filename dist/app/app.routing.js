@@ -1,6 +1,6 @@
 "use strict";
-const router_1 = require('@angular/router');
-const heroes_component_1 = require('./heroes.component');
+const router_1 = require("@angular/router");
+const heroes_component_1 = require("./heroes.component");
 const auth_component_1 = require("./component/auth-component/auth.component");
 const map_component_1 = require("./map.component");
 const registration_component_1 = require("./component/registration/registration.component");
@@ -85,8 +85,7 @@ const appRouters = [
                     },
                     {
                         path: 'strava-invite/:token',
-                        component: strava_auth_component_1.StravaAuthComponent,
-                        canActivate: [main_user_service_1.UserService]
+                        component: strava_auth_component_1.StravaAuthComponent
                     },
                 ]
             }
