@@ -11,10 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const core_1 = require("@angular/core");
 const router_1 = require("@angular/router");
 const socket_oi_service_1 = require("../../service/socket.oi.service");
+const strava_service_1 = require("../../service/strava.service");
 let StravaAuthComponent = class StravaAuthComponent {
-    constructor(router, io) {
+    constructor(router, io, stravaService) {
         this.router = router;
         this.io = io;
+        this.stravaService = stravaService;
         this.authInProgress = true;
         this.socket = io.socket;
         this.authInProgress = true;
@@ -33,9 +35,7 @@ let StravaAuthComponent = class StravaAuthComponent {
         });
     }
     stravaOauth(stravaCode) {
-        this.socket.$emit('stravaOauth', {
-            stravaCode: stravaCode
-        })
+        this.stravaService.stravaOauth(stravaCode)
             .then(d => {
             if (d.result == 'ok') {
                 const athlete = d.data.athlete;
@@ -44,9 +44,23 @@ let StravaAuthComponent = class StravaAuthComponent {
                 this.profile = athlete.profile;
                 this.city = athlete.city;
             }
-            console.log('stravaOauth->', d);
             this.authInProgress = false;
         });
+        /* this.socket.$emit('stravaOauth',{
+             stravaCode: stravaCode
+         })
+             .then(d=>{
+                 if(d.result =='ok'){
+                     const athlete = d.data.athlete
+                      this.firstName = athlete.firstname
+                      this.lastName = athlete.lastname
+                      this.profile = athlete.profile
+                      this.city = athlete.city
+ 
+                 }
+                 console.log('stravaOauth->', d)
+                 this.authInProgress = false
+             })*/
     }
     goToAuth() {
         this.router.navigate(['/auth/map/strava-invite']);
@@ -65,7 +79,8 @@ StravaAuthComponent = __decorate([
         styleUrls: ['./strava-component.css'],
     }),
     __metadata("design:paramtypes", [router_1.Router,
-        socket_oi_service_1.Io])
+        socket_oi_service_1.Io,
+        strava_service_1.StravaService])
 ], StravaAuthComponent);
 exports.StravaAuthComponent = StravaAuthComponent;
 //# sourceMappingURL=strava-auth-component.js.map

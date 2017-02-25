@@ -3,6 +3,7 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {Io} from "../../service/socket.oi.service";
+import {StravaService} from "../../service/strava.service";
 declare const module: any;
 declare const System: any;
 
@@ -21,7 +22,9 @@ export class StravaAuthComponent implements OnInit{
     authInProgress: boolean = true;
 
     constructor(private router: Router,
-                private io : Io){
+                private io : Io,
+                private stravaService:StravaService
+    ){
         this.socket = io.socket;
         this.authInProgress = true
     }
@@ -43,7 +46,21 @@ export class StravaAuthComponent implements OnInit{
     }
 
     stravaOauth(stravaCode: string){
-        this.socket.$emit('stravaOauth',{
+
+        this.stravaService.stravaOauth(stravaCode)
+            .then(d=>{
+                if(d.result =='ok'){
+                    const athlete = d.data.athlete
+                    this.firstName = athlete.firstname
+                    this.lastName = athlete.lastname
+                    this.profile = athlete.profile
+                    this.city = athlete.city
+
+                }
+                this.authInProgress = false
+            })
+
+       /* this.socket.$emit('stravaOauth',{
             stravaCode: stravaCode
         })
             .then(d=>{
@@ -57,7 +74,7 @@ export class StravaAuthComponent implements OnInit{
                 }
                 console.log('stravaOauth->', d)
                 this.authInProgress = false
-            })
+            })*/
     }
     goToAuth(){
         this.router.navigate(['/auth/map/strava-invite']);

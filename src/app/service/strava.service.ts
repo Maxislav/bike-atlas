@@ -47,6 +47,28 @@ export class StravaService {
 
 
     }
+    stravaOauth(stravaCode: string){
+        return this.socket.$emit('stravaOauth',{
+            stravaCode: stravaCode
+        })
+            .then(d=>{
+                if(d.result =='ok'){
+                    const athlete = d.data.athlete
+                    this.athlete = {
+                        firstName: athlete.firstname,
+                        lastName: athlete.lastname,
+                        profile: athlete.profile,
+                        city: athlete.city,
+                        authorization: d.data.token_type + " " + d.data.access_token
+                    };
+
+                }
+                console.log('stravaOauth->', d)
+                return d;
+                //
+               // this.authInProgress = false
+            })
+    }
 
     removeTrack(track: Track) {
         if (-1 < this.docsFor.indexOf(track)) {

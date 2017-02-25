@@ -62,15 +62,15 @@ export class StravaComponent  implements OnChanges {
         this.showHelp = false;
         this.docsFor = stravaService.docsFor;
 
-        if(!this.userService.user.id){
+       /* if(!this.userService.user.id){
 
             this.toast.show({
                 type: 'warning',
                 //text: "Отправлен на обработку в Strava",
-                translate: "Отправлен на обработку в Strava"
+                translate: ""
             });
             return
-        }
+        }*/
         //console.log(this.userService.user)
 
 
