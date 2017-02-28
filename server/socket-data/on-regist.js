@@ -30,6 +30,9 @@ class OnRegist extends Protodata{
                 this.socket.emit('onRegist', {result: false, status: 500, message: err})
             })
     }
+    checkUserExist(d){
+        
+    }
 }
 
 module.exports = OnRegist;

@@ -310,7 +310,7 @@ class Util {
 	}
 
 	onRegist(d) {
-		return this.checkExistUser(connection, d)
+		return this.checkExistUser( d)
 			.then((rows) => {
 				if (rows.length) {
 					return {
@@ -318,9 +318,9 @@ class Util {
 						message: 'User exist'
 					}
 				} else {
-					return this.addUser(connection, d)
+					return this.addUser(d)
 						.then(result=> {
-							return this.addSettingUser(connection, result.insertId)
+							return this.addSettingUser( result.insertId)
 								.then((result)=> {
 									return {
 										result: 'ok',
@@ -331,11 +331,11 @@ class Util {
 				}
 			})
 			.catch((err) => {
-				console.log('onRegist +>', err)
+				console.log('onRegist ++>', err)
 			})
 	}
 
-	checkExistUser(connection, d) {
+	checkExistUser(d) {
 		return new Promise((resolve, reject) => {
 			const query = 'SELECT `name` from user WHERE `name`=? order by `id` desc limit 150';
 			this.connection.query(query, [d.name, d.pass], (err, rows) => {
@@ -348,7 +348,7 @@ class Util {
 		})
 	}
 
-	addUser(connection, d) {
+	addUser(d) {
 		return new Promise((resolve, reject) => {
 			this.connection.query('INSERT INTO `user` ' +
 				'(`id`, `name`, `pass`, `opt`) VALUES (NULL, ?, ?, NULL)', [d.name, d.pass], (err, results) => {
@@ -416,7 +416,7 @@ class Util {
 		})
 	}
 
-	addSettingUser(connection, user_id) {
+	addSettingUser(user_id) {
 		return new Promise((resolve, reject) => {
 			this.connection.query('INSERT INTO `setting` ' +
 				'(`id`, `user_id`, `map`, `hill`, `lock`) VALUES (NULL, ?, ?, ?, ?)', [user_id, 'ggl', true, true], (err, results) => {
