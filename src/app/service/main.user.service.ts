@@ -62,13 +62,11 @@ export class UserService implements CanActivate{
 
     }
     getUserImageById(id: number) {
-
-            if(!this.deferImage[id] )
-                 this.deferImage[id] = new Deferred();
+        if(!this.deferImage[id] ){
+            this.deferImage[id] = new Deferred();
             this.socket.$emit('getUserImage', id);
-            return this.deferImage[id].promise;
-
-
+        }
+        return this.deferImage[id].promise;
     }
 
     clearUser(){

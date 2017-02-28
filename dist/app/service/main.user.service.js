@@ -51,9 +51,10 @@ let UserService = class UserService {
         this.deferImage[data.id].resolve(data.image);
     }
     getUserImageById(id) {
-        if (!this.deferImage[id])
+        if (!this.deferImage[id]) {
             this.deferImage[id] = new deferred_1.Deferred();
-        this.socket.$emit('getUserImage', id);
+            this.socket.$emit('getUserImage', id);
+        }
         return this.deferImage[id].promise;
     }
     clearUser() {
