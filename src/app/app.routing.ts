@@ -66,7 +66,7 @@ const  appRouters: Routes = [
                     {
                         path: 'journal',
                         component: JournalComponent,
-                        canActivate:[UserService],
+                        //canActivate:[UserService],
                         resolve:  {
                             L : LeafletResolver
                         },

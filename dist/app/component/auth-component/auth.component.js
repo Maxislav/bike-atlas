@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 10.10.16.
  */
-const core_1 = require('@angular/core');
+const core_1 = require("@angular/core");
 const mercator_service_1 = require("../../service/mercator.service");
 const position_size_service_1 = require("../../service/position-size.service");
 const info_position_component_1 = require("../info-position/info-position-component");
@@ -32,8 +32,8 @@ AuthComponent = __decorate([
         styleUrls: [
             'auth.component.css',
         ]
-    }), 
-    __metadata('design:paramtypes', [auth_service_1.AuthService])
+    }),
+    __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthComponent);
 exports.AuthComponent = AuthComponent;
 //# sourceMappingURL=auth.component.js.map

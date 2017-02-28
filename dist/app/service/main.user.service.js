@@ -12,6 +12,7 @@ const core_1 = require("@angular/core");
 const socket_oi_service_1 = require("./socket.oi.service");
 const toast_component_1 = require("../component/toast/toast.component");
 const router_1 = require("@angular/router");
+const deferred_1 = require("../util/deferred");
 let UserService = class UserService {
     constructor(io, toast, router) {
         this.io = io;
@@ -19,6 +20,7 @@ let UserService = class UserService {
         this.router = router;
         this._friends = [];
         this.images = {};
+        this.deferImage = {};
         this.socket = io.socket;
         this._user = {
             name: null,
@@ -31,6 +33,7 @@ let UserService = class UserService {
             image: null,
             devices: []
         };
+        this.socket.on('getUserImage', this.onUserImage.bind(this));
     }
     canActivate(route, state) {
         console.log(route, state);
@@ -42,6 +45,16 @@ let UserService = class UserService {
             this.router.navigate(['/auth/map']);
         }
         return !!this.user.id;
+    }
+    onUserImage(data) {
+        this.images[data.id] = data.image;
+        this.deferImage[data.id].resolve(data.image);
+    }
+    getUserImageById(id) {
+        if (!this.deferImage[id])
+            this.deferImage[id] = new deferred_1.Deferred();
+        this.socket.$emit('getUserImage', id);
+        return this.deferImage[id].promise;
     }
     clearUser() {
         for (let opt in this._user) {
@@ -70,18 +83,6 @@ let UserService = class UserService {
         this._other.devices.push(device);
         return device;
     }
-    getUserImageById(id) {
-        if (this.images[id]) {
-            return Promise.resolve(this.images[id]);
-        }
-        else {
-            return this.socket.$emit('getUserImage', id)
-                .then(data => {
-                this.images[data.id] = data.image;
-                return data.image;
-            });
-        }
-    }
     get other() {
         return this._other;
     }
@@ -109,8 +110,8 @@ let UserService = class UserService {
     }
 };
 UserService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [socket_oi_service_1.Io, toast_component_1.ToastService, router_1.Router])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [socket_oi_service_1.Io, toast_component_1.ToastService, router_1.Router])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=main.user.service.js.map

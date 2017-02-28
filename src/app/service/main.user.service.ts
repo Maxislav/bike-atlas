@@ -5,6 +5,8 @@ import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot} from "@angular
 import {Io} from "./socket.oi.service";
 import {ToastService} from "../component/toast/toast.component";
 import {Router} from "@angular/router";
+import {Deferred} from "../util/deferred";
+
 
 
 export interface User{
@@ -37,6 +39,7 @@ export class UserService implements CanActivate{
     private _other: User;
     private socket: any;
     private images: {[userId:number]: String} ={};
+    private deferImage: {[userId:number]: Deferred} = {};
     constructor(private io: Io, private toast:ToastService, private router: Router){
         this.socket = io.socket;
         this._user = {
@@ -50,6 +53,22 @@ export class UserService implements CanActivate{
             image: null,
             devices: []
         };
+        this.socket.on('getUserImage', this.onUserImage.bind(this));
+    }
+
+    onUserImage(data){
+        this.images[data.id] = data.image;
+        this.deferImage[data.id].resolve(data.image)
+
+    }
+    getUserImageById(id: number) {
+
+            if(!this.deferImage[id] )
+                 this.deferImage[id] = new Deferred();
+            this.socket.$emit('getUserImage', id);
+            return this.deferImage[id].promise;
+
+
     }
 
     clearUser(){
@@ -81,18 +100,7 @@ export class UserService implements CanActivate{
         return device
     }
 
-    getUserImageById(id: number) {
-        if(this.images[id]){
-            return Promise.resolve(this.images[id])
-        }else{
-            return this.socket.$emit('getUserImage', id)
-                .then(data=>{
-                    this.images[data.id] = data.image;
-                    return data.image;
-                })
-        }
 
-    }
 
     get other():User {
         return this._other;
