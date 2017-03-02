@@ -45,8 +45,8 @@ let TimerService = class TimerService {
     }
 };
 TimerService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], TimerService);
 exports.TimerService = TimerService;
 ;

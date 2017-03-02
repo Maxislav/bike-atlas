@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const core_1 = require("@angular/core");
 const router_1 = require("@angular/router");
 const app_component_1 = require("../../app.component");
-const common_1 = require("@angular/common");
+const common_1 = require('@angular/common');
 const private_area_service_1 = require("../../service/private.area.service");
 const main_user_service_1 = require("../../service/main.user.service");
 const distance_1 = require("../../util/distance");
@@ -140,12 +140,8 @@ PrivateArea = __decorate([
         moduleId: module.id,
         templateUrl: './private-area.html',
         styleUrls: ['./private-area.css']
-    }),
-    __metadata("design:paramtypes", [app_component_1.NavigationHistory,
-        common_1.Location,
-        router_1.Router,
-        main_user_service_1.UserService,
-        private_area_service_1.PrivateAreaService])
+    }), 
+    __metadata('design:paramtypes', [app_component_1.NavigationHistory, common_1.Location, router_1.Router, main_user_service_1.UserService, private_area_service_1.PrivateAreaService])
 ], PrivateArea);
 exports.PrivateArea = PrivateArea;
 //# sourceMappingURL=private-area.js.map

@@ -47,6 +47,7 @@ table td.button.menu {
 }
 table td.button.enter {
   width: 60px;
+  white-space: nowrap;
 }
 table td .satellite {
   background: url("src/img/ico-router.png") no-repeat center;
