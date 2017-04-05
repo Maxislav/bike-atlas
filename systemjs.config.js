@@ -65,7 +65,7 @@
   var config = {
     map: map,
     packages: packages,
-      baseURL: 'http://178.62.44.54:8080',
+      baseURL: 'http://178.62.44.54:8080/bike-atlas',
     meta: {
         '*.css': { loader: 'css' }
     }
