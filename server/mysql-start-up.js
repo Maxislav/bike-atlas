@@ -181,7 +181,7 @@ function createTable() {
             '`user_id` INT NOT NULL UNIQUE, ' +
             '`lng` FLOAT(10,8) NOT NULL, ' +
             '`lat` FLOAT(10,8) NOT NULL  , ' +
-            '`radius` INT NOT NULL, ' +
+            '`radius` FLOAT(10,8) NOT NULL, ' +
             'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
         connection.query(query, (err) => {
             if (err) {
