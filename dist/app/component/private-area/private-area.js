@@ -102,7 +102,6 @@ let PrivateArea = class PrivateArea {
     }
     onSave() {
         if (this.myArea.layerId) {
-            console.log(this.myArea);
             this.areaService.onSave(this.myArea)
                 .then(d => {
                 if (d) {
