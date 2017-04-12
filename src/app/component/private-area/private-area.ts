@@ -95,7 +95,6 @@ export class PrivateArea{
                 this.map.on('mousemove', move);
                 this.clickCount++;
             }else {
-                console.log('dsd');
                 this.map.off('mousemove', move);
                 this.clickCount = 1;
                 this.onFinish = ()=>{
@@ -129,6 +128,7 @@ export class PrivateArea{
 
     onSave(){
         if(this.myArea.layerId){
+            console.log(this.myArea)
             this.areaService.onSave(this.myArea)
                 .then(d=>{
                     if(d){
