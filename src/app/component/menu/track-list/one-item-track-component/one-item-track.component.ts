@@ -7,7 +7,7 @@ import {Util} from "../../../../service/util";
 import {ToastService} from "../../../toast/toast.component";
 import {StravaService} from "../../../../service/strava.service";
 import {Router} from "@angular/router";
-import * as R from '@ramda/ramda.min.js';
+import * as R from "@ramda/ramda.min.js";
 declare const module: any;
 @Component({
     moduleId: module.id,
@@ -20,6 +20,7 @@ export class OneItemTrackComponent implements OnInit{
     @Input() track: Track;
     private util: Util;
     stop: Function;
+    private map: any;
     private maxSpeed: number;
     private isAuthStrava: boolean
     constructor(  private trackService:TrackService,
@@ -36,7 +37,16 @@ export class OneItemTrackComponent implements OnInit{
         const arrSpeed = R.pluck('speed')(this.track.points);
         this.maxSpeed = Math.max.apply(null,arrSpeed)
 
+        this.mapService.onLoad.then(map=>{
+            this.map = map;
+            this.mapEventInit()
+        })
+    }
 
+    mapEventInit(){
+        this.map.on('mousedown', ()=>{
+            console.log('dsds')
+        })
     }
 
     hideTrack(){
@@ -246,6 +256,10 @@ export class OneItemTrackComponent implements OnInit{
     stravaExport(){
         this.stravaService.addToExport(this.track);
         this.router.navigate(['/auth/map/strava-invite']);
+    }
+
+    ngOnDestroy(){
+        console.log('destroy')
     }
 
 }

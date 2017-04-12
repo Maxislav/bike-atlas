@@ -19,7 +19,7 @@ export class MapService {
     public foo:Function;
     public pitch:number;
     public bearing:number;
-    private _onLoad: Promise<_map>;
+    private _onLoad: Promise<any>;
 
     private _mapboxgl: any;
     private _resolve: Function
@@ -100,7 +100,7 @@ export class MapService {
 
     }
 
-    get onLoad(): Promise<_map> {
+    get onLoad(): Promise<any> {
         return this._onLoad;
     }
     get mapboxgl(): any {
