@@ -164,8 +164,12 @@ StravaComponent = __decorate([
         moduleId: module.id,
         templateUrl: "./strava-component.html",
         styleUrls: ['./strava-component.css'],
-    }), 
-    __metadata('design:paramtypes', [router_1.Router, socket_oi_service_1.Io, main_user_service_1.UserService, strava_service_1.StravaService, toast_component_1.ToastService])
+    }),
+    __metadata("design:paramtypes", [router_1.Router,
+        socket_oi_service_1.Io,
+        main_user_service_1.UserService,
+        strava_service_1.StravaService,
+        toast_component_1.ToastService])
 ], StravaComponent);
 exports.StravaComponent = StravaComponent;
 //# sourceMappingURL=strava-component.js.map

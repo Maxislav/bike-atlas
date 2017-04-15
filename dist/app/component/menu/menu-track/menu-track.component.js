@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 ///<reference path="../../../../../node_modules/@angular/compiler/src/ml_parser/ast.d.ts"/>
-const core_1 = require('@angular/core');
+const core_1 = require("@angular/core");
 const menu_service_1 = require("app/service/menu.service");
 const socket_oi_service_1 = require("app/service/socket.oi.service");
 const track_service_1 = require("app/service/track.service");
@@ -53,7 +53,7 @@ let MenuTrackComponent = class MenuTrackComponent {
                 this.loadFile($event);
                 break;
             case 'import':
-                this.importFile($event);
+                this.importFromGoogleKml($event);
                 break;
             case 'journal':
                 this.router.navigate(['/auth/map/journal']);
@@ -90,6 +90,32 @@ let MenuTrackComponent = class MenuTrackComponent {
             var file = elFile.files[0];
             var stream = ss.createStream();
             ss(this.socket).emit('file', stream, { size: file.size });
+            ss.createBlobReadStream(file).pipe(stream);
+        }
+    }
+    importFromGoogleKml(e) {
+        this.clickLoad++;
+        const elFile = e.target.parentElement.getElementsByTagName('input')[1];
+        elFile.addEventListener('change', () => {
+            goStream.call(this);
+        });
+        if (this.clickLoad == 2) {
+            goStream.call(this);
+        }
+        elFile.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        elFile.click();
+        function goStream() {
+            this.ms.menuOpen = false;
+            this.clickLoad = 0;
+            let FReader = new FileReader();
+            FReader.onload = function (e) {
+                console.log(e);
+            };
+            var file = elFile.files[0];
+            var stream = ss.createStream();
+            ss(this.socket).emit('importFromGoogleKml', stream, { size: file.size });
             ss.createBlobReadStream(file).pipe(stream);
         }
     }
@@ -148,8 +174,8 @@ MenuTrackComponent = __decorate([
         selector: 'menu-track',
         templateUrl: './menu-track.html',
         styleUrls: ['./menu-track.css'],
-    }), 
-    __metadata('design:paramtypes', [(typeof (_a = typeof menu_service_1.MenuService !== 'undefined' && menu_service_1.MenuService) === 'function' && _a) || Object, (typeof (_b = typeof socket_oi_service_1.Io !== 'undefined' && socket_oi_service_1.Io) === 'function' && _b) || Object, (typeof (_c = typeof track_service_1.TrackService !== 'undefined' && track_service_1.TrackService) === 'function' && _c) || Object, router_1.Router])
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof menu_service_1.MenuService !== "undefined" && menu_service_1.MenuService) === "function" && _a || Object, typeof (_b = typeof socket_oi_service_1.Io !== "undefined" && socket_oi_service_1.Io) === "function" && _b || Object, typeof (_c = typeof track_service_1.TrackService !== "undefined" && track_service_1.TrackService) === "function" && _c || Object, router_1.Router])
 ], MenuTrackComponent);
 exports.MenuTrackComponent = MenuTrackComponent;
 var _a, _b, _c;

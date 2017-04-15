@@ -74,7 +74,7 @@ export class MenuTrackComponent {
                 this.loadFile($event);
                 break;
             case 'import':
-                this.importFile($event);
+                this.importFromGoogleKml($event);
                 break;
             case 'journal':
                 this.router.navigate(['/auth/map/journal']);
@@ -116,6 +116,36 @@ export class MenuTrackComponent {
             var file = elFile.files[0];
             var stream = ss.createStream();
             ss(this.socket).emit('file', stream, {size: file.size});
+            ss.createBlobReadStream(file).pipe(stream);
+        }
+    }
+
+    importFromGoogleKml(e: Event){
+        this.clickLoad++;
+        const elFile:myElement = e.target.parentElement.getElementsByTagName('input')[1];
+        elFile.addEventListener('change', ()=> {
+            goStream.call(this)
+        });
+
+        if (this.clickLoad == 2) {
+            goStream.call(this)
+        }
+
+        elFile.addEventListener('click', (e)=> {
+            e.stopPropagation()
+        });
+        elFile.click();
+
+        function goStream() {
+            this.ms.menuOpen = false;
+            this.clickLoad = 0;
+            let FReader = new FileReader();
+            FReader.onload = function (e) {
+                console.log(e)
+            };
+            var file = elFile.files[0];
+            var stream = ss.createStream();
+            ss(this.socket).emit('importFromGoogleKml', stream, {size: file.size});
             ss.createBlobReadStream(file).pipe(stream);
         }
     }

@@ -19,6 +19,7 @@ const OnChat = require('./socket-data/on-chat')
 const Logger = require('./logger');
 const Util = require('./socket-data/util')
 const OnStrava = require('./socket-data/on-strava');
+const OnImportKml = require('./socket-data/on-impork-kml');
 let connection, server, app;
 let resolveExport;
 let promiseExport = new Promise((resolve, reject)=>{
@@ -50,6 +51,8 @@ class SocketData{
             const trackFromTo = new TrackFromTo(socket, util);
             const onChat = new OnChat(socket, util, chat);
             const onStrava = new OnStrava(socket, util);
+            const onImportKml = new OnImportKml(socket, util);
+
             socket.on('disconnect',()=>{
                 logger.onDisconnect(socket.id);
                 chat.onDisconnect(socket.id);
@@ -65,6 +68,11 @@ class SocketData{
                     socket.emit('file', Buffer.concat(data));
                 });
             });
+
+
+
+
+
 
 
         });

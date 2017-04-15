@@ -35,11 +35,12 @@ let OneItemTrackComponent = class OneItemTrackComponent {
             this.map = map;
             this.mapEventInit();
         });
+        this.mouseMapDown = (e) => {
+            console.log('mouse down');
+        };
     }
     mapEventInit() {
-        this.map.on('mousedown', () => {
-            console.log('dsds');
-        });
+        this.map.on('mousedown', this.mouseMapDown);
     }
     hideTrack() {
         this.stop && this.stop();
@@ -226,12 +227,12 @@ let OneItemTrackComponent = class OneItemTrackComponent {
         this.router.navigate(['/auth/map/strava-invite']);
     }
     ngOnDestroy() {
-        console.log('destroy');
+        this.map.off('mousedown', this.mouseMapDown);
     }
 };
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Object)
+    core_1.Input(),
+    __metadata("design:type", Object)
 ], OneItemTrackComponent.prototype, "track", void 0);
 OneItemTrackComponent = __decorate([
     core_1.Component({
@@ -239,8 +240,12 @@ OneItemTrackComponent = __decorate([
         selector: 'one-item-track-component',
         templateUrl: "./one-item-track.component.html",
         styleUrls: ['./one-item-track.component.css']
-    }), 
-    __metadata('design:paramtypes', [track_service_1.TrackService, map_service_1.MapService, toast_component_1.ToastService, router_1.Router, strava_service_1.StravaService])
+    }),
+    __metadata("design:paramtypes", [track_service_1.TrackService,
+        map_service_1.MapService,
+        toast_component_1.ToastService,
+        router_1.Router,
+        strava_service_1.StravaService])
 ], OneItemTrackComponent);
 exports.OneItemTrackComponent = OneItemTrackComponent;
 //# sourceMappingURL=one-item-track.component.js.map

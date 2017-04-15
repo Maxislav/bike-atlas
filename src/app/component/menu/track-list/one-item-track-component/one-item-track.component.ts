@@ -22,7 +22,9 @@ export class OneItemTrackComponent implements OnInit{
     stop: Function;
     private map: any;
     private maxSpeed: number;
-    private isAuthStrava: boolean
+    private isAuthStrava: boolean;
+
+    private mouseMapDown: Function;
     constructor(  private trackService:TrackService,
                   private mapService: MapService,
                   private toast:ToastService,
@@ -40,13 +42,18 @@ export class OneItemTrackComponent implements OnInit{
         this.mapService.onLoad.then(map=>{
             this.map = map;
             this.mapEventInit()
-        })
+        });
+
+        this.mouseMapDown = (e: Event)=>{
+            console.log('mouse down')
+        }
+
+
     }
 
+
     mapEventInit(){
-        this.map.on('mousedown', ()=>{
-            console.log('dsds')
-        })
+        this.map.on('mousedown',this.mouseMapDown )
     }
 
     hideTrack(){
@@ -259,7 +266,7 @@ export class OneItemTrackComponent implements OnInit{
     }
 
     ngOnDestroy(){
-        console.log('destroy')
+        this.map.off('mousedown',this.mouseMapDown )
     }
 
 }
