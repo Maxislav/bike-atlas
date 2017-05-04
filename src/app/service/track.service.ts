@@ -192,6 +192,12 @@ export class TrackService implements Resolve<any> {
         return tr
     }
 
+    delPoints(trackId: string, points: Array<Point>){
+        console.log(trackId, points)
+    }
+
+
+
 
 
     private static getData(points){
@@ -351,7 +357,7 @@ export class TrackService implements Resolve<any> {
         div.innerHTML = content;
         btn.innerHTML = 'Удалить';
         div.appendChild(btn);
-        const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
+        const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: true})
             .setLngLat(new mapboxgl.LngLat(point.lng, point.lat))
             .setDOMContent(div)
             .addTo(map);

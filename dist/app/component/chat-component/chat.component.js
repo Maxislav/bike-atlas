@@ -22,8 +22,8 @@ ChatComponent = __decorate([
         templateUrl: './chat.component.html',
         moduleId: module.id,
         styleUrls: ['./chat.component.css']
-    }),
-    __metadata("design:paramtypes", [chat_service_1.ChatService])
+    }), 
+    __metadata('design:paramtypes', [chat_service_1.ChatService])
 ], ChatComponent);
 exports.ChatComponent = ChatComponent;
 //# sourceMappingURL=chat.component.js.map

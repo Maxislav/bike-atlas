@@ -2,7 +2,8 @@ import {Injectable} from "@angular/core";
 import {MapService} from "./map.service";
 import {Io} from "./socket.oi.service";
 import {ToastService} from "../component/toast/toast.component";
-
+import {MapArea as Area} from "../interface/MapArea";
+/*
 export  interface Area{
     id?: number;
     lng: number;
@@ -11,7 +12,7 @@ export  interface Area{
     radius: number;
     update: Function;
     remove: Function;
-}
+}*/
 
 @Injectable()
 export class PrivateAreaService{

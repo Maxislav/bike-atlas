@@ -8,6 +8,8 @@ import {ToastService} from "../../../toast/toast.component";
 import {StravaService} from "../../../../service/strava.service";
 import {Router} from "@angular/router";
 import * as R from "@ramda/ramda.min.js";
+import {MapArea as Area} from "../../../../interface/MapArea";
+import {distance} from "../../../../util/distance"
 declare const module: any;
 @Component({
     moduleId: module.id,
@@ -23,8 +25,12 @@ export class OneItemTrackComponent implements OnInit{
     private map: any;
     private maxSpeed: number;
     private isAuthStrava: boolean;
+    private static layerIds: Array<string> = [];
+    private resentPointFilter: boolean  = false;
 
     private mouseMapDown: Function;
+    private mouseMapUp: Function;
+    private mouseMove: Function;
     constructor(  private trackService:TrackService,
                   private mapService: MapService,
                   private toast:ToastService,
@@ -43,21 +49,171 @@ export class OneItemTrackComponent implements OnInit{
             this.map = map;
             this.mapEventInit()
         });
+        class LngLat extends Array{
+            lng:number ;
+            lat:number;
+            constructor(){
+                super()
+            }
+            setValue(lngLat: {lng: number, lat: number}): LngLat{
+                this.lat = lngLat.lat;
+                this.lng = lngLat.lng;
+                this[0] = this.lng
+                this[1] = this.lat
+                return this
+            }
+        };
+
+
+        const center = new LngLat();
+
+        let area, pointsForDel;
+
+        this.mouseMove = (e)=>{
+            if(e.originalEvent.ctrlKey){
+                e.originalEvent.stopPropagation();
+                const dist = distance([
+                    center.lng,
+                    center.lat,
+                ],[
+                    e.lngLat.lng,
+                    e.lngLat.lat
+                ]);
+                if(!area){
+                    area =  this.createArea({
+                        radius: dist,
+                        lng: center.lng,
+                        lat: center.lat
+                    })
+                }else {
+                    area.update(center, dist)
+                }
+
+                pointsForDel = this.track.points.filter(p=>{
+                    return distance([
+                        center.lng,
+                        center.lat,
+                    ],[
+                        p.lng,
+                        p.lat
+                    ])<dist
+                })
+
+                //console.log(pointsForDel)
+
+            }
+        };
 
         this.mouseMapDown = (e: Event)=>{
-            console.log('mouse down')
+            center.setValue(e.lngLat);
+            this.map.on('mousemove', this.mouseMove)
+        };
+
+        this.mouseMapUp = ()=>{
+           this.map.off('mousemove', this.mouseMove)
+            if(area) {
+               area.remove()
+               area = null
+                if(pointsForDel.length){
+                    this.trackService.delPoints(this.track.id, pointsForDel)
+                }
+            }
         }
-
-
     }
 
 
+    createArea(area: Area): Area{
+        const layerId = OneItemTrackComponent.getNewLayerId();
+        const radius = area.radius || 0.5;
+        const map = this.map;
+
+        this.map.addSource(layerId,
+            {
+                type: "geojson",
+                data:  createGeoJSONCircle([area.lng, area.lat], radius)
+            });
+
+        this.map.addLayer({
+            "id": layerId,
+            "type": "fill",
+            "source": layerId,
+            "layout": {},
+            "paint": {
+                "fill-color": "red",
+                "fill-opacity": 0.3
+            }
+        });
+
+        function createGeoJSONCircle(center, radiusInKm, points?:number) {
+            if(!points) points = 64;
+
+            const coords = {
+                latitude: center[1],
+                longitude: center[0]
+            };
+
+            const km = radiusInKm;
+
+            const ret = [];
+            let distanceX = km/(111.320*Math.cos(coords.latitude*Math.PI/180));
+            let distanceY = km/110.574;
+
+            let theta, x, y;
+            for(let i=0; i<points; i++) {
+                theta = (i/points)*(2*Math.PI);
+                x = distanceX*Math.cos(theta);
+                y = distanceY*Math.sin(theta);
+                ret.push([coords.longitude+x, coords.latitude+y]);
+            }
+            ret.push(ret[0]);
+
+            return  {
+                "type": "FeatureCollection",
+                "features": [{
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [ret]
+                    }
+                }]
+            };
+        };
+
+
+        return {
+            id: area.id || null,
+            layerId: layerId,
+            lng: area.lng,
+            lat: area.lat,
+            radius:radius,
+            update: function ([lng, lat], r?: number) {
+                this.lng = lng;
+                this.lat = lat;
+                map.getSource(layerId)
+                    .setData(createGeoJSONCircle([lng, lat], r))
+            },
+            remove: function () {
+                map.removeLayer(layerId);
+                map.removeSource(layerId)
+            }
+        }
+    }
+
+    onResentFilter(isOn: boolean){
+        console.log(isOn, this.track)
+
+        const points = this.track.points.filter((p, i)=>{
+
+        })
+    }
+
     mapEventInit(){
-        this.map.on('mousedown',this.mouseMapDown )
+        this.map.on('mousedown',this.mouseMapDown );
+        this.map.on('mouseup',this.mouseMapUp)
     }
 
     hideTrack(){
-        this.stop &&  this.stop()
+        this.stop &&  this.stop();
         this.track.hide();
     }
     saveChange(){
@@ -266,7 +422,24 @@ export class OneItemTrackComponent implements OnInit{
     }
 
     ngOnDestroy(){
-        this.map.off('mousedown',this.mouseMapDown )
+        this.map.off('mousedown',this.mouseMapDown );
+        this.map.off('mouseup', this.mouseMapUp);
+        this.map.off('mousemove', this.mouseMove);
+    }
+
+
+
+    static getNewLayerId(): string {
+        const min=0, max=10000;
+        let rand = (min + Math.random() * (max - min));
+        const  newId =('area-track'+ Math.round(rand)).toString();
+        if (-1<this.layerIds.indexOf(newId)) {
+            return this.getNewLayerId()
+        } else {
+            this.layerIds.push(newId);
+            return newId;
+        }
+
     }
 
 }

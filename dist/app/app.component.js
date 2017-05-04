@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const core_1 = require("@angular/core");
+const core_1 = require('@angular/core');
 const router_1 = require("@angular/router");
 let NavigationHistory = class NavigationHistory {
     constructor() {
@@ -19,8 +19,8 @@ let NavigationHistory = class NavigationHistory {
     }
 };
 NavigationHistory = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [])
 ], NavigationHistory);
 exports.NavigationHistory = NavigationHistory;
 let AppComponent = class AppComponent {
@@ -44,8 +44,8 @@ AppComponent = __decorate([
         styleUrls: [
             'css/app.component.css',
         ]
-    }),
-    __metadata("design:paramtypes", [router_1.Router, NavigationHistory])
+    }), 
+    __metadata('design:paramtypes', [router_1.Router, NavigationHistory])
 ], AppComponent);
 exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map

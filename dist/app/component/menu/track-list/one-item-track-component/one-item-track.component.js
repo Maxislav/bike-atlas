@@ -17,13 +17,15 @@ const toast_component_1 = require("../../../toast/toast.component");
 const strava_service_1 = require("../../../../service/strava.service");
 const router_1 = require("@angular/router");
 const R = require("@ramda/ramda.min.js");
-let OneItemTrackComponent = class OneItemTrackComponent {
+const distance_1 = require("../../../../util/distance");
+let OneItemTrackComponent_1 = class OneItemTrackComponent {
     constructor(trackService, mapService, toast, router, stravaService) {
         this.trackService = trackService;
         this.mapService = mapService;
         this.toast = toast;
         this.router = router;
         this.stravaService = stravaService;
+        this.resentPointFilter = false;
         this.util = new util_1.Util();
         //this.isAuthStrava = !!stravaService.athlete;
     }
@@ -35,12 +37,142 @@ let OneItemTrackComponent = class OneItemTrackComponent {
             this.map = map;
             this.mapEventInit();
         });
-        this.mouseMapDown = (e) => {
-            console.log('mouse down');
+        class LngLat extends Array {
+            constructor() {
+                super();
+            }
+            setValue(lngLat) {
+                this.lat = lngLat.lat;
+                this.lng = lngLat.lng;
+                this[0] = this.lng;
+                this[1] = this.lat;
+                return this;
+            }
+        }
+        ;
+        const center = new LngLat();
+        let area, pointsForDel;
+        this.mouseMove = (e) => {
+            if (e.originalEvent.ctrlKey) {
+                e.originalEvent.stopPropagation();
+                const dist = distance_1.distance([
+                    center.lng,
+                    center.lat,
+                ], [
+                    e.lngLat.lng,
+                    e.lngLat.lat
+                ]);
+                if (!area) {
+                    area = this.createArea({
+                        radius: dist,
+                        lng: center.lng,
+                        lat: center.lat
+                    });
+                }
+                else {
+                    area.update(center, dist);
+                }
+                pointsForDel = this.track.points.filter(p => {
+                    return distance_1.distance([
+                        center.lng,
+                        center.lat,
+                    ], [
+                        p.lng,
+                        p.lat
+                    ]) < dist;
+                });
+            }
         };
+        this.mouseMapDown = (e) => {
+            center.setValue(e.lngLat);
+            this.map.on('mousemove', this.mouseMove);
+        };
+        this.mouseMapUp = () => {
+            this.map.off('mousemove', this.mouseMove);
+            if (area) {
+                area.remove();
+                area = null;
+                if (pointsForDel.length) {
+                    this.trackService.delPoints(this.track.id, pointsForDel);
+                }
+            }
+        };
+    }
+    createArea(area) {
+        const layerId = OneItemTrackComponent_1.getNewLayerId();
+        const radius = area.radius || 0.5;
+        const map = this.map;
+        this.map.addSource(layerId, {
+            type: "geojson",
+            data: createGeoJSONCircle([area.lng, area.lat], radius)
+        });
+        this.map.addLayer({
+            "id": layerId,
+            "type": "fill",
+            "source": layerId,
+            "layout": {},
+            "paint": {
+                "fill-color": "red",
+                "fill-opacity": 0.3
+            }
+        });
+        function createGeoJSONCircle(center, radiusInKm, points) {
+            if (!points)
+                points = 64;
+            const coords = {
+                latitude: center[1],
+                longitude: center[0]
+            };
+            const km = radiusInKm;
+            const ret = [];
+            let distanceX = km / (111.320 * Math.cos(coords.latitude * Math.PI / 180));
+            let distanceY = km / 110.574;
+            let theta, x, y;
+            for (let i = 0; i < points; i++) {
+                theta = (i / points) * (2 * Math.PI);
+                x = distanceX * Math.cos(theta);
+                y = distanceY * Math.sin(theta);
+                ret.push([coords.longitude + x, coords.latitude + y]);
+            }
+            ret.push(ret[0]);
+            return {
+                "type": "FeatureCollection",
+                "features": [{
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Polygon",
+                            "coordinates": [ret]
+                        }
+                    }]
+            };
+        }
+        ;
+        return {
+            id: area.id || null,
+            layerId: layerId,
+            lng: area.lng,
+            lat: area.lat,
+            radius: radius,
+            update: function ([lng, lat], r) {
+                this.lng = lng;
+                this.lat = lat;
+                map.getSource(layerId)
+                    .setData(createGeoJSONCircle([lng, lat], r));
+            },
+            remove: function () {
+                map.removeLayer(layerId);
+                map.removeSource(layerId);
+            }
+        };
+    }
+    onResentFilter(isOn) {
+        console.log(isOn, this.track);
+        const points = this.track.points.filter((p, i) => {
+        });
     }
     mapEventInit() {
         this.map.on('mousedown', this.mouseMapDown);
+        this.map.on('mouseup', this.mouseMapUp);
     }
     hideTrack() {
         this.stop && this.stop();
@@ -228,24 +360,36 @@ let OneItemTrackComponent = class OneItemTrackComponent {
     }
     ngOnDestroy() {
         this.map.off('mousedown', this.mouseMapDown);
+        this.map.off('mouseup', this.mouseMapUp);
+        this.map.off('mousemove', this.mouseMove);
+    }
+    static getNewLayerId() {
+        const min = 0, max = 10000;
+        let rand = (min + Math.random() * (max - min));
+        const newId = ('area-track' + Math.round(rand)).toString();
+        if (-1 < this.layerIds.indexOf(newId)) {
+            return this.getNewLayerId();
+        }
+        else {
+            this.layerIds.push(newId);
+            return newId;
+        }
     }
 };
+let OneItemTrackComponent = OneItemTrackComponent_1;
+OneItemTrackComponent.layerIds = [];
 __decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
+    core_1.Input(), 
+    __metadata('design:type', Object)
 ], OneItemTrackComponent.prototype, "track", void 0);
-OneItemTrackComponent = __decorate([
+OneItemTrackComponent = OneItemTrackComponent_1 = __decorate([
     core_1.Component({
         moduleId: module.id,
         selector: 'one-item-track-component',
         templateUrl: "./one-item-track.component.html",
         styleUrls: ['./one-item-track.component.css']
-    }),
-    __metadata("design:paramtypes", [track_service_1.TrackService,
-        map_service_1.MapService,
-        toast_component_1.ToastService,
-        router_1.Router,
-        strava_service_1.StravaService])
+    }), 
+    __metadata('design:paramtypes', [track_service_1.TrackService, map_service_1.MapService, toast_component_1.ToastService, router_1.Router, strava_service_1.StravaService])
 ], OneItemTrackComponent);
 exports.OneItemTrackComponent = OneItemTrackComponent;
 //# sourceMappingURL=one-item-track.component.js.map

@@ -12,6 +12,16 @@ const core_1 = require("@angular/core");
 const map_service_1 = require("./map.service");
 const socket_oi_service_1 = require("./socket.oi.service");
 const toast_component_1 = require("../component/toast/toast.component");
+/*
+export  interface Area{
+    id?: number;
+    lng: number;
+    lat: number;
+    layerId: string,
+    radius: number;
+    update: Function;
+    remove: Function;
+}*/
 let PrivateAreaService = class PrivateAreaService {
     constructor(mapService, io, toast) {
         this.mapService = mapService;
@@ -163,10 +173,8 @@ let PrivateAreaService = class PrivateAreaService {
     }
 };
 PrivateAreaService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [map_service_1.MapService,
-        socket_oi_service_1.Io,
-        toast_component_1.ToastService])
+    core_1.Injectable(), 
+    __metadata('design:paramtypes', [map_service_1.MapService, socket_oi_service_1.Io, toast_component_1.ToastService])
 ], PrivateAreaService);
 exports.PrivateAreaService = PrivateAreaService;
 //# sourceMappingURL=private.area.service.js.map
