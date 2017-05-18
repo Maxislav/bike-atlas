@@ -1,6 +1,18 @@
 const ProtoData = require('./proto-data');
 const R = require('ramda');
 
+const {distance}  = require('../distance');
+
+/**
+ * @class Points
+ */
+class Points extends Array{
+	constructor(...args){
+		super(...args)
+
+	}
+}
+
 class TrackFromTo extends ProtoData {
 	constructor(socket, util) {
 		super(socket, util);
@@ -55,7 +67,10 @@ class TrackFromTo extends ProtoData {
 				devices.forEach(/** @param {{device_key: String}} device */(device) => {
 					promises.push(this.util.getTrackFromTo(device.device_key, data.from, data.to)
 						.then(rows=> {
-							list.push({userId: device.user_id, name: device.name, points: rows});
+
+							const points = TrackFromTo._clearTrashPoints(new Points(...rows));
+
+							list.push({userId: device.user_id, name: device.name, points: points});
 							return rows
 						})
 					)
@@ -64,8 +79,6 @@ class TrackFromTo extends ProtoData {
 					.then(rows=> {
 						return list
 					})
-
-
 			})
 			.then(list=> {
 				this.socket.emit(eName, {
@@ -77,8 +90,9 @@ class TrackFromTo extends ProtoData {
 				console.error('Error trackFromTo ->', err)
 			})
 
-
 	}
+
+
 
 	delPoints(eName, points) {
 		this.getUserId()
@@ -156,6 +170,42 @@ class TrackFromTo extends ProtoData {
 			})
 
 	}
+
+	/**
+	 * @param {Points.<{}>} points
+	 * @param {number?} k
+	 * @private
+	 */
+	static _clearTrashPoints(points, k){
+		let i = k || 0 ;
+		const  point1 = points[i];
+		if(!point1 || k==points.length){
+			return points
+		}else if( 0.1<point1.speed){
+			i++;
+			return TrackFromTo._clearTrashPoints(points,i)
+		}else{
+			const arrForSum = [];
+			let i2 = i;
+			while (i2<points.length-1){
+				const point2 = points[i2+1];
+				if(distance([point1.lng, point1.lat],[point2.lng, point2.lat])<0.05){
+					if(!arrForSum.length) arrForSum.push(point1);
+					arrForSum.push(point2);
+				}
+				i2++
+			}
+			arrForSum.forEach(point=>{
+			 const indexForDel = points.indexOf(point);
+				points[indexForDel] = null
+			});
+			points = points.filter(it=>it);
+			i++;
+			return TrackFromTo._clearTrashPoints(points,i)
+		}
+
+	}
+
 	checkPointExist(){
 		
 	}
