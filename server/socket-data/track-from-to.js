@@ -4,7 +4,8 @@ const R = require('ramda');
 const {distance}  = require('../distance');
 
 /**
- * @class Points
+ * Class olo
+ * @extends Array
  */
 class Points extends Array{
 	constructor(...args){
@@ -172,7 +173,7 @@ class TrackFromTo extends ProtoData {
 	}
 
 	/**
-	 * @param {Points.<{}>} points
+	 * @param {Points} points
 	 * @param {number?} k
 	 * @private
 	 */
