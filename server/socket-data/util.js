@@ -171,7 +171,7 @@ class Util {
 	}
 
 	getLastDateTrack(keys) {
-		//'SELECT * FROM `device` WHERE `user_id` IN( '+ids+' )
+		//'SELECT * FROM `device` WHERE `user_id` IN( '+ids+' )1
 		return new Promise((resolve, reject) => {
 			this.connection.query('SELECT `date` FROM `logger` WHERE `device_key` IN(' + keys + ') ORDER BY date DESC LIMIT 1', [], function (err, rows) {
 				if (err) {
@@ -868,7 +868,7 @@ class Util {
 					return;
 				}
 				if(rows && rows.length){
-					resolve(rows)
+					resolve(rows[0])
 				}else{
 					resolve(false)
 				}
