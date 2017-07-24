@@ -5,6 +5,7 @@ const Stream = require('stream');
 const request = require('request');
 var querystring = require('querystring');
 const fs = require('fs');
+const path = require('path');
 
 class OnStrava extends ProtoData {
     constructor(socket, util) {
@@ -21,9 +22,7 @@ class OnStrava extends ProtoData {
 
 
     sendTrackToStrava(eName, d) {
-
-        const filePath = './temp-gpx/'+ this.util.getHash()+'.gpx';
-
+        const filePath =   path.normalize(__dirname+'/../../temp-gpx/'+ this.util.getHash()+'.gpx');
 
         const data = querystring.stringify({
             activity_type: 'ride',
