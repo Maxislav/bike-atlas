@@ -59,7 +59,8 @@ class OnStrava extends ProtoData {
                     resData += chunk;
                 });
                 res.on('error', (err) => {
-                    console.log(err)
+                    console.error(err)
+	                   fs.unlink(filePath)
                 });
                 res.on('end', () => {
                     fs.unlink(filePath)

@@ -56,6 +56,16 @@ import {StravaService} from "./service/strava.service";
 import {TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService} from "ng2-translate";
 import {Http, ConnectionBackend} from "@angular/http";
 
+import {Component, Injectable} from "@angular/core";
+@Component({
+    //noinspection TypeScriptUnresolvedVariable
+    template: '<div></div>',
+    //providers: [OneTrack]
+})
+export class JJ{
+
+}
+
 declare const System: any;
 
 export function createTranslateLoader(http: Http) {
@@ -78,6 +88,7 @@ export function createTranslateLoader(http: Http) {
      * Компоненты
      */
     declarations: [
+        JJ,
         StravaAuthComponent,
         StravaComponent,
         OneItemTrackComponent,

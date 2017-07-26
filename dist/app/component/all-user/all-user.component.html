@@ -15,12 +15,12 @@
       </td>
       <td>
         <div *ngIf="!isFriend(user)" class="invite">
-          <template [ngIf]="!isInviteActive(user)">
+          <ng-template [ngIf]="!isInviteActive(user)">
             <div (click)="sendInvite(user)">Отправть запрос</div>
-          </template>
-          <template [ngIf]="isInviteActive(user)">
+          </ng-template>
+          <ng-template [ngIf]="isInviteActive(user)">
             <div (click)="onCancelInvite(user)">Запрос отправлен (отменить)</div>
-          </template>
+          </ng-template>
         </div>
       </td>
     </tr>

@@ -63,6 +63,17 @@ const strava_auth_component_1 = require("./component/strava-component/strava-aut
 const strava_service_1 = require("./service/strava.service");
 const ng2_translate_1 = require("ng2-translate");
 const http_1 = require("@angular/http");
+const core_2 = require("@angular/core");
+let JJ = class JJ {
+};
+JJ = __decorate([
+    core_2.Component({
+        //noinspection TypeScriptUnresolvedVariable
+        template: '<div></div>',
+    }), 
+    __metadata('design:paramtypes', [])
+], JJ);
+exports.JJ = JJ;
 function createTranslateLoader(http) {
     return new ng2_translate_1.TranslateStaticLoader(http, System.baseURL + '/langs', '.json');
 }
@@ -98,6 +109,7 @@ AppModule = __decorate([
          * Компоненты
          */
         declarations: [
+            JJ,
             strava_auth_component_1.StravaAuthComponent,
             strava_component_1.StravaComponent,
             one_item_track_component_1.OneItemTrackComponent,

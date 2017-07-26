@@ -24,6 +24,7 @@ import {AllUserComponent} from "./component/all-user/all-user.component";
 import {StravaComponent} from "./component/strava-component/strava-component";
 import {StravaAuthComponent} from "./component/strava-component/strava-auth-component";
 import {UserService} from "./service/main.user.service";
+import {JJ} from "./app.module";
 
 const  appRouters: Routes = [
     {
@@ -40,15 +41,15 @@ const  appRouters: Routes = [
         },
         children:[
             {
-                path:''
+                path: 'dd',
+                redirectTo: 'map',
+                pathMatch: 'full'
+
             },
             {
                 path:'map',
                 component: MapComponent,
                 children: [
-                    {
-                        path: ''
-                    },
                     {
                         path:'registration',
                         component: RegistrationComponent
@@ -75,9 +76,6 @@ const  appRouters: Routes = [
                         path: 'friends',
                         component: FriendsComponent,
                         children: [
-                            {
-                                path:'',
-                            },
                             {
                                 path:'all',
                                 component: AllUserComponent

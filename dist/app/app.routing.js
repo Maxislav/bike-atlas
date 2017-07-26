@@ -29,15 +29,14 @@ const appRouters = [
         },
         children: [
             {
-                path: ''
+                path: 'dd',
+                redirectTo: 'map',
+                pathMatch: 'full'
             },
             {
                 path: 'map',
                 component: map_component_1.MapComponent,
                 children: [
-                    {
-                        path: ''
-                    },
                     {
                         path: 'registration',
                         component: registration_component_1.RegistrationComponent
@@ -64,9 +63,6 @@ const appRouters = [
                         path: 'friends',
                         component: friends_component_1.FriendsComponent,
                         children: [
-                            {
-                                path: '',
-                            },
                             {
                                 path: 'all',
                                 component: all_user_component_1.AllUserComponent

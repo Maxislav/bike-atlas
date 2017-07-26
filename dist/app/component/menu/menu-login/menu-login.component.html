@@ -19,7 +19,7 @@
     </div>
   </form>
   <div class="border-hidden"></div>
-  <template [ngIf]="user.name">
+  <ng-template [ngIf]="user.name">
     <ul>
       <li (click)="goToProfile()">
         <div>{{ 'PROFILE' | translate }}</div>
@@ -37,5 +37,5 @@
         <div (click)="onExit($event)">{{'ON_EXIT'| translate }}</div>
       </li>
     </ul>
-  </template>
+  </ng-template>
 </div>

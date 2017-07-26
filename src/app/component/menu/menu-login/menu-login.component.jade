@@ -13,7 +13,7 @@ div((click)="$event.stopPropagation();$event.preventDefault()" )
                 li
                     a((click)="goToReg()") {{'REGISTRATION' | translate}}
     .border-hidden
-    template([ngIf]="user.name")
+    ng-template([ngIf]="user.name")
         ul
             li((click)="goToProfile()")
                 div() {{ 'PROFILE' | translate }}
