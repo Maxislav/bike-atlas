@@ -11,7 +11,8 @@
     "rootDir": "./src",
     "outDir": "dist/",
     "typeRoots": [
-      "./node_modules/@types/index.d.ts"
+      "./node_modules/@types/index.d.ts",
+      "./node_modules/aes-js/index.js"
     ]
 
   },

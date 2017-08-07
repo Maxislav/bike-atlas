@@ -15,6 +15,7 @@ const socket_oi_service_1 = require("../../service/socket.oi.service");
 const strava_service_1 = require("../../service/strava.service");
 const toast_component_1 = require("../toast/toast.component");
 const main_user_service_1 = require("../../service/main.user.service");
+const aes_cript_1 = require('../../service/aes-cript');
 let StravaComponent = class StravaComponent {
     constructor(router, io, userService, stravaService, toast) {
         this.router = router;
@@ -34,16 +35,15 @@ let StravaComponent = class StravaComponent {
         };
         this.showHelp = false;
         this.docsFor = stravaService.docsFor;
-        /* if(!this.userService.user.id){
- 
-             this.toast.show({
-                 type: 'warning',
-                 //text: "Отправлен на обработку в Strava",
-                 translate: ""
-             });
-             return
-         }*/
-        //console.log(this.userService.user)
+        const aes1 = new aes_cript_1.Aes(16);
+        const aes2 = new aes_cript_1.Aes(16);
+        const myText = "Hello Crypt";
+        console.log(myText);
+        const encodeByte = aes1.encodeTextToByte(myText);
+        const encodeByte2 = aes2.encodeByteToByte(encodeByte);
+        const decodeByte1 = aes1.decodeByteToByte(encodeByte2);
+        const decodeText = aes2.decodeByteToText(decodeByte1);
+        console.log(decodeText);
         this.href = null;
         this.socket = io.socket;
         this.getStrava()
@@ -122,13 +122,25 @@ let StravaComponent = class StravaComponent {
     }
     goToStrava() {
         if (this.stravaClientId && this.stravaClientSecret) {
-            this.socket.$emit('onStrava', {
-                stravaClientId: this.stravaClientId,
-                stravaClientSecret: this.stravaClientSecret,
-                atlasToken: this.token
+            const aes = new aes_cript_1.Aes(16);
+            const byte = aes.encodeTextToByte(this.stravaClientSecret);
+            const byteArr = Array.from(byte);
+            console.log(byte, byteArr);
+            this.socket
+                .$emit('onStravaCrypt', {
+                n: 0,
+                arr: byteArr
             })
                 .then(d => {
-                console.log('goToStrava->', d);
+                const enc2 = new Uint8Array(d.arr);
+                return this.socket.$emit('onStravaCrypt', {
+                    n: 1,
+                    arr: Array.from(aes.decodeByteToByte(enc2)),
+                    stravaClientId: this.stravaClientId,
+                    atlasToken: this.token
+                });
+            })
+                .then(d => {
                 if (d.result == 'ok') {
                     window.location.href = this.stravaHref.toString();
                 }

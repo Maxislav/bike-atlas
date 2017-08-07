@@ -24,18 +24,20 @@
     '@lib':                        'lib', // 'dist',
     '@ramda':                      'node_modules/ramda/dist', // 'dist',
     '@angular':                   'node_modules/@angular',
-    '@ngx-translate':              'node_modules/@ngx-translate',
+    '@ngx-translate':             'node_modules/@ngx-translate',
     'ng2-translate':              'node_modules/ng2-translate',
     'socket':                     'node_modules/socket.io-client/dist',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'rxjs':                       'node_modules/rxjs',
-    'css': 'node_modules/systemjs-plugin-css/css.js'
+    'css': 'node_modules/systemjs-plugin-css/css.js',
+    'aes-js' : 'node_modules/aes-js'
   };
   var packages = {
     'app':                        { main: 'init.js',  defaultExtension: 'js' },
     'ng2-translate':              { main: 'bundles/ng2-translate.umd.js',  defaultExtension: 'js' },
     'rxjs':                       { main : 'Rx.js', defaultExtension: 'js' },
-    'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' }
+    'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
+    'aes-js': { main: 'index.js', defaultExtension: 'js' }
   };
   var ngPackageNames = [
     'common',

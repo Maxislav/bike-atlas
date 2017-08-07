@@ -7,6 +7,7 @@ declare const io: any;
 interface Socket{
     emit: Function;
     $emit: Function;
+    $crypt: Function;
     on: Function;
     off: Function;
 }
@@ -46,6 +47,11 @@ export class Io{
         this._socket.on('news',(d)=>{
             //console.log(d,'klklttewefewfwe')
         });
+
+        this._socket.$crypt = (name: string, data: any)=>{
+
+        }
+
     }
     get socket():Socket {
         return this._socket;

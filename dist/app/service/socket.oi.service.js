@@ -35,6 +35,8 @@ let Io = class Io {
         this._socket.on('news', (d) => {
             //console.log(d,'klklttewefewfwe')
         });
+        this._socket.$crypt = (name, data) => {
+        };
     }
     get socket() {
         return this._socket;

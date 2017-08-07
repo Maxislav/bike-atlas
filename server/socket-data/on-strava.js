@@ -6,10 +6,12 @@ const request = require('request');
 var querystring = require('querystring');
 const fs = require('fs');
 const path = require('path');
-
+const Aes = require("../aes-cript");
+const aes = new Aes(16);
 class OnStrava extends ProtoData {
     constructor(socket, util) {
         super(socket, util);
+        socket.on('onStravaCrypt', this.onStravaCrypt.bind(this, 'onStravaCrypt'));
         socket.on('onStrava', this.onStrava.bind(this, 'onStrava'))
         socket.on('getStrava', this.getStrava.bind(this, 'getStrava'));
         socket.on('stravaUpdateCode', this.stravaUpdateCode.bind(this, 'stravaUpdateCode'))
@@ -19,6 +21,9 @@ class OnStrava extends ProtoData {
         socket.on('onDeauthorizeStrava', this.onDeauthorizeStrava.bind(this, 'onDeauthorizeStrava'))
 
     }
+
+
+
 
 
     sendTrackToStrava(eName, d) {
@@ -207,6 +212,45 @@ class OnStrava extends ProtoData {
 
 
     }
+      onStravaCrypt(eName, d) {
+
+        switch (d.n) {
+          case 0:
+            const byteArr1 = new Uint8Array(d.arr)
+            const encodeByte = aes.encodeByteToByte(byteArr1);
+            this.socket.emit(eName, {
+              n: 0,
+              arr: Array.from(encodeByte)
+            });
+            break;
+          case 1:
+            const byteArr = new Uint8Array(d.arr);
+            const stravaClientSecret = aes.decodeByteToText(byteArr);
+            const stravaClientId = d.stravaClientId;
+            const atlasToken = d.atlasToken;
+
+
+	          this.getUserId()
+		          .then(userId => {
+			          return this.util.onStrava(userId, stravaClientId, stravaClientSecret, atlasToken)
+		          })
+		          .then(d => {
+			          this.socket.emit(eName, {
+				          result: 'ok'
+			          })
+		          })
+		          .catch(error => {
+			          console.error('Error onStrava ->', error)
+		          })
+
+            /*this.socket.emit(eName, {
+              result: 'ok'
+            });*/
+            break;
+
+        }
+      }
+
 
     getStrava(eName) {
         this.getUserId()
