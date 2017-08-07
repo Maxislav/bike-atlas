@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require("@angular/core");
 const io = require("socket/socket.io.js");
+const aes_cript_1 = require('./aes-cript');
 let Io = class Io {
     constructor() {
         if (window.location.hostname.match(/github\.io/)) {
@@ -35,7 +36,21 @@ let Io = class Io {
         this._socket.on('news', (d) => {
             //console.log(d,'klklttewefewfwe')
         });
-        this._socket.$crypt = (name, data) => {
+        this._socket.$encrypt = (name, data) => {
+            const aes = new aes_cript_1.Aes(16);
+            const mess = JSON.stringify(data);
+            return this._socket
+                .$emit(name, {
+                n: 0,
+                byteArr: Array.from(aes.encodeTextToByte(mess))
+            })
+                .then(d => {
+                const enc2 = new Uint8Array(d.byteArr);
+                return this._socket.$emit(name, {
+                    n: 1,
+                    byteArr: Array.from(aes.decodeByteToByte(enc2)),
+                });
+            });
         };
     }
     get socket() {

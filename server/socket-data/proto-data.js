@@ -1,9 +1,8 @@
 const util = require('./util');
 const R = require('ramda');
 
-/**
- * 
- */
+
+
 class ProtoData{
 	/**
      * 
@@ -12,9 +11,8 @@ class ProtoData{
      */
     constructor(socket, util) {
         this.socket = socket;
+
         this.util = util;
-        
-     
     }
     getUserId() {
         return this.util.getUserIdBySocketId(this.socket.id)

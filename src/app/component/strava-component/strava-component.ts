@@ -177,13 +177,21 @@ export class StravaComponent  implements OnChanges {
     }
     goToStrava(){
         if (this.stravaClientId &&  this.stravaClientSecret){
-            const aes = new Aes(16);
 
-            const byte = aes.encodeTextToByte(this.stravaClientSecret);
-            const byteArr = Array.from(byte) ;
 
-            console.log(byte, byteArr)
-            this.socket
+            this.socket.$encrypt('onStravaCrypt', {
+                stravaClientSecret: this.stravaClientSecret,
+                stravaClientId: this.stravaClientId,
+                atlasToken: this.token
+            })
+                .then(d=>{
+                    if(d.result=='ok'){
+                        window.location.href = this.stravaHref.toString()
+                    }
+                });
+
+
+           /* this.socket
                 .$emit('onStravaCrypt', {
                     n: 0,
                     arr: byteArr
@@ -201,7 +209,7 @@ export class StravaComponent  implements OnChanges {
                     if(d.result=='ok'){
                         window.location.href = this.stravaHref.toString()
                     }
-                });
+                });*/
 
         }
     }

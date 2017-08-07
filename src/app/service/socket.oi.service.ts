@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core"
 import * as io from "socket/socket.io.js";
+import {Aes} from './aes-cript';
 
 
 declare const io: any;
@@ -7,7 +8,8 @@ declare const io: any;
 interface Socket{
     emit: Function;
     $emit: Function;
-    $crypt: Function;
+    $encrypt: Function;
+    $decrypt: Function;
     on: Function;
     off: Function;
 }
@@ -31,7 +33,6 @@ export class Io{
         this._socket.$emit = (name: string, data: Object)=>{
             return new Promise((resolve, reject)=>{
                 const timeout = setTimeout(()=>{
-
                     reject('Error by timeout name->'+name)
                 }, 30000);
                 const response = (d) =>{
@@ -48,9 +49,27 @@ export class Io{
             //console.log(d,'klklttewefewfwe')
         });
 
-        this._socket.$crypt = (name: string, data: any)=>{
+        this._socket.$encrypt = (name: string, data: any) => {
+            const aes = new Aes(16);
+            const mess = JSON.stringify(data);
+            return this._socket
+                .$emit(name, {
+                    n: 0,
+                    byteArr: Array.from(aes.encodeTextToByte(mess))
+                })
+                .then(d => {
+                    const enc2 = new Uint8Array(d.byteArr);
+                    return this._socket.$emit(name, {
+                        n: 1,
+                        byteArr: Array.from(aes.decodeByteToByte(enc2)),
+                    })
+                })
+
 
         }
+
+
+
 
     }
     get socket():Socket {

@@ -122,23 +122,10 @@ let StravaComponent = class StravaComponent {
     }
     goToStrava() {
         if (this.stravaClientId && this.stravaClientSecret) {
-            const aes = new aes_cript_1.Aes(16);
-            const byte = aes.encodeTextToByte(this.stravaClientSecret);
-            const byteArr = Array.from(byte);
-            console.log(byte, byteArr);
-            this.socket
-                .$emit('onStravaCrypt', {
-                n: 0,
-                arr: byteArr
-            })
-                .then(d => {
-                const enc2 = new Uint8Array(d.arr);
-                return this.socket.$emit('onStravaCrypt', {
-                    n: 1,
-                    arr: Array.from(aes.decodeByteToByte(enc2)),
-                    stravaClientId: this.stravaClientId,
-                    atlasToken: this.token
-                });
+            this.socket.$encrypt('onStravaCrypt', {
+                stravaClientSecret: this.stravaClientSecret,
+                stravaClientId: this.stravaClientId,
+                atlasToken: this.token
             })
                 .then(d => {
                 if (d.result == 'ok') {

@@ -214,20 +214,23 @@ class OnStrava extends ProtoData {
     }
       onStravaCrypt(eName, d) {
 
+
+
         switch (d.n) {
           case 0:
-            const byteArr1 = new Uint8Array(d.arr)
+            const byteArr1 = new Uint8Array(d.byteArr)
             const encodeByte = aes.encodeByteToByte(byteArr1);
             this.socket.emit(eName, {
               n: 0,
-              arr: Array.from(encodeByte)
+	            byteArr: Array.from(encodeByte)
             });
             break;
           case 1:
-            const byteArr = new Uint8Array(d.arr);
-            const stravaClientSecret = aes.decodeByteToText(byteArr);
-            const stravaClientId = d.stravaClientId;
-            const atlasToken = d.atlasToken;
+            const byteArr = new Uint8Array(d.byteArr);
+            const j = JSON.parse(aes.decodeByteToText(byteArr));
+            const stravaClientId = j.stravaClientId;
+            const atlasToken = j.atlasToken;
+            const stravaClientSecret = j.stravaClientSecret;
 
 
 	          this.getUserId()
@@ -241,11 +244,7 @@ class OnStrava extends ProtoData {
 		          })
 		          .catch(error => {
 			          console.error('Error onStrava ->', error)
-		          })
-
-            /*this.socket.emit(eName, {
-              result: 'ok'
-            });*/
+		          });
             break;
 
         }
