@@ -8,6 +8,7 @@ module.exports = function (req, res, next) {
     headers: req.headers
   };
   res.header("Access-Control-Allow-Origin", "http://maxislav.github.io");
+  res.header("Cache-control", "public, max-age=2629000");
   const proxyRequest = http.request( opt );
   proxyRequest.on( 'response', function ( proxyResponse ) {
     proxyResponse.on( 'data', function ( chunk ) {

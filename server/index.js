@@ -12,6 +12,7 @@ const fileUpload = require('express-fileupload');
 const tileProxy = require('./tile-proxy');
 const socketData = require('./socket-data');
 const weather = require('./weather');
+const {sendFile} = require('./send-file')
 
 
 
@@ -85,7 +86,15 @@ app.use((req, res, next)=>{
     console.log('sprite', req.url)
   }
   if(/\..{1,4}$/.test(req.url)){
+
+    console.log('path - >', req.url);
+    if(/\.(js|css|html|png|gif)$/.test(req.url)){
+      res.set({
+	      'Cache-control': 'public, max-age=2629000;',
+      })
+    }
     res.sendFile(dirname + req.url);
+
   }else{
     console.log('html5', req.url);
     res.sendFile(dirname + '/index.html')
@@ -95,6 +104,7 @@ app.use((req, res, next)=>{
 
 
 });
+
 
 
 
