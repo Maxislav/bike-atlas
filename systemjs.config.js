@@ -26,7 +26,8 @@
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'ng2-translate':              'node_modules/ng2-translate',
     'rxjs':                       'node_modules/rxjs',
-    'css': 'node_modules/systemjs-plugin-css/css.js'
+    'css': 'node_modules/systemjs-plugin-css/css.js',
+    'aes-js' : 'node_modules/aes-js'
    
   };
   // packages tells the System loader how to load when no filename and/or no extension
