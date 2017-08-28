@@ -25,7 +25,7 @@ import {StravaComponent} from "./component/strava-component/strava-component";
 import {StravaAuthComponent} from "./component/strava-component/strava-auth-component";
 import {UserService} from "./service/main.user.service";
 import {JJ} from "./app.module";
-
+import {FBComponent} from "./component/fb-component/fb-component";
 const  appRouters: Routes = [
     {
         path: '',
@@ -67,7 +67,6 @@ const  appRouters: Routes = [
                     {
                         path: 'journal',
                         component: JournalComponent,
-                        //canActivate:[UserService],
                         resolve:  {
                             L : LeafletResolver
                         },
@@ -99,6 +98,11 @@ const  appRouters: Routes = [
                         component: StravaAuthComponent
                         //canActivate:[UserService]
                     },
+                    {
+                        path: 'facebook',
+                        component: FBComponent
+                    }
+
                 ]
             }
         ]

@@ -20,6 +20,8 @@ const Logger = require('./logger');
 const Util = require('./socket-data/util')
 const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
+const OnFacebook = require('./socket-data/on-facebook');
+
 let connection, server, app;
 let resolveExport;
 let promiseExport = new Promise((resolve, reject)=>{
@@ -52,6 +54,7 @@ class SocketData{
             const onChat = new OnChat(socket, util, chat);
             const onStrava = new OnStrava(socket, util);
             const onImportKml = new OnImportKml(socket, util);
+            const onFacebook = new OnFacebook(socket, util);
 
             socket.on('disconnect',()=>{
                 logger.onDisconnect(socket.id);

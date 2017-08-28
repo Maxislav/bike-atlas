@@ -1,0 +1,60 @@
+@import "../../css/constant";
+:host{
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  width: 100%;
+}
+*{
+  box-sizing: border-box;
+}
+.gray{
+  color: darkgray;
+}
+
+h4{
+  padding: 8px 0;
+}
+.invite{
+  font-size: 12px;
+  float: right;
+  cursor: pointer;
+  text-align: right;
+  margin-left: 20px;
+  &.accept{
+    color: @blue-color;
+    font-weight: bold;
+  }
+  &.reject{
+    color: gray;
+  }
+}
+.content{
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  min-width: 600px;
+  max-width: 600px;
+  margin-left: -300px;
+  padding: 0;
+  left: 50%;
+  top: calc(~"100% +"20px);
+  box-shadow: @box-shadow;
+  &>div{
+    position: relative;
+    padding: 30px;
+  }
+}
+.close{
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: darkred;
+  cursor: pointer;
+  padding: 15px;
+  font-size: 20px;
+  font: 30px/15px bold;
+}
+.athlete{
+  width: 100%;
+}

@@ -57,6 +57,9 @@ let AuthService = class AuthService {
             this.resolveAuth(true);
         });
     }
+    setFacebookUser(data) {
+        return this.socket.$emit('setFacebookUser', data);
+    }
     get userName() {
         return this._userName;
     }

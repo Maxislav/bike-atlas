@@ -17,6 +17,27 @@ html(lang='en')
             System
                     .import(['dist/app/css/index.css','lib/mapbox-gl/mapbox-gl.css', 'app'])
                     .catch(function(err){ console.error(err); });
+        script.
+            window.fbAsyncInit = function () {
+            FB.init({
+              appId: '1963056210650118',
+              cookie: true,
+              xfbml: true,
+              version: 'v2.8'
+            });
+            FB.AppEvents.logPageView();
+            };
+
+            (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+              return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
         style.
             my-app {
                 font-family: Geneva, Arial, Helvetica, sans-serif;

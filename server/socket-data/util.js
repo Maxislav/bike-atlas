@@ -879,6 +879,30 @@ class Util {
 		
 	}
 
+	/**
+	 *
+	 * @param {Object}data
+	 * @param {number} data.userID
+	 * @param {string } data.hash
+	 * @param {string} data.accessToken
+	 * @param {string} data.name
+	 * @return {Promise}
+	 */
+	setFacebookUser(data){
+		return new Promise((resolve, reject)=>{
+			this.connection.query('INSERT INTO `facebook` ' +
+				'(`id`, `hash`, `fb_user_id`, `fb_access_token`, `fb_name`) VALUES (NULL, ?, ?, ?, ?)',
+				[data.hash, data.userID,  data.accessToken, data.name], (err, results) => {
+					if(err){
+						reject(err); return;
+					}
+					resolve(results)
+				})
+		})
+
+	}
+
+
 
 	formatDevice(d) {
 		return {

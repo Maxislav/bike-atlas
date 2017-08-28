@@ -1,0 +1,19 @@
+div.content
+    div
+        div
+            .close((click)="onClose()") &times;
+        .row
+            .flex-cell.gray
+                | В разработке *
+        .flex.row.center(*ngIf="fbUser.userID")
+            table.athlete
+                tr
+                    td
+                        img([src]="coverUrl")
+                    td {{fbUser.name}}
+        .flex.row.flex-end(*ngIf="!fbUser.userID")
+            .flex-cell
+                .button.primary((click)="onEnterFB()") Войти
+        .flex.row.flex-end(*ngIf="fbUser.userID")
+            .flex-cell
+                .button.primary((click)="onLogout()") Выйти

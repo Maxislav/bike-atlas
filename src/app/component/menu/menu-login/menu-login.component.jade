@@ -12,6 +12,8 @@ div((click)="$event.stopPropagation();$event.preventDefault()" )
                     button((click)="onEnter($event)") {{'SIGN_IN' | translate}}
                 li
                     a((click)="goToReg()") {{'REGISTRATION' | translate}}
+                li
+                    a((click)="goToFB()") Войти через FB
     .border-hidden
     ng-template([ngIf]="user.name")
         ul

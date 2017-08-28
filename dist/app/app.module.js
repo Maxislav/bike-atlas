@@ -63,6 +63,7 @@ const strava_auth_component_1 = require("./component/strava-component/strava-aut
 const strava_service_1 = require("./service/strava.service");
 const ng2_translate_1 = require("ng2-translate");
 const http_1 = require("@angular/http");
+const fb_component_1 = require("./component/fb-component/fb-component");
 const core_2 = require("@angular/core");
 let JJ = class JJ {
 };
@@ -137,7 +138,8 @@ AppModule = __decorate([
             journal_component_1.JournalComponent,
             friends_component_1.FriendsComponent,
             private_area_1.PrivateArea,
-            no_found_component_1.NoFoundComponent
+            no_found_component_1.NoFoundComponent,
+            fb_component_1.FBComponent
         ],
         /** Сервисы */
         providers: [

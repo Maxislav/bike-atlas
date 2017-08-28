@@ -5,41 +5,29 @@ process.env.TZ = 'UTC';
 //const livereload = require('express-livereload');
 const path = require('path');
 const express = require('express');
-const port = 8080;
+//const port = 8080;
 const kmlData = require('./kml-data');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const tileProxy = require('./tile-proxy');
 const socketData = require('./socket-data');
 const weather = require('./weather');
-const {sendFile} = require('./send-file')
-
-
-
-
-
-
+const {sendFile} = require('./send-file');
+const servConfig = require("./server.config.json")
 
 const dirname =  path.normalize(__dirname+'/../');
-
 const app = express();
-
 app.use(fileUpload());
-
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
-
-// parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 
-/*
-livereload(app, {
-  watchDir: dirname + '/dist'
-});*/
+
 const server = require('http').Server(app);
-server.listen(8081);
-socketData(server, app);
+server.listen(servConfig.socketPort, ()=>{
+  console.log('socket start at port:',servConfig.socketPort)
+});
+
 
 
 app.get('/borisbolukbb', weather);
@@ -105,10 +93,5 @@ app.use((req, res, next)=>{
 
 });
 
-
-
-
-
-
-
-app.listen(port,()=>console.log('started at '+port));
+app.listen(servConfig.staticPort,()=>console.log('started at '+servConfig.staticPort));
+socketData(server, app);

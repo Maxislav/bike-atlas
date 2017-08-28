@@ -54,6 +54,10 @@ export class MenuLoginComponent {
         this.router.navigate(['/auth/map/privatearea']);
         this.ms.menuOpenLogin = false
     }
+    goToFB(){
+        this.router.navigate(['/auth/map/facebook']);
+        this.ms.menuOpenLogin = false
+    }
 
 
     onEnter(e) {

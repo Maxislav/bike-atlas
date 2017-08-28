@@ -15,6 +15,12 @@ export interface Setting{
     lock?: boolean;
 }
 
+export interface FBuser{
+    userID: number | null,
+    name: string | null,
+    hash?: string,
+    accessToken?: string,
+}
 
 
 @Injectable()
@@ -68,6 +74,12 @@ export class AuthService implements Resolve<any>{
             this.resolveAuth(true)
         })
     }
+
+
+    setFacebookUser(data: FBuser) : Promise<any>{
+        return this.socket.$emit('setFacebookUser',data)
+    }
+
 
     get userName() {
         return this._userName;

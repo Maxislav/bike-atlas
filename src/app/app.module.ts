@@ -55,6 +55,7 @@ import {StravaAuthComponent} from "./component/strava-component/strava-auth-comp
 import {StravaService} from "./service/strava.service";
 import {TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService} from "ng2-translate";
 import {Http, ConnectionBackend} from "@angular/http";
+import {FBComponent} from "./component/fb-component/fb-component";
 
 import {Component, Injectable} from "@angular/core";
 @Component({
@@ -116,7 +117,8 @@ export function createTranslateLoader(http: Http) {
         JournalComponent,
         FriendsComponent,
         PrivateArea,
-        NoFoundComponent
+        NoFoundComponent,
+        FBComponent
     ],
 
     /** Сервисы */
