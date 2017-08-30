@@ -65,6 +65,7 @@ const ng2_translate_1 = require("ng2-translate");
 const http_1 = require("@angular/http");
 const fb_component_1 = require("./component/fb-component/fb-component");
 const core_2 = require("@angular/core");
+const local_storage_ba_service_1 = require("./service/local-storage-ba.service");
 let JJ = class JJ {
 };
 JJ = __decorate([
@@ -166,7 +167,8 @@ AppModule = __decorate([
             main_user_service_1.UserService,
             timer_service_1.TimerService,
             mapbox_gl_directive_1.MapResolver,
-            private_area_service_1.PrivateAreaService
+            private_area_service_1.PrivateAreaService,
+            local_storage_ba_service_1.LocalStorageBa
         ],
         bootstrap: [
             app_component_1.AppComponent

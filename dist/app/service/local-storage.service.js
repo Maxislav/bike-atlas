@@ -14,7 +14,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const core_1 = require("@angular/core");
 let LocalStorage = class LocalStorage {
     constructor() {
-        this.prefix = window.location.hostname;
+        this.prefix = 'as';
         this._mapCenter = {
             lng: null,
             lat: null,

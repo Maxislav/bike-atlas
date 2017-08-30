@@ -56,8 +56,8 @@ import {StravaService} from "./service/strava.service";
 import {TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateService} from "ng2-translate";
 import {Http, ConnectionBackend} from "@angular/http";
 import {FBComponent} from "./component/fb-component/fb-component";
-
 import {Component, Injectable} from "@angular/core";
+import {LocalStorageBa} from "./service/local-storage-ba.service";
 @Component({
     //noinspection TypeScriptUnresolvedVariable
     template: '<div></div>',
@@ -146,7 +146,8 @@ export function createTranslateLoader(http: Http) {
         UserService,
         TimerService,
         MapResolver,
-        PrivateAreaService
+        PrivateAreaService,
+        LocalStorageBa
     ],
     bootstrap: [
         AppComponent

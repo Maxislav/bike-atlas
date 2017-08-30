@@ -889,16 +889,32 @@ class Util {
 	 * @return {Promise}
 	 */
 	setFacebookUser(data){
-		return new Promise((resolve, reject)=>{
-			this.connection.query('INSERT INTO `facebook` ' +
-				'(`id`, `hash`, `fb_user_id`, `fb_access_token`, `fb_name`) VALUES (NULL, ?, ?, ?, ?)',
-				[data.hash, data.userID,  data.accessToken, data.name], (err, results) => {
-					if(err){
-						reject(err); return;
-					}
-					resolve(results)
+
+		return this._checkFbUserID(data.userID)
+			.then(row=>{
+				if(row){
+					const date = dateFormat(Date.now(), "yyyy-mm-dd HH:MM:ss.L");
+					return this.connection.$query(`UPDATE facebook SET  hash = "${data.hash}", fb_access_token = "${data.accessToken}", date = "${date}", fb_name = "${data.name}" WHERE fb_user_id = ${data.userID}`)
+						.then(result=>{
+							console.log(result)
+							return result
+						})
+				}else {
+					return this.connection.$query('INSERT INTO `facebook` ' +
+							'(`id`, `hash`, `fb_user_id`, `fb_access_token`, `fb_name`) VALUES (NULL, ?, ?, ?, ?)',
+							[data.hash, data.userID,  data.accessToken, data.name])
+
+				}
+			})
+
+	}
+
+
+	_checkFbUserID(userID){
+			return this.connection.$query('SELECT * FROM `facebook` WHERE `fb_user_id`=?', [userID])
+				.then(rows=>{
+					return rows[0]
 				})
-		})
 
 	}
 

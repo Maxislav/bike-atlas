@@ -16,7 +16,7 @@ export class LocalStorage{
     };
 
     constructor(){
-        this.prefix = window.location.hostname;
+        this.prefix = 'as';
         this._mapCenter = {
             lng: null,
             lat: null,

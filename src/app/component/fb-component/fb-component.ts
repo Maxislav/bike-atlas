@@ -14,10 +14,7 @@ declare const module: any;
 })
 export class FBComponent{
 
-    private isShowOnAuth: boolean = false;
-    private isShowOnLogout: boolean = false;
     private socket: any;
-    private userId: number = null;
     private fbUser: FBuser = {userID: null, name: null};
     private coverUrl: string;
 
@@ -68,17 +65,15 @@ export class FBComponent{
          switch (res.status){
              case "unknown":
              case "not_authorized":
-                 this.isShowOnAuth = true;
                  this.fbUser.name = null;
                  this.fbUser.userID = null;
                  break;
              case "connected":
                  this.fbUser.userID = parseInt(res.authResponse.userID);
                  const authResponse: FBuser = res.authResponse;
-
                  this.coverUrl = `http://graph.facebook.com/v2.10/${res.authResponse.userID}/picture`;
                  FB.api('/me', (response)=> {
-                     this.fbUser.name  = response.name
+                     this.fbUser.name  = response.name;
                      this.authService
                          .setFacebookUser({
                              name: this.fbUser.name,

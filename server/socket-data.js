@@ -93,7 +93,33 @@ class SocketData{
     
 
 const connectionConnect = ()=>{
-    connection = mysql.createConnection(config.mysql);
+    const protoCon =   mysql.createConnection(config.mysql)
+    const _c =  Object.assign({
+	    /**
+       *
+	     * @param {...*} args
+	     * @return {Promise}
+	     */
+      $query: function (...args) {
+        return new Promise((res, rej)=>{
+          const oueryStr = args[0];
+          const data = args[1];
+          const resF = args[3];
+	        this.query(oueryStr, data, (err, rows)=>{
+	          if(err) {
+		          if(resF) resF(err, rows)
+	            return rej(err);
+	          }
+		        if(resF) resF(err, rows)
+	          return res(rows)
+          })
+        });
+      }
+    }, protoCon)
+    Object.setPrototypeOf(_c, protoCon);
+
+    //connection = mysql.createConnection(config.mysql);
+    connection = _c;
     connection.on('error', (err)=>{
         console.log(err);
         if(err.code == 'PROTOCOL_CONNECTION_LOST'){
