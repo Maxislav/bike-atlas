@@ -59,7 +59,7 @@ export class LocalStorageBa{
 
     }
 
-    create(name: string){
+    create(name: string): Storage{
         const storages = this.storages;
         if (storages[name]){
             return storages[name]

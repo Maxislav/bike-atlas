@@ -55,8 +55,9 @@ function createTable() {
     const tableUser = new Promise((res, rej) => {
         const query = 'CREATE TABLE IF NOT EXISTS `monitoring`.`user` ' +
             '( `id` INT(11) NOT NULL AUTO_INCREMENT , ' +
+	          '`fb_user_id` BIGINT NULL DEFAULT NULL UNIQUE, ' +
             '`name` VARCHAR(16) NOT NULL , ' +
-            '`pass` VARCHAR(32) NOT NULL , ' +
+            '`pass` VARCHAR(32) NULL DEFAULT NULL , ' +
             '`image` TEXT NULL DEFAULT NULL, ' +
             '`opt` VARCHAR(16) NULL DEFAULT NULL , ' +
             'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
@@ -236,10 +237,10 @@ function createTable() {
 	    const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`facebook` ' +
 		    '( `id` INT NOT NULL AUTO_INCREMENT , ' +
 		    '`hash` VARCHAR(32) NOT NULL, ' +
-		    '`fb_user_id` BIGINT NOT NULL UNIQUE, ' +
+		    '`user_id` BIGINT NOT NULL UNIQUE, ' +
 		    '`fb_access_token` VARCHAR(250) NULL DEFAULT NULL, ' +
 		    '`fb_name` VARCHAR(32) NULL DEFAULT NULL, ' +
-		    '`date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,' +
+		    '`date` DATETIME(2)  NULL DEFAULT NULL,' +
 		    'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
 	    connection.query(query, (err) => {
 		    if (err) {
@@ -250,6 +251,8 @@ function createTable() {
 		    res(connection);
 	    })
     });
+
+    //ALTER TABLE user ADD `fb_user_id` BIGINT NULL DEFAULT NULL UNIQUE;
 
 
 

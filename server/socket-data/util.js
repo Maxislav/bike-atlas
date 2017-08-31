@@ -1,5 +1,8 @@
 const dateFormat = require('dateformat');
 const hashKeys = [];
+Date.prototype.toSqlString = function () {
+	return dateFormat(this, "yyyy-mm-dd HH:MM:ss.L");
+};
 
 
 
@@ -888,30 +891,54 @@ class Util {
 	 * @param {string} data.name
 	 * @return {Promise}
 	 */
-	setFacebookUser(data){
-
+	setFacebookUser(data, socketId){
+		const  dd = new Date().toSqlString();
 		return this._checkFbUserID(data.userID)
 			.then(row=>{
 				if(row){
-					const date = dateFormat(Date.now(), "yyyy-mm-dd HH:MM:ss.L");
-					return this.connection.$query(`UPDATE facebook SET  hash = "${data.hash}", fb_access_token = "${data.accessToken}", date = "${date}", fb_name = "${data.name}" WHERE fb_user_id = ${data.userID}`)
-						.then(result=>{
-							console.log(result)
-							return result
+					const myUserId = row.id;
+					return this.connection.$query(`UPDATE facebook SET hash = "${data.hash}", fb_access_token = "${data.accessToken}", date = "${dd}", fb_name = "${data.name}" WHERE user_id = ${myUserId}`)
+						.then(result => {
+							return this.connection.$query("INSERT INTO `hash` (`id`, `user_id`, `key`, `socket_id`) VALUES (NULL, ?, ?, ?)", [myUserId, data.hash, socketId])
+						})
+						.then(d => {
+							return {
+								hash: data.hash,
+								name: data.name
+							}
+						})
+						.catch(err=>{
+							console.error(err)
 						})
 				}else {
-					return this.connection.$query('INSERT INTO `facebook` ' +
-							'(`id`, `hash`, `fb_user_id`, `fb_access_token`, `fb_name`) VALUES (NULL, ?, ?, ?, ?)',
-							[data.hash, data.userID,  data.accessToken, data.name])
+					return this.connection.$query('INSERT INTO `user` ' +
+							'(`id`, `name`, `fb_user_id` ) VALUES (NULL, ?, ?)',
+							[data.name, data.userID])
+						.then(row=>{
+								return row.insertId;
+						})
+						.then(myUserId=>{
+							return this.connection.$query('INSERT INTO `facebook` ' +
+								'(`id`, `hash`, `user_id`, `fb_access_token`, `fb_name`, `date`) VALUES (NULL, ?, ?, ?, ?, ?)',
+								[data.hash, myUserId,  data.accessToken, data.name, dd])
+								.then(d=>{
+									return myUserId
+								})
+						})
+						.then(d=>{
+							return {
+								hash: data.hash,
+								name: data.name
+							}
+						});
 
 				}
 			})
-
 	}
 
 
 	_checkFbUserID(userID){
-			return this.connection.$query('SELECT * FROM `facebook` WHERE `fb_user_id`=?', [userID])
+			return this.connection.$query('SELECT * FROM `user` WHERE `fb_user_id`=?', [userID])
 				.then(rows=>{
 					return rows[0]
 				})

@@ -2,10 +2,10 @@
  * Created by maxislav on 20.10.16.
  */
 process.env.TZ = 'UTC';
-//const livereload = require('express-livereload');
+const colors = require('colors');
+colors.enabled = true;
 const path = require('path');
 const express = require('express');
-//const port = 8080;
 const kmlData = require('./kml-data');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
@@ -14,9 +14,11 @@ const socketData = require('./socket-data');
 const weather = require('./weather');
 const {sendFile} = require('./send-file');
 const servConfig = require("./server.config.json")
-
 const dirname =  path.normalize(__dirname+'/../');
+
+
 const app = express();
+
 app.use(fileUpload());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -75,7 +77,7 @@ app.use((req, res, next)=>{
   }
   if(/\..{1,4}$/.test(req.url)){
 
-    console.log('path - >', req.url);
+    console.log('path ->'.yellow, req.url);
     if(/\.(js|css|html|png|gif)$/.test(req.url)){
       res.set({
 	      'Cache-control': 'public, max-age=2629000;',
