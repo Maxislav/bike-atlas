@@ -23,6 +23,7 @@ let AuthService = class AuthService {
         this.chatService = chatService;
         this._userName = null;
         this._userImage = null;
+        this.fbUser = { userID: null, name: null };
         this.socket = io.socket;
         this._setting = {};
         this.socket.on('connect', this.onConnect.bind(this));
@@ -39,6 +40,7 @@ let AuthService = class AuthService {
         return this.onConnect();
     }
     onConnect() {
+        //this.resolveAuth(true);
         console.info('connect');
         return this.socket.$emit('onAuth', {
             hash: this.ls.userKey
@@ -52,10 +54,39 @@ let AuthService = class AuthService {
             }
             else {
                 this.userName = null;
+                console.info(d);
+                FB.getLoginStatus((response) => {
+                    this.statusChangeCallback(response);
+                });
             }
             console.log(d);
             this.resolveAuth(true);
         });
+    }
+    statusChangeCallback(res) {
+        switch (res.status) {
+            case "unknown":
+            case "not_authorized":
+                this.fbUser.name = null;
+                this.fbUser.userID = null;
+                break;
+            case "connected":
+                this.fbUser.userID = parseInt(res.authResponse.userID);
+                const authResponse = res.authResponse;
+                FB.api('/me', (response) => {
+                    this.fbUser.name = response.name;
+                    this
+                        .setFacebookUser({
+                        name: this.fbUser.name,
+                        accessToken: authResponse.accessToken,
+                        userID: authResponse.userID
+                    })
+                        .then(d => {
+                        console.log(d);
+                    });
+                });
+                break;
+        }
     }
     setFacebookUser(data) {
         return this.socket.$emit('setFacebookUser', data);

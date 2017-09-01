@@ -2,6 +2,8 @@ const ProtoData = require('./proto-data');
 const passport = require('passport');
 const Strategy = require('passport-facebook').Strategy;
 const https = require('https');
+const Stream = require('stream').Transform;
+const base64ArrayBuffer = require('../base-64-array-buffer');
 
 const jsonToQuery = (obj) =>{
 	let str = '?';
@@ -62,6 +64,16 @@ class OnFacebook extends ProtoData{
 					})
 
 			})
+			.then(img=>{
+				return this._getPhoto(data)
+			})
+			.then(location=>{
+
+				return this._getRedirect(location)
+			})
+			.then(d=>{
+				d
+			})
 			.catch(err=>{
 				console.error('util.setFacebookUser -> ', err)
 			})
@@ -70,6 +82,83 @@ class OnFacebook extends ProtoData{
 
 
 
+	}
+
+	/**
+	 *
+	 * @private
+	 * @param {Object} data
+	 * @param {number} data.userID
+	 * @param {string }data.hash
+	 * @param {string} data.accessToken
+	 * @param {string} data.name
+	 * @return {Promise}
+	 */
+	_getPhoto(data){
+		return new Promise((res, rej)=>{
+			const options = {
+				host: 'graph.facebook.com',
+				port: 443,
+				path: '/v2.10',
+				method: 'GET'
+			};
+
+			const p = {
+				access_token: data.accessToken,
+				method: 'get'
+			};
+			options.path+= `/${data.userID}/picture`+jsonToQuery(p);
+			https.request(options, function (response) {
+				var data = [];
+				response.on('data', function (chunk) {
+					data.push(chunk);
+				});
+				response.on('end', function () {
+					response
+
+					res(response.headers.location)
+				});
+				response.on('error', function (err) {
+					console.error(err);
+					rej(err)
+				});
+			}).end();
+		})
+	}
+
+	_getRedirect(str){
+		const host = str.match(/^https?:\/\/[^\/]+/)[0];
+		const path = str.replace(host, '')
+
+		const options = {
+			host: host.replace(/^https?:\/\//, ''),
+			port: 443,
+			path: path,
+			method: 'GET'
+		};
+
+		return new Promise((res, rej)=>{
+			https.request(options, function (response) {
+				const data = [];
+				response.on('data', function (chunk) {
+					data.push(chunk);
+				});
+				response.on('end', function () {
+
+					const d = data.map(it=>{
+						return Array.from(it)
+					})
+					//const u8arr = new Uint8Array()
+
+				//	btoa(String.fromCharCode.apply(null, u8arr))
+					res(base64ArrayBuffer([].concat(...d)))
+				});
+				response.on('error', function (err) {
+					console.error(err);
+					rej(err)
+				});
+			}).end();
+		})
 	}
 
 	/**

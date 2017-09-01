@@ -897,11 +897,8 @@ class Util {
 			.then(row=>{
 				if(row){
 					const myUserId = row.id;
-					return this.connection.$query(`UPDATE facebook SET hash = "${data.hash}", fb_access_token = "${data.accessToken}", date = "${dd}", fb_name = "${data.name}" WHERE user_id = ${myUserId}`)
+					return this.connection.$query("INSERT INTO `hash` (`id`, `user_id`, `key`, `socket_id`, `date`) VALUES (NULL, ?, ?, ?, ?)", [myUserId, data.hash, socketId, new Date()])
 						.then(result => {
-							return this.connection.$query("INSERT INTO `hash` (`id`, `user_id`, `key`, `socket_id`) VALUES (NULL, ?, ?, ?)", [myUserId, data.hash, socketId])
-						})
-						.then(d => {
 							return {
 								hash: data.hash,
 								name: data.name
@@ -918,14 +915,9 @@ class Util {
 								return row.insertId;
 						})
 						.then(myUserId=>{
-							return this.connection.$query('INSERT INTO `facebook` ' +
-								'(`id`, `hash`, `user_id`, `fb_access_token`, `fb_name`, `date`) VALUES (NULL, ?, ?, ?, ?, ?)',
-								[data.hash, myUserId,  data.accessToken, data.name, dd])
-								.then(d=>{
-									return myUserId
-								})
+							return this.connection.$query("INSERT INTO `hash` (`id`, `user_id`, `key`, `socket_id`, `date`) VALUES (NULL, ?, ?, ?, ?)", [myUserId, data.hash, socketId, new Date()])
 						})
-						.then(d=>{
+						.then(result=>{
 							return {
 								hash: data.hash,
 								name: data.name
@@ -935,6 +927,8 @@ class Util {
 				}
 			})
 	}
+
+
 
 
 	_checkFbUserID(userID){

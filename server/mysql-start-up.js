@@ -77,6 +77,7 @@ function createTable() {
           '`user_id` INT NOT NULL, ' +
           '`socket_id` VARCHAR(32) NOT NULL, ' +
           '`key` VARCHAR(32) NULL,' +
+	        '`date` DATETIME(2) NULL DEFAULT NULL,'+
           ' PRIMARY KEY (`id`)) ENGINE = InnoDB;';
 
         connection.query(query, (err) => {
@@ -233,7 +234,7 @@ function createTable() {
         })
     });
 
-    const tableFacebook = new Promise((res, rej)=>{
+   /* const tableFacebook = new Promise((res, rej)=>{
 	    const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`facebook` ' +
 		    '( `id` INT NOT NULL AUTO_INCREMENT , ' +
 		    '`hash` VARCHAR(32) NOT NULL, ' +
@@ -250,7 +251,7 @@ function createTable() {
 		    }
 		    res(connection);
 	    })
-    });
+    });*/
 
     //ALTER TABLE user ADD `fb_user_id` BIGINT NULL DEFAULT NULL UNIQUE;
 
@@ -267,8 +268,8 @@ function createTable() {
         tableFriends,
         tableChat,
         tablePrivateArea,
-        tableStrava,
-	    tableFacebook]);
+        tableStrava
+	    ]);
     //return Promise.all([tableHash])
 
 

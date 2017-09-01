@@ -22,6 +22,7 @@ export interface FBuser{
     accessToken?: string,
 }
 
+declare const FB: any;
 
 @Injectable()
 export class AuthService implements Resolve<any>{
@@ -30,6 +31,9 @@ export class AuthService implements Resolve<any>{
     private _userName: string = null;
     private _userImage: string = null;
     private _setting: Setting;
+
+    private fbUser: FBuser = {userID: null, name: null};
+
 
     private resolveAuth: Function;
     constructor(
@@ -57,6 +61,11 @@ export class AuthService implements Resolve<any>{
     }
 
     onConnect() {
+
+        //this.resolveAuth(true);
+
+
+
         console.info('connect');
         return this.socket.$emit('onAuth', {
             hash: this.ls.userKey
@@ -69,15 +78,47 @@ export class AuthService implements Resolve<any>{
                 this.chatService.getUnViewed(true)
             }else{
                 this.userName = null;
+                console.info(d);
+                FB.getLoginStatus((response)=> {
+                    this.statusChangeCallback(response);
+                })
             }
             console.log(d);
             this.resolveAuth(true)
         })
     }
 
+    private statusChangeCallback(res){
+        switch (res.status){
+            case "unknown":
+            case "not_authorized":
+                this.fbUser.name = null;
+                this.fbUser.userID = null;
+                break;
+            case "connected":
+                this.fbUser.userID = parseInt(res.authResponse.userID);
+                const authResponse: FBuser = res.authResponse;
+                FB.api('/me', (response)=> {
+                    this.fbUser.name  = response.name;
+                    this
+                        .setFacebookUser({
+                            name: this.fbUser.name,
+                            accessToken: authResponse.accessToken,
+                            userID: authResponse.userID
+
+                        })
+                        .then(d => {
+                            console.log(d)
+                        })
+                });
+                break
+
+        }
+    }
+
 
     setFacebookUser(data: FBuser) : Promise<any>{
-        return this.socket.$emit('setFacebookUser',data)
+        return this.socket.$emit('setFacebookUser', data )
     }
 
 
