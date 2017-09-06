@@ -77,6 +77,7 @@ function createTable() {
           '`user_id` INT NOT NULL, ' +
           '`socket_id` VARCHAR(32) NOT NULL, ' +
           '`key` VARCHAR(32) NULL,' +
+          '`auth_type` varchar(8) NULL DEFAULT NULL,' +
 	        '`date` DATETIME(2) NULL DEFAULT NULL,'+
           ' PRIMARY KEY (`id`)) ENGINE = InnoDB;';
 

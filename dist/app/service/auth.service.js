@@ -82,14 +82,18 @@ let AuthService = class AuthService {
                         userID: authResponse.userID
                     })
                         .then(d => {
-                        console.log(d);
+                        d;
                     });
                 });
                 break;
         }
     }
     setFacebookUser(data) {
-        return this.socket.$emit('setFacebookUser', data);
+        return this.socket.$emit('setFacebookUser', data)
+            .then(d => {
+            this.userService.user = d.user;
+            return d;
+        });
     }
     get userName() {
         return this._userName;

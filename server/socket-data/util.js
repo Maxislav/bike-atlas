@@ -889,6 +889,7 @@ class Util {
 	 * @param {string } data.hash
 	 * @param {string} data.accessToken
 	 * @param {string} data.name
+	 * @param {number} socketId
 	 * @return {Promise}
 	 */
 	setFacebookUser(data, socketId){
@@ -897,37 +898,46 @@ class Util {
 			.then(row=>{
 				if(row){
 					const myUserId = row.id;
-					return this.connection.$query("INSERT INTO `hash` (`id`, `user_id`, `key`, `socket_id`, `date`) VALUES (NULL, ?, ?, ?, ?)", [myUserId, data.hash, socketId, new Date()])
+					return this.connection.$query("INSERT INTO `hash` (`id`, `user_id`, `key`, `socket_id`, `date`, `auth_type`) VALUES (NULL, ?, ?, ?, ?, ?)", [myUserId, data.hash, socketId, new Date(), 'fb'])
 						.then(result => {
 							return {
+								id: myUserId,
 								hash: data.hash,
 								name: data.name
 							}
 						})
 						.catch(err=>{
-							console.error(err)
+							console.error('setFacebookUser 1 ->', err)
 						})
 				}else {
 					return this.connection.$query('INSERT INTO `user` ' +
 							'(`id`, `name`, `fb_user_id` ) VALUES (NULL, ?, ?)',
 							[data.name, data.userID])
 						.then(row=>{
-								return row.insertId;
+								return {
+									id: row.insertId,
+									name: data.name ,
+									hash: data.hash
+								}
 						})
-						.then(myUserId=>{
-							return this.connection.$query("INSERT INTO `hash` (`id`, `user_id`, `key`, `socket_id`, `date`) VALUES (NULL, ?, ?, ?, ?)", [myUserId, data.hash, socketId, new Date()])
+						.then(myUser=>{
+							return this.connection.$query("INSERT INTO `hash` (`id`, `user_id`, `key`, `socket_id`, `date`, `auth_type`) VALUES (NULL, ?, ?, ?, ?)", [myUser.id, data.hash, socketId, new Date(), 'fb'])
+								.then(res=>{
+									return myUser
+								})
 						})
-						.then(result=>{
-							return {
-								hash: data.hash,
-								name: data.name
-							}
-						});
+						.catch(err=>{
+							console.error('setFacebookUser 2 ->', err)
+						})
+
 
 				}
 			})
 	}
 
+	clearFbHash(socketId){
+		return this.connection.$query('DELETE FROM `hash` WHERE `socket_id`=? AND `auth_type`=?', [socketId, 'fb'])
+	}
 
 
 

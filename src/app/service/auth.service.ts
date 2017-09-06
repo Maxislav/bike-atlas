@@ -20,6 +20,7 @@ export interface FBuser{
     name: string | null,
     hash?: string,
     accessToken?: string,
+    imageUrl?: string
 }
 
 declare const FB: any;
@@ -105,10 +106,9 @@ export class AuthService implements Resolve<any>{
                             name: this.fbUser.name,
                             accessToken: authResponse.accessToken,
                             userID: authResponse.userID
-
                         })
                         .then(d => {
-                            console.log(d)
+                            d
                         })
                 });
                 break
@@ -119,6 +119,10 @@ export class AuthService implements Resolve<any>{
 
     setFacebookUser(data: FBuser) : Promise<any>{
         return this.socket.$emit('setFacebookUser', data )
+            .then(d=>{
+                this.userService.user = d.user
+                return d
+            })
     }
 
 

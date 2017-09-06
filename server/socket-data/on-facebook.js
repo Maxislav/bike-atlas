@@ -29,6 +29,7 @@ class OnFacebook extends ProtoData{
 		super(socket, util);
 
 		this.socket.on('setFacebookUser', this.setFacebookUser.bind(this, 'setFacebookUser'));
+		this.socket.on('disconnect', this.onDisconnect.bind(this, 'disconnect'));
 	}
 
 	/**
@@ -60,28 +61,26 @@ class OnFacebook extends ProtoData{
 					userID: data.userID
 				}, this.socket.id)
 					.then(d=>{
-						this.socket.emit(eName, d)
+						this.socket.emit(eName,	Object.assign({result:'ok'}, {user:d}))
 					})
-
 			})
 			.then(img=>{
 				return this._getPhoto(data)
 			})
 			.then(location=>{
-
 				return this._getRedirect(location)
 			})
 			.then(d=>{
-				d
+				'data:image/png;base64,' + d
 			})
 			.catch(err=>{
 				console.error('util.setFacebookUser -> ', err)
 			})
 
+	}
 
-
-
-
+	onDisconnect(eName){
+		this.util.clearFbHash(this.socket.id)
 	}
 
 	/**

@@ -59,6 +59,7 @@ class SocketData{
             socket.on('disconnect',()=>{
                 logger.onDisconnect(socket.id);
                 chat.onDisconnect(socket.id);
+	             // onFacebook.onDisconnect(socket.id)
             });
 
             socketStream(socket).on('file', function (stream) {
