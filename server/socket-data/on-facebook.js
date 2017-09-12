@@ -44,8 +44,6 @@ class OnFacebook extends ProtoData{
 	 */
 	setFacebookUser(eName, data){
 		const hash = this.util.getHash();
-
-
 		this._confirmUser(data)
 			.then(user=>{
 				if(user.id == data.userID ){

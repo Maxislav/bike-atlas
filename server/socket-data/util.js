@@ -898,17 +898,14 @@ class Util {
 			.then(row=>{
 				if(row){
 					const myUserId = row.id;
-					return this.connection.$query("INSERT INTO `hash` (`id`, `user_id`, `key`, `socket_id`, `date`, `auth_type`) VALUES (NULL, ?, ?, ?, ?, ?)", [myUserId, data.hash, socketId, new Date(), 'fb'])
-						.then(result => {
+					return this.setFbHash(data, myUserId, socketId)
+						.then(d=>{
 							return {
 								id: myUserId,
 								hash: data.hash,
 								name: data.name
 							}
-						})
-						.catch(err=>{
-							console.error('setFacebookUser 1 ->', err)
-						})
+						});
 				}else {
 					return this.connection.$query('INSERT INTO `user` ' +
 							'(`id`, `name`, `fb_user_id` ) VALUES (NULL, ?, ?)',
@@ -921,10 +918,10 @@ class Util {
 								}
 						})
 						.then(myUser=>{
-							return this.connection.$query("INSERT INTO `hash` (`id`, `user_id`, `key`, `socket_id`, `date`, `auth_type`) VALUES (NULL, ?, ?, ?, ?)", [myUser.id, data.hash, socketId, new Date(), 'fb'])
+							return this.setFbHash(data, myUser.id,socketId )
 								.then(res=>{
 									return myUser
-								})
+								});
 						})
 						.catch(err=>{
 							console.error('setFacebookUser 2 ->', err)
@@ -934,6 +931,18 @@ class Util {
 				}
 			})
 	}
+	setFbHash(data, myUserId, socketId){
+		return this.connection.$query("SELECT * FROM `hash` WHERE `socket_id`=?", [socketId])
+			.then(rows=>{
+				if(rows.length){
+					return	this.connection.$query('UPDATE `hash` SET  `key`=?, `date`=?  WHERE socket_id=?', [data.hash, new Date(), socketId ])
+				}else{
+					return this.connection.$query("INSERT INTO `hash` (`id`, `user_id`, `key`, `socket_id`, `date`, `auth_type`) VALUES (NULL, ?, ?, ?, ?, ?)", [myUserId, data.hash, socketId, new Date(), 'fb'])
+				}
+			})
+	}
+
+
 
 	clearFbHash(socketId){
 		return this.connection.$query('DELETE FROM `hash` WHERE `socket_id`=? AND `auth_type`=?', [socketId, 'fb'])
