@@ -59,7 +59,6 @@ export class UserService implements CanActivate{
     onUserImage(data){
         this.images[data.id] = data.image;
         this.deferImage[data.id].resolve(data.image)
-
     }
     getUserImageById(id: number) {
         if(!this.deferImage[id] ){

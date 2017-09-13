@@ -587,7 +587,6 @@ class Util {
 				} else {
 					reject('no user->', rows)
 				}
-
 			})
 		});
 	}

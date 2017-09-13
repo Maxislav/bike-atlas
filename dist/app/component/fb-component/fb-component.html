@@ -1,0 +1,29 @@
+
+<div class="content">
+  <div>
+    <div>
+      <div (click)="onClose()" class="close">&times;</div>
+    </div>
+    <div class="row">
+      <div class="flex-cell gray">В разработке *</div>
+    </div>
+    <div *ngIf="fbUser.userID" class="flex row center">
+      <table class="athlete">
+        <tr>
+          <td><img [src]="coverUrl"/></td>
+          <td>{{fbUser.name}}</td>
+        </tr>
+      </table>
+    </div>
+    <div *ngIf="!fbUser.userID" class="flex row flex-end">
+      <div class="flex-cell">
+        <div (click)="onEnterFB()" class="button primary">Войти</div>
+      </div>
+    </div>
+    <div *ngIf="fbUser.userID" class="flex row flex-end">
+      <div class="flex-cell">
+        <div (click)="onLogout()" class="button primary">Выйти</div>
+      </div>
+    </div>
+  </div>
+</div>

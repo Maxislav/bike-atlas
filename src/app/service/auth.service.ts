@@ -40,7 +40,7 @@ export class AuthService implements Resolve<any>{
     constructor(
         private io: Io,
         private ls: LocalStorage,
-        private friend: FriendsService,
+        private friendsService: FriendsService,
         private userService: UserService,
         private chatService: ChatService
     ) {
@@ -75,11 +75,11 @@ export class AuthService implements Resolve<any>{
                 this.userService.user = d.user;
                 this.userService.friends = d.user.friends;
                 this.socket.emit(d.user.hash);
-                this.friend.getInvites();
+                this.friendsService.getInvites();
                 this.chatService.getUnViewed(true)
             }else{
                 this.userName = null;
-                console.info(d);
+                //console.info(d);
                 FB.getLoginStatus((response)=> {
                     this.statusChangeCallback(response);
                 })
@@ -120,7 +120,7 @@ export class AuthService implements Resolve<any>{
     setFacebookUser(data: FBuser) : Promise<any>{
         return this.socket.$emit('setFacebookUser', data )
             .then(d=>{
-                this.userService.user = d.user
+                this.userService.user = d.user;
                 return d
             })
     }

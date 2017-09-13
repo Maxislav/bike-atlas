@@ -15,10 +15,10 @@ const friends_service_1 = require("./friends.service");
 const main_user_service_1 = require("./main.user.service");
 const chat_service_1 = require("./chat.service");
 let AuthService = class AuthService {
-    constructor(io, ls, friend, userService, chatService) {
+    constructor(io, ls, friendsService, userService, chatService) {
         this.io = io;
         this.ls = ls;
-        this.friend = friend;
+        this.friendsService = friendsService;
         this.userService = userService;
         this.chatService = chatService;
         this._userName = null;
@@ -49,12 +49,12 @@ let AuthService = class AuthService {
                 this.userService.user = d.user;
                 this.userService.friends = d.user.friends;
                 this.socket.emit(d.user.hash);
-                this.friend.getInvites();
+                this.friendsService.getInvites();
                 this.chatService.getUnViewed(true);
             }
             else {
                 this.userName = null;
-                console.info(d);
+                //console.info(d);
                 FB.getLoginStatus((response) => {
                     this.statusChangeCallback(response);
                 });

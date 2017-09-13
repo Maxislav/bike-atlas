@@ -44,6 +44,8 @@ class OnFacebook extends ProtoData{
 	 */
 	setFacebookUser(eName, data){
 		const hash = this.util.getHash();
+
+		let myUser = null;
 		this._confirmUser(data)
 			.then(user=>{
 				if(user.id == data.userID ){
@@ -51,25 +53,36 @@ class OnFacebook extends ProtoData{
 				}
 				return Promise.reject()
 			})
+
 			.then(user=>{
-				this.util.setFacebookUser({
-					name: data.name,
-					accessToken: data.accessToken,
-					hash: hash,
-					userID: data.userID
-				}, this.socket.id)
-					.then(d=>{
-						this.socket.emit(eName,	Object.assign({result:'ok'}, {user:d}))
+
+				return this.util
+					.setFacebookUser({
+						name: data.name,
+						accessToken: data.accessToken,
+						hash: hash,
+						userID: data.userID
+					}, this.socket.id)
+					.then(myUser=>{
+						return this.util.getUserById(myUser.id)
 					})
 			})
-			.then(img=>{
-				return this._getPhoto(data)
-			})
-			.then(location=>{
-				return this._getRedirect(location)
+			.then(_myUser=>{
+				myUser = _myUser;
+				if(_myUser.image){
+					this.socket.emit(eName,	Object.assign({result:'ok'}, {user:myUser}));
+					return null
+				}else{
+					return this._getPhoto(data)
+				}
 			})
 			.then(d=>{
-				'data:image/png;base64,' + d
+				if(d){
+					this.util.setImageProfile(myUser.id, 	'data:image/png;base64,' + d)
+						.then(row=>{
+							this.socket.emit(eName,	Object.assign({result:'ok'}, {user:myUser}));
+						})
+				}
 			})
 			.catch(err=>{
 				console.error('util.setFacebookUser -> ', err)
@@ -121,6 +134,9 @@ class OnFacebook extends ProtoData{
 				});
 			}).end();
 		})
+			.then(location=>{
+				return this._getRedirect(location)
+			})
 	}
 
 	_getRedirect(str){
