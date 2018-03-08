@@ -135,7 +135,7 @@ class OnImportKml extends ProtoData{
 
 
             if (latLngs.length == 1) {
-                let latLngsArr = latLngs[0].split(/\s/);
+                let latLngsArr = latLngs[0].split(/,/);
                 TRACK.push({
                     lng: latLngsArr[0],
                     lat: latLngsArr[1],
@@ -145,7 +145,7 @@ class OnImportKml extends ProtoData{
                 let stepTime = (timeEndLong - timeStartLong) / latLngs.length;
                 let k = 0;
                 latLngs.forEach(latLng=> {
-                    let latLngsArr = latLng.split(/\s/);
+                    let latLngsArr = latLng.split(/,/);
                     TRACK.push({
                         lng: latLngsArr[0],
                         lat: latLngsArr[1],
@@ -161,6 +161,10 @@ class OnImportKml extends ProtoData{
         }
 
 
+
+
+
+
         /**
          *
          * @param {Array}placeMark
@@ -172,7 +176,8 @@ class OnImportKml extends ProtoData{
                 console.log(place.name[0]);
                 if(place.name[0]=='Cycling'){
                     places.push({
-                        latLngs: place['gx:Track'][0]['gx:coord'],
+                        latLngs: place.LineString[0].coordinates[0].match(/(\-?\d+\.\d+),(\-?\d+\.\d+),(\-?\d+)/g),
+                        //latLngs: place['gx:Track'][0]['gx:coord'],
                         timeStart: place.TimeSpan[0].begin[0],
                         timeEnd: place.TimeSpan[0].end[0]
                     })
