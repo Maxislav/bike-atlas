@@ -18,7 +18,7 @@ export interface Setting{
 
 
 @Injectable()
-export class AuthService implements Resolve<any>{
+export class AuthService implements Resolve<boolean>{
     socket: any;
     private _userId: number;
     private _userName: string = null;
@@ -40,7 +40,7 @@ export class AuthService implements Resolve<any>{
             console.info('disconnect');
         });
     }
-    resolve(): Promise<any> {
+    resolve(): Promise<boolean> {
         return new Promise((resolve, reject)=>{
             this.resolveAuth = resolve;
         });

@@ -2,14 +2,11 @@
   "name": "atlas-angular2",
   "version": "1.0.0",
   "scripts": {
-    "_start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "start": "concurrently  \"npm run gulpDev\" \"npm run server-dev\"  ",
-    "__start": "concurrently \"npm run tsc:w\" \"npm run gulpDev\" \"npm run server-dev\"  ",
     "server": "node server/index.js",
     "server-dev": "node-dev server/index.js",
     "gulpDev": "node_modules/.bin/gulp",
     "lite": "lite-server",
-    "_postinstall": "typings install",
     "tsc": "node_modules/.bin/tsc",
     "tsc:w": "tsc -w",
     "typings": "typings"
@@ -77,8 +74,6 @@
     "reflect-metadata": "^0.1.9",
     "typescript": "^1.8.10",
     "typings": "^1.0.4",
-    "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2",
     "async": "^2.0.1",
     "chai": "^3.5.0",
     "inquirer": "^1.1.3",
