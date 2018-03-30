@@ -6,6 +6,7 @@ import {TimerService} from "./timer.service";
 import {User} from "./main.user.service";
 import {deepCopy} from "../util/deep-copy";
 import {elapsedStatus} from "../util/elapsed-status";
+import {Tail} from "../util/tail.class";
 
 export interface Marker {
     id:string;
@@ -27,8 +28,8 @@ export interface Marker {
     update:Function;
     remove: Function;
     ownerId?: number;
-    updateSetImage: Function
-    
+    updateSetImage: Function,
+    tail: Tail
 }
 
 
@@ -44,10 +45,10 @@ export class MarkerService {
     marker(devData:DeviceData, user: User):Marker {
         const marker : Marker = deepCopy(devData);
         const map = this.mapService.map;
-        const layerId:string = this.getNewLayer(0, 5000000, true) + '';
+        const layerId: string = this.getNewLayer(0, 5000000, true) + '';
         const mapboxgl = this.mapService.mapboxgl;
         let mapBearing = map.getBearing();
-        
+
         const icoContainer = document.createElement('div');
         icoContainer.classList.add("user-icon");
 
@@ -72,7 +73,7 @@ export class MarkerService {
 
         const timer = this.timer;
 
-
+        marker.tail = new Tail(new Point(devData.lng, devData.lat), map);
         marker.updateSetImage = function (src : string) {
             src = src || 'src/img/no-avatar.gif';
             img.src = src;
@@ -80,10 +81,13 @@ export class MarkerService {
         };
         marker.image = user.image || 'src/img/no-avatar.gif';
         marker.elapsed= '...';
+        //TODO остановился тут
         marker.update = function (devData: DeviceData) {
             for (let opt in devData) {
                 this[opt] = devData[opt]
             }
+            this.tail.update(new Point(this.lng,this.lat ))
+            console.log(this.tail)
             popup.setLngLat([this.lng, this.lat]);
             iconMarker.setLngLat([this.lng, this.lat]);
             this.status = elapsedStatus(this);
@@ -112,7 +116,7 @@ export class MarkerService {
         return marker;
     }
 
-    getNewLayer(min, max, int) {
+    private getNewLayer(min, max, int) {
         let rand = min + Math.random() * (max - min);
         if (int) {
             rand = 'marker' + Math.round(rand)

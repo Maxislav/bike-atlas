@@ -93,7 +93,7 @@ export class LogService {
 
     }
 
-    private getDevice(user:User, devData:DeviceData) {
+    private getDevice(user:User, devData:DeviceData): Device {
         if (!devData) return null;
         if (!user.devices) {
             return null;

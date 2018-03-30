@@ -103,11 +103,11 @@ export class MapService {
     get onLoad(): Promise<any> {
         return this._onLoad;
     }
-    get mapboxgl(): any {
+    get mapboxgl(): Object {
         return this._mapboxgl;
     }
 
-    set mapboxgl(value: any) {
+    set mapboxgl(value: Object) {
         this._mapboxgl = value;
     }
 

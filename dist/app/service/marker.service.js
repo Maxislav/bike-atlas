@@ -10,9 +10,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require("@angular/core");
 const map_service_1 = require("./map.service");
+const track_var_1 = require("./track.var");
 const timer_service_1 = require("./timer.service");
 const deep_copy_1 = require("../util/deep-copy");
 const elapsed_status_1 = require("../util/elapsed-status");
+const tail_class_1 = require("../util/tail.class");
 let MarkerService = class MarkerService {
     constructor(mapService, timer) {
         this.mapService = mapService;
@@ -40,6 +42,7 @@ let MarkerService = class MarkerService {
             .addTo(map);
         let intervalUpdateMarker = null;
         const timer = this.timer;
+        marker.tail = new tail_class_1.Tail(new track_var_1.Point(devData.lng, devData.lat), map);
         marker.updateSetImage = function (src) {
             src = src || 'src/img/no-avatar.gif';
             img.src = src;
@@ -47,10 +50,13 @@ let MarkerService = class MarkerService {
         };
         marker.image = user.image || 'src/img/no-avatar.gif';
         marker.elapsed = '...';
+        //TODO остановился тут
         marker.update = function (devData) {
             for (let opt in devData) {
                 this[opt] = devData[opt];
             }
+            this.tail.update(new track_var_1.Point(this.lng, this.lat));
+            console.log(this.tail);
             popup.setLngLat([this.lng, this.lat]);
             iconMarker.setLngLat([this.lng, this.lat]);
             this.status = elapsed_status_1.elapsedStatus(this);
