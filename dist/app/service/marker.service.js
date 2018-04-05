@@ -15,6 +15,35 @@ const timer_service_1 = require("./timer.service");
 const deep_copy_1 = require("../util/deep-copy");
 const elapsed_status_1 = require("../util/elapsed-status");
 const tail_class_1 = require("../util/tail.class");
+class Marker {
+    constructor(devData, user, mapboxgl) {
+        this.user = user;
+        this.mapboxgl = mapboxgl;
+        Object.keys(devData).forEach(key => {
+            this[key] = devData[key];
+        });
+        this.layerId = Marker.getNewLayer(0, 5000000, true) + '';
+        const icoContainer = document.createElement('div');
+        icoContainer.classList.add("user-icon");
+        const img = new Image();
+        img.src = this.user.image || 'src/img/no-avatar.gif';
+        icoContainer.appendChild(img);
+    }
+    updateMarker() {
+    }
+    static getNewLayer(min, max, int) {
+        let rand = min + Math.random() * (max - min);
+        if (int) {
+            rand = 'marker' + Math.round(rand);
+        }
+        if (Marker.layerIds.has(rand)) {
+            return Marker.getNewLayer(min, max, int);
+        }
+        Marker.layerIds.add(rand);
+        return rand;
+    }
+}
+Marker.layerIds = new Set();
 let MarkerService = class MarkerService {
     constructor(mapService, timer) {
         this.mapService = mapService;
@@ -22,6 +51,7 @@ let MarkerService = class MarkerService {
         this.layerIds = [];
     }
     marker(devData, user) {
+        const m = new Marker(devData, user, this.mapService.mapboxgl);
         const marker = deep_copy_1.deepCopy(devData);
         const map = this.mapService.map;
         const layerId = this.getNewLayer(0, 5000000, true) + '';

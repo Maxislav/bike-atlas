@@ -30,14 +30,50 @@
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'rxjs':                       'node_modules/rxjs',
     'css': 'node_modules/systemjs-plugin-css/css.js',
-    'aes-js' : 'node_modules/aes-js'
+    'aes-js' : 'node_modules/aes-js',
+    'rxx': 'node_modules/rx/dist/rx.all.js'
   };
   var packages = {
     'app':                        { main: 'init.js',  defaultExtension: 'js' },
     'ng2-translate':              { main: 'bundles/ng2-translate.umd.js',  defaultExtension: 'js' },
-    'rxjs':                       { main : 'Rx.js', defaultExtension: 'js' },
+
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
-    'aes-js': { main: 'index.js', defaultExtension: 'js' }
+    'aes-js': { main: 'index.js', defaultExtension: 'js' },
+    'rxjs': {
+      defaultExtension: 'js',
+      map: {
+       // './Observable.js': 'node_modules/rx/dist/rx.all.js',
+        /*'./observable/forkJoin.js': 'node_modules/rx/dist/rx.all.js',
+         './observable/fromPromise.js': 'rxx',
+         './operator/map.js': 'node_modules/rx/dist/rx.all.js',
+         './Subject.js': 'node_modules/rx/dist/rx.all.js',
+         './BehaviorSubject.js': 'node_modules/rx/dist/rx.all.js',
+         './observable/of.js': 'node_modules/rx/dist/rx.all.js',
+         './operator/concatMap.js': 'node_modules/rx/dist/rx.all.js',
+         './operator/mergeMap.js': 'node_modules/rx/dist/rx.all.js',
+
+         './observable/from.js': 'node_modules/rx/dist/rx.all.js',
+         './operator/concatAll.js': 'node_modules/rx/dist/rx.all.js',
+         './operator/catch.js': 'node_modules/rx/dist/rx.all.js',
+         './operator/first.js': 'node_modules/rx/dist/rx.all.js',
+         './util/EmptyError.js': 'node_modules/rx/dist/rx.all.js',
+         './operator/every.js': 'node_modules/rx/dist/rx.all.js',
+         './operator/last.js': 'node_modules/rx/dist/rx.all.js',
+         './operator/mergeAll.js': 'node_modules/rx/dist/rx.all.js',
+         './operator/reduce.js': 'node_modules/rx/dist/rx.all.js',
+         './operator/filter.js': 'node_modules/rx/dist/rx.all.js',
+         './observable/merge.js': 'node_modules/rx/dist/rx.all.js',
+         './operator/share.js': 'node_modules/rx/dist/rx.all.js',
+         './Subscription.js': 'node_modules/rx/dist/rx.all.js',
+         './add/observable/of.js': 'node_modules/rx/dist/rx.all.js',
+         './add/operator/map.js': 'node_modules/rx/dist/rx.all.js',
+         './add/operator/merge.js': 'node_modules/rx/dist/rx.all.js',
+         './add/operator/share.js': 'node_modules/rx/dist/rx.all.js',
+         './add/operator/take.js': 'node_modules/rx/dist/rx.all.js',
+         './add/operator/toArray.js': 'node_modules/rx/dist/rx.all.js',*/
+
+      }
+    },
   };
   var ngPackageNames = [
     'common',

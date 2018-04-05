@@ -7,8 +7,7 @@ import {User} from "./main.user.service";
 import {deepCopy} from "../util/deep-copy";
 import {elapsedStatus} from "../util/elapsed-status";
 import {Tail} from "../util/tail.class";
-
-export interface Marker {
+export interface MarkerInterface {
     id:string;
     image: string;
     lng: number;
@@ -21,16 +20,69 @@ export interface Marker {
     speed: number;
     date: string;
     device_key?:string;
-    updateMarker:Function;
-    deviceData:DeviceData;
+    deviceData: DeviceData;
     hide:Function;
     rotate:Function;
     update:Function;
     remove: Function;
     ownerId?: number;
     updateSetImage: Function,
-    tail: Tail
+    tail: Tail,
+    updateMarker():void;
 }
+
+class Marker implements DeviceData{
+    id: string;
+    alt: number;
+    name: string;
+    azimuth: number;
+    date: string;
+    lat: number;
+    lng: number;
+    speed: number;
+    src: string;
+    static layerIds: Set<String> = new Set();
+    private layerId: string;
+
+    private icoContainer: HTMLElement
+
+
+
+
+    constructor( devData: DeviceData, private user: User, private mapboxgl){
+        Object.keys(devData).forEach(key => {
+            this[key] = devData[key]
+        });
+        this.layerId = Marker.getNewLayer(0, 5000000, true) + '';
+        const icoContainer = document.createElement('div');
+        icoContainer.classList.add("user-icon")
+        const img = new Image();
+        img.src = this.user.image || 'src/img/no-avatar.gif';
+        icoContainer.appendChild(img);
+
+    }
+
+    updateMarker(): void {
+
+
+    }
+
+    static getNewLayer(min, max, int): string {
+        let rand = min + Math.random() * (max - min);
+        if (int) {
+            rand = 'marker' + Math.round(rand)
+        }
+        if( Marker.layerIds.has(rand)){
+            return Marker.getNewLayer(min, max, int)
+        }
+        Marker.layerIds.add(rand)
+        return rand
+
+    }
+}
+
+
+
 
 
 @Injectable()
@@ -43,6 +95,10 @@ export class MarkerService {
 
 
     marker(devData:DeviceData, user: User):Marker {
+        const m = new Marker(devData, user, this.mapService.mapboxgl);
+
+
+
         const marker : Marker = deepCopy(devData);
         const map = this.mapService.map;
         const layerId: string = this.getNewLayer(0, 5000000, true) + '';
