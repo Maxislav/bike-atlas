@@ -44,9 +44,7 @@ class Marker implements DeviceData{
     static layerIds: Set<String> = new Set();
     private layerId: string;
 
-    private icoContainer: HTMLElement
-
-
+    private icoContainer: HTMLElement;
 
 
     constructor( devData: DeviceData, private user: User, private mapboxgl){
@@ -59,6 +57,7 @@ class Marker implements DeviceData{
         const img = new Image();
         img.src = this.user.image || 'src/img/no-avatar.gif';
         icoContainer.appendChild(img);
+        this.icoContainer = icoContainer
 
     }
 
@@ -102,7 +101,7 @@ export class MarkerService {
         const marker : Marker = deepCopy(devData);
         const map = this.mapService.map;
         const layerId: string = this.getNewLayer(0, 5000000, true) + '';
-        const mapboxgl = this.mapService.mapboxgl;
+        const mapboxgl: MapBoxGl = this.mapService.mapboxgl;
         let mapBearing = map.getBearing();
 
         const icoContainer = document.createElement('div');

@@ -28,6 +28,7 @@ class Marker {
         const img = new Image();
         img.src = this.user.image || 'src/img/no-avatar.gif';
         icoContainer.appendChild(img);
+        this.icoContainer = icoContainer;
     }
     updateMarker() {
     }

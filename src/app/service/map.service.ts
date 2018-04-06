@@ -13,15 +13,14 @@ export class MapService {
     public _map:any;
     public lat:number;
     public lng:number;
-    public lngMap:number;
-    public latMap:number;
-    public zoom:number;
+    public lngMap:string;
+    public latMap:string;
+    public zoom:string;
     public foo:Function;
-    public pitch:number;
-    public bearing:number;
+    public pitch:string;
+    public bearing:string;
     private _onLoad: Promise<any>;
-
-    private _mapboxgl: any;
+    private _mapboxgl: MapBoxGl;
     private _resolve: Function
     socket:any;
 
@@ -41,7 +40,7 @@ export class MapService {
     }
 
 
-    setMap(map:any) {
+    setMap(map:MapGl) {
         this.map = map;
         //this.trackService.setMap(map);
         map.on('load', ()=> {
@@ -103,11 +102,11 @@ export class MapService {
     get onLoad(): Promise<any> {
         return this._onLoad;
     }
-    get mapboxgl(): Object {
+    get mapboxgl(): MapBoxGl {
         return this._mapboxgl;
     }
 
-    set mapboxgl(value: Object) {
+    set mapboxgl(value: MapBoxGl) {
         this._mapboxgl = value;
     }
 
