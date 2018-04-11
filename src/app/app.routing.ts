@@ -3,12 +3,6 @@
  */
 import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {HeroesComponent} from './heroes.component';
-//import {DashboardComponent} from "./dasboard.component";
-//import {HeroDetailComponent} from "./my-hero-detail.component";
-//import {Hero} from "./hero";
-//import {HEROES, Hero} from "./hero";
-import {TransactionResolver} from "./transaction.resolve";
 import {AuthComponent} from "./component/auth-component/auth.component";
 import {MapComponent} from "./map.component";
 import {RegistrationComponent} from "./component/registration/registration.component";
@@ -113,10 +107,7 @@ const  appRouters: Routes = [
         path: '**',
         redirectTo: '404',
     },
-    {
-        path: 'heroes',
-        component: HeroesComponent
-    },
+
     /*{
         path: 'dashboard',
         component: DashboardComponent,

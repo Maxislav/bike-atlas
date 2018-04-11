@@ -16,8 +16,6 @@ const platform_browser_1 = require('@angular/platform-browser');
 const forms_1 = require('@angular/forms');
 const app_component_1 = require('./app.component');
 const app_routing_1 = require('./app.routing');
-const heroes_component_1 = require("./heroes.component");
-const transaction_resolve_1 = require("./transaction.resolve");
 const auth_component_1 = require("./component/auth-component/auth.component");
 const map_component_1 = require("./map.component");
 const info_position_component_1 = require("./component/info-position/info-position-component");
@@ -123,7 +121,6 @@ AppModule = __decorate([
             map_component_1.MapComponent,
             auth_component_1.AuthComponent,
             app_component_1.AppComponent,
-            heroes_component_1.HeroesComponent,
             device_component_2.HelpContainer,
             menu_component_1.MenuComponent,
             menu_track_component_1.MenuTrackComponent,
@@ -147,7 +144,6 @@ AppModule = __decorate([
             chat_service_1.ChatService,
             journal_service_1.JournalService,
             journal_component_1.LeafletResolver,
-            transaction_resolve_1.TransactionResolver,
             menu_component_1.MenuComponent,
             local_storage_service_1.LocalStorage,
             socket_oi_service_1.Io,

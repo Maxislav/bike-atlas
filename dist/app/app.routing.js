@@ -1,6 +1,5 @@
 "use strict";
 const router_1 = require('@angular/router');
-const heroes_component_1 = require('./heroes.component');
 const auth_component_1 = require("./component/auth-component/auth.component");
 const map_component_1 = require("./map.component");
 const registration_component_1 = require("./component/registration/registration.component");
@@ -93,10 +92,6 @@ const appRouters = [
     {
         path: '**',
         redirectTo: '404',
-    },
-    {
-        path: 'heroes',
-        component: heroes_component_1.HeroesComponent
     },
 ];
 exports.MyRouterModule = router_1.RouterModule.forRoot(appRouters, { useHash: true });

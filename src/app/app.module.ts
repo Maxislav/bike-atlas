@@ -7,8 +7,6 @@ import {FormsModule}   from '@angular/forms';
 
 import {AppComponent}  from './app.component';
 import {MyRouterModule} from './app.routing';
-import {HeroesComponent} from "./heroes.component";
-import {TransactionResolver} from "./transaction.resolve";
 import {AuthComponent} from "./component/auth-component/auth.component";
 import {MapComponent} from "./map.component";
 import {InfoPositionComponent} from "./component/info-position/info-position-component";
@@ -102,7 +100,6 @@ export function createTranslateLoader(http: Http) {
         MapComponent,
         AuthComponent,
         AppComponent,
-        HeroesComponent,
         HelpContainer,
         MenuComponent,
         MenuTrackComponent,
@@ -127,7 +124,6 @@ export function createTranslateLoader(http: Http) {
         ChatService,
         JournalService,
         LeafletResolver,
-        TransactionResolver,
         MenuComponent,
         LocalStorage,
         Io,
