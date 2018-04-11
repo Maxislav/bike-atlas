@@ -126,7 +126,17 @@ let MapboxGlDirective = class MapboxGlDirective {
             let el = this.el;
             el.nativeElement.innerHTML = '';
             mapboxgl.accessToken = "pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA";
-            this.map = new mapboxgl.Map({
+            class MyMap extends mapboxgl.Map {
+                constructor(...args) {
+                    super(...args);
+                    this.onLoad = new Promise((resoleve) => {
+                        this.on('load', () => {
+                            resoleve(this);
+                        });
+                    });
+                }
+            }
+            this.map = new MyMap({
                 container: el.nativeElement,
                 center: [localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
                 zoom: localStorageCenter.zoom || 8,

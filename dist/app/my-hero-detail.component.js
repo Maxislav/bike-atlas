@@ -23,7 +23,7 @@ let HeroDetailComponent = class HeroDetailComponent {
 };
 __decorate([
     core_1.Input(), 
-    __metadata('design:type', hero_1.Hero)
+    __metadata('design:type', (typeof (_a = typeof hero_1.Hero !== 'undefined' && hero_1.Hero) === 'function' && _a) || Object)
 ], HeroDetailComponent.prototype, "hero", void 0);
 HeroDetailComponent = __decorate([
     core_1.Component({
@@ -33,4 +33,5 @@ HeroDetailComponent = __decorate([
     __metadata('design:paramtypes', [])
 ], HeroDetailComponent);
 exports.HeroDetailComponent = HeroDetailComponent;
+var _a;
 //# sourceMappingURL=my-hero-detail.component.js.map

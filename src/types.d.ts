@@ -34,6 +34,10 @@ interface MapGl{
     getPitch(): number
     getCenter(): LngLat
     getBearing(): number
+    addLayer(Object): this
+    addSource(string, Object): this
+    getSource(string): any
+    onLoad: Promise<this>
 }
 
 interface Popup{

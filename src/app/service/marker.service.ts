@@ -4,7 +4,8 @@ import {DeviceData} from "./log.service";
 import {TimerService} from "./timer.service";
 import {User} from "./main.user.service";
 import {elapsedStatus} from "../util/elapsed-status";
-import {Tail} from "../util/tail.class";
+import {Point} from "./track.var";
+import {TailClass} from './tail.class'
 
 export interface MarkerInterface {
     id:string;
@@ -26,9 +27,12 @@ export interface MarkerInterface {
     remove: Function;
     ownerId?: number;
     updateSetImage: Function,
-    tail: Tail,
+    tail: TailClass,
     updateMarker():void;
 }
+
+
+
 
 class Marker implements DeviceData {
 
@@ -42,6 +46,7 @@ class Marker implements DeviceData {
     speed: number;
     src: string;
     image: string;
+    tail: TailClass;
     static layerIds: Set<String> = new Set();
     private layerId: string;
     private icoContainer: HTMLElement;
@@ -52,18 +57,17 @@ class Marker implements DeviceData {
     private intervalUpdateMarker: number;
 
 
-    constructor(devData: DeviceData, private user: User, private mapboxgl: MapBoxGl, map: MapGl, private timer: TimerService) {
+    constructor(devData: DeviceData, private user: User, private mapboxgl: MapBoxGl, private map: MapGl, private timer: TimerService) {
         Object.keys(devData).forEach(key => {
             this[key] = devData[key]
         });
         this.layerId = Marker.getNewLayer(0, 5000000, true) + '';
         const icoContainer = document.createElement('div');
-        icoContainer.classList.add("user-icon")
+        icoContainer.classList.add("user-icon");
         const img = new Image();
         img.src = this.user.image || 'src/img/no-avatar.gif';
         icoContainer.appendChild(img);
         this.icoContainer = icoContainer;
-
 
         this.popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
             .setLngLat([devData.lng, devData.lat])
@@ -77,6 +81,8 @@ class Marker implements DeviceData {
         this.image = user.image || 'src/img/no-avatar.gif';
 
         this.elapsed = '...';
+
+        this.tail = new TailClass(this.layerId, this.map)
 
         this.intervalUpdateMarker = setInterval(() => {
             this.updateMarker();
@@ -92,6 +98,7 @@ class Marker implements DeviceData {
         this.status = elapsedStatus(this);
         this.iconMarker.setLngLat([this.lng, this.lat]);
         this.icoContainer.setAttribute('status', this.status);
+        this.tail.update(new Point(devData.lng, devData.lat))
         return this
     }
 

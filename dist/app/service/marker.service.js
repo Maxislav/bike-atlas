@@ -12,10 +12,13 @@ const core_1 = require("@angular/core");
 const map_service_1 = require("./map.service");
 const timer_service_1 = require("./timer.service");
 const elapsed_status_1 = require("../util/elapsed-status");
+const track_var_1 = require("./track.var");
+const tail_class_1 = require('./tail.class');
 class Marker {
     constructor(devData, user, mapboxgl, map, timer) {
         this.user = user;
         this.mapboxgl = mapboxgl;
+        this.map = map;
         this.timer = timer;
         this.status = 'white';
         Object.keys(devData).forEach(key => {
@@ -37,6 +40,7 @@ class Marker {
             .addTo(map);
         this.image = user.image || 'src/img/no-avatar.gif';
         this.elapsed = '...';
+        this.tail = new tail_class_1.TailClass(this.layerId, this.map);
         this.intervalUpdateMarker = setInterval(() => {
             this.updateMarker();
         }, 1000);
@@ -49,6 +53,7 @@ class Marker {
         this.status = elapsed_status_1.elapsedStatus(this);
         this.iconMarker.setLngLat([this.lng, this.lat]);
         this.icoContainer.setAttribute('status', this.status);
+        this.tail.update(new track_var_1.Point(devData.lng, devData.lat));
         return this;
     }
     updateMarker() {
