@@ -107,13 +107,6 @@ let MapboxGlDirective = class MapboxGlDirective {
         //renderer.setElementStyle(el.nativeElement, 'height', '100%');
         renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'gray');
     }
-    resolve() {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve();
-            }, 5000);
-        });
-    }
     get mapboxgl() {
         return this._mapboxgl;
     }

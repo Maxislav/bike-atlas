@@ -3,35 +3,35 @@ div.content
         .close((click)="onClose()") &times;
         div
             | Регистрация устройства
-
-        div.row()
-
-
-            table()
-                thead
-                    tr
-                        td.required Имя
-                        td.required Идентификатор устройства
-                        td Телефон
-                        td
-                tbody
-                    tr(*ngFor="let dev of devices \;  let i = index ", (click)="preDel($event, i)")
-                        td {{dev.name}}
-                        td {{dev.device_key}}
-                        td {{dev.phone}}
-                        td.predelCell
-                            //.close((click)="onClose()") &times;
-                            .predel(*ngIf="btnPreDel.index==i", (click)='onDel($event, dev)') &times;
-                           // button((click)='onDel($event, i)') {{btnPreDel.index}}
-                    tr
-                        td
-                            input(type='text', [(ngModel)]='device.name', placeholder="{{user.name}}")
-                        td
-                            input(type='text', [(ngModel)]='device.id', placeholder="88888888888")
-                        td
-                            input(type='text', [(ngModel)]='device.phone')
-                        td
-                            button((click)="onAdd($event)") Добавить
+        form(#f="ngForm" )
+            div.row()
+                table()
+                    thead
+                        tr
+                            td.required Имя
+                            td.required Идентификатор устройства
+                            td Телефон
+                            td
+                    tbody
+                        tr(*ngFor="let dev of devices \;  let i = index ", (click)="preDel($event, i)")
+                            td {{dev.name}}
+                            td {{dev.device_key}}
+                            td {{dev.phone}}
+                            td.predelCell
+                                .predel(*ngIf="btnPreDel.index==i", (click)='onDel($event, dev)') &times;
+                        tr
+                            td
+                                input(type='text', [(ngModel)]='device.name', name='deviceName', placeholder="{{user.name}}", required, minlength="3" )
+                            td
+                                .relative
+                                    input(type='text', id='deviceId', [(ngModel)]='device.id', name='deviceId' placeholder="88888888888", required, minlength="12" , #deviceId="ngModel" )
+                                    div.absolute.helper(*ngIf="deviceId.invalid && (deviceId.dirty || deviceId.touched)")
+                                        div(*ngIf="deviceId.errors.minlength")
+                                            |must be at least 12 characters long.
+                            td
+                                input(type='text', [(ngModel)]='device.phone' name='devicePhone')
+                            td
+                                button((click)="onAdd($event)", [disabled]='f.invalid', [ngClass]="{disabled: f.invalid }") Добавить
 
 
         .border-hidden

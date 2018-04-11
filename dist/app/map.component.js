@@ -27,6 +27,7 @@ MapComponent = __decorate([
             '<mapbox-gl> map loading...</mapbox-gl>'
         ].join(''),
         styleUrls: ['./css/map.component.css'],
+        providers: []
     }), 
     __metadata('design:paramtypes', [mercator_service_1.Mercator, map_service_1.MapService, log_service_1.LogService])
 ], MapComponent);

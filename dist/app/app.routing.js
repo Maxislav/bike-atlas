@@ -28,11 +28,6 @@ const appRouters = [
         },
         children: [
             {
-                path: 'dd',
-                redirectTo: 'map',
-                pathMatch: 'full'
-            },
-            {
                 path: 'map',
                 component: map_component_1.MapComponent,
                 children: [

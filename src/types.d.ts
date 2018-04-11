@@ -38,6 +38,7 @@ interface MapGl{
     addSource(string, Object): this
     getSource(string): any
     onLoad: Promise<this>
+    on(string, Function): this
 }
 
 interface Popup{

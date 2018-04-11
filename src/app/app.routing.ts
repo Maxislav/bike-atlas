@@ -12,7 +12,7 @@ import {ProfileComponent} from "./component/profile/profile.component";
 import {JournalComponent, LeafletResolver} from "./component/journal-component/journal.component";
 import {FriendsComponent} from "./component/friends-component/friends-component";
 import {PrivateArea} from "./component/private-area/private-area";
-import {MapResolver} from "./directive/mapbox-gl.directive";
+import {MapboxGlDirective, MapResolver} from "./directive/mapbox-gl.directive";
 import {NoFoundComponent} from "./no-found.component";
 import {AllUserComponent} from "./component/all-user/all-user.component";
 import {StravaComponent} from "./component/strava-component/strava-component";
@@ -34,12 +34,7 @@ const  appRouters: Routes = [
             transactions : AuthService
         },
         children:[
-            {
-                path: 'dd',
-                redirectTo: 'map',
-                pathMatch: 'full'
 
-            },
             {
                 path:'map',
                 component: MapComponent,

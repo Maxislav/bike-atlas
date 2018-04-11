@@ -16,7 +16,7 @@ declare var System:any;
 
 @Injectable()
 export class MapResolver implements Resolve<any> {
-    private _resolver:Function;
+    public _resolver:Function;
     private _resPromise: Promise<any>;
 
     constructor() {
@@ -40,16 +40,8 @@ export class MapResolver implements Resolve<any> {
 @Directive({
     selector: 'mapbox-gl',
 })
-export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
+export class MapboxGlDirective implements AfterViewInit {
     private setting: Setting = {};
-
-    resolve():Promise<any> {
-        return new Promise((resolve, reject)=> {
-            setTimeout(()=> {
-                resolve()
-            }, 5000)
-        });
-    }
 
     get mapboxgl():any {
         return this._mapboxgl;
@@ -157,12 +149,10 @@ export class MapboxGlDirective implements AfterViewInit, Resolve<any> {
             let el = this.el;
             el.nativeElement.innerHTML = '';
             mapboxgl.accessToken = "pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA";
-
             class MyMap extends mapboxgl.Map{
                 onLoad: Promise<MapGl>;
                 constructor(...args){
                     super(...args)
-
                     this.onLoad = new Promise((resoleve)=>{
                         this.on('load', () => {
                             resoleve(this)

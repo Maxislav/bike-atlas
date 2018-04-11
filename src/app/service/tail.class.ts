@@ -48,16 +48,21 @@ export class TailClass {
 
     update(point: Point): TailClass {
         if(!this.data.geometry.coordinates) return this;
-        if (!this.data.geometry.coordinates[0][0]) {
-            this.data.geometry.coordinates[0] = point
-        } else {
-            this.data.geometry.coordinates.push(point)
-        }
-        while (10 < this.data.geometry.coordinates.length) {
-            this.data.geometry.coordinates.splice(0, 1)
-        }
+        this.map.onLoad
+            .then(() => {
+                if (!this.data.geometry.coordinates[0][0]) {
+                    this.data.geometry.coordinates[0] = point
+                } else {
+                    this.data.geometry.coordinates.push(point)
+                }
+                while (10 < this.data.geometry.coordinates.length) {
+                    this.data.geometry.coordinates.splice(0, 1)
+                }
 
-        this.map.getSource(this.sourceId).setData(this.data)
+                this.map.getSource(this.sourceId).setData(this.data)
+            })
+
+
         return this
     }
     remove(): void{

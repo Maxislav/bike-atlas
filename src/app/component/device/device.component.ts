@@ -148,6 +148,13 @@ export class DeviceComponent {
         };
     }
 
+    ngDoCheck(){
+
+    }
+
+    getF(f){
+        console.log(f)
+    }
 
     onClose() {
         if (this.lh.is) {

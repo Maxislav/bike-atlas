@@ -3,7 +3,7 @@
  */
 import {NgModule, NgZone}      from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule}   from '@angular/forms';
+import {FormsModule, ReactiveFormsModule}   from '@angular/forms';
 
 import {AppComponent}  from './app.component';
 import {MyRouterModule} from './app.routing';
@@ -75,6 +75,7 @@ export function createTranslateLoader(http: Http) {
     imports: [
         BrowserModule,
         FormsModule,
+        ReactiveFormsModule,
         MyRouterModule,
         TranslateModule.forRoot({
             provide: TranslateLoader,

@@ -30,6 +30,20 @@
   font-size: 20px;
   font: 30px/15px bold;
 }
+.disabled {
+  color: gray;
+}
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+  top: 100%;
+}
+.absolute.helper {
+  font-size: 10px;
+  color: #c80e00;
+}
 @media screen and (max-width: 600px) {
   .content {
     position: relative;

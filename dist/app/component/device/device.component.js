@@ -119,6 +119,11 @@ let DeviceComponent = class DeviceComponent {
             image: ''
         };
     }
+    ngDoCheck() {
+    }
+    getF(f) {
+        console.log(f);
+    }
     onClose() {
         if (this.lh.is) {
             this.location.back();
