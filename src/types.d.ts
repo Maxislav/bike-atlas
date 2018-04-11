@@ -18,8 +18,11 @@ interface LngLat extends Array<number>{
     lat: number
 }
 
-interface Marker{
+interface MapMarker{
     new(HTMLElement, options: Object)
+    setLngLat(lngLat: number[] | LngLat): this
+    remove(): this
+
 }
 
 interface MapGl{
@@ -38,12 +41,13 @@ interface Popup{
     setLngLat(lngLat: number[] | LngLat): this
     setHTML(string): this
     addTo(MapBoxGl): this
+    remove(): this
 }
 
 interface MapBoxGl{
     Popup: Popup,
     Map: MapGl
-    Marker: Marker
+    Marker: MapMarker
 }
 
 //declare const mapboxgl:
