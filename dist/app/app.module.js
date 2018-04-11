@@ -98,7 +98,7 @@ AppModule = __decorate([
         imports: [
             platform_browser_1.BrowserModule,
             forms_1.FormsModule,
-            app_routing_1.routing,
+            app_routing_1.MyRouterModule,
             ng2_translate_1.TranslateModule.forRoot({
                 provide: ng2_translate_1.TranslateLoader,
                 useFactory: (createTranslateLoader),

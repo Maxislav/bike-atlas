@@ -139,4 +139,4 @@ const  appRouters: Routes = [
 ];
 
 
-export const routing: ModuleWithProviders = RouterModule.forRoot(appRouters, {useHash: true});
+export const MyRouterModule: ModuleWithProviders = RouterModule.forRoot(appRouters, {useHash: true});

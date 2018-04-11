@@ -6,7 +6,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule}   from '@angular/forms';
 
 import {AppComponent}  from './app.component';
-import {routing} from './app.routing';
+import {MyRouterModule} from './app.routing';
 import {HeroesComponent} from "./heroes.component";
 import {TransactionResolver} from "./transaction.resolve";
 import {AuthComponent} from "./component/auth-component/auth.component";
@@ -77,7 +77,7 @@ export function createTranslateLoader(http: Http) {
     imports: [
         BrowserModule,
         FormsModule,
-        routing,
+        MyRouterModule,
         TranslateModule.forRoot({
             provide: TranslateLoader,
             useFactory: (createTranslateLoader),
