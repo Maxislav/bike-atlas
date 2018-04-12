@@ -6,16 +6,6 @@ import {FriendsService} from "./friends.service";
 import {UserService} from "./main.user.service";
 
 
-export interface Device {
-    id: string;
-    name: string;
-    image: string;
-    ownerId: number,
-    phone?: string,
-    marker?: Marker;
-    passed?: string;
-    device_key?: string;
-}
 
 
 @Injectable()

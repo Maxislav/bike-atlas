@@ -1,5 +1,5 @@
 "use strict";
-const router_1 = require('@angular/router');
+const router_1 = require("@angular/router");
 const auth_component_1 = require("./component/auth-component/auth.component");
 const map_component_1 = require("./map.component");
 const registration_component_1 = require("./component/registration/registration.component");

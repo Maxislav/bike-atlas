@@ -15,7 +15,7 @@ const socket_oi_service_1 = require("../../service/socket.oi.service");
 const strava_service_1 = require("../../service/strava.service");
 const toast_component_1 = require("../toast/toast.component");
 const main_user_service_1 = require("../../service/main.user.service");
-const aes_cript_1 = require('../../service/aes-cript');
+const aes_cript_1 = require("../../service/aes-cript");
 let StravaComponent = class StravaComponent {
     constructor(router, io, userService, stravaService, toast) {
         this.router = router;
@@ -163,8 +163,12 @@ StravaComponent = __decorate([
         moduleId: module.id,
         templateUrl: "./strava-component.html",
         styleUrls: ['./strava-component.css'],
-    }), 
-    __metadata('design:paramtypes', [router_1.Router, socket_oi_service_1.Io, main_user_service_1.UserService, strava_service_1.StravaService, toast_component_1.ToastService])
+    }),
+    __metadata("design:paramtypes", [router_1.Router,
+        socket_oi_service_1.Io,
+        main_user_service_1.UserService,
+        strava_service_1.StravaService,
+        toast_component_1.ToastService])
 ], StravaComponent);
 exports.StravaComponent = StravaComponent;
 //# sourceMappingURL=strava-component.js.map

@@ -1,11 +1,15 @@
 import {Injectable} from "@angular/core";
 import {MapService} from "./map.service";
 import {DeviceData} from "./log.service";
-import {TimerService} from "./timer.service";
+import {TimerService, Timer} from "./timer.service";
 import {User} from "./main.user.service";
 import {elapsedStatus} from "../util/elapsed-status";
 import {Point} from "./track.var";
 import {TailClass} from './tail.class'
+import {distance} from "../util/distance";
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+import {MapMarker} from "../../types";
 
 export interface MarkerInterface {
     id:string;
@@ -47,6 +51,9 @@ class Marker implements DeviceData {
     src: string;
     image: string;
     tail: TailClass;
+    speedSubject: Observable<number>;
+
+    private speedBehaviorSubject: BehaviorSubject<number>
     static layerIds: Set<String> = new Set();
     private layerId: string;
     private icoContainer: HTMLElement;
@@ -55,12 +62,16 @@ class Marker implements DeviceData {
     private elapsed: string;
     private status: string = 'white';
     private intervalUpdateMarker: number;
+    private timer: Timer;
 
 
-    constructor(devData: DeviceData, private user: User, private mapboxgl: MapBoxGl, private map: MapGl, private timer: TimerService) {
+    constructor(devData: DeviceData, private user: User, private mapboxgl: MapBoxGl, private map: MapGl, private timerService: TimerService) {
         Object.keys(devData).forEach(key => {
             this[key] = devData[key]
         });
+        this.speedBehaviorSubject = new BehaviorSubject<number>(0)
+        this.speedSubject = this.speedBehaviorSubject.asObservable();
+        this.timer = new Timer();
         this.layerId = Marker.getNewLayer(0, 5000000, true) + '';
         const icoContainer = document.createElement('div');
         icoContainer.classList.add("user-icon");
@@ -91,9 +102,15 @@ class Marker implements DeviceData {
     }
 
     update(devData: DeviceData): Marker {
+        const prevLngLat: Point = new Point(this.lng, this.lat);
+        const t = this.timer.tick();
         for (let opt in devData) {
             this[opt] = devData[opt]
         }
+        const nextLngLat: Point = new Point(this.lng, this.lat);
+        this.speed = 3600 * 1000 * distance(prevLngLat, nextLngLat)/t; //km/h
+        this.speedBehaviorSubject.next(this.speed)
+
         this.popup.setLngLat([this.lng, this.lat]);
         this.status = elapsedStatus(this);
         this.iconMarker.setLngLat([this.lng, this.lat]);
@@ -106,7 +123,7 @@ class Marker implements DeviceData {
 
         this.status = elapsedStatus(this);
         this.icoContainer.setAttribute('status', this.status);
-        this.elapsed = this.timer.elapse(this.date)
+        this.elapsed = this.timerService.elapse(this.date)
         return this
     }
 

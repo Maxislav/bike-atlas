@@ -64,6 +64,11 @@ export class ChatRoomComponent implements OnInit, AfterViewInit{
             };
         this._keyUp = this.keyUp.bind(this)
     }
+
+    ngOnChanges(s){
+        console.log('ChatRoomComponent ngOnChanges', s)
+    }
+
     ngOnInit():void {
         this.name= this.room.name;
         this.messages = this.room.messages;

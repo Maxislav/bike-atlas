@@ -18,7 +18,7 @@ const strava_service_1 = require("../../../../service/strava.service");
 const router_1 = require("@angular/router");
 const R = require("@ramda/ramda.min.js");
 const distance_1 = require("../../../../util/distance");
-let OneItemTrackComponent_1 = class OneItemTrackComponent {
+let OneItemTrackComponent = OneItemTrackComponent_1 = class OneItemTrackComponent {
     constructor(trackService, mapService, toast, router, stravaService) {
         this.trackService = trackService;
         this.mapService = mapService;
@@ -376,11 +376,10 @@ let OneItemTrackComponent_1 = class OneItemTrackComponent {
         }
     }
 };
-let OneItemTrackComponent = OneItemTrackComponent_1;
 OneItemTrackComponent.layerIds = [];
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Object)
+    core_1.Input(),
+    __metadata("design:type", Object)
 ], OneItemTrackComponent.prototype, "track", void 0);
 OneItemTrackComponent = OneItemTrackComponent_1 = __decorate([
     core_1.Component({
@@ -388,8 +387,13 @@ OneItemTrackComponent = OneItemTrackComponent_1 = __decorate([
         selector: 'one-item-track-component',
         templateUrl: "./one-item-track.component.html",
         styleUrls: ['./one-item-track.component.css']
-    }), 
-    __metadata('design:paramtypes', [track_service_1.TrackService, map_service_1.MapService, toast_component_1.ToastService, router_1.Router, strava_service_1.StravaService])
+    }),
+    __metadata("design:paramtypes", [track_service_1.TrackService,
+        map_service_1.MapService,
+        toast_component_1.ToastService,
+        router_1.Router,
+        strava_service_1.StravaService])
 ], OneItemTrackComponent);
 exports.OneItemTrackComponent = OneItemTrackComponent;
+var OneItemTrackComponent_1;
 //# sourceMappingURL=one-item-track.component.js.map

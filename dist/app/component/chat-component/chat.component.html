@@ -1,4 +1,4 @@
 
-<div *ngFor="let room of rooms; let i = index;" class="room">
+<div *ngFor="let room of rooms; let i = index; trackBy:sortByFn" class="room">
   <chat-room [room]="room"></chat-room>
 </div>

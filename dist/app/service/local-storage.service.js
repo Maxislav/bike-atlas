@@ -50,8 +50,8 @@ let LocalStorage = class LocalStorage {
     }
 };
 LocalStorage = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
 ], LocalStorage);
 exports.LocalStorage = LocalStorage;
 //# sourceMappingURL=local-storage.service.js.map

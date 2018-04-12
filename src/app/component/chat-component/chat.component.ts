@@ -14,5 +14,9 @@ export class ChatComponent{
     constructor(private  chatService: ChatService){
         this.rooms = chatService.rooms
     }
+
+    sortByFn(index, item){
+        return item.id
+    }
 }
 

@@ -15,6 +15,9 @@ let ChatComponent = class ChatComponent {
         this.chatService = chatService;
         this.rooms = chatService.rooms;
     }
+    sortByFn(index, item) {
+        return item.id;
+    }
 };
 ChatComponent = __decorate([
     core_1.Component({
@@ -22,8 +25,8 @@ ChatComponent = __decorate([
         templateUrl: './chat.component.html',
         moduleId: module.id,
         styleUrls: ['./chat.component.css']
-    }), 
-    __metadata('design:paramtypes', [chat_service_1.ChatService])
+    }),
+    __metadata("design:paramtypes", [chat_service_1.ChatService])
 ], ChatComponent);
 exports.ChatComponent = ChatComponent;
 //# sourceMappingURL=chat.component.js.map

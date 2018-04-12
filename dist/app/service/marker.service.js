@@ -13,17 +13,22 @@ const map_service_1 = require("./map.service");
 const timer_service_1 = require("./timer.service");
 const elapsed_status_1 = require("../util/elapsed-status");
 const track_var_1 = require("./track.var");
-const tail_class_1 = require('./tail.class');
+const tail_class_1 = require("./tail.class");
+const distance_1 = require("../util/distance");
+const BehaviorSubject_1 = require("rxjs/BehaviorSubject");
 class Marker {
-    constructor(devData, user, mapboxgl, map, timer) {
+    constructor(devData, user, mapboxgl, map, timerService) {
         this.user = user;
         this.mapboxgl = mapboxgl;
         this.map = map;
-        this.timer = timer;
+        this.timerService = timerService;
         this.status = 'white';
         Object.keys(devData).forEach(key => {
             this[key] = devData[key];
         });
+        this.speedBehaviorSubject = new BehaviorSubject_1.BehaviorSubject(0);
+        this.speedSubject = this.speedBehaviorSubject.asObservable();
+        this.timer = new timer_service_1.Timer();
         this.layerId = Marker.getNewLayer(0, 5000000, true) + '';
         const icoContainer = document.createElement('div');
         icoContainer.classList.add("user-icon");
@@ -46,9 +51,14 @@ class Marker {
         }, 1000);
     }
     update(devData) {
+        const prevLngLat = new track_var_1.Point(this.lng, this.lat);
+        const t = this.timer.tick();
         for (let opt in devData) {
             this[opt] = devData[opt];
         }
+        const nextLngLat = new track_var_1.Point(this.lng, this.lat);
+        this.speed = 3600 * 1000 * distance_1.distance(prevLngLat, nextLngLat) / t; //km/h
+        this.speedBehaviorSubject.next(this.speed);
         this.popup.setLngLat([this.lng, this.lat]);
         this.status = elapsed_status_1.elapsedStatus(this);
         this.iconMarker.setLngLat([this.lng, this.lat]);
@@ -59,7 +69,7 @@ class Marker {
     updateMarker() {
         this.status = elapsed_status_1.elapsedStatus(this);
         this.icoContainer.setAttribute('status', this.status);
-        this.elapsed = this.timer.elapse(this.date);
+        this.elapsed = this.timerService.elapse(this.date);
         return this;
     }
     remove() {
@@ -92,8 +102,8 @@ let MarkerService = class MarkerService {
     }
 };
 MarkerService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [map_service_1.MapService, timer_service_1.TimerService])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [map_service_1.MapService, timer_service_1.TimerService])
 ], MarkerService);
 exports.MarkerService = MarkerService;
 //# sourceMappingURL=marker.service.js.map

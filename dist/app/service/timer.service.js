@@ -9,6 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const core_1 = require("@angular/core");
+class Timer {
+    constructor() {
+        this.date = new Date();
+    }
+    tick() {
+        const prevDate = this.date;
+        this.date = new Date();
+        return this.date.getTime() - prevDate.getTime();
+    }
+}
+exports.Timer = Timer;
 let TimerService = class TimerService {
     constructor() {
     }
@@ -45,8 +56,8 @@ let TimerService = class TimerService {
     }
 };
 TimerService = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
 ], TimerService);
 exports.TimerService = TimerService;
 ;

@@ -89,6 +89,9 @@ export class DeviceComponent {
         deviceService.updateDevices()
     }
 
+    ngOnChanges(a){
+        console.log('ngOnChanges->', a)
+    }
     onShowHelp() {
         this.showHelp = !this.showHelp
     }

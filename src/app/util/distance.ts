@@ -39,5 +39,5 @@ export const distance = ([lng, lat]:Array<number>|Point, [lng2, lat2]: Array<num
     }
     dist_sum = dist_sum / 1000;
     dist_sum = parseFloat(dist_sum.toFixed(3));
-    return dist_sum;
+    return dist_sum; //km
 };

@@ -1,3 +1,5 @@
+import {Marker} from "./app/service/marker.service";
+
 interface Set<T> {
     add(value: T): this;
     clear(): void;
@@ -55,4 +57,15 @@ interface MapBoxGl{
     Marker: MapMarker
 }
 
-//declare const mapboxgl:
+
+
+interface Device {
+    id: string;
+    name: string;
+    image: string;
+    ownerId: number,
+    phone?: string,
+    marker?: Marker;
+    passed?: string;
+    device_key?: string;
+}

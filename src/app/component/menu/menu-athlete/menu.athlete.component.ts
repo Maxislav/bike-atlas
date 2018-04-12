@@ -6,6 +6,9 @@ import {LogService} from "../../../service/log.service";
 import {UserService} from "../../../service/main.user.service";
 import {forEach} from "@angular/router/esm/src/utils/collection";
 
+
+
+
 @Component({
     moduleId: module.id,
     selector: 'menu-athlete',
@@ -13,7 +16,6 @@ import {forEach} from "@angular/router/esm/src/utils/collection";
     styleUrls: ['./menu.athlete.component.css'],
 })
 export class MenuAthleteComponent{
-   
     private userDevices: Array<Device>;
     private _friendDevices: Array<Device>;
     private otherDevices: Array<Device>;

@@ -55,6 +55,7 @@ import {TranslateModule, TranslateLoader, TranslateStaticLoader, TranslateServic
 import {Http, ConnectionBackend} from "@angular/http";
 
 import {Component, Injectable} from "@angular/core";
+import {MenuAthleteItemComponent} from "./component/menu/menu-athlete/menu.athlete.item.component/menu.athlete.item.component";
 @Component({
     //noinspection TypeScriptUnresolvedVariable
     template: '<div></div>',
@@ -88,6 +89,7 @@ export function createTranslateLoader(http: Http) {
      */
     declarations: [
         JJ,
+        MenuAthleteItemComponent,
         StravaAuthComponent,
         StravaComponent,
         OneItemTrackComponent,

@@ -26,6 +26,9 @@ let ChatRoomComponent = class ChatRoomComponent {
         };
         this._keyUp = this.keyUp.bind(this);
     }
+    ngOnChanges(s) {
+        console.log('ChatRoomComponent ngOnChanges', s);
+    }
     ngOnInit() {
         this.name = this.room.name;
         this.messages = this.room.messages;
@@ -66,8 +69,8 @@ let ChatRoomComponent = class ChatRoomComponent {
     }
 };
 __decorate([
-    core_1.Input(), 
-    __metadata('design:type', Object)
+    core_1.Input(),
+    __metadata("design:type", Object)
 ], ChatRoomComponent.prototype, "room", void 0);
 ChatRoomComponent = __decorate([
     core_1.Component({
@@ -76,8 +79,10 @@ ChatRoomComponent = __decorate([
         //template: '{{userId}}<textarea [(ngModel)]="myActiveMess"></textarea>'
         templateUrl: './chat-room.component.html',
         styleUrls: ['./chat-room.component.css']
-    }), 
-    __metadata('design:paramtypes', [chat_service_1.ChatService, friends_service_1.FriendsService, core_1.ElementRef])
+    }),
+    __metadata("design:paramtypes", [chat_service_1.ChatService,
+        friends_service_1.FriendsService,
+        core_1.ElementRef])
 ], ChatRoomComponent);
 exports.ChatRoomComponent = ChatRoomComponent;
 //# sourceMappingURL=chat-room.component.js.map

@@ -11,11 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by maxislav on 16.08.16.
  */
-const core_1 = require('@angular/core');
-const platform_browser_1 = require('@angular/platform-browser');
-const forms_1 = require('@angular/forms');
-const app_component_1 = require('./app.component');
-const app_routing_1 = require('./app.routing');
+const core_1 = require("@angular/core");
+const platform_browser_1 = require("@angular/platform-browser");
+const forms_1 = require("@angular/forms");
+const app_component_1 = require("./app.component");
+const app_routing_1 = require("./app.routing");
 const auth_component_1 = require("./component/auth-component/auth.component");
 const map_component_1 = require("./map.component");
 const info_position_component_1 = require("./component/info-position/info-position-component");
@@ -62,14 +62,14 @@ const strava_service_1 = require("./service/strava.service");
 const ng2_translate_1 = require("ng2-translate");
 const http_1 = require("@angular/http");
 const core_2 = require("@angular/core");
+const menu_athlete_item_component_1 = require("./component/menu/menu-athlete/menu.athlete.item.component/menu.athlete.item.component");
 let JJ = class JJ {
 };
 JJ = __decorate([
     core_2.Component({
         //noinspection TypeScriptUnresolvedVariable
         template: '<div></div>',
-    }), 
-    __metadata('design:paramtypes', [])
+    })
 ], JJ);
 exports.JJ = JJ;
 function createTranslateLoader(http) {
@@ -109,6 +109,7 @@ AppModule = __decorate([
          */
         declarations: [
             JJ,
+            menu_athlete_item_component_1.MenuAthleteItemComponent,
             strava_auth_component_1.StravaAuthComponent,
             strava_component_1.StravaComponent,
             one_item_track_component_1.OneItemTrackComponent,
@@ -166,8 +167,8 @@ AppModule = __decorate([
         bootstrap: [
             app_component_1.AppComponent
         ]
-    }), 
-    __metadata('design:paramtypes', [ng2_translate_1.TranslateService])
+    }),
+    __metadata("design:paramtypes", [ng2_translate_1.TranslateService])
 ], AppModule);
 exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map

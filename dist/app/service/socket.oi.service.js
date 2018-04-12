@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const core_1 = require("@angular/core");
 const io = require("socket/socket.io.js");
-const aes_cript_1 = require('./aes-cript');
+const aes_cript_1 = require("./aes-cript");
 let Io = class Io {
     constructor() {
         if (window.location.hostname.match(/github\.io/)) {
@@ -58,8 +58,8 @@ let Io = class Io {
     }
 };
 Io = __decorate([
-    core_1.Injectable(), 
-    __metadata('design:paramtypes', [])
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [])
 ], Io);
 exports.Io = Io;
 //# sourceMappingURL=socket.oi.service.js.map
