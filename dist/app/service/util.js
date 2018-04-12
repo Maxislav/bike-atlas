@@ -1,7 +1,8 @@
+"use strict";
 /**
  * Created by maxislav on 01.12.16.
  */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Util {
     constructor() {
     }

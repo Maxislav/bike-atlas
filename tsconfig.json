@@ -2,20 +2,20 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
+    "esModuleInterop": true,
     "moduleResolution": "node",
-    "sourceMap": true,
+    "sourceMap": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
     "rootDir": "./src",
     "outDir": "dist/",
-    "typeRoots": [
-      "./node_modules/@types/index.d.ts",
-      "./node_modules/aes-js/index.js"
-    ]
-
+    "typeRoots" : ["src/types.d.ts"]
   },
+  "include": [
+    "src/types.d.ts"
+  ],
   "exclude": [
     "dist",
     "node_modules",

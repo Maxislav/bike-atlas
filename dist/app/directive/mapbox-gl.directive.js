@@ -8,13 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const core_2 = require("@angular/core");
 //import any = jasmine.any;
 const map_service_1 = require("../service/map.service");
 const position_size_service_1 = require("../service/position-size.service");
 const local_storage_service_1 = require("../service/local-storage.service");
-const mapboxgl = require("@lib/mapbox-gl/mapbox-gl.js");
+const mapbox_gl_js_1 = __importDefault(require("@lib/mapbox-gl/mapbox-gl.js"));
 const main_user_service_1 = require("../service/main.user.service");
 let MapResolver = class MapResolver {
     constructor() {
@@ -48,7 +52,7 @@ let MapboxGlDirective = class MapboxGlDirective {
         this.el = el;
         this.renderer = renderer;
         this.mapService = mapService;
-        this.mapService.mapboxgl = mapboxgl;
+        this.mapService.mapboxgl = mapbox_gl_js_1.default;
         this.styleSource = {
             "google-default": {
                 "type": "raster",
@@ -118,8 +122,8 @@ let MapboxGlDirective = class MapboxGlDirective {
             const localStorageCenter = this.ls.mapCenter;
             let el = this.el;
             el.nativeElement.innerHTML = '';
-            mapboxgl.accessToken = "pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA";
-            class MyMap extends mapboxgl.Map {
+            mapbox_gl_js_1.default.accessToken = "pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA";
+            class MyMap extends mapbox_gl_js_1.default.Map {
                 constructor(...args) {
                     super(...args);
                     this.onLoad = new Promise((resoleve) => {
@@ -134,15 +138,8 @@ let MapboxGlDirective = class MapboxGlDirective {
                 center: [localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
                 zoom: localStorageCenter.zoom || 8,
                 style: 'mapbox://styles/mapbox/streets-v9',
-                _style: {
-                    "version": 8,
-                    "name": "plastun",
-                    "sprite": "http://" + window.location.hostname + "/src/sprite/sprite",
-                    "sources": this.styleSource,
-                    "layers": this.layers
-                }
             });
-            this.map.addControl(new mapboxgl.NavigationControl({
+            this.map.addControl(new mapbox_gl_js_1.default.NavigationControl({
                 position: 'top-right',
                 maxWidth: 80
             }));
@@ -182,4 +179,3 @@ MapboxGlDirective = __decorate([
         MapResolver])
 ], MapboxGlDirective);
 exports.MapboxGlDirective = MapboxGlDirective;
-//# sourceMappingURL=mapbox-gl.directive.js.map

@@ -9,7 +9,7 @@ import {TailClass} from './tail.class'
 import {distance} from "../util/distance";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import {MapMarker} from "../../types";
+import {MapMarker} from '../../types';
 
 export interface MarkerInterface {
     id:string;
@@ -52,6 +52,8 @@ class Marker implements DeviceData {
     image: string;
     tail: TailClass;
     speedSubject: Observable<number>;
+
+
 
     private speedBehaviorSubject: BehaviorSubject<number>
     static layerIds: Set<String> = new Set();
@@ -129,7 +131,6 @@ class Marker implements DeviceData {
 
     remove(): void {
         this.popup.remove();
-        console.log('delete marker id', this.layerId);
         this.iconMarker.remove();
         this.intervalUpdateMarker && clearInterval(this.intervalUpdateMarker);
     };

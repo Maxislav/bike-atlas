@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by maxislav on 25.11.16.
  */
@@ -54,4 +55,3 @@ LocalStorage = __decorate([
     __metadata("design:paramtypes", [])
 ], LocalStorage);
 exports.LocalStorage = LocalStorage;
-//# sourceMappingURL=local-storage.service.js.map

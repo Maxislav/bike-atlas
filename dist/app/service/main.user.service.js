@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const socket_oi_service_1 = require("./socket.oi.service");
 const toast_component_1 = require("../component/toast/toast.component");
@@ -115,4 +116,3 @@ UserService = __decorate([
     __metadata("design:paramtypes", [socket_oi_service_1.Io, toast_component_1.ToastService, router_1.Router])
 ], UserService);
 exports.UserService = UserService;
-//# sourceMappingURL=main.user.service.js.map

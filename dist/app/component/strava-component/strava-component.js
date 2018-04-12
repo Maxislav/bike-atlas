@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const router_1 = require("@angular/router");
 const hash_1 = require("../../util/hash");
@@ -132,6 +133,25 @@ let StravaComponent = class StravaComponent {
                     window.location.href = this.stravaHref.toString();
                 }
             });
+            /* this.socket
+                 .$emit('onStravaCrypt', {
+                     n: 0,
+                     arr: byteArr
+                 })
+                 .then(d=>{
+                     const  enc2 =  new Uint8Array(d.arr);
+                     return this.socket.$emit('onStravaCrypt',{
+                         n:1,
+                         arr: Array.from(aes.decodeByteToByte(enc2)),
+                         stravaClientId: this.stravaClientId,
+                         atlasToken: this.token
+                     })
+                 })
+                 .then(d=>{
+                     if(d.result=='ok'){
+                         window.location.href = this.stravaHref.toString()
+                     }
+                 });*/
         }
     }
     sendTrackToStrava(track) {

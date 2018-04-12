@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.deepCopy = (oldObj) => {
     var newObj = oldObj;
     if (oldObj && typeof oldObj === "object") {
@@ -9,4 +10,3 @@ exports.deepCopy = (oldObj) => {
     }
     return newObj;
 };
-//# sourceMappingURL=deep-copy.js.map

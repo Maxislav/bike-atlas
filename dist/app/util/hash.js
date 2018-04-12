@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.hashgeneral = () => {
     function getRandom(min, max, int) {
         let rand = min + Math.random() * (max - min);

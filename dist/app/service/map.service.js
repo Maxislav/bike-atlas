@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by maxislav on 20.10.16.
  */
@@ -94,4 +95,3 @@ MapService = __decorate([
     __metadata("design:paramtypes", [core_1.ApplicationRef, local_storage_service_1.LocalStorage])
 ], MapService);
 exports.MapService = MapService;
-//# sourceMappingURL=map.service.js.map

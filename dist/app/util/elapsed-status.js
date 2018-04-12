@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.elapsedStatus = (device) => {
     let dateLong = new Date(device.date).getTime();
     let passed = new Date().getTime() - dateLong;
@@ -17,4 +18,3 @@ exports.elapsedStatus = (device) => {
         return 'white';
     }
 };
-//# sourceMappingURL=elapsed-status.js.map

@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const socket_oi_service_1 = require("./socket.oi.service");
 const local_storage_service_1 = require("./local-storage.service");
@@ -206,4 +207,3 @@ FriendsService = __decorate([
         chat_service_1.ChatService])
 ], FriendsService);
 exports.FriendsService = FriendsService;
-//# sourceMappingURL=friends.service.js.map

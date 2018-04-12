@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 ///<reference path="../../../../../node_modules/@angular/compiler/src/ml_parser/ast.d.ts"/>
 const core_1 = require("@angular/core");
 const menu_service_1 = require("app/service/menu.service");

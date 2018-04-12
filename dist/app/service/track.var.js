@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Point extends Array {
     constructor(...args) {
         super(...args);
@@ -26,4 +27,3 @@ class Point extends Array {
     }
 }
 exports.Point = Point;
-//# sourceMappingURL=track.var.js.map

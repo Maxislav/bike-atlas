@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 class Message {
     constructor(type, className, text, translate) {
@@ -68,4 +69,3 @@ ToastComponent = __decorate([
 ], ToastComponent);
 exports.ToastComponent = ToastComponent;
 ;
-//# sourceMappingURL=toast.component.js.map

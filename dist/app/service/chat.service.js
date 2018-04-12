@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const socket_oi_service_1 = require("./socket.oi.service");
 const deferred_1 = require("../util/deferred");
@@ -162,4 +163,3 @@ ChatService = __decorate([
     __metadata("design:paramtypes", [socket_oi_service_1.Io])
 ], ChatService);
 exports.ChatService = ChatService;
-//# sourceMappingURL=chat.service.js.map

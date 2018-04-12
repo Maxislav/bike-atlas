@@ -1,9 +1,6 @@
 import {Injectable} from "@angular/core"
-import * as io from "socket/socket.io.js";
+import  io from "socket/socket.io";
 import {Aes} from './aes-cript';
-
-
-declare const io: any;
 
 interface Socket{
     emit: Function;

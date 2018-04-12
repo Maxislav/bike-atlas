@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const socket_oi_service_1 = require("./socket.oi.service");
 const marker_service_1 = require("./marker.service");
@@ -120,4 +121,3 @@ LogService = __decorate([
     __metadata("design:paramtypes", [socket_oi_service_1.Io, main_user_service_1.UserService, marker_service_1.MarkerService])
 ], LogService);
 exports.LogService = LogService;
-//# sourceMappingURL=log.service.js.map

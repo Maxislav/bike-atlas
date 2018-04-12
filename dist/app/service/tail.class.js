@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class TailClass {
     constructor(markerId, map) {
         this.markerId = markerId;
@@ -57,4 +58,3 @@ class TailClass {
     }
 }
 exports.TailClass = TailClass;
-//# sourceMappingURL=tail.class.js.map

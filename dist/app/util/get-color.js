@@ -1,5 +1,13 @@
 "use strict";
-const R = require("@ramda/ramda.min.js");
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const R = __importStar(require("@ramda/ramda.min.js"));
 const f = parseFloat;
 function fc() {
     let res = 0;
@@ -33,28 +41,28 @@ const getRgbColor2 = (speed, limit, hue) => {
     var step = _limit / 5;
     speed = f(speed);
     var c, s;
-    if (speed < step) {
+    if (speed < step) { //(0, 0, 255) ->(0, 255, 255) синий   -> голубой
         c = (255 / step) * speed;
         c = c.toFixed(0);
         return [0, fc(c, hue), 255];
     }
-    else if (speed < 2 * step) {
+    else if (speed < 2 * step) { //   (0, 255, 255)голубой ->   (0, 255,0 ) зеленый
         s = speed - step;
         c = 255 - ((255 / step) * s);
         c = c.toFixed(0);
         return [hue, 255, fc(c + hue)];
     }
-    else if (speed < 3 * step) {
+    else if (speed < 3 * step) { // (0, 255,0 ) зеленый -> (255, 255,0 ) желтый
         s = speed - 2 * step;
         c = ((255 / step) * s).toFixed(0);
         return [fc(c, hue), 255, hue];
     }
-    else if (speed < 4 * step) {
+    else if (speed < 4 * step) { //(255, 255,0 ) желтый ->(255, 0,0 )красный
         s = speed - 3 * step;
         c = (255 - ((255 / step) * s)).toFixed(0);
         return [255, fc(c, hue), hue];
     }
-    else if (speed < 5 * step) {
+    else if (speed < 5 * step) { //(255, 0,0 )красный -> (255, 0,255 ) фиолетовый
         s = speed - 4 * step;
         c = (((255 / step) * s)).toFixed(0);
         return [255, hue, fc(c, hue)];

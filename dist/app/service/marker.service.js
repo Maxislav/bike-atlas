@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const map_service_1 = require("./map.service");
 const timer_service_1 = require("./timer.service");
@@ -74,7 +75,6 @@ class Marker {
     }
     remove() {
         this.popup.remove();
-        console.log('delete marker id', this.layerId);
         this.iconMarker.remove();
         this.intervalUpdateMarker && clearInterval(this.intervalUpdateMarker);
     }
@@ -106,4 +106,3 @@ MarkerService = __decorate([
     __metadata("design:paramtypes", [map_service_1.MapService, timer_service_1.TimerService])
 ], MarkerService);
 exports.MarkerService = MarkerService;
-//# sourceMappingURL=marker.service.js.map

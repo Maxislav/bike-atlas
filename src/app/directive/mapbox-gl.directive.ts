@@ -4,7 +4,7 @@ import {Directive, ElementRef, Input, Renderer} from '@angular/core';
 import {MapService} from "../service/map.service";
 import {PositionSize} from "../service/position-size.service";
 import {LocalStorage} from '../service/local-storage.service';
-import * as mapboxgl from "@lib/mapbox-gl/mapbox-gl.js";
+import mapboxgl from "@lib/mapbox-gl/mapbox-gl.js";
 import {Resolve} from "@angular/router";
 import {AuthService, Setting} from "../service/auth.service";
 import {UserService} from "../service/main.user.service";
@@ -168,13 +168,13 @@ export class MapboxGlDirective implements AfterViewInit {
                 zoom: localStorageCenter.zoom || 8,
                 style: 'mapbox://styles/mapbox/streets-v9',
 
-                _style: {
+                /*_style: {
                     "version": 8,
                     "name": "plastun",
                     "sprite": "http://" + window.location.hostname + "/src/sprite/sprite",
                     "sources": this.styleSource,
                     "layers": this.layers
-                }
+                }*/
             });
 
             this.map.addControl(new mapboxgl.NavigationControl({

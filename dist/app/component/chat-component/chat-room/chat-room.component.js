@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const deep_copy_1 = require("../../../util/deep-copy");
 const chat_service_1 = require("../../../service/chat.service");
@@ -85,4 +86,3 @@ ChatRoomComponent = __decorate([
         core_1.ElementRef])
 ], ChatRoomComponent);
 exports.ChatRoomComponent = ChatRoomComponent;
-//# sourceMappingURL=chat-room.component.js.map

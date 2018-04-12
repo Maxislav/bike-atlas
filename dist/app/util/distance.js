@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.distance = ([lng, lat], [lng2, lat2]) => {
     const arrTrackFull = [{
             lng,
@@ -39,4 +40,3 @@ exports.distance = ([lng, lat], [lng2, lat2]) => {
     dist_sum = parseFloat(dist_sum.toFixed(3));
     return dist_sum; //km
 };
-//# sourceMappingURL=distance.js.map

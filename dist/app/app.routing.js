@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const router_1 = require("@angular/router");
 const auth_component_1 = require("./component/auth-component/auth.component");
 const map_component_1 = require("./map.component");
@@ -75,6 +76,7 @@ const appRouters = [
                     {
                         path: 'strava-invite/:token',
                         component: strava_auth_component_1.StravaAuthComponent
+                        //canActivate:[UserService]
                     },
                 ]
             }
