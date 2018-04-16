@@ -8,20 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
-const socket_io_1 = __importDefault(require("socket/socket.io"));
+const io = require("socket/socket.io");
 const aes_cript_1 = require("./aes-cript");
 let Io = class Io {
     constructor() {
         if (window.location.hostname.match(/github\.io/)) {
-            this._socket = socket_io_1.default("http://178.62.44.54:8081");
+            this._socket = io("http://178.62.44.54:8081");
         }
         else {
-            this._socket = socket_io_1.default("http://" + window.location.hostname + ":8081");
+            this._socket = io("http://" + window.location.hostname + ":8081");
         }
         this._socket.$emit = (name, data) => {
             return new Promise((resolve, reject) => {
@@ -66,3 +63,4 @@ Io = __decorate([
     __metadata("design:paramtypes", [])
 ], Io);
 exports.Io = Io;
+//# sourceMappingURL=socket.oi.service.js.map

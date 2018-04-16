@@ -62,3 +62,4 @@ TimerService = __decorate([
 ], TimerService);
 exports.TimerService = TimerService;
 ;
+//# sourceMappingURL=timer.service.js.map

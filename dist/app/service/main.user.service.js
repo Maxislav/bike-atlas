@@ -116,3 +116,4 @@ UserService = __decorate([
     __metadata("design:paramtypes", [socket_oi_service_1.Io, toast_component_1.ToastService, router_1.Router])
 ], UserService);
 exports.UserService = UserService;
+//# sourceMappingURL=main.user.service.js.map

@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core"
-import  io from "socket/socket.io";
+import * as io from "socket/socket.io";
 import {Aes} from './aes-cript';
 
 interface Socket{
@@ -10,6 +10,7 @@ interface Socket{
     on: Function;
     off: Function;
 }
+
 
 
 @Injectable()

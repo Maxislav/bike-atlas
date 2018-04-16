@@ -11,22 +11,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
-const R = __importStar(require("@ramda/ramda.min.js"));
+const R = require("@ramda/ramda.min.js");
 const util_1 = require("./util");
 const socket_oi_service_1 = require("./socket.oi.service");
 const map_service_1 = require("./map.service");
 const track_var_1 = require("./track.var");
 const distance_1 = require("../util/distance");
-const dateformat = __importStar(require("node_modules/dateformat/lib/dateformat.js"));
+const dateformat = require("node_modules/dateformat/lib/dateformat.js");
 const toast_component_1 = require("../component/toast/toast.component");
 //console.log(dateformat)
 const F = parseFloat;

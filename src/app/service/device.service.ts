@@ -1,12 +1,9 @@
 import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
 import {LocalStorage} from "./local-storage.service";
-import {Marker} from "./marker.service";
 import {FriendsService} from "./friends.service";
 import {UserService} from "./main.user.service";
-
-
-
+import {Device} from '../../types';
 
 @Injectable()
 export class DeviceService {

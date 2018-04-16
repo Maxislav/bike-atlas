@@ -18,3 +18,4 @@ exports.elapsedStatus = (device) => {
         return 'white';
     }
 };
+//# sourceMappingURL=elapsed-status.js.map

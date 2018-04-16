@@ -18,3 +18,4 @@ class Deferred {
     }
 }
 exports.Deferred = Deferred;
+//# sourceMappingURL=deferred.js.map

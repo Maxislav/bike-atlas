@@ -16,3 +16,4 @@ PositionSize = __decorate([
     core_1.Injectable()
 ], PositionSize);
 exports.PositionSize = PositionSize;
+//# sourceMappingURL=position-size.service.js.map

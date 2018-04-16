@@ -27,3 +27,4 @@ class Point extends Array {
     }
 }
 exports.Point = Point;
+//# sourceMappingURL=track.var.js.map

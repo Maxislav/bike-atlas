@@ -49,3 +49,4 @@ AppComponent = __decorate([
     __metadata("design:paramtypes", [router_1.Router, NavigationHistory])
 ], AppComponent);
 exports.AppComponent = AppComponent;
+//# sourceMappingURL=app.component.js.map

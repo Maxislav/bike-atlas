@@ -38,7 +38,7 @@ export interface MarkerInterface {
 
 
 
-class Marker implements DeviceData {
+export class Marker implements DeviceData {
 
     id: string;
     alt: number;

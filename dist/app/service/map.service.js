@@ -95,3 +95,4 @@ MapService = __decorate([
     __metadata("design:paramtypes", [core_1.ApplicationRef, local_storage_service_1.LocalStorage])
 ], MapService);
 exports.MapService = MapService;
+//# sourceMappingURL=map.service.js.map

@@ -2,12 +2,12 @@
   "name": "atlas-angular2",
   "version": "1.0.0",
   "scripts": {
-    "start": "concurrently  \"npm run gulpDev\" \"npm run server-dev\"  ",
+    "start": "concurrently  \"npm run gulpDev\" \"npm run server-dev\" \"npm run tsc:w\" ",
     "server": "node server/index.js",
     "server-dev": "node-dev server/index.js",
     "gulpDev": "node_modules/.bin/gulp",
     "lite": "lite-server",
-    "tsc": "/home/maxislav/.nvm/versions/node/v8.9.1/bin/node tsc --project /home/maxislav/www/bike-atlas/tsconfig.json --",
+    "tsc": "tsc --project tsconfig.json",
     "tsc:w": "tsc -w",
     "typings": "typings"
   },
@@ -28,7 +28,6 @@
     "@angular/router-deprecated": "2.0.0-rc.2",
     "@angular/upgrade": "2.0.0-rc.5",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-beta.5",
-    "@types/node": "^7.0.5",
     "aes-js": "^3.1.0",
     "angular2-translate": "^5.2.0",
     "angularfire2": "^2.0.0-beta.7",
@@ -58,7 +57,7 @@
     "zone.js": "0.7.4"
   },
   "devDependencies": {
-    "@types/node": "^7.0.5",
+    "@types/node": "^7.0.61",
     "async": "^2.0.1",
     "chai": "^3.5.0",
     "concurrently": "^2.0.0",

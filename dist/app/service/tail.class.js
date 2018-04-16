@@ -58,3 +58,4 @@ class TailClass {
     }
 }
 exports.TailClass = TailClass;
+//# sourceMappingURL=tail.class.js.map

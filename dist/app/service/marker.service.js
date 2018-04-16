@@ -92,6 +92,7 @@ class Marker {
     }
 }
 Marker.layerIds = new Set();
+exports.Marker = Marker;
 let MarkerService = class MarkerService {
     constructor(mapService, timer) {
         this.mapService = mapService;
@@ -106,3 +107,4 @@ MarkerService = __decorate([
     __metadata("design:paramtypes", [map_service_1.MapService, timer_service_1.TimerService])
 ], MarkerService);
 exports.MarkerService = MarkerService;
+//# sourceMappingURL=marker.service.js.map

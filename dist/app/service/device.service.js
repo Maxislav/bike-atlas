@@ -79,3 +79,4 @@ DeviceService = __decorate([
         friends_service_1.FriendsService])
 ], DeviceService);
 exports.DeviceService = DeviceService;
+//# sourceMappingURL=device.service.js.map

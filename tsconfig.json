@@ -2,22 +2,21 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "esModuleInterop": true,
+    "sourceMap": true,
     "moduleResolution": "node",
-    "sourceMap": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
     "rootDir": "./src",
-    "outDir": "dist/",
-    "typeRoots" : ["src/types.d.ts"]
+    "outDir": "dist/"
+
   },
-  "include": [
-    "src/types.d.ts"
-  ],
   "exclude": [
     "dist",
+    "wwwroot",
+    "@angular",
+    "./node_modules/*",
     "node_modules",
     "server"
   ]

@@ -163,3 +163,4 @@ ChatService = __decorate([
     __metadata("design:paramtypes", [socket_oi_service_1.Io])
 ], ChatService);
 exports.ChatService = ChatService;
+//# sourceMappingURL=chat.service.js.map

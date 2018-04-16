@@ -21,7 +21,7 @@ export class MapService {
     public bearing:string;
     private _onLoad: Promise<any>;
     private _mapboxgl: MapBoxGl;
-    private _resolve: Function
+    private _resolve: Function;
     socket:any;
 
     // public ls: LocalStorage

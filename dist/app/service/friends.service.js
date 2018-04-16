@@ -207,3 +207,4 @@ FriendsService = __decorate([
         chat_service_1.ChatService])
 ], FriendsService);
 exports.FriendsService = FriendsService;
+//# sourceMappingURL=friends.service.js.map

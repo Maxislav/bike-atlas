@@ -8,13 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const track_var_1 = require("../../../../service/track.var");
@@ -24,7 +17,7 @@ const util_1 = require("../../../../service/util");
 const toast_component_1 = require("../../../toast/toast.component");
 const strava_service_1 = require("../../../../service/strava.service");
 const router_1 = require("@angular/router");
-const R = __importStar(require("@ramda/ramda.min.js"));
+const R = require("@ramda/ramda.min.js");
 const distance_1 = require("../../../../util/distance");
 let OneItemTrackComponent = OneItemTrackComponent_1 = class OneItemTrackComponent {
     constructor(trackService, mapService, toast, router, stravaService) {
