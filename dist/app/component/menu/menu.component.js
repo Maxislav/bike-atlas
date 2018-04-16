@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const menu_track_component_1 = require("./menu-track/menu-track.component");
 //import any = jasmine.any;
-const menu_service_1 = require("app/service/menu.service");
+const menu_service_1 = require("../../service/menu.service");
 const track_service_1 = require("../../service/track.service");
 const track_list_component_1 = require("./track-list/track-list.component");
 const auth_service_1 = require("../../service/auth.service");
@@ -36,6 +36,7 @@ let MenuComponent = class MenuComponent {
         this.mapService = mapService;
         this.toast = toast;
         this.chatService = chatService;
+        this.isShowMenuAthlete = false;
         this.user = userService.user;
         this.invites = friend.invites;
         this.trackList = track.trackList;
@@ -55,8 +56,12 @@ let MenuComponent = class MenuComponent {
             });
         }
         else {
-            this.menuService.menuAthlete = !this.menuService.menuAthlete;
+            this.isShowMenuAthlete = true;
+            //this.menuService.menuAthlete = !this.menuService.menuAthlete;
         }
+    }
+    onCloseMenuAthlete(e) {
+        this.isShowMenuAthlete = e;
     }
     onWeather() {
         if (this.weatherLayer) {
@@ -111,7 +116,8 @@ MenuComponent = __decorate([
         styleUrls: ['./menu.component.css'],
         providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService, track_list_component_1.TrackList]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof menu_service_1.MenuService !== "undefined" && menu_service_1.MenuService) === "function" && _a || Object, track_service_1.TrackService,
+    __metadata("design:paramtypes", [menu_service_1.MenuService,
+        track_service_1.TrackService,
         auth_service_1.AuthService,
         router_1.Router,
         friends_service_1.FriendsService,
@@ -121,5 +127,4 @@ MenuComponent = __decorate([
         chat_service_1.ChatService])
 ], MenuComponent);
 exports.MenuComponent = MenuComponent;
-var _a;
 //# sourceMappingURL=menu.component.js.map

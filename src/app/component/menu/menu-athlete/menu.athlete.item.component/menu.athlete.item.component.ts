@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {Device} from "../../../../../types";
 import {  Subscription } from 'rxjs/Subscription';
+//import {Device} from '../../../../../@types/global';
+
 @Component({
     moduleId: module.id,
     selector: 'menu-athlete-item',

@@ -3,7 +3,7 @@ import {Io} from "./socket.oi.service";
 import {LocalStorage} from "./local-storage.service";
 import {FriendsService} from "./friends.service";
 import {UserService} from "./main.user.service";
-import {Device} from '../../types';
+import {Device} from '../../global';
 
 @Injectable()
 export class DeviceService {

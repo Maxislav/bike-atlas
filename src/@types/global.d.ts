@@ -15,6 +15,12 @@ interface SetConstructor {
 }
 declare var Set: SetConstructor;
 
+interface ModuleInterface {
+    id: any;
+}
+
+declare var module: ModuleInterface;
+
 interface LngLat extends Array<number>{
     lng: number,
     lat: number

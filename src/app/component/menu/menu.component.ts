@@ -6,7 +6,7 @@ import { Component} from '@angular/core';
 import {MenuTrackComponent} from './menu-track/menu-track.component'
 
 //import any = jasmine.any;
-import {MenuService} from "app/service/menu.service";
+import {MenuService} from "../../service/menu.service";
 import {TrackService} from "../../service/track.service";
 import {TrackList} from "./track-list/track-list.component";
 import {AuthService} from "../../service/auth.service";
@@ -15,10 +15,7 @@ import {FriendsService} from "../../service/friends.service";
 import {UserService, User} from "../../service/main.user.service";
 import {ToastService} from "../toast/toast.component";
 import {MapService} from "../../service/map.service";
-import {getimage} from "../../util/get-image";
 import {ChatService} from "../../service/chat.service";
-import {TranslateService} from "ng2-translate";
-//import {Track} from "./track";
 
 declare var document: any;
 declare const System: any;
@@ -37,10 +34,11 @@ export class MenuComponent{
     public menuOpen: boolean;
     public userName: string;
     private invites: Array<User>;
-    trackList: Array<any>;
+    private trackList: Array<any>;
     private user: User;
     private weatherLayer: any;
     private unViewedIds: Array<number>;
+    private isShowMenuAthlete: boolean = false;
 
     constructor(private menuService:MenuService,
                 private track:TrackService,
@@ -74,11 +72,14 @@ export class MenuComponent{
                 text: 'Нет онлайн пользователей'
             })
         }else {
-            this.menuService.menuAthlete = !this.menuService.menuAthlete;
+            this.isShowMenuAthlete = true
+            //this.menuService.menuAthlete = !this.menuService.menuAthlete;
         }
+    }
 
 
-
+    onCloseMenuAthlete(e){
+        this.isShowMenuAthlete = e
     }
 
     onWeather(){

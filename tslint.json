@@ -1,5 +1,4 @@
 {
-  "rulesDirectory": ["src/types.d.ts"],
   "type-check":[],
   "rules": {
     "max-line-length": {
@@ -14,7 +13,6 @@
       "options": [
         "debug",
         "info",
-        "log",
         "time",
         "timeEnd",
         "trace"

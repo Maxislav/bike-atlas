@@ -8,7 +8,6 @@ import * as mapboxgl from "@lib/mapbox-gl/mapbox-gl.js";
 import {Resolve} from "@angular/router";
 import {AuthService, Setting} from "../service/auth.service";
 import {UserService} from "../service/main.user.service";
-import {MapGl} from '../../types';
 
 
 declare var L:any;

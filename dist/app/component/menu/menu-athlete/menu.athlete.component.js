@@ -16,8 +16,20 @@ let MenuAthleteComponent = class MenuAthleteComponent {
     constructor(user, mapService) {
         this.user = user;
         this.mapService = mapService;
+        this.onCloseMenuAthlete = new core_1.EventEmitter();
         this.userDevices = user.user.devices;
         this.otherDevices = user.other.devices;
+        this.onCloseMenu = this.onCloseMenu.bind(this, false);
+    }
+    onCloseMenu() {
+        this.onCloseMenuAthlete.emit(false);
+    }
+    ngOnInit() {
+    }
+    ngAfterViewInit() {
+        setTimeout(() => {
+            document.addEventListener('click', this.onCloseMenu);
+        }, 10);
     }
     selectDevice(device) {
         if (device.marker) {
@@ -36,11 +48,13 @@ let MenuAthleteComponent = class MenuAthleteComponent {
         return devices;
     }
     ngOnDestroy() {
-        /* if(this.interval){
-             clearInterval(this.interval)
-         }*/
+        document.removeEventListener('click', this.onCloseMenu);
     }
 };
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], MenuAthleteComponent.prototype, "onCloseMenuAthlete", void 0);
 MenuAthleteComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
