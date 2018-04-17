@@ -4,6 +4,7 @@
 import {NgModule, NgZone}      from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule}   from '@angular/forms';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import {AppComponent}  from './app.component';
 import {MyRouterModule} from './app.routing';
@@ -78,6 +79,7 @@ export function createTranslateLoader(http: Http) {
         FormsModule,
         ReactiveFormsModule,
         MyRouterModule,
+        BrowserAnimationsModule,
         TranslateModule.forRoot({
             provide: TranslateLoader,
             useFactory: (createTranslateLoader),

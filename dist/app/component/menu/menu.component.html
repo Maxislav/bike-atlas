@@ -25,7 +25,7 @@
     <td (click)="onOpenLogin()" class="button enter">{{user.name || ('SIGN_IN' | translate)}}</td>
   </tr>
 </table>
-<menu-athlete *ngIf="isShowMenuAthlete" (onCloseMenuAthlete)="onCloseMenuAthlete($event)"></menu-athlete>
+<menu-athlete *ngIf="isShowMenuAthlete" (onCloseMenuAthlete)="onCloseMenuAthlete($event)" @ngIfAnimation=""></menu-athlete>
 <menu-track *ngIf="menuService.menuOpen"></menu-track>
 <track-list *ngIf="trackList.length" [style.top]="menuService.menuOpen ?  '150px' : '100%' "></track-list>
 <menu-login *ngIf="menuService.menuOpenLogin"></menu-login>

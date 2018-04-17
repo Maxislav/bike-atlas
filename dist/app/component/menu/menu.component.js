@@ -25,6 +25,7 @@ const main_user_service_1 = require("../../service/main.user.service");
 const toast_component_1 = require("../toast/toast.component");
 const map_service_1 = require("../../service/map.service");
 const chat_service_1 = require("../../service/chat.service");
+const animations_1 = require("@angular/animations");
 let MenuComponent = class MenuComponent {
     constructor(menuService, track, authService, router, friend, userService, mapService, toast, chatService) {
         this.menuService = menuService;
@@ -114,7 +115,31 @@ MenuComponent = __decorate([
         selector: 'menu',
         templateUrl: './menu.component.html',
         styleUrls: ['./menu.component.css'],
-        providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService, track_list_component_1.TrackList]
+        providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService, track_list_component_1.TrackList],
+        animations: [
+            animations_1.trigger('ngIfAnimation', [
+                animations_1.transition('void => *', [
+                    animations_1.query('*', animations_1.style({ opacity: 0, background: 'blue' }), { optional: true }),
+                    animations_1.query('*', animations_1.stagger('300ms', [
+                        animations_1.animate('0.8s ease-in', animations_1.keyframes([
+                            animations_1.style({ opacity: 0, transform: 'translateY(-75%)', offset: 0 }),
+                            animations_1.style({ opacity: .5, transform: 'translateY(35px)', offset: 0.3 }),
+                            animations_1.style({ opacity: 1, transform: 'translateY(0)', offset: 1.0 }),
+                        ]))
+                    ]), { optional: true }),
+                ]),
+                animations_1.transition('* => void', [
+                    animations_1.query('*', animations_1.style({ opacity: 1, background: 'red' }), { optional: true }),
+                    animations_1.query('*', animations_1.stagger('300ms', [
+                        animations_1.animate('0.8s ease-in', animations_1.keyframes([
+                            animations_1.style({ opacity: 1, transform: 'translateY(0)', offset: 0 }),
+                            animations_1.style({ opacity: .5, transform: 'translateY(35px)', offset: 0.3 }),
+                            animations_1.style({ opacity: 0, transform: 'translateY(-75%)', offset: 1.0 }),
+                        ]))
+                    ]), { optional: true }),
+                ])
+            ])
+        ]
     }),
     __metadata("design:paramtypes", [menu_service_1.MenuService,
         track_service_1.TrackService,

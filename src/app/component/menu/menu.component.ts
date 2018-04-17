@@ -16,6 +16,8 @@ import {UserService, User} from "../../service/main.user.service";
 import {ToastService} from "../toast/toast.component";
 import {MapService} from "../../service/map.service";
 import {ChatService} from "../../service/chat.service";
+import { trigger,style,transition,animate,keyframes,query,stagger,group, state, animateChild } from '@angular/animations';
+
 
 declare var document: any;
 declare const System: any;
@@ -27,7 +29,29 @@ declare const System: any;
     selector: 'menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.css'],
-    providers: [MenuTrackComponent, MenuService,   TrackList]
+    providers: [MenuTrackComponent, MenuService,   TrackList],
+    animations: [
+        trigger('ngIfAnimation', [
+            transition('void => *', [
+                query('*', style({ opacity: 0, background: 'blue' }), {optional: true}),
+                query('*', stagger('300ms', [
+                    animate('0.8s ease-in', keyframes([
+                        style({opacity: 0, transform: 'translateY(-75%)', offset: 0}),
+                        style({opacity: .5, transform: 'translateY(35px)', offset: 0.3}),
+                        style({opacity: 1, transform: 'translateY(0)', offset: 1.0}),
+                    ]))]), {optional: true}),
+            ]),
+            transition('* => void', [
+                query('*', style({ opacity: 1, background: 'red' }), {optional: true}),
+                query('*', stagger('300ms', [
+                    animate('0.8s ease-in', keyframes([
+                        style({opacity: 1, transform: 'translateY(0)', offset: 0}),
+                        style({opacity: .5, transform: 'translateY(35px)', offset: 0.3}),
+                        style({opacity: 0, transform: 'translateY(-75%)', offset: 1.0}),
+                    ]))]), {optional: true}),
+            ])
+        ])
+    ]
 })
 export class MenuComponent{
 

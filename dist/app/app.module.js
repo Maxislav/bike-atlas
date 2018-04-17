@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const platform_browser_1 = require("@angular/platform-browser");
 const forms_1 = require("@angular/forms");
+const animations_1 = require("@angular/platform-browser/animations");
 const app_component_1 = require("./app.component");
 const app_routing_1 = require("./app.routing");
 const auth_component_1 = require("./component/auth-component/auth.component");
@@ -99,6 +100,7 @@ AppModule = __decorate([
             forms_1.FormsModule,
             forms_1.ReactiveFormsModule,
             app_routing_1.MyRouterModule,
+            animations_1.BrowserAnimationsModule,
             ng2_translate_1.TranslateModule.forRoot({
                 provide: ng2_translate_1.TranslateLoader,
                 useFactory: (createTranslateLoader),
