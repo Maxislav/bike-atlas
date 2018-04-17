@@ -16,8 +16,6 @@
 
   };
 
-var angularVersion = ''
-
   // map tells the System loader where to look for things
   var map = {
     'app':                        'dist/app', // 'dist',
@@ -32,13 +30,11 @@ var angularVersion = ''
     'css': 'node_modules/systemjs-plugin-css/css.js',
     'aes-js' : 'node_modules/aes-js',
     'rxx': 'node_modules/rx/dist/rx.all.js',
-
-      '@angular/platform-browser': 'node_modules/@angular/platform-browser' + angularVersion + '/bundles/platform-browser.umd.js',
-      '@angular/platform-browser-dynamic': 'node_modules/@angular/platform-browser-dynamic' + angularVersion + '/bundles/platform-browser-dynamic.umd.js',
-      '@angular/animations': 'node_modules/@angular/animations' + angularVersion + '/bundles/animations.umd.js',
-      '@angular/platform-browser/animations': 'node_modules/@angular/platform-browser' + angularVersion + '/bundles/platform-browser-animations.umd.js',
-      '@angular/animations/browser': 'node_modules/@angular/animations' + angularVersion + '/bundles/animations-browser.umd.js',
-
+    '@angular/platform-browser': 'node_modules/@angular/platform-browser/bundles/platform-browser.umd.js',
+    '@angular/platform-browser-dynamic': 'node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
+    '@angular/animations': 'node_modules/@angular/animations/bundles/animations.umd.js',
+    '@angular/platform-browser/animations': 'node_modules/@angular/platform-browser/bundles/platform-browser-animations.umd.js',
+    '@angular/animations/browser': 'node_modules/@angular/animations/bundles/animations-browser.umd.js',
 
   };
   var packages = {

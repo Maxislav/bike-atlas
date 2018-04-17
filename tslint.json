@@ -2,7 +2,7 @@
   "type-check":[],
   "rules": {
     "max-line-length": {
-      "options": [160]
+      "options": [200]
     },
     "new-parens": true,
     "no-arg": true,
@@ -21,7 +21,7 @@
   },
   "jsRules": {
     "max-line-length": {
-      "options": [120]
+      "options": [200]
     }
   }
 }

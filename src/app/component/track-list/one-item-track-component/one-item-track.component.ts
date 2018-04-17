@@ -1,15 +1,15 @@
 
 import {Component, Input, OnInit} from "@angular/core";
-import {Track, Point} from "../../../../service/track.var";
-import {TrackService} from "../../../../service/track.service";
-import {MapService} from "../../../../service/map.service";
-import {Util} from "../../../../service/util";
-import {ToastService} from "../../../toast/toast.component";
-import {StravaService} from "../../../../service/strava.service";
+import {Track, Point} from "../../../service/track.var";
+import {TrackService} from "../../../service/track.service";
+import {MapService} from "../../../service/map.service";
+import {Util} from "../../../service/util";
+import {ToastService} from "../../toast/toast.component";
+import {StravaService} from "../../../service/strava.service";
 import {Router} from "@angular/router";
 import * as R from "@ramda/ramda.min.js";
-import {MapArea as Area} from "../../../../interface/MapArea";
-import {distance} from "../../../../util/distance"
+import {MapArea as Area} from "../../../interface/MapArea";
+import {distance} from "../../../util/distance"
 declare const module: any;
 @Component({
     moduleId: module.id,

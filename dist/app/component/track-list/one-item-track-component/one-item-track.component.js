@@ -10,15 +10,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
-const track_var_1 = require("../../../../service/track.var");
-const track_service_1 = require("../../../../service/track.service");
-const map_service_1 = require("../../../../service/map.service");
-const util_1 = require("../../../../service/util");
-const toast_component_1 = require("../../../toast/toast.component");
-const strava_service_1 = require("../../../../service/strava.service");
+const track_var_1 = require("../../../service/track.var");
+const track_service_1 = require("../../../service/track.service");
+const map_service_1 = require("../../../service/map.service");
+const util_1 = require("../../../service/util");
+const toast_component_1 = require("../../toast/toast.component");
+const strava_service_1 = require("../../../service/strava.service");
 const router_1 = require("@angular/router");
 const R = require("@ramda/ramda.min.js");
-const distance_1 = require("../../../../util/distance");
+const distance_1 = require("../../../util/distance");
 let OneItemTrackComponent = OneItemTrackComponent_1 = class OneItemTrackComponent {
     constructor(trackService, mapService, toast, router, stravaService) {
         this.trackService = trackService;

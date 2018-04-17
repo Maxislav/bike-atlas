@@ -1,6 +1,6 @@
 :host {
   position: absolute;
-  top: calc(100% + 100px);
+  bottom: 0;
   background: rgba(255, 255, 255, 0.8);
   z-index: 2;
   padding: 15px;

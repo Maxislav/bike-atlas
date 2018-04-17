@@ -11,6 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const router_1 = require("@angular/router");
+const menu_service_1 = require("./service/menu.service");
+const track_service_1 = require("./service/track.service");
 let NavigationHistory = class NavigationHistory {
     constructor() {
         this.history = [];
@@ -25,28 +27,31 @@ NavigationHistory = __decorate([
 ], NavigationHistory);
 exports.NavigationHistory = NavigationHistory;
 let AppComponent = class AppComponent {
-    constructor(router, nh) {
+    constructor(router, nh, menuService, track) {
         this.router = router;
+        this.menuService = menuService;
+        this.track = track;
         this.title = 'Tour of Heroes';
         this.router.events.subscribe((e) => {
             if (e instanceof router_1.NavigationEnd) {
                 nh.history.push(e.url);
             }
         });
+        this.trackList = track.trackList;
     }
 };
 AppComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
         selector: 'my-app',
-        //templateUrl: 'src/app/template/my-app.html',
-        template: '<toast-component></toast-component><router-outlet></router-outlet>',
-        providers: [NavigationHistory],
+        //template:'<toast-component></toast-component><router-outlet></router-outlet>',
+        templateUrl: 'app.component.html',
+        providers: [NavigationHistory, menu_service_1.MenuService, track_service_1.TrackService],
         styleUrls: [
             'css/app.component.css',
         ]
     }),
-    __metadata("design:paramtypes", [router_1.Router, NavigationHistory])
+    __metadata("design:paramtypes", [router_1.Router, NavigationHistory, menu_service_1.MenuService, track_service_1.TrackService])
 ], AppComponent);
 exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map
