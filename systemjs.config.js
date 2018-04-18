@@ -39,6 +39,7 @@
   var packages = {
     'app':                        { main: 'init.js',  defaultExtension: 'js' },
     'rxjs':                       { main : 'Rx.js', defaultExtension: 'js' },
+    'socket':                     {defaultExtension: 'js' },
     'ng2-translate':              { main: 'bundles/ng2-translate.umd.js',  defaultExtension: 'js' },
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
     'aes-js': { main: 'index.js', defaultExtension: 'js' }
