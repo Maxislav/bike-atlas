@@ -15,12 +15,6 @@
 <div class="action">
   <div>Точек</div><b>{{track.points.length}}</b>
   <div>
-    <p>
-      <input type="checkbox" id="test2" [(ngModel)]="resentPointFilter" (ngModelChange)="onResentFilter(resentPointFilter)"/>
-      <label for="test2">Фильтр</label>
-    </p>
-  </div>
-  <div>
     <div (click)="track.showSrcPoint()" title="Показать исходные точки" class="route-points"></div>
   </div>
 </div>

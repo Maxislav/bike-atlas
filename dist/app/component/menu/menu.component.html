@@ -26,5 +26,5 @@
   </tr>
 </table>
 <menu-athlete *ngIf="isShowMenuAthlete" (onCloseMenuAthlete)="onCloseMenuAthlete($event)" @ngIfAnimation=""></menu-athlete>
-<menu-track *ngIf="menuService.menuOpen"></menu-track>
-<menu-login *ngIf="menuService.menuOpenLogin"></menu-login>
+<menu-track *ngIf="menuService.menuOpen" @ngIfAnimation=""></menu-track>
+<menu-login *ngIf="menuService.menuOpenLogin" @ngIfAnimation=""></menu-login>

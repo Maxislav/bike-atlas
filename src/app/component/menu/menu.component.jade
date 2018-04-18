@@ -19,6 +19,6 @@ table
         td.button.enter( (click)="onOpenLogin()")
             |{{user.name || ('SIGN_IN' | translate)}}
 menu-athlete(*ngIf="isShowMenuAthlete", (onCloseMenuAthlete) = 'onCloseMenuAthlete($event)', @ngIfAnimation='')
-menu-track(*ngIf="menuService.menuOpen")
-menu-login(*ngIf="menuService.menuOpenLogin")
+menu-track(*ngIf="menuService.menuOpen", @ngIfAnimation='')
+menu-login(*ngIf="menuService.menuOpenLogin", @ngIfAnimation='')
 

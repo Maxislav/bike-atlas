@@ -26,7 +26,6 @@ let OneItemTrackComponent = OneItemTrackComponent_1 = class OneItemTrackComponen
         this.toast = toast;
         this.router = router;
         this.stravaService = stravaService;
-        this.resentPointFilter = false;
         this.util = new util_1.Util();
         //this.isAuthStrava = !!stravaService.athlete;
     }
@@ -166,11 +165,6 @@ let OneItemTrackComponent = OneItemTrackComponent_1 = class OneItemTrackComponen
                 map.removeSource(layerId);
             }
         };
-    }
-    onResentFilter(isOn) {
-        console.log(isOn, this.track);
-        const points = this.track.points.filter((p, i) => {
-        });
     }
     mapEventInit() {
         this.map.on('mousedown', this.mouseMapDown);

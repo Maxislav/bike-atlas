@@ -26,8 +26,6 @@ export class OneItemTrackComponent implements OnInit{
     private maxSpeed: number;
     private isAuthStrava: boolean;
     private static layerIds: Array<string> = [];
-    private resentPointFilter: boolean  = false;
-
     private mouseMapDown: Function;
     private mouseMapUp: Function;
     private mouseMove: Function;
@@ -199,13 +197,7 @@ export class OneItemTrackComponent implements OnInit{
         }
     }
 
-    onResentFilter(isOn: boolean){
-        console.log(isOn, this.track)
 
-        const points = this.track.points.filter((p, i)=>{
-
-        })
-    }
 
     mapEventInit(){
         this.map.on('mousedown',this.mouseMapDown );

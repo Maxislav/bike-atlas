@@ -15,10 +15,6 @@
     div Точек
     b {{track.points.length}}
     div
-        p
-            input(type="checkbox",id="test2",[(ngModel)]="resentPointFilter", (ngModelChange)="onResentFilter(resentPointFilter)" )
-            label(for="test2") Фильтр
-    div
         .route-points((click)="track.showSrcPoint()", title='Показать исходные точки')
 .action
     .go( (click)="onGo(track)") Play &#9658;
