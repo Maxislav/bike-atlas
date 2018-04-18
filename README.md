@@ -3,7 +3,7 @@
 ![](https://github.com/Maxislav/bike-atlas/blob/master/ScreenShot.png?raw=true=400x200)
 
 
-####[Bike-Atlas http://maxislav.github.io/bike-atlas](http://maxislav.github.io/bike-atlas/ "Bike-Atlas")
+#### [Bike-Atlas http://maxislav.github.io/bike-atlas](http://maxislav.github.io/bike-atlas/ "Bike-Atlas")
 
 ***
 
@@ -15,10 +15,7 @@ MySql, Node
 ~$ npm i
 ```
 
-## compile
-```
-~$ tsc && gulp
-```
+
 
 ## DataBase create
 
@@ -33,11 +30,17 @@ create file server/mysql.config.json
   }
 }
 ```
-command for tables create
+## 1. command for tables create
 ```bash
 ~$ node server/mysql-start-up.js
 ```
-## start
+
+## 2. compile, debug and build
+```
+npm start
+```
+
+## 3. launching..
 ```bash
 ~$ node server/index.js
 ```
