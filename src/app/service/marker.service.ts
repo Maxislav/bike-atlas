@@ -64,6 +64,7 @@ export class Marker implements DeviceData {
     private status: string = 'white';
     private intervalUpdateMarker: number;
     private timer: Timer;
+    private img: Image;
 
 
     constructor(devData: DeviceData, private user: User, private mapboxgl: MapBoxGl, private map: MapGl, private timerService: TimerService) {
@@ -76,7 +77,7 @@ export class Marker implements DeviceData {
         this.layerId = Marker.getNewLayer(0, 5000000, true) + '';
         const icoContainer = document.createElement('div');
         icoContainer.classList.add("user-icon");
-        const img = new Image();
+        const img = this.img = new Image();
         img.src = this.user.image || 'src/img/no-avatar.gif';
         icoContainer.appendChild(img);
         this.icoContainer = icoContainer;
@@ -133,6 +134,11 @@ export class Marker implements DeviceData {
         this.iconMarker.remove();
         this.intervalUpdateMarker && clearInterval(this.intervalUpdateMarker);
     };
+
+    updateSetImage(src){
+        this.img.src = src;
+        this.image = src;
+    }
 
     static getNewLayer(min, max, int): string {
         let rand = min + Math.random() * (max - min);

@@ -33,7 +33,7 @@ class Marker {
         this.layerId = Marker.getNewLayer(0, 5000000, true) + '';
         const icoContainer = document.createElement('div');
         icoContainer.classList.add("user-icon");
-        const img = new Image();
+        const img = this.img = new Image();
         img.src = this.user.image || 'src/img/no-avatar.gif';
         icoContainer.appendChild(img);
         this.icoContainer = icoContainer;
@@ -79,6 +79,10 @@ class Marker {
         this.intervalUpdateMarker && clearInterval(this.intervalUpdateMarker);
     }
     ;
+    updateSetImage(src) {
+        this.img.src = src;
+        this.image = src;
+    }
     static getNewLayer(min, max, int) {
         let rand = min + Math.random() * (max - min);
         if (int) {
