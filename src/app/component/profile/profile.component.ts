@@ -8,6 +8,7 @@ import {ToastService} from "../toast/toast.component";
 import {UserService, User} from "../../service/main.user.service";
 import {PrivateAreaService} from "../../service/private.area.service";
 import {hashgeneral} from "../../util/hash";
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 declare const module: any;
 declare const System: any;
@@ -29,6 +30,10 @@ export class ProfileComponent implements AfterViewInit{
     private socket: any;
     private user: User;
     private setting;
+    private oldPass: string;
+    profileForm /*= new FormGroup({
+        oldPass: new FormControl()
+    })*/
 
     constructor(private location: Location,
                 private elRef: ElementRef,
@@ -37,11 +42,23 @@ export class ProfileComponent implements AfterViewInit{
                 private io : Io,
                 private toast: ToastService,
                 private areaService: PrivateAreaService,
+                private fb: FormBuilder,
                 userService: UserService
     ){
         this.user = userService.user;
         this.setting = userService.user.setting;
         this.socket = io.socket;
+
+        console.log(Validators.required)
+
+        this.profileForm = this.fb.group({
+            oldPass: ['',(control)=> {
+                console.log(control)
+                return control.value.length ? null : {
+                    'rew': 'oldo'
+                }
+            }] // <--- the FormControl called "name"
+        });
     }
 
     saveLock(val){

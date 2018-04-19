@@ -20,4 +20,9 @@ div.content
                 div()
                     button.primary( style="float: right", (click)="onSave($event)") {{'ON_SAVE'| translate}}
             .border-hidden
+        .row.border
+            form([formGroup]='profileForm')
+                input(formControlName="oldPass")
+                div {{ profileForm.value | json }}
+                div {{ profileForm.status | json }}
         .border-hidden

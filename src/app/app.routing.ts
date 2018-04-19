@@ -51,7 +51,7 @@ const  appRouters: Routes = [
                     {
                         path: 'profile',
                         component:ProfileComponent,
-                        canActivate:[UserService]
+                        canActivate:[AuthService],
                     },
                     {
                         path: 'journal',

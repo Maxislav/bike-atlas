@@ -106,9 +106,14 @@ let UserService = class UserService {
         return this._user;
     }
     set user(value) {
+        console.log('Usert ->', value);
         for (let opt in value) {
             this._user[opt] = value[opt];
         }
+    }
+    resolve() {
+    }
+    reject() {
     }
 };
 UserService = __decorate([

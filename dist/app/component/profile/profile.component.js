@@ -17,8 +17,9 @@ const socket_oi_service_1 = require("../../service/socket.oi.service");
 const toast_component_1 = require("../toast/toast.component");
 const main_user_service_1 = require("../../service/main.user.service");
 const private_area_service_1 = require("../../service/private.area.service");
+const forms_1 = require("@angular/forms");
 let ProfileComponent = class ProfileComponent {
-    constructor(location, elRef, router, lh, io, toast, areaService, userService) {
+    constructor(location, elRef, router, lh, io, toast, areaService, fb, userService) {
         this.location = location;
         this.elRef = elRef;
         this.router = router;
@@ -26,9 +27,19 @@ let ProfileComponent = class ProfileComponent {
         this.io = io;
         this.toast = toast;
         this.areaService = areaService;
+        this.fb = fb;
         this.user = userService.user;
         this.setting = userService.user.setting;
         this.socket = io.socket;
+        console.log(forms_1.Validators.required);
+        this.profileForm = this.fb.group({
+            oldPass: ['', (control) => {
+                    console.log(control);
+                    return control.value.length ? null : {
+                        'rew': 'oldo'
+                    };
+                }] // <--- the FormControl called "name"
+        });
     }
     saveLock(val) {
         this.areaService.saveLock(val);
@@ -126,6 +137,7 @@ ProfileComponent = __decorate([
         socket_oi_service_1.Io,
         toast_component_1.ToastService,
         private_area_service_1.PrivateAreaService,
+        forms_1.FormBuilder,
         main_user_service_1.UserService])
 ], ProfileComponent);
 exports.ProfileComponent = ProfileComponent;

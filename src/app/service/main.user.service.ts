@@ -6,6 +6,7 @@ import {Io} from "./socket.oi.service";
 import {ToastService} from "../component/toast/toast.component";
 import {Router} from "@angular/router";
 import {Deferred} from "../util/deferred";
+import {AuthService} from './auth.service';
 
 
 
@@ -21,17 +22,7 @@ export interface User{
 
 @Injectable()
 export class UserService implements CanActivate{
-    canActivate(   route: ActivatedRouteSnapshot,state: RouterStateSnapshot) {
-        console.log(route, state);
-        if(!this.user.id){
-            this.toast.show({
-                type: 'warning',
-                translate: 'NOT_LOGGED'
-            });
-            this.router.navigate(['/auth/map']);
-        }
-        return !!this.user.id;
-    }
+
     
 
     private _user: User;
@@ -39,7 +30,9 @@ export class UserService implements CanActivate{
     private _other: User;
     private socket: any;
     private images: {[userId:number]: String} ={};
-    private deferImage: {[userId:number]: Deferred} = {};
+    private deferImage: {[userId:number]: Deferred} = {}
+
+
     constructor(private io: Io, private toast:ToastService, private router: Router){
         this.socket = io.socket;
         this._user = {
@@ -54,6 +47,19 @@ export class UserService implements CanActivate{
             devices: []
         };
         this.socket.on('getUserImage', this.onUserImage.bind(this));
+    }
+
+    canActivate(route: ActivatedRouteSnapshot,state: RouterStateSnapshot,) {
+        console.log(route, state);
+        if(!this.user.id){
+            this.toast.show({
+                type: 'warning',
+                translate: 'NOT_LOGGED'
+            });
+            this.router.navigate(['/auth/map']);
+        }
+
+        return !!this.user.id;
     }
 
     onUserImage(data){
@@ -125,11 +131,19 @@ export class UserService implements CanActivate{
     }
 
     set user(value: User) {
+        console.log('Usert ->', value)
         for(let opt in value){
             this._user[opt] = value[opt]
         }
     }
 
+    public resolve(){
+
+    }
+
+    public reject(){
+
+    }
 
 
 
