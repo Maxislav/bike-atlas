@@ -114,7 +114,7 @@ MenuComponent = __decorate([
         templateUrl: './menu.component.html',
         styleUrls: ['./menu.component.css'],
         providers: [menu_track_component_1.MenuTrackComponent, menu_service_1.MenuService],
-        animations: [animation_1.fadeAnimation]
+        animations: [animation_1.ngIfAnimation]
     }),
     __metadata("design:paramtypes", [menu_service_1.MenuService,
         track_service_1.TrackService,

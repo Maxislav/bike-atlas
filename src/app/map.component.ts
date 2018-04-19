@@ -6,6 +6,7 @@ import {MapboxGlDirective, MapResolver} from "./directive/mapbox-gl.directive";
 import {LogService} from "./service/log.service";
 import { APP_INITIALIZER } from '@angular/core';
 import {Resolve} from "@angular/router";
+import {fadeInAnimation} from  './animation/animation'
 @Component({
     moduleId: module.id,
     template: [
@@ -15,7 +16,9 @@ import {Resolve} from "@angular/router";
         '<mapbox-gl> map loading...</mapbox-gl>'
     ].join('') ,
     styleUrls: ['./css/map.component.css'],
-    providers:[]
+    providers:[],
+    animations: [fadeInAnimation],
+    host: { '[@fadeInAnimation]': '' }
 })
 export class MapComponent {
 

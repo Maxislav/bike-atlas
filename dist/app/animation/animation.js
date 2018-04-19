@@ -26,13 +26,20 @@ const testAnimation = animations_1.trigger('ngIfAnimation', [
             ]))]), {optional: true}),
     ])*/
 ]);
-exports.fadeAnimation = animations_1.trigger('ngIfAnimation', [
+exports.ngIfAnimation = animations_1.trigger('ngIfAnimation', [
     animations_1.transition('void => *', [
-        animations_1.style({ opacity: 0 }),
-        animations_1.animate(100, animations_1.style({ opacity: 1 }))
+        animations_1.style({ opacity: 0, transform: 'translateY(-20px)' }),
+        animations_1.animate(100, animations_1.style({ opacity: 1, transform: 'translateY(0)' }))
     ]),
     animations_1.transition('* => void', [
         animations_1.animate(100, animations_1.style({ opacity: 0 })) // the new state of the transition(after transiton it removes)
     ])
+]);
+exports.fadeInAnimation = animations_1.trigger('fadeInAnimation', [
+    // route 'enter' transition
+    animations_1.transition(':enter', [
+        animations_1.style({ opacity: 0 }),
+        animations_1.animate('1s', animations_1.style({ opacity: 1 }))
+    ]),
 ]);
 //# sourceMappingURL=animation.js.map

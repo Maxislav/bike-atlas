@@ -44,12 +44,11 @@ AppComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
         selector: 'my-app',
-        //template:'<toast-component></toast-component><router-outlet></router-outlet>',
         templateUrl: 'app.component.html',
         providers: [NavigationHistory, menu_service_1.MenuService, track_service_1.TrackService],
         styleUrls: [
             'css/app.component.css',
-        ]
+        ],
     }),
     __metadata("design:paramtypes", [router_1.Router, NavigationHistory, menu_service_1.MenuService, track_service_1.TrackService])
 ], AppComponent);

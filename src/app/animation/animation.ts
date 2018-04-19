@@ -27,12 +27,21 @@ const testAnimation = trigger('ngIfAnimation', [
     ])*/
 ])
 
-export const fadeAnimation = trigger('ngIfAnimation', [
+export const ngIfAnimation = trigger('ngIfAnimation', [
     transition('void => *', [
-        style({opacity:0}), //style only for transition transition (after transiton it removes)
-        animate(100, style({opacity:1}))
+        style({opacity:0, transform: 'translateY(-20px)'}), //style only for transition transition (after transiton it removes)
+        animate(100, style({opacity:1, transform: 'translateY(0)'}))
     ]),
     transition('* => void', [
         animate(100, style({opacity:0})) // the new state of the transition(after transiton it removes)
     ])
 ])
+
+export const fadeInAnimation =
+    trigger('fadeInAnimation', [
+        // route 'enter' transition
+        transition(':enter', [
+            style({ opacity: 0 }),
+            animate('1s', style({ opacity: 1 }))
+        ]),
+    ]);

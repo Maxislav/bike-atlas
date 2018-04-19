@@ -3,7 +3,7 @@ import {Component, Injectable} from '@angular/core';
 import {Router, NavigationEnd} from "@angular/router";
 import {MenuService} from './service/menu.service';
 import {TrackService} from './service/track.service';
-
+import {routeAnimation} from  './animation/animation'
 
 
 @Injectable()
@@ -21,12 +21,12 @@ export class NavigationHistory{
 @Component({
     moduleId: module.id,
     selector: 'my-app',
-    //template:'<toast-component></toast-component><router-outlet></router-outlet>',
     templateUrl:'app.component.html',
     providers : [NavigationHistory, MenuService, TrackService],
     styleUrls: [
         'css/app.component.css',
-    ]
+    ],
+
 })
 
 

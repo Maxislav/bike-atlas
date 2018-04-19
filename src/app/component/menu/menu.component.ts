@@ -15,7 +15,7 @@ import {UserService, User} from "../../service/main.user.service";
 import {ToastService} from "../toast/toast.component";
 import {MapService} from "../../service/map.service";
 import {ChatService} from "../../service/chat.service";
-import {fadeAnimation} from '../../animation/animation'
+import {ngIfAnimation} from '../../animation/animation'
 
 declare var document: any;
 declare const System: any;
@@ -28,7 +28,7 @@ declare const System: any;
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.css'],
     providers: [MenuTrackComponent, MenuService],
-    animations: [fadeAnimation]
+    animations: [ngIfAnimation]
 })
 export class MenuComponent{
 
