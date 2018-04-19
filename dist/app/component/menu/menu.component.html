@@ -7,7 +7,7 @@
         <div class="name">{{'IN_CONNECTION'|translate}}</div>
       </div>
     </td>
-    <td (click)="onOpen()" class="button menu">
+    <td (click)="onOpenTrackMenu()" class="button menu">
       <div class="flex">
         <div class="routs ico"></div>
         <div class="name">{{'ROUTS'|translate}}</div>
@@ -26,5 +26,5 @@
   </tr>
 </table>
 <menu-athlete *ngIf="isShowMenuAthlete" (onCloseMenuAthlete)="onCloseMenuAthlete($event)" @ngIfAnimation=""></menu-athlete>
-<menu-track *ngIf="menuService.menuOpen" @ngIfAnimation=""></menu-track>
+<menu-track *ngIf="isShowMenuTrack" (onCloseMenuTrack)="onCloseMenuTrack($event)" @ngIfAnimation=""></menu-track>
 <menu-login *ngIf="menuService.menuOpenLogin" @ngIfAnimation=""></menu-login>

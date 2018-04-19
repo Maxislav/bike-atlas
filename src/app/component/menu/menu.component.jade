@@ -4,7 +4,7 @@ table
             .flex
                 .satellite.ico
                 .name {{'IN_CONNECTION'|translate}}
-        td.button.menu( (click)="onOpen()" )
+        td.button.menu( (click)="onOpenTrackMenu()" )
             .flex
                 .routs.ico
                 .name {{'ROUTS'|translate}}
@@ -19,6 +19,6 @@ table
         td.button.enter( (click)="onOpenLogin()")
             |{{user.name || ('SIGN_IN' | translate)}}
 menu-athlete(*ngIf="isShowMenuAthlete", (onCloseMenuAthlete) = 'onCloseMenuAthlete($event)', @ngIfAnimation='')
-menu-track(*ngIf="menuService.menuOpen", @ngIfAnimation='')
+menu-track(*ngIf="isShowMenuTrack", (onCloseMenuTrack) = 'onCloseMenuTrack($event)' , @ngIfAnimation='')
 menu-login(*ngIf="menuService.menuOpenLogin", @ngIfAnimation='')
 

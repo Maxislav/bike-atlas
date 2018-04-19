@@ -1,10 +1,10 @@
-///<reference path="../../../../../node_modules/@angular/compiler/src/ml_parser/ast.d.ts"/>
-import {Component, Injectable} from '@angular/core';
+import {Component, Output, EventEmitter} from '@angular/core';
 import {MenuService} from "app/service/menu.service";
 import {Io} from "app/service/socket.oi.service";
 import {TrackService} from "app/service/track.service";
 import {Router} from "@angular/router";
-const ss = require('node_modules/socket.io-stream/socket.io-stream.js');
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import * as ss  from  'node_modules/socket.io-stream/socket.io-stream.js'
 
 const log = console.log
 
@@ -60,9 +60,27 @@ export class MenuTrackComponent {
     menu = MENU;
     private socket:any;
     private clickLoad:number = 0;
+    private subscription: Subscriber
+    @Output() onCloseMenuTrack: EventEmitter<boolean> = new EventEmitter()
 
     constructor(private ms:MenuService, private io:Io, private trackService:TrackService, private router: Router) {
-        this.socket = io.socket
+        this.socket = io.socket;
+
+
+    }
+
+    ngAfterViewInit(){
+        const onClickObservable: Observable = fromEvent(document.body, 'click');
+        setTimeout(()=>{
+            this.subscription =  onClickObservable.subscribe(<PushSubscription>(e: MouseEvent) => {
+                this.onCloseMenuTrack.emit(false)
+            })
+        }, 10)
+
+    }
+
+    ngOnDestroy(){
+        this.subscription.unsubscribe()
     }
 
     onSelect(item, $event) {

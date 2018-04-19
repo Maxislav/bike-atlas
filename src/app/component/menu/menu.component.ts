@@ -38,7 +38,10 @@ export class MenuComponent{
     private user: User;
     private weatherLayer: any;
     private unViewedIds: Array<number>;
+
     private isShowMenuAthlete: boolean = false;
+    private isShowMenuTrack: boolean = false;
+
 
     constructor(private menuService:MenuService,
                 private track:TrackService,
@@ -58,6 +61,13 @@ export class MenuComponent{
 
     onOpen(){
         this.menuService.menuOpen = !this.menuService.menuOpen;
+    }
+    onOpenTrackMenu(): void{
+      this.isShowMenuTrack = true
+    }
+
+    onCloseMenuTrack(e): void{
+        this.isShowMenuTrack = false
     }
 
     onOpenLogin(){

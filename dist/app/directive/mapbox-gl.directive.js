@@ -17,6 +17,16 @@ const position_size_service_1 = require("../service/position-size.service");
 const local_storage_service_1 = require("../service/local-storage.service");
 const mapboxgl = require("@lib/mapbox-gl/mapbox-gl.js");
 const main_user_service_1 = require("../service/main.user.service");
+class MyMap extends mapboxgl.Map {
+    constructor(...args) {
+        super(...args);
+        this.onLoad = new Promise((resoleve) => {
+            this.on('load', () => {
+                resoleve(this);
+            });
+        });
+    }
+}
 let MapResolver = class MapResolver {
     constructor() {
         this._resolver = null;
@@ -106,7 +116,7 @@ let MapboxGlDirective = class MapboxGlDirective {
         //renderer.setElementStyle(el.nativeElement, 'color', 'white');
         // renderer.setElementStyle(el.nativeElement, 'width', '100%');
         //renderer.setElementStyle(el.nativeElement, 'height', '100%');
-        renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'gray');
+        renderer.setElementStyle(el.nativeElement, 'backgroundColor', '#dbd6cf');
     }
     get mapboxgl() {
         return this._mapboxgl;
@@ -120,16 +130,6 @@ let MapboxGlDirective = class MapboxGlDirective {
             let el = this.el;
             el.nativeElement.innerHTML = '';
             mapboxgl.accessToken = "pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA";
-            class MyMap extends mapboxgl.Map {
-                constructor(...args) {
-                    super(...args);
-                    this.onLoad = new Promise((resoleve) => {
-                        this.on('load', () => {
-                            resoleve(this);
-                        });
-                    });
-                }
-            }
             this.map = new MyMap({
                 container: el.nativeElement,
                 center: [localStorageCenter.lng || this.center[0], localStorageCenter.lat || this.center[1]],
@@ -165,6 +165,9 @@ let MapboxGlDirective = class MapboxGlDirective {
 MapboxGlDirective = __decorate([
     core_2.Directive({
         selector: 'mapbox-gl',
+        host: {
+            'map': 'map'
+        }
     }),
     __metadata("design:paramtypes", [core_2.ElementRef,
         core_2.Renderer,

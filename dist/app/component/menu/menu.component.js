@@ -37,12 +37,19 @@ let MenuComponent = class MenuComponent {
         this.toast = toast;
         this.chatService = chatService;
         this.isShowMenuAthlete = false;
+        this.isShowMenuTrack = false;
         this.user = userService.user;
         this.invites = friend.invites;
         this.unViewedIds = chatService.unViewedIds;
     }
     onOpen() {
         this.menuService.menuOpen = !this.menuService.menuOpen;
+    }
+    onOpenTrackMenu() {
+        this.isShowMenuTrack = true;
+    }
+    onCloseMenuTrack(e) {
+        this.isShowMenuTrack = false;
     }
     onOpenLogin() {
         this.menuService.menuOpenLogin = !this.menuService.menuOpenLogin;

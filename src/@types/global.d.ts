@@ -33,7 +33,7 @@ interface MapMarker{
 
 }
 
-interface MapGl{
+export declare interface MapGl{
     new(object): this
     addControl(any): this
     on(string, Function): this

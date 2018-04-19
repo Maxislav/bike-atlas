@@ -8,7 +8,21 @@ import * as mapboxgl from "@lib/mapbox-gl/mapbox-gl.js";
 import {Resolve} from "@angular/router";
 import {AuthService, Setting} from "../service/auth.service";
 import {UserService} from "../service/main.user.service";
+import {MapBoxGl, MapGl} from '../../@types/global';
 
+
+class MyMap extends mapboxgl.Map {
+    onLoad: Promise<MapGl>;
+    constructor(...args){
+        super(...args)
+        this.onLoad = new Promise((resoleve)=>{
+            this.on('load', () => {
+                resoleve(this)
+            })
+        })
+
+    }
+}
 
 declare var L:any;
 declare var gl:any;
@@ -39,25 +53,28 @@ export class MapResolver implements Resolve<any> {
 
 @Directive({
     selector: 'mapbox-gl',
+    host: {
+        'map': 'map'
+    }
 })
 export class MapboxGlDirective implements AfterViewInit {
     private setting: Setting = {};
 
-    get mapboxgl():any {
+    get mapboxgl(): MapBoxGl {
         return this._mapboxgl;
     }
 
-    set mapboxgl(value:any) {
+    set mapboxgl(value: MapBoxGl) {
         this._mapboxgl = value;
     }
 
     renderer:Renderer;
     el:ElementRef;
     nativeElement:any;
-    map:any;
+    map: MyMap;
     private center:number[];
     private mapService;
-    private _mapboxgl:any;
+    private _mapboxgl: MapBoxGl;
     private styleSource:any;
     private layers:Array<{}>;
     constructor(el:ElementRef,
@@ -138,7 +155,7 @@ export class MapboxGlDirective implements AfterViewInit {
         //renderer.setElementStyle(el.nativeElement, 'height', '100%');
 
 
-        renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'gray');
+        renderer.setElementStyle(el.nativeElement, 'backgroundColor', '#dbd6cf');
 
 
     }
@@ -149,18 +166,7 @@ export class MapboxGlDirective implements AfterViewInit {
             let el = this.el;
             el.nativeElement.innerHTML = '';
             mapboxgl.accessToken = "pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA";
-            class MyMap extends mapboxgl.Map{
-                onLoad: Promise<MapGl>;
-                constructor(...args){
-                    super(...args)
-                    this.onLoad = new Promise((resoleve)=>{
-                        this.on('load', () => {
-                            resoleve(this)
-                        })
-                    })
 
-                }
-            }
 
             this.map = new MyMap({
                 container: el.nativeElement,

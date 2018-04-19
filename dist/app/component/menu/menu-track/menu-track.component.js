@@ -9,13 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-///<reference path="../../../../../node_modules/@angular/compiler/src/ml_parser/ast.d.ts"/>
 const core_1 = require("@angular/core");
 const menu_service_1 = require("app/service/menu.service");
 const socket_oi_service_1 = require("app/service/socket.oi.service");
 const track_service_1 = require("app/service/track.service");
 const router_1 = require("@angular/router");
-const ss = require('node_modules/socket.io-stream/socket.io-stream.js');
+const fromEvent_1 = require("rxjs/observable/fromEvent");
+const ss = require("node_modules/socket.io-stream/socket.io-stream.js");
 const log = console.log;
 const MENU = [
     {
@@ -44,7 +44,19 @@ let MenuTrackComponent = class MenuTrackComponent {
         this.router = router;
         this.menu = MENU;
         this.clickLoad = 0;
+        this.onCloseMenuTrack = new core_1.EventEmitter();
         this.socket = io.socket;
+    }
+    ngAfterViewInit() {
+        const onClickObservable = fromEvent_1.fromEvent(document.body, 'click');
+        setTimeout(() => {
+            this.subscription = onClickObservable.subscribe((e) => {
+                this.onCloseMenuTrack.emit(false);
+            });
+        }, 10);
+    }
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
     onSelect(item, $event) {
         $event.preventDefault();
@@ -169,6 +181,10 @@ let MenuTrackComponent = class MenuTrackComponent {
         }
     }
 };
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], MenuTrackComponent.prototype, "onCloseMenuTrack", void 0);
 MenuTrackComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
