@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a, _b, _c;
 const core_1 = require("@angular/core");
 const menu_service_1 = require("app/service/menu.service");
 const socket_oi_service_1 = require("app/service/socket.oi.service");
@@ -195,5 +196,4 @@ MenuTrackComponent = __decorate([
     __metadata("design:paramtypes", [typeof (_a = typeof menu_service_1.MenuService !== "undefined" && menu_service_1.MenuService) === "function" && _a || Object, typeof (_b = typeof socket_oi_service_1.Io !== "undefined" && socket_oi_service_1.Io) === "function" && _b || Object, typeof (_c = typeof track_service_1.TrackService !== "undefined" && track_service_1.TrackService) === "function" && _c || Object, router_1.Router])
 ], MenuTrackComponent);
 exports.MenuTrackComponent = MenuTrackComponent;
-var _a, _b, _c;
 //# sourceMappingURL=menu-track.component.js.map

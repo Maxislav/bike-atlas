@@ -12,6 +12,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var TrackService_1;
 const core_1 = require("@angular/core");
 const R = require("@ramda/ramda.min.js");
 const util_1 = require("./util");
@@ -454,5 +455,4 @@ TrackService = TrackService_1 = __decorate([
     __metadata("design:paramtypes", [socket_oi_service_1.Io, map_service_1.MapService, toast_component_1.ToastService])
 ], TrackService);
 exports.TrackService = TrackService;
-var TrackService_1;
 //# sourceMappingURL=track.service.js.map

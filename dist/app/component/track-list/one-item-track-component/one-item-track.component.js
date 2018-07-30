@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var OneItemTrackComponent_1;
 const core_1 = require("@angular/core");
 const track_var_1 = require("../../../service/track.var");
 const track_service_1 = require("../../../service/track.service");
@@ -392,5 +393,4 @@ OneItemTrackComponent = OneItemTrackComponent_1 = __decorate([
         strava_service_1.StravaService])
 ], OneItemTrackComponent);
 exports.OneItemTrackComponent = OneItemTrackComponent;
-var OneItemTrackComponent_1;
 //# sourceMappingURL=one-item-track.component.js.map

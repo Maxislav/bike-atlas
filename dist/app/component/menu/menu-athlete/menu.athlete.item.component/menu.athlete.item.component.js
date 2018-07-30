@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const core_1 = require("@angular/core");
 //import {Device} from '../../../../../@types/global';
 let MenuAthleteItemComponent = class MenuAthleteItemComponent {
@@ -33,7 +34,7 @@ let MenuAthleteItemComponent = class MenuAthleteItemComponent {
 };
 __decorate([
     core_1.Input(),
-    __metadata("design:type", Object)
+    __metadata("design:type", typeof (_a = typeof Device !== "undefined" && Device) === "function" && _a || Object)
 ], MenuAthleteItemComponent.prototype, "device", void 0);
 MenuAthleteItemComponent = __decorate([
     core_1.Component({

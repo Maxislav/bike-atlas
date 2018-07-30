@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const core_1 = require("@angular/core");
 //import { Rp } from '@angular/core';
 const menu_service_1 = require("app/service/menu.service");
@@ -92,5 +93,4 @@ MenuLoginComponent = __decorate([
         main_user_service_1.UserService])
 ], MenuLoginComponent);
 exports.MenuLoginComponent = MenuLoginComponent;
-var _a;
 //# sourceMappingURL=menu-login.component.js.map

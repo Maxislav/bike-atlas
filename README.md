@@ -34,6 +34,10 @@ create file server/mysql.config.json
 ```bash
 ~$ node server/mysql-start-up.js
 ```
+#### 1.1 if have error -> in MySQL Workbench
+```
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'gliderman'
+```
 
 ## 2. compile, debug and build
 ```

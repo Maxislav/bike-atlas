@@ -765,7 +765,8 @@ class Util {
 					reject(err);
 					return;
 				}
-				resolve(rows[0].id)
+
+				resolve(rows[0] ? rows[0].id : -1)
 			});
 		})
 	}

@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 /**
  * Created by maxislav on 18.08.16.
  */
@@ -34,5 +35,4 @@ HeroDetailComponent = __decorate([
     __metadata("design:paramtypes", [])
 ], HeroDetailComponent);
 exports.HeroDetailComponent = HeroDetailComponent;
-var _a;
 //# sourceMappingURL=my-hero-detail.component.js.map

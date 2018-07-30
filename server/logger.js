@@ -6,6 +6,8 @@ const distance = require('./distance');
 const Robot = require('./robot');
 class Logger {
     /** @namespace this.connection */
+// $GPRMC,074624,A,5005.91360,N,3033.15540,E,13.386224,222.130005,290718,,*1E wrong  -> 50.98559952
+// $GPRMC,074553,A,5006.02390,N,3033.30500,E,16.895118,220.089996,290718,,*1A   -> 50.10039902
 
     //  /log?id=862614000171302&dev=862614000171302&acct=862614000171302&batt=0&code=0xF020&alt=0.0&gprmc=$GPRMC,111925,A,5023.32022,N,3029.64240,E,0.000000,0.000000,050117,,*29
     constructor(_app, _ioServer, util) {
@@ -196,10 +198,11 @@ function minToDec(src) {
     lng = lng.join('');
     let arrLng = lng.split(':');
     let prefix = arrLng[0];
-    let suffix = arrLng[1].split(''); suffix.splice(2,0,'.'); suffix = suffix.join('');
-    suffix  = ''+100*parseFloat(suffix)/60;
-    suffix = suffix.replace('.', '');
-    return parseFloat(prefix+'.'+suffix).toFixed(6);
+    let suffix = arrLng[1].split('');
+    suffix.splice(2,0,'.');
+    suffix = suffix.join('');
+    suffix  = parseFloat(suffix)/60;
+    return parseFloat(Number(prefix) + suffix).toFixed(6);
 }
 
 module.exports = Logger;
