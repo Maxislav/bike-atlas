@@ -29,7 +29,7 @@ class Marker {
         });
         this.speedBehaviorSubject = new BehaviorSubject_1.BehaviorSubject(0);
         this.speedSubject = this.speedBehaviorSubject.asObservable();
-        this.timer = new timer_service_1.Timer();
+        this.timer = new timer_service_1.Timer(devData.date);
         this.layerId = Marker.getNewLayer(0, 5000000, true) + '';
         const icoContainer = document.createElement('div');
         icoContainer.classList.add("user-icon");
@@ -53,7 +53,7 @@ class Marker {
     }
     update(devData) {
         const prevLngLat = new track_var_1.Point(this.lng, this.lat);
-        const t = this.timer.tick();
+        const t = this.timer.tick(devData.date);
         for (let opt in devData) {
             this[opt] = devData[opt];
         }

@@ -9,6 +9,7 @@ import {TailClass} from './tail.class'
 import {distance} from "../util/distance";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { MapBoxGl } from 'src/@types/global';
 
 export interface MarkerInterface {
     id:string;
@@ -73,7 +74,7 @@ export class Marker implements DeviceData {
         });
         this.speedBehaviorSubject = new BehaviorSubject<number>(0)
         this.speedSubject = this.speedBehaviorSubject.asObservable();
-        this.timer = new Timer();
+        this.timer = new Timer(devData.date);
         this.layerId = Marker.getNewLayer(0, 5000000, true) + '';
         const icoContainer = document.createElement('div');
         icoContainer.classList.add("user-icon");
@@ -105,19 +106,19 @@ export class Marker implements DeviceData {
 
     update(devData: DeviceData): Marker {
         const prevLngLat: Point = new Point(this.lng, this.lat);
-        const t = this.timer.tick();
+        const t = this.timer.tick(devData.date);
         for (let opt in devData) {
             this[opt] = devData[opt]
         }
         const nextLngLat: Point = new Point(this.lng, this.lat);
         this.speed = 3600 * 1000 * distance(prevLngLat, nextLngLat)/t; //km/h
         this.speedBehaviorSubject.next(this.speed)
-
         this.popup.setLngLat([this.lng, this.lat]);
         this.status = elapsedStatus(this);
         this.iconMarker.setLngLat([this.lng, this.lat]);
         this.icoContainer.setAttribute('status', this.status);
         this.tail.update(new Point(devData.lng, devData.lat))
+
         return this
     }
 

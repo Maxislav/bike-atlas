@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {  Subscription } from 'rxjs/Subscription';
-//import {Device} from '../../../../../@types/global';
+import {Device} from '../../../../../@types/global';
 
 @Component({
     moduleId: module.id,
@@ -20,7 +20,7 @@ export class MenuAthleteItemComponent implements OnInit{
             this.subscription.unsubscribe()
         }
         if(this.device.marker){
-            this.subscription = this.device.marker.speedSubject.subscribe(value=>{
+            this.subscription = this.device.marker.speedSubject.subscribe(value => {
                 this.speed = value.toFixed(1)
             })
         }

@@ -1,23 +1,26 @@
 let app, ioServer;
 const dateFormat = require('dateformat');
 //const util = require('./socket-data/util');
-const http = require( "http" );
+const http = require("http");
 const distance = require('./distance');
 const Robot = require('./robot');
+
 class Logger {
     /** @namespace this.connection */
 // $GPRMC,074624,A,5005.91360,N,3033.15540,E,13.386224,222.130005,290718,,*1E wrong  -> 50.98559952
+//
 // $GPRMC,074553,A,5006.02390,N,3033.30500,E,16.895118,220.089996,290718,,*1A   -> 50.10039902
 
     //  /log?id=862614000171302&dev=862614000171302&acct=862614000171302&batt=0&code=0xF020&alt=0.0&gprmc=$GPRMC,111925,A,5023.32022,N,3029.64240,E,0.000000,0.000000,050117,,*29
+    //  /log?id=862614000171302&dev=862614000171302&acct=862614000171302&batt=0&code=0xF020&alt=0.0&gprmc=$GPRMC,152524,A,5005.91360,N,3033.15540,E,13.386224,222.130005,010818,,*1E
     constructor(_app, _ioServer, util) {
         app = _app;
         ioServer = _ioServer;
-        this.util = util; 
-       
+        this.util = util;
+
         //this.connection = connection;
-        
-        
+
+
         this.robot = new Robot(util);
         this._sockets = {};
         this.devices = {};
@@ -25,7 +28,7 @@ class Logger {
     }
 
     onLog(req, res, next) {
-        const util = this.util    
+        const util = this.util
 
         const device_id = req.query.id;
         let data = null;
@@ -41,10 +44,10 @@ class Logger {
             res.setStatus = 200;
             checkSum = checkSum.replace(/\*/, '');
             res.end(checkSum);
-            try{
+            try {
                 data = this.parseGprmc(req.query.gprmc);
                 data.device_key = data.id = req.query.id;
-            }catch (err){
+            } catch (err) {
                 console.error('Error parse', err)
             }
 
@@ -52,9 +55,9 @@ class Logger {
             res.setStatus = 500;
             res.end();
         }
-        if(data){
+        if (data) {
             util.insertLog(data)
-                .catch(err=>[
+                .catch(err => [
                     console.error('insertLog error ->', err)
                 ])
         }
@@ -65,7 +68,7 @@ class Logger {
 
         if (this.devices && this.devices[device_id]) {
             this.devices[device_id].forEach(socket_id => {
-                if(data){
+                if (data) {
                     emitedSockets.push(socket_id);
                     this.sockets[socket_id] && this.sockets[socket_id].emit('log', data);
                 }
@@ -75,56 +78,55 @@ class Logger {
 
     }
 
-    emitUnlockUser(emitUnlockUser, device){
+    emitUnlockUser(emitUnlockUser, device) {
         let _name;
         let _userId;
         let _setting;
         const util = this.util;
-        
-        this.util.getOwnerDevice(device.device_key)
-          .then(rows=>{
-              if(rows && rows.length){
-                  _userId = rows[0].id;
-                  _name = rows[0].name;
-                  return util.getUserSettingByUserId(_userId)
-                    .then(setting=>{
-                        return setting
-                    })
-              }
-              return null;
-          })
-          .then(setting=>{
-              console.log('setting ->', setting)
-              if(setting && setting.lock == 0){
-                  _setting = setting;
-                  return util.getPrivateArea(_userId)
-              }
-              return false
-          })
-          .then(areas=>{
-              console.log('areas->',areas)
-              if(areas){
-                  const isInPrivate =  distance.isInPrivate(areas, device);
 
-                  if(!isInPrivate){
-                      console.log('emitUnlockUser->',isInPrivate);
-                      
-                      for(var socket_id in this.sockets){
-                          if(emitUnlockUser.indexOf(socket_id)==-1){
-                              device.ownerId = _userId;
-                              device.name  = _name;
-                              this.sockets[socket_id].emit('log', device)
-                          }
-                      }
-                  }
-              }
-              
-              
-             
-          })
-          .catch(err=>{
-              console.error('Error emitUnlockUser->', err)
-          })
+        this.util.getOwnerDevice(device.device_key)
+            .then(rows => {
+                if (rows && rows.length) {
+                    _userId = rows[0].id;
+                    _name = rows[0].name;
+                    return util.getUserSettingByUserId(_userId)
+                        .then(setting => {
+                            return setting
+                        })
+                }
+                return null;
+            })
+            .then(setting => {
+                console.log('setting ->', setting)
+                if (setting && setting.lock == 0) {
+                    _setting = setting;
+                    return util.getPrivateArea(_userId)
+                }
+                return false
+            })
+            .then(areas => {
+                console.log('areas->', areas)
+                if (areas) {
+                    const isInPrivate = distance.isInPrivate(areas, device);
+
+                    if (!isInPrivate) {
+                        console.log('emitUnlockUser->', isInPrivate);
+
+                        for (var socket_id in this.sockets) {
+                            if (emitUnlockUser.indexOf(socket_id) == -1) {
+                                device.ownerId = _userId;
+                                device.name = _name;
+                                this.sockets[socket_id].emit('log', device)
+                            }
+                        }
+                    }
+                }
+
+
+            })
+            .catch(err => {
+                console.error('Error emitUnlockUser->', err)
+            })
 
     }
 
@@ -148,7 +150,7 @@ class Logger {
         //console.log('logger onDisconnect ->', this.devices)
     }
 
-    // $GPRMC,153946,A,5023.31220,N,3029.63150,E,0.000000,0.000000,030117,,*2A
+    // $GPRMC,153946,A,5023.31220,N,3029.63150,E,0.000000,0.000000,03 01 17,,*2A
     parseGprmc(gprmc) {
         const arrData = gprmc.split(',');
         const timeStamp = arrData[1];
@@ -161,14 +163,13 @@ class Logger {
             '' + timeStamp[2] + timeStamp[3],
             '' + timeStamp[4] + timeStamp[5]
         );
-        const dateMysql = date; //dateFormat(date, 'yyyy-mm-dd HH:MM:ss.L');
-        const lat = arrData[4]=='N' ? minToDec(arrData[3]): '-'+minToDec(arrData[3]);
-        const lng = arrData[6] == 'E' ? minToDec(arrData[5]): '-'+minToDec(arrData[5]);
-        const azimuth = arrData[8];
-        const speed = parseFloat(arrData[7])*1.852;
+        const lat = arrData[4] === 'N' ? minToDec(arrData[3]) : '-' + minToDec(arrData[3]);
+        const lng = arrData[6] === 'E' ? minToDec(arrData[5]) : '-' + minToDec(arrData[5]);
+        const azimuth = parseFloat(Number(arrData[8]).toFixed(2));
+        const speed = parseFloat(arrData[7]) * 1.852;
 
         return {
-            date: dateMysql,
+            date,
             alt: 0,
             lng,
             lat,
@@ -193,15 +194,15 @@ class Logger {
 function minToDec(src) {
     let lng = src.split('');
     let comaIndex = lng.indexOf('.');
-    lng.splice(comaIndex,1);
-    lng.splice(comaIndex-2,0,':');
+    lng.splice(comaIndex, 1);
+    lng.splice(comaIndex - 2, 0, ':');
     lng = lng.join('');
     let arrLng = lng.split(':');
     let prefix = arrLng[0];
     let suffix = arrLng[1].split('');
-    suffix.splice(2,0,'.');
+    suffix.splice(2, 0, '.');
     suffix = suffix.join('');
-    suffix  = parseFloat(suffix)/60;
+    suffix = parseFloat(suffix) / 60;
     return parseFloat(Number(prefix) + suffix).toFixed(6);
 }
 

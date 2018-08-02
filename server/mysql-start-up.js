@@ -105,12 +105,12 @@ function createTable() {
     const tableLogger = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`logger` ' +
             '( `id` INT NOT NULL AUTO_INCREMENT , ' +
-            '`device_key` VARCHAR(32) NOT NULL , ' +
+            '`device_key` VARCHAR(32) NOT 0NULL , ' +
             '`lng` FLOAT(10,8) NOT NULL, ' +
             '`lat` FLOAT(10,8) NOT NULL  , ' +
             '`alt` FLOAT(8,2) NOT NULL DEFAULT 0, ' +
             '`speed` FLOAT(8,2) NULL DEFAULT NULL, ' +
-            '`azimuth` FLOAT(4,2) NULL DEFAULT NULL, ' +
+            '`azimuth` FLOAT(6,2) NULL DEFAULT NULL, ' +
             '`date` DATETIME NOT NULL, ' +
             '`src` VARCHAR(128) NULL DEFAULT NULL,' +
             'PRIMARY KEY (`id`)) ENGINE = InnoDB;';

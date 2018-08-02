@@ -1,14 +1,14 @@
 import {Injectable} from "@angular/core";
 
 export class Timer{
-    private  date: Date;
+    public date: Date;
 
-    constructor(){
-        this.date = new Date()
+    constructor(date?: string | Date){
+        this.date = new Date(date)
     }
-    tick(): number{
-        const prevDate = this.date
-        this.date = new Date()
+    tick(date?: string | Date): number {
+        const prevDate = this.date;
+        this.date = new Date(date);
         return this.date.getTime() - prevDate.getTime()
     }
 }

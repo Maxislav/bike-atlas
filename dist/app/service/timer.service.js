@@ -11,12 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 class Timer {
-    constructor() {
-        this.date = new Date();
+    constructor(date) {
+        this.date = new Date(date);
     }
-    tick() {
+    tick(date) {
         const prevDate = this.date;
-        this.date = new Date();
+        this.date = new Date(date);
         return this.date.getTime() - prevDate.getTime();
     }
 }
