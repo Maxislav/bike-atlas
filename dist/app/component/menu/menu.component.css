@@ -102,6 +102,9 @@ table td.bell .num {
   text-align: center;
   border-radius: 50%;
 }
+.ico {
+  display: none;
+}
 @media screen and (max-width: 450px) {
   table td.button.menu {
     width: 50px;
@@ -111,6 +114,9 @@ table td.bell .num {
   }
   .name {
     display: none;
+  }
+  .ico {
+    display: block;
   }
 }
 @media screen and (min-width: 450px) {
