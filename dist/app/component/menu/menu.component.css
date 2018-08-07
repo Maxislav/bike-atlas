@@ -114,7 +114,7 @@ table td.bell .num {
   }
 }
 @media screen and (min-width: 450px) {
-  .ico {
+  /*.ico{
     display: none;
-  }
+  }*/
 }
