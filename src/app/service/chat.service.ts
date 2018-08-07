@@ -15,8 +15,6 @@ interface ResMessage {
     viewed: boolean
 }
 
-
-
 @Injectable()
 export class ChatService{
     rooms: Array<Room> = [];

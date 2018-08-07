@@ -1,13 +1,11 @@
 table
     tr
         td.button.menu((click)="onOpenAthlete()")
-            .flex
-                .satellite.ico
-                .name {{'IN_CONNECTION'|translate}}
+            .satellite.ico
+            .name {{'IN_CONNECTION'|translate}}
         td.button.menu( (click)="onOpenTrackMenu()" )
-            .flex
-                .routs.ico
-                .name {{'ROUTS'|translate}}
+            .routs.ico
+            .name {{'ROUTS'|translate}}
         td.button.weather([class.active]="weatherLayer")
             .weather-ico((click)="onWeather()")
         td.fill-space

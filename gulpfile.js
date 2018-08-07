@@ -3,9 +3,13 @@
  */
 var gulp = require( 'gulp' );
 var less = require('gulp-less');
+var path = require('path');
 
-var  livereload = require('gulp-livereload');
-
+var  livereload = require('livereload');
+const server = livereload.createServer({
+    delay : 2000
+});
+server.watch(path.resolve(__dirname, 'dist'));
 const devSyncTask = [
 	'less',
 	'jade',
@@ -28,7 +32,7 @@ require('./gulp/less')(gulp);
 /**
  * watch
  */
-require('./gulp/watch')(gulp);
+ require('./gulp/watch')(gulp);
 
 /*
 

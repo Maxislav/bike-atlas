@@ -105,10 +105,10 @@ function createTable() {
     const tableLogger = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`logger` ' +
             '( `id` INT NOT NULL AUTO_INCREMENT , ' +
-            '`device_key` VARCHAR(32) NOT 0NULL , ' +
+            '`device_key` VARCHAR(32) NOT NULL , ' +
             '`lng` FLOAT(10,8) NOT NULL, ' +
-            '`lat` FLOAT(10,8) NOT NULL  , ' +
-            '`alt` FLOAT(8,2) NOT NULL DEFAULT 0, ' +
+            '`lat` FLOAT(10,8) NOT NULL, ' +
+            '`alt` FLOAT(8,2) DEFAULT 0, ' +
             '`speed` FLOAT(8,2) NULL DEFAULT NULL, ' +
             '`azimuth` FLOAT(6,2) NULL DEFAULT NULL, ' +
             '`date` DATETIME NOT NULL, ' +
@@ -232,6 +232,43 @@ function createTable() {
         })
     });
 
+    const tableMarker = new Promise((res, rej) => {
+        const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`marker` ' +
+            '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+            '`user_id` INT NOT NULL, ' +
+            '`image_id` INT NULL DEFAULT NULL, ' +
+            '`lng` FLOAT(10,8) NOT NULL, ' +
+            '`lat` FLOAT(10,8) NOT NULL  , ' +
+            '`date` DATETIME NULL DEFAULT NULL,' +
+            '`title` VARCHAR(16) NOT NULL , ' +
+            '`text` TEXT COLLATE utf8_general_ci NULL DEFAULT NULL, ' +
+            '`shared` BOOLEAN NOT NULL DEFAULT 0, ' +
+            'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+        connection.query(query, (err) => {
+            if (err) {
+                console.log('Error table marker create');
+                rej(err);
+                return;
+            }
+            res(connection);
+        })
+    });
+
+    const tableImage = new Promise((res, rej) => {
+        const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`image` ' +
+            '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+            '`user_id` INT NOT NULL, ' +
+            'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+        connection.query(query, (err) => {
+            if (err) {
+                console.log('Error table image create');
+                rej(err);
+                return;
+            }
+            res(connection);
+        })
+    });
+
 
 
 
@@ -245,7 +282,9 @@ function createTable() {
         tableFriends,
         tableChat,
         tablePrivateArea,
-        tableStrava])
+        tableStrava,
+        tableMarker,
+        tableImage])
     //return Promise.all([tableHash])
 
 

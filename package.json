@@ -42,6 +42,7 @@
     "firebase": "^3.6.6",
     "form-data": "^2.1.2",
     "jimp": "^0.2.27",
+    "livereload": "^0.7.0",
     "merge-stream": "^1.0.1",
     "mysql": "^2.16.0",
     "ng2-translate": "^5.0.0",
