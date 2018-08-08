@@ -13,6 +13,7 @@ const core_1 = require("@angular/core");
 const router_1 = require("@angular/router");
 const menu_service_1 = require("./service/menu.service");
 const track_service_1 = require("./service/track.service");
+const my_marker_service_1 = require("./service/my-marker.service");
 let NavigationHistory = class NavigationHistory {
     constructor() {
         this.history = [];
@@ -27,10 +28,11 @@ NavigationHistory = __decorate([
 ], NavigationHistory);
 exports.NavigationHistory = NavigationHistory;
 let AppComponent = class AppComponent {
-    constructor(router, nh, menuService, track) {
+    constructor(router, nh, menuService, track, myMarkerService) {
         this.router = router;
         this.menuService = menuService;
         this.track = track;
+        this.myMarkerService = myMarkerService;
         this.title = 'Tour of Heroes';
         this.router.events.subscribe((e) => {
             if (e instanceof router_1.NavigationEnd) {
@@ -38,6 +40,7 @@ let AppComponent = class AppComponent {
             }
         });
         this.trackList = track.trackList;
+        this.markerList = myMarkerService.markerList;
     }
 };
 AppComponent = __decorate([
@@ -45,12 +48,16 @@ AppComponent = __decorate([
         moduleId: module.id,
         selector: 'my-app',
         templateUrl: 'app.component.html',
-        providers: [NavigationHistory, menu_service_1.MenuService, track_service_1.TrackService],
+        // providers: [NavigationHistory, MenuService, TrackService],
         styleUrls: [
             'css/app.component.css',
         ],
     }),
-    __metadata("design:paramtypes", [router_1.Router, NavigationHistory, menu_service_1.MenuService, track_service_1.TrackService])
+    __metadata("design:paramtypes", [router_1.Router,
+        NavigationHistory,
+        menu_service_1.MenuService,
+        track_service_1.TrackService,
+        my_marker_service_1.MyMarkerService])
 ], AppComponent);
 exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map

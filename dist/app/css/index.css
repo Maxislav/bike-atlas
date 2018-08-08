@@ -8,8 +8,14 @@ body {
 .button-container > div button {
   margin-left: 8px;
 }
+.container {
+  padding: 0 15px;
+}
 .row {
-  margin-bottom: 15px;
+  margin: 15px -15px;
+}
+.row.flex > .flex-cell {
+  padding: 0 15px ;
 }
 .table {
   display: table;

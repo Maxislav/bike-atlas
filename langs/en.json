@@ -14,5 +14,6 @@
   "REGISTRATION": "Registration",
   "NAME": "Name",
   "PASS": "Pass",
-  "NOT_LOGGED": "You are not logged in"
+  "NOT_LOGGED": "You are not logged in",
+  "MY_MARKER": "Markers"
 }

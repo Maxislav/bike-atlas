@@ -7,7 +7,7 @@ table
             .routs.ico
             .name {{'ROUTS'|translate}}
         td.button.weather([class.active]="weatherLayer")
-            .weather-ico((click)="onWeather()")
+             .weather-ico((click)="onWeather()")
         td.fill-space
         td.bell((click)="goToFriends()")
             .un-viewed-ids(*ngIf="unViewedIds.length") {{unViewedIds.length}}

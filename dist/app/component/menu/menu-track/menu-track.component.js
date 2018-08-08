@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a, _b, _c;
+var _a, _b, _c, _d;
 const core_1 = require("@angular/core");
 const menu_service_1 = require("app/service/menu.service");
 const socket_oi_service_1 = require("app/service/socket.oi.service");
@@ -17,36 +17,46 @@ const track_service_1 = require("app/service/track.service");
 const router_1 = require("@angular/router");
 const fromEvent_1 = require("rxjs/observable/fromEvent");
 const ss = require("node_modules/socket.io-stream/socket.io-stream.js");
+const my_marker_service_1 = require("app/service/my-marker.service");
 const log = console.log;
 const MENU = [
     {
         value: 'strava',
-        text: "Strava"
+        text: 'Strava'
     },
     {
         value: 'journal',
-        text: "JOURNAL"
+        text: 'JOURNAL'
+    },
+    {
+        value: 'myMarker',
+        text: 'MY_MARKER'
     },
     {
         value: 'load',
-        text: "DOWNLOAD_GPX",
-        enctype: "multipart/form-data",
+        text: 'DOWNLOAD_GPX',
+        enctype: 'multipart/form-data',
     },
     {
         value: 'import',
-        text: "IMPORT_FROM_GOOGLE_KML"
+        text: 'IMPORT_FROM_GOOGLE_KML'
     },
 ];
 let MenuTrackComponent = class MenuTrackComponent {
-    constructor(ms, io, trackService, router) {
+    constructor(ms, io, trackService, router, myMarkerService) {
         this.ms = ms;
         this.io = io;
         this.trackService = trackService;
         this.router = router;
+        this.myMarkerService = myMarkerService;
         this.menu = MENU;
         this.clickLoad = 0;
         this.onCloseMenuTrack = new core_1.EventEmitter();
         this.socket = io.socket;
+    }
+    clickIn(e) {
+        e.stopPropagation();
+        this.onCloseMenuTrack.emit(false);
     }
     ngAfterViewInit() {
         const onClickObservable = fromEvent_1.fromEvent(document.body, 'click');
@@ -60,8 +70,8 @@ let MenuTrackComponent = class MenuTrackComponent {
         this.subscription.unsubscribe();
     }
     onSelect(item, $event) {
-        $event.preventDefault();
-        $event.stopPropagation();
+        // $event.preventDefault();
+        // $event.stopPropagation();
         switch (item.value) {
             case 'load':
                 this.loadFile($event);
@@ -71,11 +81,14 @@ let MenuTrackComponent = class MenuTrackComponent {
                 break;
             case 'journal':
                 this.router.navigate(['/auth/map/journal']);
-                this.ms.menuOpen = false;
+                // this.ms.menuOpen = false;
                 break;
             case 'strava':
                 this.router.navigate(['/auth/map/strava-invite']);
-                this.ms.menuOpen = false;
+                // this.ms.menuOpen = false;
+                break;
+            case 'myMarker':
+                this.myMarkerService.show();
                 break;
             default:
                 return null;
@@ -159,10 +172,10 @@ let MenuTrackComponent = class MenuTrackComponent {
                     download(file.name.replace(/kml$/, 'gpx'), this.response);
                 }
                 else {
-                    log("error " + this.status);
+                    log('error ' + this.status);
                 }
             };
-            xhr.open("POST", "/import/kml-data", true);
+            xhr.open('POST', '/import/kml-data', true);
             var formData = new FormData();
             formData.append('file', file);
             xhr.send(formData);
@@ -186,6 +199,12 @@ __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], MenuTrackComponent.prototype, "onCloseMenuTrack", void 0);
+__decorate([
+    core_1.HostListener('click', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], MenuTrackComponent.prototype, "clickIn", null);
 MenuTrackComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
@@ -193,7 +212,7 @@ MenuTrackComponent = __decorate([
         templateUrl: './menu-track.html',
         styleUrls: ['./menu-track.css'],
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof menu_service_1.MenuService !== "undefined" && menu_service_1.MenuService) === "function" && _a || Object, typeof (_b = typeof socket_oi_service_1.Io !== "undefined" && socket_oi_service_1.Io) === "function" && _b || Object, typeof (_c = typeof track_service_1.TrackService !== "undefined" && track_service_1.TrackService) === "function" && _c || Object, router_1.Router])
+    __metadata("design:paramtypes", [typeof (_a = typeof menu_service_1.MenuService !== "undefined" && menu_service_1.MenuService) === "function" && _a || Object, typeof (_b = typeof socket_oi_service_1.Io !== "undefined" && socket_oi_service_1.Io) === "function" && _b || Object, typeof (_c = typeof track_service_1.TrackService !== "undefined" && track_service_1.TrackService) === "function" && _c || Object, router_1.Router, typeof (_d = typeof my_marker_service_1.MyMarkerService !== "undefined" && my_marker_service_1.MyMarkerService) === "function" && _d || Object])
 ], MenuTrackComponent);
 exports.MenuTrackComponent = MenuTrackComponent;
 //# sourceMappingURL=menu-track.component.js.map

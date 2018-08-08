@@ -12,9 +12,15 @@ body{
     margin-left: 8px;
   };
 }
+.container{
+  padding: 0 15px;
+}
 
 .row{
-  margin-bottom: 15px;
+  margin: 15px -15px;
+  &.flex>.flex-cell{
+    padding: 0 15px ;
+  }
 }
 .table{
   display: table;
@@ -22,6 +28,8 @@ body{
     display: table-cell;
   }
 }
+
+
 .flex{
   display: flex;
   &.center{
