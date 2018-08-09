@@ -65,7 +65,7 @@ const ng2_translate_1 = require("ng2-translate");
 const http_1 = require("@angular/http");
 const core_2 = require("@angular/core");
 const menu_athlete_item_component_1 = require("./component/menu/menu-athlete/menu.athlete.item.component/menu.athlete.item.component");
-const marker_list_component_1 = require("./component/marker-list-component/marker-list-component");
+const my_marker_list_component_1 = require("./component/my-marker-list-component/my-marker-list-component");
 const menu_service_1 = require("./service/menu.service");
 const my_marker_service_1 = require("./service/my-marker.service");
 let JJ = class JJ {
@@ -115,7 +115,7 @@ AppModule = __decorate([
          */
         declarations: [
             JJ,
-            marker_list_component_1.MarkerListComponent,
+            my_marker_list_component_1.MyMarkerListComponent,
             menu_athlete_item_component_1.MenuAthleteItemComponent,
             strava_auth_component_1.StravaAuthComponent,
             strava_component_1.StravaComponent,

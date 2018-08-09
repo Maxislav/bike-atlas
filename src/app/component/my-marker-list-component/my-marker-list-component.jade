@@ -1,0 +1,6 @@
+
+.relative
+    .close((click)="onClose()") &times;
+    .row.flex
+        .flex-cell
+            .button.primary([ngClass]="{active: active}", (click)='onAddActive($event)')  Добавиить

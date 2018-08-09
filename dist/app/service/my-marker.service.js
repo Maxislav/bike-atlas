@@ -9,9 +9,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const core_1 = require("@angular/core");
+const map_service_1 = require("app/service/map.service");
 let MyMarkerService = class MyMarkerService {
-    constructor() {
+    constructor(mapService) {
+        this.mapService = mapService;
         this.isShow = false;
     }
     show() {
@@ -20,10 +23,12 @@ let MyMarkerService = class MyMarkerService {
     hide() {
         this.isShow = false;
     }
+    createMarker(lng, lat) {
+    }
 };
 MyMarkerService = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_a = typeof map_service_1.MapService !== "undefined" && map_service_1.MapService) === "function" && _a || Object])
 ], MyMarkerService);
 exports.MyMarkerService = MyMarkerService;
 //# sourceMappingURL=my-marker.service.js.map

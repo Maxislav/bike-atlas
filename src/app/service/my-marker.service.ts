@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { MapService } from 'app/service/map.service';
 
-export interface Marker{
+export interface MyMarker{
     id: number;
     lng: number;
     lat: number;
@@ -9,9 +10,9 @@ export interface Marker{
 
 @Injectable()
 export class MyMarkerService {
-    markerList: Array<Marker>;
+    markerList: Array<MyMarker>;
     isShow: boolean = false;
-    constructor(){}
+    constructor(private mapService: MapService){}
 
     show(){
         this.isShow = true
@@ -20,6 +21,11 @@ export class MyMarkerService {
     hide(){
         this.isShow = false
     }
+
+    createMarker(lng: number, lat: number){
+
+    }
+
 
 
 

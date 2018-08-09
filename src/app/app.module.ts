@@ -57,7 +57,7 @@ import {Http, ConnectionBackend} from '@angular/http';
 
 import {Component, Injectable} from '@angular/core';
 import {MenuAthleteItemComponent} from './component/menu/menu-athlete/menu.athlete.item.component/menu.athlete.item.component';
-import { MarkerListComponent } from './component/marker-list-component/marker-list-component';
+import { MyMarkerListComponent } from './component/my-marker-list-component/my-marker-list-component';
 import { MenuService } from './service/menu.service';
 import { MyMarkerService } from './service/my-marker.service';
 @Component({
@@ -94,7 +94,7 @@ export function createTranslateLoader(http: Http) {
      */
     declarations: [
         JJ,
-        MarkerListComponent,
+        MyMarkerListComponent,
         MenuAthleteItemComponent,
         StravaAuthComponent,
         StravaComponent,
