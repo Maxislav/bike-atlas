@@ -60,6 +60,8 @@ import {MenuAthleteItemComponent} from './component/menu/menu-athlete/menu.athle
 import { MyMarkerListComponent } from './component/my-marker-list-component/my-marker-list-component';
 import { MenuService } from './service/menu.service';
 import { MyMarkerService } from './service/my-marker.service';
+import { MyInputPopupComponent } from './component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
+import { SharedModule } from 'app/shared-module/shared.module';
 @Component({
     //noinspection TypeScriptUnresolvedVariable
     template: '<div></div>',
@@ -87,13 +89,15 @@ export function createTranslateLoader(http: Http) {
             provide: TranslateLoader,
             useFactory: (createTranslateLoader),
             deps: [Http]
-        })
+        }),
+        SharedModule
     ],
     /**
      * Компоненты
      */
     declarations: [
         JJ,
+        MyInputPopupComponent,
         MyMarkerListComponent,
         MenuAthleteItemComponent,
         StravaAuthComponent,
@@ -154,6 +158,9 @@ export function createTranslateLoader(http: Http) {
         MenuService,
         MyMarkerService
 
+    ],
+    entryComponents: [
+        MyInputPopupComponent
     ],
     bootstrap: [
         AppComponent

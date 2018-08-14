@@ -68,6 +68,8 @@ const menu_athlete_item_component_1 = require("./component/menu/menu-athlete/men
 const my_marker_list_component_1 = require("./component/my-marker-list-component/my-marker-list-component");
 const menu_service_1 = require("./service/menu.service");
 const my_marker_service_1 = require("./service/my-marker.service");
+const my_input_popup_component_1 = require("./component/my-marker-list-component/my-input-popup-component/my-input-popup-component");
+const shared_module_1 = require("app/shared-module/shared.module");
 let JJ = class JJ {
 };
 JJ = __decorate([
@@ -108,13 +110,15 @@ AppModule = __decorate([
                 provide: ng2_translate_1.TranslateLoader,
                 useFactory: (createTranslateLoader),
                 deps: [http_1.Http]
-            })
+            }),
+            shared_module_1.SharedModule
         ],
         /**
          * Компоненты
          */
         declarations: [
             JJ,
+            my_input_popup_component_1.MyInputPopupComponent,
             my_marker_list_component_1.MyMarkerListComponent,
             menu_athlete_item_component_1.MenuAthleteItemComponent,
             strava_auth_component_1.StravaAuthComponent,
@@ -173,6 +177,9 @@ AppModule = __decorate([
             app_component_1.NavigationHistory,
             menu_service_1.MenuService,
             my_marker_service_1.MyMarkerService
+        ],
+        entryComponents: [
+            my_input_popup_component_1.MyInputPopupComponent
         ],
         bootstrap: [
             app_component_1.AppComponent

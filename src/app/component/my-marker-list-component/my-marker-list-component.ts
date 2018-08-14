@@ -1,6 +1,18 @@
-import { Component, HostListener, OnDestroy } from '@angular/core';
+import {
+    ApplicationRef,
+    Component,
+    ComponentFactoryResolver,
+    ComponentRef,
+    HostListener,
+    Injector,
+    OnDestroy
+} from '@angular/core';
 import { MyMarkerService } from 'app/service/my-marker.service';
 import { MapService } from 'app/service/map.service';
+import { MapMarker } from 'src/@types/global';
+import { MyInputPopupComponent } from 'app/component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
+import { MyMarker } from 'src/app/service/my-marker.service';
+import { MenuItem } from 'src/app/shared-module/menu-list-component/menu-list-component';
 
 declare var module: { id: string };
 
@@ -12,11 +24,25 @@ declare var module: { id: string };
 })
 export class MyMarkerListComponent implements OnDestroy {
     active: boolean = false;
+    inputRef: ComponentRef<MyInputPopupComponent>;
+
+    menu: Array<MenuItem>;
 
     constructor(
         private myMarkerService: MyMarkerService,
-        private mapService: MapService) {
+        private mapService: MapService,
+    ) {
         this.omMapClick = this.omMapClick.bind(this);
+        this.menu = [
+            {
+                text: 'Delete',
+                action: (item: MyMarker) => {
+                     console.log(item)
+                    item.remove();
+                    return true
+                }
+            }
+        ]
     }
 
     onAddActive(e) {
@@ -30,48 +56,13 @@ export class MyMarkerListComponent implements OnDestroy {
     }
 
     private omMapClick(e) {
-        console.log(e);
         this.mapService.map.off('click', this.omMapClick);
         this.active = false;
-        const {mapboxgl, map} = this.mapService;
-        const icoContainer = document.createElement('div');
-        const img = new Image();
-        img.src = 'src/img/my-marker.png';
-        img.style.width = '100%';
-        img.style.height = '100%';
-        icoContainer.appendChild(img);
-        icoContainer.style.width = '40px';
-        icoContainer.style.height = '40px';
-
-        const inputContainer = document.createElement('div');
-        inputContainer.style.padding = '15px';
-        inputContainer.style.background = 'white';
-
-
-        const inputEl = document.createElement('input');
-        inputEl.setAttribute("type", "text");
-        inputContainer.appendChild(inputEl)
-
-        class Marker extends mapboxgl.Marker{
-            title: string;
-            constructor(container, options){
-                super(container, options)
-            }
-        }
-
-        const popup = new mapboxgl.Popup({
-            offset: [0, -40]
-        })
-            .setLngLat(e.lngLat)
-            .setDOMContent(inputContainer)
-
-        const marker = new Marker( icoContainer, {
-            offset: [-20,-40]
-        })
-            .setLngLat([e.lngLat.lng, e.lngLat.lat])
-            .addTo(map)
-            .setPopup(popup)
-            .togglePopup()
+        this.myMarkerService.createMarker(e.lngLat,
+            {
+                title: '',
+                id: null
+            });
     }
 
     ngOnDestroy(): void {

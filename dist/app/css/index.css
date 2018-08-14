@@ -26,7 +26,8 @@ body {
 .flex {
   display: flex;
 }
-.flex.center {
+.flex.center,
+.flex.vertical-center {
   align-items: center;
 }
 .flex .flex-cell {

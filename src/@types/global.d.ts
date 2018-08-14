@@ -37,11 +37,8 @@ interface LngLat extends Array<number> {
 
 interface MapMarker {
     new(HTMLElement, options: Object)
-
-    setLngLat(lngLat: number[] | LngLat): this
-
+    setLngLat(lngLat: Array<number> | LngLat): this
     remove(): this
-
 }
 
 export declare interface MapGl {
