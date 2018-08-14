@@ -9,18 +9,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
+var _a, _b;
 const core_1 = require("@angular/core");
 const map_service_1 = require("app/service/map.service");
 const my_input_popup_component_1 = require("app/component/my-marker-list-component/my-input-popup-component/my-input-popup-component");
+const socket_oi_service_1 = require("app/service/socket.oi.service");
 let MyMarkerService = class MyMarkerService {
-    constructor(mapService, injector, applicationRef, componentFactoryResolver) {
+    constructor(io, mapService, injector, applicationRef, componentFactoryResolver) {
+        this.io = io;
         this.mapService = mapService;
         this.injector = injector;
         this.applicationRef = applicationRef;
         this.componentFactoryResolver = componentFactoryResolver;
         this.isShow = false;
         this.markerList = [];
+        this.socket = io.socket;
     }
     show() {
         this.isShow = true;
@@ -75,6 +78,17 @@ let MyMarkerService = class MyMarkerService {
     saveMarker(component) {
         const myMarker = this.markerList.find(({ scope }) => scope === component);
         console.log('save ->', myMarker);
+        this.socket.$emit('saveMyMarker', {
+            id: myMarker.id,
+            title: component.title,
+            lngLat: myMarker.marker.getLngLat()
+        })
+            .then(d => {
+            myMarker.id = d.id;
+        })
+            .catch(e => {
+            console.log('Error save marker -> ', e);
+        });
     }
     createInputPopup(el, title) {
         const inputEl = document.createElement('my-input-popup-component');
@@ -91,7 +105,7 @@ let MyMarkerService = class MyMarkerService {
 };
 MyMarkerService = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [typeof (_a = typeof map_service_1.MapService !== "undefined" && map_service_1.MapService) === "function" && _a || Object, core_1.Injector,
+    __metadata("design:paramtypes", [typeof (_a = typeof socket_oi_service_1.Io !== "undefined" && socket_oi_service_1.Io) === "function" && _a || Object, typeof (_b = typeof map_service_1.MapService !== "undefined" && map_service_1.MapService) === "function" && _b || Object, core_1.Injector,
         core_1.ApplicationRef,
         core_1.ComponentFactoryResolver])
 ], MyMarkerService);

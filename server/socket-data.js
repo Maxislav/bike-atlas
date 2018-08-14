@@ -14,31 +14,30 @@ const OnProfile = require('./socket-data/on-profile');
 const OnFriend = require('./socket-data/on-friends');
 const OnPrivateArea = require('./socket-data/on-private-area');
 const Chat = require('./chat');
-const TrackFromTo = require('./socket-data/track-from-to')
-const OnChat = require('./socket-data/on-chat')
+const TrackFromTo = require('./socket-data/track-from-to');
+const OnChat = require('./socket-data/on-chat');
 const Logger = require('./logger');
-const Util = require('./socket-data/util')
+const Util = require('./socket-data/util');
 const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
+const OnMyMarker = require('./socket-data/on-my-marker.js');
 let connection, server, app;
 let resolveExport;
-let promiseExport = new Promise((resolve, reject)=>{
+let promiseExport = new Promise((resolve, reject) => {
     resolveExport = resolve
 });
 let socketData;
 
 
-
-
-class SocketData{
-    constructor(server, app, connection){
+class SocketData {
+    constructor(server, app, connection) {
         this.connection = connection;
         const util = new Util(connection);
         const ioServer = io(server);
         const logger = new Logger(app, ioServer, util);
         const chat = new Chat(util);
 
-        ioServer.on('connection',  (socket) => {
+        ioServer.on('connection', (socket) => {
             logger.sockets = ioServer.sockets.connected;
             chat.sockets = ioServer.sockets.connected;
             const onEnter = new OnEnter(socket, util, logger, chat);
@@ -52,8 +51,9 @@ class SocketData{
             const onChat = new OnChat(socket, util, chat);
             const onStrava = new OnStrava(socket, util);
             const onImportKml = new OnImportKml(socket, util);
+            const onMyMarker = new OnMyMarker(socket, util);
 
-            socket.on('disconnect',()=>{
+            socket.on('disconnect', () => {
                 logger.onDisconnect(socket.id);
                 chat.onDisconnect(socket.id);
             });
@@ -70,14 +70,9 @@ class SocketData{
             });
 
 
-
-
-
-
-
         });
 
-        this.updateConnect = (connection) =>{
+        this.updateConnect = (connection) => {
             this.connection = connection;
             util.updateConnect(connection)
         }
@@ -87,74 +82,68 @@ class SocketData{
 }
 
 
-    
-
-const connectionConnect = ()=>{
+const connectionConnect = () => {
     connection = mysql.createConnection(config.mysql);
-    connection.on('error', (err)=>{
+    connection.on('error', (err) => {
         console.log(err);
-        if(err.code == 'PROTOCOL_CONNECTION_LOST'){
+        if (err.code == 'PROTOCOL_CONNECTION_LOST') {
             console.error('PROTOCOL_CONNECTION_LOST ->' + err);
             connection.end();
             setTimeout(connectionConnect, 10000)
         }
     });
-    
-    connection.on('connect', (err)=>{
-        if(err){
+
+    connection.on('connect', (err) => {
+        if (err) {
             console.log('err.connect -> ', err)
             return;
         }
-        
+
         console.log('connected connect ->');
 
     });
-    connection.connect((err)=>{
+    connection.connect((err) => {
         if (err) throw err;
         console.log('connected as id ->' + connection.threadId);
         promiseExport
-            .then(d=>{
+            .then(d => {
                 server = d.server;
                 app = d.app;
-                if(socketData){
+                if (socketData) {
                     socketData.updateConnect(connection)
-                }else{
-                    socketData = new SocketData(server, app, connection)    
+                } else {
+                    socketData = new SocketData(server, app, connection)
                 }
-                
+
             });
     })
-    
+
 };
 connectionConnect();
 
 
-
-
-
-
 function onRegist(data) {
-  const tepmlate = ['name', 'pass'];
-  const arrData = [];
-  tepmlate.forEach(item => {
-    arrData.push(data[item])
-  });
+    const tepmlate = ['name', 'pass'];
+    const arrData = [];
+    tepmlate.forEach(item => {
+        arrData.push(data[item])
+    });
 
-  return checkExistUser(arrData)
-    .then((rows) => {
-      if (rows.length) {
-        return {
-          result: false,
-          message: 'User exist'
-        }
-      } else {
-        return addUser(arrData)
-      }
+    return checkExistUser(arrData)
+        .then((rows) => {
+            if (rows.length) {
+                return {
+                    result: false,
+                    message: 'User exist'
+                }
+            } else {
+                return addUser(arrData)
+            }
 
-    })
-    .catch((err) => {
-      console.log('onRegist +>', err)
-    })
+        })
+        .catch((err) => {
+            console.log('onRegist +>', err)
+        })
 
 
 }
@@ -163,9 +152,8 @@ function onRegist(data) {
 module.exports = (server, app) => {
     //server = _server; app = _app;
     resolveExport({server, app})
-    
-   // socketData =   new SocketData(server, app, connection)
 
+    // socketData =   new SocketData(server, app, connection)
 
 
     //INSERT INTO `user` (`id`, `name`, `pass`, `opt`) VALUES (NULL, 'max', 'eeew', NULL);

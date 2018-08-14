@@ -2,6 +2,7 @@ import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Inj
 import { MapService } from 'app/service/map.service';
 import { LngLat, MapMarker, Popup } from 'src/@types/global';
 import { MyInputPopupComponent } from 'app/component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
+import { Io } from 'app/service/socket.oi.service';
 
 export interface MyMarker {
     id: number,
@@ -16,14 +17,17 @@ export interface MyMarker {
 export class MyMarkerService {
     markerList: Array<MyMarker>;
     isShow: boolean = false;
+    socket: any;
 
     constructor(
+        private  io: Io,
         private mapService: MapService,
         private injector: Injector,
         private applicationRef: ApplicationRef,
         private componentFactoryResolver: ComponentFactoryResolver
     ) {
         this.markerList = [];
+        this.socket = io.socket;
     }
 
     show() {
@@ -78,8 +82,8 @@ export class MyMarkerService {
                 popup.remove();
                 this.applicationRef.detachView(inputPopupRef.hostView);
                 inputPopupRef.destroy();
-                this.markerList.splice(this.markerList.indexOf(myMarker), 1)
-                this.applicationRef.tick()
+                this.markerList.splice(this.markerList.indexOf(myMarker), 1);
+                this.applicationRef.tick();
             }
         };
         this.markerList.push(myMarker);
@@ -87,9 +91,20 @@ export class MyMarkerService {
 
     }
 
-    private saveMarker(component: MyInputPopupComponent){
-        const myMarker = this.markerList.find(({scope}) => scope === component);
-        console.log('save ->', myMarker)
+    private saveMarker(component: MyInputPopupComponent) {
+        const myMarker: MyMarker = this.markerList.find(({scope}) => scope === component);
+        console.log('save ->', myMarker);
+        this.socket.$emit('saveMyMarker', {
+            id: myMarker.id,
+            title: component.title,
+            lngLat: myMarker.marker.getLngLat()
+        })
+            .then(d => {
+                myMarker.id = d.id
+            })
+            .catch(e=>{
+                console.log('Error save marker -> ', e)
+            })
     }
 
     private createInputPopup(el: HTMLElement, title: string): ComponentRef<MyInputPopupComponent> {
@@ -98,7 +113,7 @@ export class MyMarkerService {
         const inputRef: MyInputPopupComponent = factory.create(this.injector, [], inputEl);
         inputRef.instance.title = title;
         inputRef.instance.onSave.subscribe(v => {
-            this.saveMarker(v)
+            this.saveMarker(v);
         });
         this.applicationRef.attachView(inputRef.hostView);
         el.appendChild(inputEl);

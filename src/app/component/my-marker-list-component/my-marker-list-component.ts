@@ -35,7 +35,7 @@ export class MyMarkerListComponent implements OnDestroy {
         this.omMapClick = this.omMapClick.bind(this);
         this.menu = [
             {
-                text: 'Delete',
+                text: 'remove',
                 action: (item: MyMarker) => {
                      console.log(item)
                     item.remove();

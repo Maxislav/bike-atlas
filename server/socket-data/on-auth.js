@@ -25,9 +25,20 @@ class OnAuth extends ProtoData{
                 this.chat.onAuth(this.socket.id, _user.user_id);
                 return util.updateSocketIdByHash(data.hash, this.socket.id)
             })
+            .then(d => {
+                return this.util.getMyMarker(_user.user_id)
+                    .then(list => {
+                        _user.markers = list;
+                        return d
+                    })
+            })
+
+
             .then(d=>{
                 return util.getDeviceByUserId(_user.user_id)
             })
+
+
             .then(userDevices=>{
                 _userDevices = userDevices;
                 return util.getFriends(_user.user_id)
@@ -85,6 +96,7 @@ class OnAuth extends ProtoData{
                         name: _user.name,
                         image: _user.image,
                         devices: _userDevices,
+                        markers: _user.markers,
                         friends: _friends,
                         hash: hash,
                         setting: setting
