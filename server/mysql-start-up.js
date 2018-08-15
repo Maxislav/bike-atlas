@@ -240,7 +240,7 @@ function createTable() {
             '`lng` FLOAT(10,8) NOT NULL, ' +
             '`lat` FLOAT(10,8) NOT NULL  , ' +
             '`date` DATETIME NULL DEFAULT NULL,' +
-            '`title` VARCHAR(16) NOT NULL , ' +
+            '`title` TEXT COLLATE utf8_general_ci NULL DEFAULT NULL, , ' +
             '`text` TEXT COLLATE utf8_general_ci NULL DEFAULT NULL, ' +
             '`shared` BOOLEAN NOT NULL DEFAULT 0, ' +
             'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
