@@ -911,7 +911,7 @@ class Util {
         })
     }
 
-    getMyMarker(userId){
+    getMyMarker(userId) {
         return new Promise((resolve, reject) => {
             this.connection.query('SELECT * FROM `marker` WHERE `user_id`=?', [userId], function (err, rows) {
                 if (err) {
@@ -921,6 +921,29 @@ class Util {
                 resolve(rows)
             })
         })
+    }
+
+    removeMyMarker(userId, markerId) {
+
+        return this.getMyMarker(userId)
+            .then(markers => {
+                return new Promise((resolve, reject) => {
+                    if (markers.find(m => m.id === markerId)){
+                        this.connection.query('DELETE FROM `marker` WHERE `id`=?', [markerId], function (err, rows) {
+                            if (err) {
+                                reject(err);
+                                return;
+                            }
+                            resolve(rows)
+                        })
+                    }else {
+                        reject('You don\'t have permissions')
+                    }
+                })
+
+            })
+
+
     }
 
     formatDevice(d) {

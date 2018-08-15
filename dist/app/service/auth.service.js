@@ -9,22 +9,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a;
 const core_1 = require("@angular/core");
 const socket_oi_service_1 = require("./socket.oi.service");
 const local_storage_service_1 = require("./local-storage.service");
+const router_1 = require("@angular/router");
 const friends_service_1 = require("./friends.service");
 const main_user_service_1 = require("./main.user.service");
 const chat_service_1 = require("./chat.service");
 const toast_component_1 = require("../component/toast/toast.component");
 const deferred_1 = require("../util/deferred");
+const my_marker_service_1 = require("app/service/my-marker.service");
 let AuthService = class AuthService {
-    constructor(io, ls, friend, userService, chatService, toast) {
+    constructor(io, ls, friend, userService, chatService, toast, myMarkerService, router) {
         this.io = io;
         this.ls = ls;
         this.friend = friend;
         this.userService = userService;
         this.chatService = chatService;
         this.toast = toast;
+        this.myMarkerService = myMarkerService;
+        this.router = router;
         this._userName = null;
         this._userImage = null;
         this.canActiveDefer = new deferred_1.Deferred();
@@ -66,7 +71,7 @@ let AuthService = class AuthService {
         console.info('connect');
         return this.socket.$emit('onAuth', {
             hash: this.ls.userKey
-        }).then(d => {
+        }).then((d) => {
             if (d.result == 'ok') {
                 this.userService.user = d.user;
                 this.userService.friends = d.user.friends;
@@ -74,6 +79,7 @@ let AuthService = class AuthService {
                 this.friend.getInvites();
                 this.chatService.getUnViewed(true);
                 this.canActiveDefer.resolve(true);
+                this.myMarkerService.addMarkers(d.user.markers);
             }
             else {
                 this.userName = null;
@@ -115,7 +121,7 @@ AuthService = __decorate([
         friends_service_1.FriendsService,
         main_user_service_1.UserService,
         chat_service_1.ChatService,
-        toast_component_1.ToastService])
+        toast_component_1.ToastService, typeof (_a = typeof my_marker_service_1.MyMarkerService !== "undefined" && my_marker_service_1.MyMarkerService) === "function" && _a || Object, router_1.Router])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

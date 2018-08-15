@@ -24,7 +24,7 @@ declare const module:any;
 export class MyInputPopupComponent implements OnInit, AfterViewInit{
 
     @Input() title: string;
-
+    @Input() id: number;
     @Output() onSave:  EventEmitter<MyInputPopupComponent> = new EventEmitter<MyInputPopupComponent>();
     constructor(
         private elRef: ElementRef,
@@ -37,7 +37,10 @@ export class MyInputPopupComponent implements OnInit, AfterViewInit{
     }
 
     ngAfterViewInit(): void {
-        this.elRef.nativeElement.getElementsByTagName('input')[0].focus()
+        if(!this.id){
+            this.elRef.nativeElement.getElementsByTagName('input')[0].focus()
+
+        }
     }
 
 

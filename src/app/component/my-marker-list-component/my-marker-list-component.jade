@@ -4,7 +4,7 @@
     .row.flex
         .flex-cell
             .button.primary([ngClass]="{active: active}", (click)='onAddActive($event)')  Добавиить
-    .row.flex.marker-row.vertical-center(*ngFor="let m of myMarkerService.markerList ")
+    .row.flex.marker-row.vertical-center(*ngFor="let m of myMarkerService.markerList ", (click)="onMarkerClick(m)")
         .flex-cell.marker-cell([innerHtml]="m.scope.title || '&nbsp;'")
         .flex-cell
             menu-list-component([menu]="menu", [item]="m")

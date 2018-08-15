@@ -1,7 +1,7 @@
 const util = require('./util');
 const ProtoData = require('./proto-data');
 
-class OnAuth extends ProtoData{
+class OnAuth extends ProtoData {
     constructor(socket, util, chat, logger) {
         super(socket, util);
         this.chat = chat;
@@ -13,6 +13,7 @@ class OnAuth extends ProtoData{
         let _user;
         let _userDevices;
         let _friends;
+        let _markers;
         const util = this.util;
         util
             .getUserByHash(data.hash)
@@ -28,65 +29,67 @@ class OnAuth extends ProtoData{
             .then(d => {
                 return this.util.getMyMarker(_user.user_id)
                     .then(list => {
-                        _user.markers = list;
+                        _markers = list.map(m => {
+                            return {...m, ...{shared: !!m.shared}};
+                        });
                         return d
                     })
             })
 
 
-            .then(d=>{
+            .then(d => {
                 return util.getDeviceByUserId(_user.user_id)
             })
 
 
-            .then(userDevices=>{
+            .then(userDevices => {
                 _userDevices = userDevices;
                 return util.getFriends(_user.user_id)
             })
             .then(friends => {
                 _friends = friends;
                 const arrDevicesPromise = [];
-                friends.forEach(friend=>{
-                    arrDevicesPromise.push( util.getDeviceByUserId(friend.id)
-                        .then(devices=>{
+                friends.forEach(friend => {
+                    arrDevicesPromise.push(util.getDeviceByUserId(friend.id)
+                        .then(devices => {
                             return friend.devices = devices;
                         }))
                 });
                 return arrDevicesPromise;
             })
-            .then(d=>{
+            .then(d => {
                 return util.getUserSettingByUserId(_user.user_id)
             })
             .then(setting => {
                 const hash = util.getHash();
                 const deviceKeys = [];
 
-                _userDevices.forEach(device=>{
+                _userDevices.forEach(device => {
                     deviceKeys.push(device.device_key)
                 });
-                _friends.forEach(friend=>{
-                    friend.devices.forEach(device=>{
+                _friends.forEach(friend => {
+                    friend.devices.forEach(device => {
                         deviceKeys.push(device.device_key)
                     })
                 });
 
                 const arrLastPosition = [];
-                const emitLastPosition= () =>{
+                const emitLastPosition = () => {
                     this.socket.removeListener(hash, emitLastPosition);
                     util.clearHash(hash);
-                    deviceKeys.forEach(key=>{
+                    deviceKeys.forEach(key => {
                         arrLastPosition.push(
                             util.getLastPosition(key)
-                            .then(row=>{
-                                //console.log('device key->', key)
-                                this.logger.updateDevice(key, this.socket.id)
-                                this.socket.emit('log', row);
-                                return row;
-                            }))
+                                .then(row => {
+                                    //console.log('device key->', key)
+                                    this.logger.updateDevice(key, this.socket.id)
+                                    this.socket.emit('log', row);
+                                    return row;
+                                }))
                     })
 
                 };
-                this.socket.on(hash,emitLastPosition);
+                this.socket.on(hash, emitLastPosition);
 
 
                 this.socket.emit(eName, {
@@ -96,7 +99,7 @@ class OnAuth extends ProtoData{
                         name: _user.name,
                         image: _user.image,
                         devices: _userDevices,
-                        markers: _user.markers,
+                        markers: _markers,
                         friends: _friends,
                         hash: hash,
                         setting: setting
@@ -115,4 +118,5 @@ class OnAuth extends ProtoData{
 
 
 }
+
 module.exports = OnAuth;

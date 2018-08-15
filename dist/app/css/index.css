@@ -15,7 +15,7 @@ body {
   margin: 15px -15px;
 }
 .row.flex > .flex-cell {
-  padding: 0 15px ;
+  padding: 0 15px;
 }
 .table {
   display: table;
@@ -48,26 +48,32 @@ body {
 button,
 .button {
   padding: 8px 15px;
-  border: none;
   background: transparent;
   border-radius: 2px;
   cursor: pointer;
   outline: none;
+  border: 1px solid transparent;
+}
+button:hover,
+.button:hover {
+  text-decoration: underline;
 }
 button:active,
 .button:active {
   color: #999999;
   box-shadow: none;
 }
-button.active,
-.button.active {
-  color: white;
-  background: rgba(30, 144, 255, 0.72);
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
-}
-button.primary:not(.active),
-.button.primary:not(.active) {
+button.primary,
+.button.primary {
   color: dodgerblue;
+}
+button.primary:hover,
+.button.primary:hover {
+  background: #e6f4fd;
+}
+button.primary.active,
+.button.primary.active {
+  border: 1px solid dodgerblue;
 }
 .row {
   margin: 15px -10px;
@@ -110,8 +116,8 @@ my-app {
 }
 .clear,
 .border-hidden {
-  float: none!important;
-  clear: both!important;
+  float: none !important;
+  clear: both !important;
   border-bottom: 1px solid transparent;
   margin-top: -1px;
 }
@@ -191,7 +197,7 @@ my-app {
   animation-timing-function: linear;
 }
 .prelaoder {
-  padding: 40px 0 ;
+  padding: 40px 0;
   margin: 0 auto;
 }
 .prelaoder > div {

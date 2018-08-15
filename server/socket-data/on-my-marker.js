@@ -4,7 +4,8 @@ class OnMyMarker extends ProtoData {
 
     constructor(socket, connection) {
         super(socket, connection);
-        this.socket.on('saveMyMarker', this.saveMyMarker.bind(this, 'saveMyMarker'))
+        this.socket.on('saveMyMarker', this.saveMyMarker.bind(this, 'saveMyMarker'));
+        this.socket.on('removeMyMarker', this.removeMyMarker.bind(this, 'removeMyMarker'));
     }
 
     saveMyMarker(eName, data) {
@@ -20,6 +21,23 @@ class OnMyMarker extends ProtoData {
                 console.log('Err save marker', err)
             })
 
+    }
+
+    /**
+     * @param {string} eName
+     * @param {{id: number}} data
+     */
+    removeMyMarker(eName, data){
+        this.util.getUserIdBySocketId(this.socket.id)
+            .then(user_id => {
+                return this.util.removeMyMarker(user_id, data.id)
+            })
+            .then(()=>{
+                this.socket.emit(eName, {result: 'ok'})
+            })
+            .catch((e)=>{
+                this.socket.emit(eName, {error: e})
+            })
     }
 
 }

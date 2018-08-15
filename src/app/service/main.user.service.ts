@@ -7,6 +7,7 @@ import {ToastService} from "../component/toast/toast.component";
 import {Router} from "@angular/router";
 import {Deferred} from "../util/deferred";
 import {AuthService} from './auth.service';
+import { MyMarker } from 'app/service/my-marker.service';
 
 
 
@@ -17,6 +18,7 @@ export interface User{
     deviceKeys?:Array<string>;
     setting?: any;
     devices?: Array<Device>;
+    markers: Array<MyMarker>
 }
 
 
@@ -30,7 +32,7 @@ export class UserService implements CanActivate{
     private _other: User;
     private socket: any;
     private images: {[userId:number]: String} ={};
-    private deferImage: {[userId:number]: Deferred} = {}
+    private deferImage: {[userId:number]: Deferred<string>} = {}
 
 
     constructor(private io: Io, private toast:ToastService, private router: Router){
@@ -38,13 +40,15 @@ export class UserService implements CanActivate{
         this._user = {
             name: null,
             id: null,
-            image: null
+            image: null,
+            markers: []
         };
         this._other = {
             id: null,
             name: null,
             image: null,
-            devices: []
+            devices: [],
+            markers: []
         };
         this.socket.on('getUserImage', this.onUserImage.bind(this));
     }

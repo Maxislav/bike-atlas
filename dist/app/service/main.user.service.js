@@ -26,13 +26,15 @@ let UserService = class UserService {
         this._user = {
             name: null,
             id: null,
-            image: null
+            image: null,
+            markers: []
         };
         this._other = {
             id: null,
             name: null,
             image: null,
-            devices: []
+            devices: [],
+            markers: []
         };
         this.socket.on('getUserImage', this.onUserImage.bind(this));
     }

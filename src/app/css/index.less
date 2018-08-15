@@ -1,120 +1,144 @@
 @import "constant";
-body{
+
+body {
   color: @main-text-color;
 }
-.button-container>div{
+
+.button-container > div {
   float: right;
   margin-top: 15px;
-  &:not(:first-child){
+  &:not(:first-child) {
 
   }
-  button{
+  button {
     margin-left: 8px;
-  };
+  }
+;
 }
-.container{
+
+.container {
   padding: 0 15px;
 }
 
-.row{
+.row {
   margin: 15px -15px;
-  &.flex>.flex-cell{
-    padding: 0 15px ;
+  &.flex > .flex-cell {
+    padding: 0 15px;
   }
 }
-.table{
+
+.table {
   display: table;
-  .cell{
+  .cell {
     display: table-cell;
   }
 }
 
-
-.flex{
+.flex {
   display: flex;
-  &.center, &.vertical-center{
+  &.center, &.vertical-center {
     align-items: center;
   }
-  .flex-cell{
+  .flex-cell {
     padding: 0 10px;
   }
-  &.flex-end{
+  &.flex-end {
     justify-content: flex-end;
   }
-  &.space-between{
+  &.space-between {
     justify-content: space-between;
   }
 }
-.blue{
+
+.blue {
   color: @blue-color
 }
-.gray{
-  color:@gray-color
+
+.gray {
+  color: @gray-color
 }
-button, .button{
+
+button, .button {
   padding: 8px 15px;
-  border: none;
   background: transparent;
   border-radius: 2px;
   cursor: pointer;
-  outline:none;
-  &:active{
+  outline: none;
+  border: 1px solid transparent;
+  &:hover {
+    text-decoration: underline;
+  }
+  &:active {
     color: #999999;
     box-shadow: none;
   }
   &.active {
-    color: white;
-    background: @active-button-color;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.2)
+    //color: white;
+    //background: @active-button-color;
+    //box-shadow: inset 0 0 20px rgba(0,0,0,0.2)
   }
-  &.primary:not(.active){
+  &.primary {
     color: @blue-color;
+    &:hover{
+      background: @blue-color-light;
+    }
+    &.active {
+      border: 1px solid @blue-color;
+    }
   }
 
 }
-.row{
+
+.row {
   margin: 15px -10px;
 }
-input.input{
+
+input.input {
   border: none;
   border-bottom: 1px solid @main-border-color;
   padding: 5px 10px;
   outline: none;
   background: transparent;
 }
+
 * {
   margin: 0;
   padding: 0;
   font-family: Geneva, Arial, Helvetica, sans-serif;
   box-sizing: border-box;
 }
-li{
+
+li {
   list-style-type: none;
 }
-table{
+
+table {
   border-spacing: 0;
 }
-table tr td{
+
+table tr td {
   border-collapse: collapse;
   border: none;
   border-spacing: 0;
 }
-html, body{
+
+html, body {
   width: 100%;
   height: 100%;
 }
-my-app{
+
+my-app {
   display: block;
   opacity: 1;
 }
 
-
-.gray{
+.gray {
   color: darkgray;
 }
+
 .clear, .border-hidden {
-  float: none!important;
-  clear: both!important;
+  float: none !important;
+  clear: both !important;
   border-bottom: 1px solid transparent;
   margin-top: -1px;
 }
@@ -194,6 +218,7 @@ my-app{
 [type="checkbox"]:not(:checked):focus + label:before {
   border: 1px dotted blue;
 }
+
 .ico-z {
   width: 40px;
   height: 40px;
@@ -204,20 +229,27 @@ my-app{
   animation-timing-function: linear;
 
 }
-.prelaoder{
-  padding: 40px 0 ;
+
+.prelaoder {
+  padding: 40px 0;
   margin: 0 auto;
 }
 
-.prelaoder>div{
+.prelaoder > div {
   color: gray;
   margin: 20px auto;
   text-align: center;
 }
-.prelaoder>.loading{
+
+.prelaoder > .loading {
   margin-left: 10px;
 }
+
 @keyframes ROTATE {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

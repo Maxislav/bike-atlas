@@ -11,7 +11,7 @@ import { MyMarkerService } from 'app/service/my-marker.service';
 import { MapService } from 'app/service/map.service';
 import { MapMarker } from 'src/@types/global';
 import { MyInputPopupComponent } from 'app/component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
-import { MyMarker } from 'src/app/service/my-marker.service';
+import { MyMapMarker, MyMarker } from 'src/app/service/my-marker.service';
 import { MenuItem } from 'src/app/shared-module/menu-list-component/menu-list-component';
 
 declare var module: { id: string };
@@ -37,12 +37,16 @@ export class MyMarkerListComponent implements OnDestroy {
             {
                 text: 'remove',
                 action: (item: MyMarker) => {
-                     console.log(item)
+                    console.log(item)
                     item.remove();
                     return true
                 }
             }
         ]
+    }
+
+    onMarkerClick(m: MyMapMarker){
+        m.click()
     }
 
     onAddActive(e) {
