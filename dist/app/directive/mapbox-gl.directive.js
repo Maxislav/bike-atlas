@@ -15,7 +15,7 @@ const core_2 = require("@angular/core");
 const map_service_1 = require("../service/map.service");
 const position_size_service_1 = require("../service/position-size.service");
 const local_storage_service_1 = require("../service/local-storage.service");
-const mapboxgl = require("@lib/mapbox-gl/mapbox-gl-dev.js");
+const mapboxgl = require("@lib/mapbox-gl/mapbox-gl.js");
 const main_user_service_1 = require("../service/main.user.service");
 class MyMap extends mapboxgl.Map {
     constructor(...args) {
