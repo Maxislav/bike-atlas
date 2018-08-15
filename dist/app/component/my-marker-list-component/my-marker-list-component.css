@@ -1,0 +1,27 @@
+:host {
+  display: block;
+  position: absolute;
+  z-index: 2;
+  top: 40px;
+  left: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.7) 70%, rgba(255, 255, 255, 0) 100%);
+  padding: 15px;
+  min-width: 200px;
+}
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: darkred;
+  cursor: pointer;
+  padding: 15px;
+  font-size: 20px;
+  font: 30px/15px bold;
+}
+.marker-row {
+  justify-content: space-between;
+}
+.marker-cell {
+  width: 100%;
+  border-bottom: 1px solid #cfdcef;
+}
