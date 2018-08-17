@@ -94,8 +94,11 @@ export class MyMarkerService {
         });
         marker.setLngLat([lngLat.lng, lngLat.lat])
             .addTo(map)
-            .setPopup(popup)
-            .togglePopup();
+            .setPopup(popup);
+        if (!opts.id) {
+            marker.togglePopup();
+
+        }
         const inputPopupRef = this.createInputPopup(inputContainer, opts.title, opts.id);
 
         const myMarker: MyMapMarker = {

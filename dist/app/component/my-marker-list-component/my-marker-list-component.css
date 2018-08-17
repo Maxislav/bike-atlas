@@ -25,3 +25,6 @@
   width: 100%;
   border-bottom: 1px solid #cfdcef;
 }
+.row:last-child {
+  margin-bottom: 0;
+}

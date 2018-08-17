@@ -1,15 +1,15 @@
 
 <div class="relative">
   <div (click)="onClose()" class="close">&times;</div>
-  <div class="row flex">
-    <div class="flex-cell">
-      <div [ngClass]="{active: active}" (click)="onAddActive($event)" class="button primary"> Добавиить</div>
-    </div>
-  </div>
   <div *ngFor="let m of myMarkerService.markerList " (click)="onMarkerClick(m)" class="row flex marker-row vertical-center">
     <div [innerHtml]="m.scope.title || '&amp;nbsp;'" class="flex-cell marker-cell"></div>
     <div class="flex-cell">
       <menu-list-component [menu]="menu" [item]="m"></menu-list-component>
+    </div>
+  </div>
+  <div class="row flex">
+    <div class="flex-cell">
+      <div [ngClass]="{active: active}" (click)="onAddActive($event)" class="button primary"> Добавиить</div>
     </div>
   </div>
 </div>
