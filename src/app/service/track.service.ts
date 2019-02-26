@@ -9,7 +9,6 @@ import {Io} from "./socket.oi.service";
 import {MapService} from "./map.service";
 import {Track as Tr, Point} from "./track.var";
 import {distance} from '../util/distance';
-import * as mapboxgl from "@lib/mapbox-gl/mapbox-gl.js";
 
 import * as dateformat from "node_modules/dateformat/lib/dateformat.js";
 import {ToastService} from "../component/toast/toast.component";
@@ -19,6 +18,15 @@ import {Resolve} from "@angular/router";
 const F = parseFloat;
 const I = parseInt;
 declare var System: any;
+
+interface PopupEdit{
+    timer: number
+    isShow: boolean,
+    remove: Function,
+    show: Function,
+    timerUpdate(),
+
+}
 
 @Injectable()
 export class TrackService implements Resolve<any> {
@@ -33,6 +41,7 @@ export class TrackService implements Resolve<any> {
     private _map:any;
     private arrayDelPoints: Array<number> = [];
     private socket: any;
+    private _popupHash: {[key: number]: PopupEdit} = {};
 
     constructor(private io:Io, private mapService:MapService,  private ts: ToastService) {
 
@@ -288,19 +297,26 @@ export class TrackService implements Resolve<any> {
 
             sourceData = TrackService.getData(points);
             map.getSource(layerId).setData(sourceData);
-        }
+        };
+
         const mousemove = (e)=> {
             const features = map.queryRenderedFeatures(e.point, {
                 layers: [layerId],
             });
             if (features.length) {
-                const id = features[0].properties.id
+                const id = features[0].properties.id;
                 const p = points.find((item)=> {
                     return item.id == id
                 });
-                this.createPopupEdit(p, (e)=>{
+                this._popupHash[id] = this._popupHash[id] || this.createPopupEdit(p, (e)=>{
                     delPoint(id)
-                })
+                });
+                if(this._popupHash[id].isShow){
+                    this._popupHash[id].timerUpdate();
+                }else {
+                    this._popupHash[id].show();
+                }
+
             }
         };
 
@@ -331,7 +347,7 @@ export class TrackService implements Resolve<any> {
                 map.on('mousemove', mousemove)
 
                 map.on('click', mousemove);
-            })
+            });
 
 
 
@@ -346,7 +362,7 @@ export class TrackService implements Resolve<any> {
         }
     }
 
-    createPopupEdit(point:Point, f:Function) {
+    createPopupEdit(point:Point, f:Function): PopupEdit {
         const map = this.mapService.map;
         const mapboxgl = this.mapService.mapboxgl;
         const div = document.createElement('div');
@@ -359,8 +375,8 @@ export class TrackService implements Resolve<any> {
         div.appendChild(btn);
         const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: true})
             .setLngLat(new mapboxgl.LngLat(point.lng, point.lat))
-            .setDOMContent(div)
-            .addTo(map);
+            .setDOMContent(div);
+            //.addTo(map);
 
         const delClick = ()=>{
             popup.remove()
@@ -369,10 +385,33 @@ export class TrackService implements Resolve<any> {
 
         btn.addEventListener('click', delClick);
 
-        setTimeout(()=>{
+       /* setTimeout(()=>{
             btn.removeEventListener('click', delClick)
             popup.remove();
-        }, 5000)
+        }, 5000)*/
+
+        return {
+            timer: null,
+            isShow: false,
+            remove(){
+                btn.removeEventListener('click', delClick)
+                popup.remove();
+                this.isShow = false;
+            },
+            show(){
+                popup.addTo(map);
+                this.timerUpdate();
+                this.isShow = true;
+            },
+            timerUpdate(){
+                if(this.timer){
+                    clearTimeout(this.timer)
+                }
+                this.timer = setTimeout(()=>{
+                    this.remove()
+                }, 5000);
+            }
+        }
 
     }
 

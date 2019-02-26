@@ -32,6 +32,7 @@ let TrackService = TrackService_1 = class TrackService {
         this.ts = ts;
         this._trackList = [];
         this.arrayDelPoints = [];
+        this._popupHash = {};
         this.layerIds = [];
         this._trackList = [];
         this.util = new util_1.Util();
@@ -250,9 +251,15 @@ let TrackService = TrackService_1 = class TrackService {
                 const p = points.find((item) => {
                     return item.id == id;
                 });
-                this.createPopupEdit(p, (e) => {
+                this._popupHash[id] = this._popupHash[id] || this.createPopupEdit(p, (e) => {
                     delPoint(id);
                 });
+                if (this._popupHash[id].isShow) {
+                    this._popupHash[id].timerUpdate();
+                }
+                else {
+                    this._popupHash[id].show();
+                }
             }
         };
         this.colorWorker(points)
@@ -303,17 +310,39 @@ let TrackService = TrackService_1 = class TrackService {
         div.appendChild(btn);
         const popup = new mapboxgl.Popup({ closeOnClick: false, offset: [0, -15], closeButton: true })
             .setLngLat(new mapboxgl.LngLat(point.lng, point.lat))
-            .setDOMContent(div)
-            .addTo(map);
+            .setDOMContent(div);
+        //.addTo(map);
         const delClick = () => {
             popup.remove();
             f();
         };
         btn.addEventListener('click', delClick);
-        setTimeout(() => {
-            btn.removeEventListener('click', delClick);
-            popup.remove();
-        }, 5000);
+        /* setTimeout(()=>{
+             btn.removeEventListener('click', delClick)
+             popup.remove();
+         }, 5000)*/
+        return {
+            timer: null,
+            isShow: false,
+            remove() {
+                btn.removeEventListener('click', delClick);
+                popup.remove();
+                this.isShow = false;
+            },
+            show() {
+                popup.addTo(map);
+                this.timerUpdate();
+                this.isShow = true;
+            },
+            timerUpdate() {
+                if (this.timer) {
+                    clearTimeout(this.timer);
+                }
+                this.timer = setTimeout(() => {
+                    this.remove();
+                }, 5000);
+            }
+        };
     }
     marker(point) {
         const map = this.mapService.map;
