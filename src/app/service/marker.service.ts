@@ -83,12 +83,14 @@ export class Marker implements DeviceData {
         icoContainer.appendChild(img);
         this.icoContainer = icoContainer;
 
-        this.popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
+        this.popup = new mapboxgl.Popup({closeOnClick: false, offset: {
+              'bottom': [0, -20],
+            }, closeButton: false})
             .setLngLat([devData.lng, devData.lat])
             .setHTML('<div>' + devData.name + '</div>')
             .addTo(map);
 
-        this.iconMarker = new mapboxgl.Marker(icoContainer, {offset: [-20, -20]})
+        this.iconMarker = new mapboxgl.Marker(icoContainer, {offset: [0, 0]})
             .setLngLat([devData.lng, devData.lat])
             .addTo(map);
 
