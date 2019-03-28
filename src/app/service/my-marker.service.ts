@@ -79,7 +79,7 @@ export class MyMarkerService {
         icoContainer.style.height = '40px';
 
         const inputContainer = document.createElement('div');
-        inputContainer.style.padding = '15px';
+       // inputContainer.style.padding = '15px';
         // inputContainer.style.background = 'white';
 
         const popup = new mapboxgl.Popup({
@@ -89,7 +89,7 @@ export class MyMarkerService {
             .setDOMContent(inputContainer);
 
         const marker: MapMarker = new mapboxgl.Marker(icoContainer, {
-            offset: [-20, -40],
+            offset: [0, -20],
             draggable: true
         });
         marker.setLngLat([lngLat.lng, lngLat.lat])

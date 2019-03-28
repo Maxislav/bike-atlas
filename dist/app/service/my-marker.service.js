@@ -55,7 +55,7 @@ let MyMarkerService = class MyMarkerService {
         icoContainer.style.width = '40px';
         icoContainer.style.height = '40px';
         const inputContainer = document.createElement('div');
-        inputContainer.style.padding = '15px';
+        // inputContainer.style.padding = '15px';
         // inputContainer.style.background = 'white';
         const popup = new mapboxgl.Popup({
             offset: [0, -40]
@@ -63,7 +63,7 @@ let MyMarkerService = class MyMarkerService {
             .setLngLat([lngLat.lng, lngLat.lat])
             .setDOMContent(inputContainer);
         const marker = new mapboxgl.Marker(icoContainer, {
-            offset: [-20, -40],
+            offset: [0, -20],
             draggable: true
         });
         marker.setLngLat([lngLat.lng, lngLat.lat])
