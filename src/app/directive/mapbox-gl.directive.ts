@@ -177,14 +177,17 @@ export class MapboxGlDirective implements AfterViewInit {
                 // style: 'mapbox://styles/mapbox/streets-v9',
                 // style: 'https://maps.tilehosting.com/styles/hybrid/style.json?key=RAuP21B0giTgs7R7HXfl',
 
-                style: {
+                /*style: {
                     "version": 8,
                     "name": "plastun",
                     // "sprite": "http://" + window.location.hostname + "/src/sprite/sprite",
                     "sources": this.styleSource,
                     "layers": this.layers
-                }
+                }*/
+
+                style: 'mapbox://styles/mapbox/traffic-day-v2'
             });
+
 
             this.map.addControl(new mapboxgl.NavigationControl({
                 position: 'top-right',
