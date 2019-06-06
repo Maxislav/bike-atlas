@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const R = require("@ramda/ramda.min.js");
 const f = parseFloat;
 function fc() {
     let res = 0;
@@ -22,10 +21,10 @@ function fc() {
 ;
 function componentToHex(c) {
     var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
+    return hex.length == 1 ? '0' + hex : hex;
 }
 function rgbToHex(r, g, b) {
-    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 const getRgbColor2 = (speed, limit, hue) => {
     hue = hue !== undefined ? (255 - 255 * hue / 100) : 0;
@@ -68,12 +67,14 @@ function getHexColor(speed, limit, hue) {
     return rgbToHex.apply(this, getRgbColor2(speed, limit, hue));
 }
 class Color {
-    constructor() {
+    constructor(points) {
+        this.points = points;
     }
-    getColors(points) {
+    getColors() {
         // points = e.data[0];
-        const result = R.sortBy(R.prop('speed'))(points);
-        const max = result[result.length - 1].speed;
+        const points = this.points;
+        // const result = R.sortBy(R.prop('speed'))(points);
+        const max = this._getSpeedMax(); //    result[result.length - 1].speed;
         points.forEach(point => {
             point.color = getHexColor(point.speed, max);
         });
@@ -83,6 +84,15 @@ class Color {
             resColors.push([item, item]);
         });
         return [points, resColors];
+    }
+    _getSpeedMax() {
+        let max = 0;
+        this.points.forEach((p) => {
+            if (max < p.speed) {
+                max = p.speed;
+            }
+        });
+        return max;
     }
 }
 exports.Color = Color;

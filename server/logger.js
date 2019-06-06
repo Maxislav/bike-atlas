@@ -45,7 +45,7 @@ class Logger {
             checkSum = checkSum.replace(/\*/, '');
             res.end(checkSum);
             try {
-                data = this.parseGprmc(req.query.gprmc);
+                data = this.parseGprmc(req.query.gprmc, req.query.id);
                 data.device_key = data.id = req.query.id;
             } catch (err) {
                 console.error('Error parse', err)
@@ -151,22 +151,43 @@ class Logger {
     }
 
     // $GPRMC,153946,A,5023.31220,N,3029.63150,E,0.000000,0.000000,03 01 17,,*2A
-    parseGprmc(gprmc) {
+
+
+    //$GPRMC,030853,A,5026.98660,N,3024.51060,E,2.798506,109.540001, 15 09 63   ,,*20
+    parseGprmc(gprmc, id) {
         const arrData = gprmc.split(',');
         const timeStamp = arrData[1];
         const dateStamp = arrData[9];
-        let date = new Date(
-            '20' + dateStamp[4] + dateStamp[5],
-            parseFloat('' + dateStamp[2] + dateStamp[3]) - 1,
-            '' + dateStamp[0] + dateStamp[1],
-            '' + timeStamp[0] + timeStamp[1],
-            '' + timeStamp[2] + timeStamp[3],
-            '' + timeStamp[4] + timeStamp[5]
-        );
-        const lat = arrData[4] === 'N' ? minToDec(arrData[3]) : '-' + minToDec(arrData[3]);
-        const lng = arrData[6] === 'E' ? minToDec(arrData[5]) : '-' + minToDec(arrData[5]);
-        const azimuth = parseFloat(Number(arrData[8]).toFixed(2));
-        const speed = parseFloat(arrData[7]) * 1.852;
+        let lat, lng, azimuth, speed, date;
+        let year = String('20').concat(dateStamp[4], dateStamp[5]);
+        if(new Date().getFullYear() < year){
+            year = new Date().getFullYear()
+        }
+        if(id === '222222222222'){
+            date = new Date(
+                year,
+                Number('' + dateStamp[2] + dateStamp[3]) - 3, //month
+                Number('' + dateStamp[0] + dateStamp[1]) -10, //day
+                Number( '' + timeStamp[0] + timeStamp[1]) + 6, //hour
+                Number('' + timeStamp[2] + timeStamp[3]) + 30, //min
+                Number('' + timeStamp[4] + timeStamp[5]) + 30, //sec
+            )
+        }else{
+            date = new Date(
+                year,
+                parseFloat('' + dateStamp[2] + dateStamp[3]) - 1,
+                '' + dateStamp[0] + dateStamp[1],
+                '' + timeStamp[0] + timeStamp[1],
+                '' + timeStamp[2] + timeStamp[3],
+                '' + timeStamp[4] + timeStamp[5]
+            );
+            lat = arrData[4] === 'N' ? minToDec(arrData[3]) : '-' + minToDec(arrData[3]);
+            lng = arrData[6] === 'E' ? minToDec(arrData[5]) : '-' + minToDec(arrData[5]);
+            azimuth = parseFloat(Number(arrData[8]).toFixed(2));
+            speed = parseFloat(arrData[7]) * 1.852;
+        }
+
+
 
         return {
             date,
