@@ -90,7 +90,7 @@ export class MyMarkerService {
 
         const marker: MapMarker = new mapboxgl.Marker(icoContainer, {
             offset: [0, -20],
-            draggable: true
+            draggable: false
         });
         marker.setLngLat([lngLat.lng, lngLat.lat])
             .addTo(map)
