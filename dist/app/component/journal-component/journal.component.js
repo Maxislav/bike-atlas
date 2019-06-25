@@ -38,15 +38,13 @@ let JournalComponent = class JournalComponent {
         this.offset = 0;
         this.list = journalService.list;
         this.selectDate = this.journalService.selectDate;
-        if (!this.list.length) {
-            journalService.getLastDate()
-                .then(d => {
-                if (d && d.date) {
-                    this.selectDate = this.journalService.setSelectDate(new Date(d.date));
-                    this.stepGo(0);
-                }
-            });
-        }
+        journalService.getLastDate()
+            .then(d => {
+            if (d && d.date) {
+                this.selectDate = this.journalService.setSelectDate(new Date(d.date));
+                this.stepGo(0);
+            }
+        });
     }
     ngOnInit() {
         this.el.nativeElement.getElementsByClassName('scroll')[0].style.maxHeight = window.innerHeight - 200 + 'px';
@@ -59,6 +57,9 @@ let JournalComponent = class JournalComponent {
     }
     onClose() {
         this.location.back();
+    }
+    ngOnDestroy() {
+        this.journalService.cleadData();
     }
 };
 JournalComponent = __decorate([

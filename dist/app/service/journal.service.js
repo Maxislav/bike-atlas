@@ -34,21 +34,15 @@ let JournalService = class JournalService {
         return this.selectDate;
     }
     getTrack(from, to) {
-        const fromTo = new Date(from).toISOString() + new Date(to).toISOString();
-        if (-1 < this.dateCache.indexOf(fromTo)) {
-            return;
-        }
-        this.dateCache.push(fromTo);
+        const fromTo = String(new Date(from).toISOString()).concat(new Date(to).toISOString());
         return this.socket
             .$emit('trackFromTo', {
             from,
             to
         })
             .then(d => {
-            console.log(d);
             if (d && d.result == 'ok') {
-                //this.devices = d.devices;
-                this.fillList(d.list);
+                this.fillList(d.list, fromTo);
                 return d;
             }
             else {
@@ -63,7 +57,7 @@ let JournalService = class JournalService {
             return d;
         });
     }
-    fillList(list) {
+    fillList(list, rangeOfDate) {
         list.forEach((obj) => {
             if (obj.points.length) {
                 const points = [];
@@ -75,23 +69,21 @@ let JournalService = class JournalService {
                     points.push(point);
                 });
                 obj.points = points;
-                this.list.unshift(obj);
+                obj.rangeOfDate = rangeOfDate;
+                const index = this.list.findIndex((item) => {
+                    return item.rangeOfDate == rangeOfDate;
+                });
+                if (-1 < index) {
+                    this.list[index] = obj;
+                }
+                else {
+                    this.list.unshift(obj);
+                }
             }
         });
-        /* for(let key in devices){
-             const points: Array<Point> = [];
-             devices[key].forEach(p=>{
-                 const point  = new Point(p.lng, p.lat, p.azimuth);
-                 point.date = p.date;
-                 point.speed = p.speed;
-                 point.id = p.id
-                 points.push(point);
-             });
-             if(points.length){
-                 this.list.unshift(points)
-             }
- 
-         }*/
+    }
+    cleadData() {
+        this.list.length = 0;
     }
     get selectDate() {
         return this._selectDate;

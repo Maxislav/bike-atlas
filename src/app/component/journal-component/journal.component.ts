@@ -1,7 +1,7 @@
 /**
  * Created by max on 05.01.17.
  */
-import {Component, Injectable, ElementRef, OnInit} from "@angular/core";
+import { Component, Injectable, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import {Location} from '@angular/common';
 import {Resolve, ActivatedRoute} from "@angular/router";
 import {OneTrack} from "./one-track.component/one-track.component";
@@ -34,7 +34,7 @@ export class LeafletResolver implements Resolve<any> {
     //providers: [OneTrack]
 })
 
-export class JournalComponent implements  OnInit{
+export class JournalComponent implements  OnInit, OnDestroy{
     ngOnInit(): void {
         this.el.nativeElement.getElementsByClassName('scroll')[0].style.maxHeight = window.innerHeight-200+'px'
     }
@@ -45,15 +45,13 @@ export class JournalComponent implements  OnInit{
     constructor(private location: Location, public route:ActivatedRoute,  private journalService: JournalService, private el:ElementRef){
         this.list = journalService.list;
         this.selectDate = this.journalService.selectDate;
-        if(!this.list.length){
-            journalService.getLastDate()
-                .then(d=>{
-                    if(d && d.date){
-                        this.selectDate = this.journalService.setSelectDate(new Date(d.date))
-                        this.stepGo(0)
-                    }
-                })
-        }
+        journalService.getLastDate()
+            .then(d=>{
+                if(d && d.date){
+                    this.selectDate = this.journalService.setSelectDate(new Date(d.date))
+                    this.stepGo(0)
+                }
+            })
     }
 
     stepGo(step: number){
@@ -67,5 +65,9 @@ export class JournalComponent implements  OnInit{
 
     onClose(){
         this.location.back()
+    }
+
+    ngOnDestroy(): void {
+        this.journalService.cleadData();
     }
 }
