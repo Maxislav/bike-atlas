@@ -78,9 +78,9 @@ class Color {
         points.forEach(point => {
             point.color = getHexColor(point.speed, max);
         });
-        const colors = R.uniq(R.pluck('color')(points));
+        const colors = new Set(points.map(item => item.color));
         const resColors = [];
-        colors.forEach(item => {
+        Array.from(colors).forEach(item => {
             resColors.push([item, item]);
         });
         return [points, resColors];
