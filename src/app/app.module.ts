@@ -62,6 +62,7 @@ import { MenuService } from './service/menu.service';
 import { MyMarkerService } from './service/my-marker.service';
 import { MyInputPopupComponent } from './component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
 import { SharedModule } from 'app/shared-module/shared.module';
+import { GtgbcComponent } from './component/gtgbc/gtgbc.component';
 @Component({
     //noinspection TypeScriptUnresolvedVariable
     template: '<div></div>',
@@ -126,7 +127,8 @@ export function createTranslateLoader(http: Http) {
         JournalComponent,
         FriendsComponent,
         PrivateArea,
-        NoFoundComponent
+        NoFoundComponent,
+        GtgbcComponent
     ],
 
     /** Сервисы */

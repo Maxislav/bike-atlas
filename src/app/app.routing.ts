@@ -19,6 +19,7 @@ import {StravaComponent} from "./component/strava-component/strava-component";
 import {StravaAuthComponent} from "./component/strava-component/strava-auth-component";
 import {UserService} from "./service/main.user.service";
 import {JJ} from "./app.module";
+import { GtgbcComponent } from './component/gtgbc/gtgbc.component';
 
 const  appRouters: Routes = [
     {
@@ -88,6 +89,14 @@ const  appRouters: Routes = [
                         component: StravaAuthComponent
                         //canActivate:[UserService]
                     },
+                    {
+                        path: 'gtgbc',
+                        component: GtgbcComponent
+                    },
+                    {
+                        path: 'gtgbc/:mcc',
+                        component: GtgbcComponent
+                    }
                 ]
             }
         ]

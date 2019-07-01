@@ -70,6 +70,7 @@ const menu_service_1 = require("./service/menu.service");
 const my_marker_service_1 = require("./service/my-marker.service");
 const my_input_popup_component_1 = require("./component/my-marker-list-component/my-input-popup-component/my-input-popup-component");
 const shared_module_1 = require("app/shared-module/shared.module");
+const gtgbc_component_1 = require("./component/gtgbc/gtgbc.component");
 let JJ = class JJ {
 };
 JJ = __decorate([
@@ -147,7 +148,8 @@ AppModule = __decorate([
             journal_component_1.JournalComponent,
             friends_component_1.FriendsComponent,
             private_area_1.PrivateArea,
-            no_found_component_1.NoFoundComponent
+            no_found_component_1.NoFoundComponent,
+            gtgbc_component_1.GtgbcComponent
         ],
         /** Сервисы */
         providers: [

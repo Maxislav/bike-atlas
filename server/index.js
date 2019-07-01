@@ -14,7 +14,7 @@ const tileProxy = require('./tile-proxy');
 const socketData = require('./socket-data');
 const weather = require('./weather');
 const {sendFile} = require('./send-file');
-
+const gtgbc = require('./gtgbc');
 
 
 
@@ -96,6 +96,8 @@ socketData(server, app);
 
 app.get('/borisbolukbb', weather);
 
+app.get('/gtgbc*', gtgbc);
+
 /**
  * tiler proxy
  */
@@ -151,9 +153,6 @@ app.use((req, res, next)=>{
     console.log('html5', req.url);
     res.sendFile(dirname + '/index.html')
   }
-
-
-
 
 });
 

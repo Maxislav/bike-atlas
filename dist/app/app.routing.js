@@ -15,6 +15,7 @@ const all_user_component_1 = require("./component/all-user/all-user.component");
 const strava_component_1 = require("./component/strava-component/strava-component");
 const strava_auth_component_1 = require("./component/strava-component/strava-auth-component");
 const main_user_service_1 = require("./service/main.user.service");
+const gtgbc_component_1 = require("./component/gtgbc/gtgbc.component");
 const appRouters = [
     {
         path: '',
@@ -78,6 +79,14 @@ const appRouters = [
                         component: strava_auth_component_1.StravaAuthComponent
                         //canActivate:[UserService]
                     },
+                    {
+                        path: 'gtgbc',
+                        component: gtgbc_component_1.GtgbcComponent
+                    },
+                    {
+                        path: 'gtgbc/:mcc',
+                        component: gtgbc_component_1.GtgbcComponent
+                    }
                 ]
             }
         ]

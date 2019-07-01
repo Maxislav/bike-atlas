@@ -1,0 +1,33 @@
+Password 4~8 ‘0’ – ‘9’, ‘a’ – ‘z’, ‘A’ – ‘Z’ gl520
+Reserved 0
+Device Name <=10   '0' – '9' 'a' – 'z' 'A' – 'Z' '–' '_'   GL520
+New Password 4~8 ‘0’ – ‘9’, ‘a’ – ‘z’, ‘A’ – ‘Z’
+New Password 4~8 ‘0’ – ‘9’, ‘a’ – ‘z’, ‘A’ – ‘Z’
+Event Mask <=4 0000-FFFF 001B
+GPS Enable   0|1 0
+GPS Fix Delay <=2 0|5 – 60sec 5
+Start Mode 1 0 – 3 0
+Specified Time of Day 4 HHMM 1200
+Adjustment Enable 1 0 – 1 0
+Initial Report Frequency <=2 24|12|8|6|4|3|2|1 4
+Final Report Frequency <=2 24|12|8|6|4|3|2|1 1
+Hold Days <=2 1-99 1
+Continuous Mode 1 0|1|2 0
+Continuous Send Interval <=4 0|1 – 1440min 5
+Battery Low Percentage <=2 0|5 – 30 20
+Sensor Enable 1 0|1 0
+GSM Report 1 0|1|2|3 0
+Reserved 0
+Reserved
+Reserved
+AGPS Mode
+Week Report Selection
+Resend Interval
+Component Expansion Mask
+Report Count <=5 0 – 65535 0
+Max Count <=5 => 1 – 65535 1100
+Battery Type 1 -> 0 | 1 | 2 0
+Alarm Time <=200        0 – 9 | ‘*’ | ‘+’ | ‘|’
+Battery Percentage Mode  1  -> 0 | 1 | 2
+Serial Number
+$

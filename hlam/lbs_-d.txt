@@ -1,0 +1,16 @@
+Protocol Version
+Unique ID
+Device Name
+Trigger Type
+Report Type
+Battery Perc
+Light Level
+Movement Status
+Reserved
+Reserved
+Component Ex Mask
+MCC1
+MNC1
+LAC1
+CELL ID 1
+RX level
