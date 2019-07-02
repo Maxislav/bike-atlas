@@ -30,7 +30,7 @@ interface ModuleInterface {
 
 declare var module: ModuleInterface;
 
-interface LngLat extends Array<number> {
+export interface LngLat extends Array<number> {
     lng: number,
     lat: number
 }
@@ -99,5 +99,12 @@ interface Device {
     device_key?: string;
 }
 
+
+export interface MobileCell {
+    mcc: number;
+    mnc: number;
+    lac: number;
+    cellId: number;
+}
 
 

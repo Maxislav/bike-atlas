@@ -84,7 +84,7 @@ const appRouters = [
                         component: gtgbc_component_1.GtgbcComponent
                     },
                     {
-                        path: 'gtgbc/:mcc',
+                        path: 'gtgbc/:gtgbc',
                         component: gtgbc_component_1.GtgbcComponent
                     }
                 ]

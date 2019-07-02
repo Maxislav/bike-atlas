@@ -63,6 +63,7 @@ import { MyMarkerService } from './service/my-marker.service';
 import { MyInputPopupComponent } from './component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
 import { SharedModule } from 'app/shared-module/shared.module';
 import { GtgbcComponent } from './component/gtgbc/gtgbc.component';
+import { GtgbcService } from './api/gtgbc.service';
 @Component({
     //noinspection TypeScriptUnresolvedVariable
     template: '<div></div>',
@@ -158,7 +159,8 @@ export function createTranslateLoader(http: Http) {
         PrivateAreaService,
         NavigationHistory,
         MenuService,
-        MyMarkerService
+        MyMarkerService,
+        GtgbcService
 
     ],
     entryComponents: [
