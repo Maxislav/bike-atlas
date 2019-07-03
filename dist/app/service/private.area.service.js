@@ -99,9 +99,7 @@ let PrivateAreaService = class PrivateAreaService {
                 "fill-opacity": 0.3
             }
         });
-        function createGeoJSONCircle(center, radiusInKm, points) {
-            if (!points)
-                points = 64;
+        function createGeoJSONCircle(center, radiusInKm, points = 64) {
             const coords = {
                 latitude: center[1],
                 longitude: center[0]

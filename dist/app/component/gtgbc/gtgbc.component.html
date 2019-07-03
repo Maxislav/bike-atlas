@@ -8,7 +8,12 @@
       </div>
     </div>
     <div class="scroll">
-      <div class="row"></div>
+      <div class="row">
+        <textarea [(ngModel)]="gtgbc" (ngModelChange)="gtgbcOnChange()"></textarea>
+      </div>
+    </div>
+    <div class="row flex flex-end">
+      <div (click)="onApplyClick()" class="button primary">Apply</div>
     </div>
   </div>
 </div>

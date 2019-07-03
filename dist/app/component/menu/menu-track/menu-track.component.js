@@ -41,6 +41,10 @@ const MENU = [
         value: 'import',
         text: 'IMPORT_FROM_GOOGLE_KML'
     },
+    {
+        value: 'gl520',
+        text: 'GL520BS'
+    },
 ];
 let MenuTrackComponent = class MenuTrackComponent {
     constructor(ms, io, trackService, router, myMarkerService) {
@@ -90,6 +94,10 @@ let MenuTrackComponent = class MenuTrackComponent {
             case 'myMarker':
                 this.myMarkerService.show();
                 break;
+            case 'gl520': {
+                this.router.navigate(['/auth/map/', 'gtgbc']);
+                break;
+            }
             default:
                 return null;
         }

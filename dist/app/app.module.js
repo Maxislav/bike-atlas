@@ -71,6 +71,7 @@ const my_marker_service_1 = require("./service/my-marker.service");
 const my_input_popup_component_1 = require("./component/my-marker-list-component/my-input-popup-component/my-input-popup-component");
 const shared_module_1 = require("app/shared-module/shared.module");
 const gtgbc_component_1 = require("./component/gtgbc/gtgbc.component");
+const gtgbc_service_1 = require("./api/gtgbc.service");
 let JJ = class JJ {
 };
 JJ = __decorate([
@@ -178,7 +179,8 @@ AppModule = __decorate([
             private_area_service_1.PrivateAreaService,
             app_component_1.NavigationHistory,
             menu_service_1.MenuService,
-            my_marker_service_1.MyMarkerService
+            my_marker_service_1.MyMarkerService,
+            gtgbc_service_1.GtgbcService
         ],
         entryComponents: [
             my_input_popup_component_1.MyInputPopupComponent

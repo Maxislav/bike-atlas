@@ -6,5 +6,9 @@ div.content
                 p
 
 
+
         .scroll
             .row
+                textarea([(ngModel)]="gtgbc", (ngModelChange)="gtgbcOnChange()")
+         .row.flex.flex-end
+             div.button.primary((click)='onApplyClick()') Apply
