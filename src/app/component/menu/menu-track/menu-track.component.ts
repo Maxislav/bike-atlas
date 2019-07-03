@@ -56,6 +56,10 @@ const MENU: Item[] = [
         value: 'import',
         text: 'IMPORT_FROM_GOOGLE_KML'
     },
+    {
+        value: 'gl520',
+        text: 'GL520BS'
+    },
 
 ];
 
@@ -128,6 +132,10 @@ export class MenuTrackComponent {
             case   'myMarker':
                 this.myMarkerService.show();
                 break;
+            case 'gl520': {
+                this.router.navigate(['/auth/map/', 'gtgbc']);
+                break;
+            }
             default:
                 return null;
         }

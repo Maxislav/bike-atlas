@@ -12,7 +12,7 @@
   margin-left: -300px;
   padding: 0;
   left: 50%;
-  top: calc(100% + 20px);
+  top: calc(100% + 10px);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
 }
 .content > div {
@@ -23,8 +23,12 @@
   width: 100%;
   border: none ;
   padding: 4px 8px;
-  border-bottom: 1px solid #b2b4b7;
-  border-left: 2px solid #b2b4b7;
+  border-bottom: 2px solid #b2b4b7;
+  border-left: 1px solid #b2b4b7;
+  min-height: 80px;
+}
+.content .row:last-child {
+  margin-bottom: 0;
 }
 .close {
   position: absolute;
@@ -44,4 +48,27 @@
 }
 .title-row p {
   width: 50%;
+}
+@media screen and (max-width: 600px) {
+  :host {
+    position: absolute;
+    left: 0;
+    top: inherit;
+    bottom: 0;
+    z-index: 5;
+    width: 100%;
+  }
+  .content {
+    position: relative;
+    width: 100%;
+    min-width: inherit;
+    left: 0;
+    margin-left: 0;
+    top: inherit;
+    bottom: 0;
+  }
+  .content > div {
+    position: relative;
+    padding: 15px;
+  }
 }

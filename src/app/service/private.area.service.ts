@@ -111,8 +111,7 @@ export class PrivateAreaService{
             }
         });
 
-        function createGeoJSONCircle(center, radiusInKm, points?:number) {
-            if(!points) points = 64;
+        function createGeoJSONCircle(center, radiusInKm, points:number =  64) {
 
             const coords = {
                 latitude: center[1],

@@ -14,7 +14,7 @@
     margin-left: -300px;
     padding: 0;
     left: 50%;
-    top: calc(~"100% +"20px);
+    top: calc(~"100% +"10px);
     box-shadow: @box-shadow;
     &>div{
 	position: relative;
@@ -24,9 +24,13 @@
         width: 100%;
         border: none ;
         padding: 4px 8px;
-        border-bottom: 1px solid @gray-color;
-        border-left: 2px solid @gray-color;
+        border-bottom: 2px solid @gray-color;
+        border-left: 1px solid @gray-color;
+        min-height: 80px;
 
+    }
+    .row:last-child{
+        margin-bottom: 0;
     }
 }
 .close{
@@ -46,5 +50,28 @@
     align-items: center;
     p{
 	width: 50%;
+    }
+}
+@media screen and (max-width: 600px){
+    :host{
+        position: absolute;
+        left: 0;
+        top: inherit;
+        bottom: 0;
+        z-index: 5;
+        width: 100%;
+    }
+    .content{
+        position: relative;
+        width: 100%;
+        min-width: inherit;;
+        left: 0;
+        margin-left: 0;
+        top: inherit;
+        bottom: 0;
+        &>div{
+            position: relative;
+            padding: 15px;
+        }
     }
 }

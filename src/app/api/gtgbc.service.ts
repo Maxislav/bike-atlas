@@ -19,8 +19,8 @@ export class GtgbcService {
                     const lat  = str.match(/Lat=-?[\d\.]+/)[0].replace(/^Lat=/, '');
                     const lng  = str.match(/Lon=-?[\d\.]+/)[0].replace(/^Lon=/, '');
                     return {
-                        lat,
-                        lng,
+                        lat: Number(lat),
+                        lng: Number(lng),
                         id: arr[i].cellId
                     }
                 });

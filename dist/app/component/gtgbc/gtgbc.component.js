@@ -15,6 +15,7 @@ const animation_1 = require("../../animation/animation");
 const map_service_1 = require("../../service/map.service");
 const router_1 = require("@angular/router");
 const gtgbc_service_1 = require("../../api/gtgbc.service");
+const distance_1 = require("../../util/distance");
 let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
     //public gtgbcViewModel: string = null;
     constructor(mapService, router, route, gtgbcService) {
@@ -23,6 +24,8 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
         this.route = route;
         this.gtgbcService = gtgbcService;
         this.gtgbc = null;
+        this.areaList = [];
+        this.layerId = this.getLayerId('mobile-cell-');
     }
     onClose() {
         this.router.navigate(['/auth', 'map']);
@@ -30,6 +33,9 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
     ngOnInit() {
         this.route.params
             .subscribe(params => {
+            if (!params['gtgbc']) {
+                return;
+            }
             this.gtgbc = params['gtgbc'];
             const arr = this.convertToMobileCell();
             console.log('param: -> ', this.gtgbc);
@@ -43,35 +49,162 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
         });
     }
     drawPoints(pointsList) {
-        console.log(pointsList);
-        const layerId = this.getLayerId('mobile-cell-');
+        const { layerId } = this;
         this.mapService.onLoad
             .then(map => {
+            this.map = map;
+            const compareList = [];
+            let n = 1;
+            for (let i = 0; i < pointsList.length - 1; i++) {
+                for (let c = n; c < pointsList.length; c++) {
+                    compareList.push([i, c]);
+                }
+                n++;
+            }
+            const pointWithDist = [];
+            let max = 0;
+            const lngLatMin = {
+                lng: 0,
+                lat: 0
+            };
+            const lngLatMax = {
+                lng: 0,
+                lat: 0
+            };
+            compareList.forEach(compare => {
+                const p1 = pointsList[compare[0]], p2 = pointsList[compare[1]], dist = distance_1.distance([p1.lng, p1.lat], [p2.lng, p2.lat]);
+                pointWithDist.push({
+                    p1,
+                    p2,
+                    dist
+                });
+                const lngMin = p1.lng < p2.lng ? p1.lng : p2.lng;
+                lngLatMin.lng = lngLatMin.lng || lngMin;
+                if (lngMin < lngLatMin.lng) {
+                    lngLatMin.lng = lngMin;
+                }
+                const latMin = p1.lat < p2.lat ? p1.lat : p2.lat;
+                lngLatMin.lat = lngLatMin.lat || latMin;
+                if (latMin < lngLatMin.lat) {
+                    lngLatMin.lat = latMin;
+                }
+                const lngMax = p1.lng < p2.lng ? p2.lng : p1.lng;
+                lngLatMax.lng = lngLatMax.lng || lngMax;
+                if (lngLatMax.lng < lngMax) {
+                    lngLatMax.lng = lngMax;
+                }
+                const latMax = p1.lat < p2.lat ? p2.lat : p1.lat;
+                lngLatMax.lat = lngLatMax.lat || latMax;
+                if (lngLatMax.lat < latMax) {
+                    lngLatMax.lat = latMax;
+                }
+                if (max < dist) {
+                    max = dist;
+                }
+            });
+            map.fitBounds([[lngLatMin.lng, lngLatMin.lat], [lngLatMax.lng, lngLatMax.lat]], {
+                padding: { top: 20, bottom: 20, left: 20, right: 20 }
+            });
+            pointsList.forEach((point) => {
+                this.areaList.push(this.createArea(Object.assign({}, Object.assign({}, point), { radius: max })));
+            });
             map.addSource(layerId, {
-                type: "geojson",
+                type: 'geojson',
                 data: sourceData
             });
             map.addLayer({
                 id: layerId,
-                type: "circle",
-                "paint": {
-                    "circle-color": {
-                        "property": "color",
-                        "stops": [['#ff0000', '#ff0000']],
-                        "type": "categorical"
+                type: 'circle',
+                'paint': {
+                    'circle-color': {
+                        'property': 'color',
+                        'stops': [['#ff0000', '#ff0000']],
+                        'type': 'categorical'
                     },
-                    "circle-radius": 8
+                    'circle-radius': 8
                 },
                 layout: {},
                 source: layerId
             });
+            this.centerPoints = {
+                points: pointsList,
+                remove() {
+                    map.removeLayer(layerId);
+                    map.removeSource(layerId);
+                }
+            };
         });
         const sourceData = this.getData(pointsList);
     }
+    createArea(area) {
+        const layerId = this.getLayerId('mobile-cell-');
+        const radius = area.radius || 1;
+        const map = this.map;
+        this.map.addSource(layerId, {
+            type: 'geojson',
+            data: createGeoJSONCircle([area.lng, area.lat], radius)
+        });
+        this.map.addLayer({
+            'id': layerId,
+            'type': 'fill',
+            'source': layerId,
+            'layout': {},
+            'paint': {
+                'fill-color': '#ff0047',
+                'fill-opacity': 0.1
+            }
+        });
+        function createGeoJSONCircle(center, radiusInKm, points = 64) {
+            const coords = {
+                latitude: center[1],
+                longitude: center[0]
+            };
+            const km = radiusInKm;
+            const ret = [];
+            let distanceX = km / (111.320 * Math.cos(coords.latitude * Math.PI / 180));
+            let distanceY = km / 110.574;
+            let theta, x, y;
+            for (let i = 0; i < points; i++) {
+                theta = (i / points) * (2 * Math.PI);
+                x = distanceX * Math.cos(theta);
+                y = distanceY * Math.sin(theta);
+                ret.push([coords.longitude + x, coords.latitude + y]);
+            }
+            ret.push(ret[0]);
+            return {
+                'type': 'FeatureCollection',
+                'features': [{
+                        'type': 'Feature',
+                        'geometry': {
+                            'type': 'Polygon',
+                            'coordinates': [ret]
+                        }
+                    }]
+            };
+        }
+        ;
+        return {
+            id: area.id || null,
+            layerId: layerId,
+            lng: area.lng,
+            lat: area.lat,
+            radius: radius,
+            update: function ([lng, lat], r) {
+                this.lng = lng;
+                this.lat = lat;
+                map.getSource(layerId)
+                    .setData(createGeoJSONCircle([lng, lat], r));
+            },
+            remove: function () {
+                map.removeLayer(layerId);
+                map.removeSource(layerId);
+            }
+        };
+    }
     getData(pointsList) {
         return {
-            "type": "FeatureCollection",
-            "features": (() => {
+            'type': 'FeatureCollection',
+            'features': (() => {
                 const features = [];
                 pointsList.forEach((item, i) => {
                     const f = {
@@ -80,10 +213,10 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
                             point: item,
                             id: item.id,
                         },
-                        "type": "Feature",
-                        "geometry": {
-                            "type": "Point",
-                            "coordinates": [item.lng, item.lat]
+                        'type': 'Feature',
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [item.lng, item.lat]
                         }
                     };
                     features.push(f);
@@ -160,6 +293,12 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
             GtgbcComponent_1.layerIds.push(rand);
             return rand;
         }
+    }
+    ngOnDestroy() {
+        this.centerPoints && this.centerPoints.remove();
+        this.areaList && this.areaList.forEach(area => {
+            area && area.remove();
+        });
     }
 };
 GtgbcComponent.layerIds = [];
