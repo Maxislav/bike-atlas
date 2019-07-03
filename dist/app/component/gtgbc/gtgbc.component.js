@@ -39,6 +39,7 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
             this.gtgbc = params['gtgbc'];
             const arr = this.convertToMobileCell();
             console.log('param: -> ', this.gtgbc);
+            this.clearData();
             this.gtgbcService.getLatLng(arr)
                 .then(pointsList => {
                 this.drawPoints(pointsList);
@@ -53,7 +54,49 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
         this.mapService.onLoad
             .then(map => {
             this.map = map;
-            const compareList = [];
+            const { bounds, max } = this.getBouds(pointsList);
+            if (bounds) {
+                map.fitBounds([[bounds[0].lng, bounds[0].lat], [bounds[1].lng, bounds[1].lat]], {
+                    padding: { top: 100, bottom: 100, left: 100, right: 100 }
+                });
+            }
+            else {
+                this.map.panTo([pointsList[0].lng, pointsList[0].lat]);
+            }
+            pointsList.forEach((point) => {
+                this.areaList.push(this.createArea(Object.assign({}, Object.assign({}, point), { radius: max })));
+            });
+            map.addSource(layerId, {
+                type: 'geojson',
+                data: sourceData
+            });
+            map.addLayer({
+                id: layerId,
+                type: 'circle',
+                'paint': {
+                    'circle-color': {
+                        'property': 'color',
+                        'stops': [['#ff0000', '#ff0000']],
+                        'type': 'categorical'
+                    },
+                    'circle-radius': 8
+                },
+                layout: {},
+                source: layerId
+            });
+            this.centerPoints = {
+                points: pointsList,
+                remove() {
+                    map.removeLayer(layerId);
+                    map.removeSource(layerId);
+                }
+            };
+        });
+        const sourceData = this.getData(pointsList);
+    }
+    getBouds(pointsList) {
+        const compareList = [];
+        if (pointsList && 1 < pointsList.length) {
             let n = 1;
             for (let i = 0; i < pointsList.length - 1; i++) {
                 for (let c = n; c < pointsList.length; c++) {
@@ -102,39 +145,25 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
                     max = dist;
                 }
             });
-            map.fitBounds([[lngLatMin.lng, lngLatMin.lat], [lngLatMax.lng, lngLatMax.lat]], {
-                padding: { top: 20, bottom: 20, left: 20, right: 20 }
-            });
-            pointsList.forEach((point) => {
-                this.areaList.push(this.createArea(Object.assign({}, Object.assign({}, point), { radius: max })));
-            });
-            map.addSource(layerId, {
-                type: 'geojson',
-                data: sourceData
-            });
-            map.addLayer({
-                id: layerId,
-                type: 'circle',
-                'paint': {
-                    'circle-color': {
-                        'property': 'color',
-                        'stops': [['#ff0000', '#ff0000']],
-                        'type': 'categorical'
-                    },
-                    'circle-radius': 8
-                },
-                layout: {},
-                source: layerId
-            });
-            this.centerPoints = {
-                points: pointsList,
-                remove() {
-                    map.removeLayer(layerId);
-                    map.removeSource(layerId);
-                }
+            return {
+                max: max,
+                bounds: [
+                    {
+                        lng: lngLatMin.lng,
+                        lat: lngLatMin.lat
+                    }, {
+                        lng: lngLatMax.lng,
+                        lat: lngLatMax.lat
+                    }
+                ]
             };
-        });
-        const sourceData = this.getData(pointsList);
+        }
+        else {
+            return {
+                max: null,
+                bounds: null
+            };
+        }
     }
     createArea(area) {
         const layerId = this.getLayerId('mobile-cell-');
@@ -294,11 +323,14 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
             return rand;
         }
     }
-    ngOnDestroy() {
+    clearData() {
         this.centerPoints && this.centerPoints.remove();
         this.areaList && this.areaList.forEach(area => {
             area && area.remove();
         });
+    }
+    ngOnDestroy() {
+        this.clearData();
     }
 };
 GtgbcComponent.layerIds = [];

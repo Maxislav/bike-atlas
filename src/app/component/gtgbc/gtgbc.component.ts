@@ -14,7 +14,7 @@ import { distance } from '../../util/distance';
     styleUrls: ['./gtgbc.component.css'],
     animations: [ngIfAnimation]
 })
-export class GtgbcComponent implements OnInit, OnDestroy{
+export class GtgbcComponent implements OnInit, OnDestroy {
     public gtgbc: string = null;
     private mcArr;
     private static layerIds: Array<String> = [];
@@ -42,12 +42,13 @@ export class GtgbcComponent implements OnInit, OnDestroy{
     ngOnInit(): void {
         this.route.params
             .subscribe(params => {
-                if( !params['gtgbc']){
-                    return
+                if (!params['gtgbc']) {
+                    return;
                 }
                 this.gtgbc = params['gtgbc'];
                 const arr: Array<MobileCell> = this.convertToMobileCell();
                 console.log('param: -> ', this.gtgbc);
+                this.clearData();
                 this.gtgbcService.getLatLng(arr)
                     .then(pointsList => {
                         this.drawPoints(pointsList);
@@ -62,74 +63,23 @@ export class GtgbcComponent implements OnInit, OnDestroy{
 
     private drawPoints(pointsList: Array<{ lng: number, lat: number }>): void {
         const {layerId} = this;
-
-
         this.mapService.onLoad
             .then(map => {
 
                 this.map = map;
 
-                const compareList = [];
-
-                let n = 1;
-                for (let i = 0; i < pointsList.length - 1; i++) {
-                    for (let c = n; c < pointsList.length; c++) {
-                        compareList.push([i, c]);
-                    }
-                    n++;
+                const {bounds, max} = this.getBouds(pointsList);
+                if(bounds){
+                    map.fitBounds([[bounds[0].lng, bounds[0].lat], [bounds[1].lng, bounds[1].lat]], {
+                        padding: {top: 100, bottom: 100, left: 100, right: 100}
+                    });
+                }else {
+                    this.map.panTo([pointsList[0].lng, pointsList[0].lat])
                 }
 
-                const pointWithDist = [];
-                let max = 0;
-                const lngLatMin = {
-                    lng: 0,
-                    lat: 0
-                };
-                const lngLatMax = {
-                    lng: 0,
-                    lat: 0
-                };
-                compareList.forEach(compare => {
-                    const p1 = pointsList[compare[0]], p2 = pointsList[compare[1]], dist = distance([p1.lng, p1.lat], [p2.lng, p2.lat])
-                    pointWithDist.push({
-                        p1,
-                        p2,
-                        dist
-                    });
-                    const lngMin = p1.lng <  p2.lng ?  p1.lng :  p2.lng;
-                    lngLatMin.lng = lngLatMin.lng || lngMin;
-                    if(  lngMin < lngLatMin.lng){
-                        lngLatMin.lng = lngMin
-                    }
-                    const latMin  = p1.lat <  p2.lat ?  p1.lat :  p2.lat;
-                    lngLatMin.lat = lngLatMin.lat || latMin;
-                    if( latMin < lngLatMin.lat){
-                        lngLatMin.lat = latMin
-                    }
 
-                    const lngMax = p1.lng <  p2.lng ? p2.lng : p1.lng;
-                    lngLatMax.lng = lngLatMax.lng || lngMax;
-                    if(  lngLatMax.lng < lngMax){
-                        lngLatMax.lng = lngMax
-                    }
-
-                    const latMax = p1.lat <  p2.lat ? p2.lat : p1.lat;
-                    lngLatMax.lat = lngLatMax.lat || latMax;
-                    if(  lngLatMax.lat < latMax){
-                        lngLatMax.lat = latMax
-                    }
-
-
-
-                    if(max <dist) {
-                        max = dist
-                    }
-                });
-                map.fitBounds([[lngLatMin.lng, lngLatMin.lat], [lngLatMax.lng, lngLatMax.lat]], {
-                    padding: {top: 20, bottom:20, left: 20, right: 20}
-                });
                 pointsList.forEach((point: Area) => {
-                   this.areaList.push(this.createArea(Object.assign({}, {...point}, {radius: max})));
+                    this.areaList.push(this.createArea(Object.assign({}, {...point}, {radius: max})));
                 });
 
                 map.addSource(layerId, {
@@ -152,14 +102,95 @@ export class GtgbcComponent implements OnInit, OnDestroy{
                 });
                 this.centerPoints = {
                     points: pointsList,
-                    remove(){
+                    remove() {
                         map.removeLayer(layerId);
-                        map.removeSource(layerId)
+                        map.removeSource(layerId);
                     }
-                }
+                };
             });
 
         const sourceData = this.getData(pointsList);
+    }
+
+    private getBouds(pointsList: Array<{ lng: number, lat: number }>): {max: number, bounds: Array<{ lng: number, lat: number }>}  {
+
+
+        const compareList = [];
+
+        if(pointsList && 1<pointsList.length){
+            let n = 1;
+            for (let i = 0; i < pointsList.length - 1; i++) {
+                for (let c = n; c < pointsList.length; c++) {
+                    compareList.push([i, c]);
+                }
+                n++;
+            }
+
+            const pointWithDist = [];
+            let max = 0;
+            const lngLatMin = {
+                lng: 0,
+                lat: 0
+            };
+            const lngLatMax = {
+                lng: 0,
+                lat: 0
+            };
+            compareList.forEach(compare => {
+                const p1 = pointsList[compare[0]], p2 = pointsList[compare[1]],
+                    dist = distance([p1.lng, p1.lat], [p2.lng, p2.lat]);
+                pointWithDist.push({
+                    p1,
+                    p2,
+                    dist
+                });
+                const lngMin = p1.lng < p2.lng ? p1.lng : p2.lng;
+                lngLatMin.lng = lngLatMin.lng || lngMin;
+                if (lngMin < lngLatMin.lng) {
+                    lngLatMin.lng = lngMin;
+                }
+                const latMin = p1.lat < p2.lat ? p1.lat : p2.lat;
+                lngLatMin.lat = lngLatMin.lat || latMin;
+                if (latMin < lngLatMin.lat) {
+                    lngLatMin.lat = latMin;
+                }
+
+                const lngMax = p1.lng < p2.lng ? p2.lng : p1.lng;
+                lngLatMax.lng = lngLatMax.lng || lngMax;
+                if (lngLatMax.lng < lngMax) {
+                    lngLatMax.lng = lngMax;
+                }
+
+                const latMax = p1.lat < p2.lat ? p2.lat : p1.lat;
+                lngLatMax.lat = lngLatMax.lat || latMax;
+                if (lngLatMax.lat < latMax) {
+                    lngLatMax.lat = latMax;
+                }
+                if (max < dist) {
+                    max = dist;
+                }
+            });
+            return {
+                max: max,
+                bounds: [
+                    {
+                        lng:  lngLatMin.lng,
+                        lat: lngLatMin.lat
+                    },{
+                        lng:lngLatMax.lng,
+                        lat:lngLatMax.lat
+                    }
+
+                ]
+            }
+        }else{
+            return {
+                max: null,
+                bounds: null
+            }
+        }
+
+
     }
 
     createArea(area: Area): Area {
@@ -343,11 +374,15 @@ export class GtgbcComponent implements OnInit, OnDestroy{
         }
     }
 
-    ngOnDestroy(): void {
-
+    private clearData() {
         this.centerPoints && this.centerPoints.remove();
-        this.areaList && this.areaList.forEach(area=>{
-            area && area.remove()
-        })
+        this.areaList && this.areaList.forEach(area => {
+            area && area.remove();
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.clearData();
+
     }
 }
