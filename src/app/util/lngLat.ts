@@ -1,8 +1,14 @@
 export class LngLat extends Array{
     lng:number;
     lat:number;
-    constructor(){
-        super()
+    constructor(lng?:number, lat?: number){
+        super();
+        if(typeof lng === 'number' && typeof lat === 'number'){
+            this.setValue({
+                lng,
+                lat
+            })
+        };
     }
     setValue(lngLat: {lng: number, lat: number}): LngLat{
         this.lat = lngLat.lat;

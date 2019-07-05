@@ -16,6 +16,12 @@ const map_service_1 = require("../../service/map.service");
 const router_1 = require("@angular/router");
 const gtgbc_service_1 = require("../../api/gtgbc.service");
 const distance_1 = require("../../util/distance");
+const lngLat_1 = require("../../util/lngLat");
+var MessageType;
+(function (MessageType) {
+    MessageType[MessageType["GTSTR"] = 0] = "GTSTR";
+    MessageType[MessageType["GTLBS"] = 1] = "GTLBS";
+})(MessageType || (MessageType = {}));
 let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
     //public gtgbcViewModel: string = null;
     constructor(mapService, router, route, gtgbcService) {
@@ -37,19 +43,45 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
                 return;
             }
             this.gtgbc = params['gtgbc'];
-            const arr = this.convertToMobileCell();
-            console.log('param: -> ', this.gtgbc);
-            this.clearData();
-            this.gtgbcService.getLatLng(arr)
-                .then(pointsList => {
-                this.drawPoints(pointsList);
-            })
-                .catch(e => {
-                console.error(e);
-            });
+            const type = this.getType(this.gtgbc);
+            if (type === MessageType.GTLBS) {
+                const arr = this.convertToMobileCell();
+                this.clearData();
+                this.gtgbcService.getLatLng(arr)
+                    .then(pointsList => {
+                    this.createStations(pointsList);
+                })
+                    .catch(e => {
+                    console.error(e);
+                });
+            }
+            else if (type === MessageType.GTSTR) {
+                this.clearData();
+                const lngLat = this.convertToLngLat(this.gtgbc);
+                this.createStations([lngLat]);
+            }
         });
     }
-    drawPoints(pointsList) {
+    getType(str) {
+        switch (true) {
+            case !str: {
+                return null;
+            }
+            case typeof str !== 'string': {
+                return null;
+            }
+            case !!str.match(/^([\s]+)?\+?RESP:GTSTR,\d+,\d+,.+/): {
+                return MessageType.GTSTR;
+            }
+            case !!str.match(/^([\s]+)?\+?RESP:GTLBS,\d+,\d+,.+/): {
+                return MessageType.GTLBS;
+            }
+            default: {
+                return null;
+            }
+        }
+    }
+    createStations(pointsList) {
         const { layerId } = this;
         this.mapService.onLoad
             .then(map => {
@@ -66,33 +98,37 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
             pointsList.forEach((point) => {
                 this.areaList.push(this.createArea(Object.assign({}, Object.assign({}, point), { radius: max })));
             });
-            map.addSource(layerId, {
-                type: 'geojson',
-                data: sourceData
-            });
-            map.addLayer({
-                id: layerId,
-                type: 'circle',
-                'paint': {
-                    'circle-color': {
-                        'property': 'color',
-                        'stops': [['#ff0000', '#ff0000']],
-                        'type': 'categorical'
-                    },
-                    'circle-radius': 8
-                },
-                layout: {},
-                source: layerId
-            });
-            this.centerPoints = {
-                points: pointsList,
-                remove() {
-                    map.removeLayer(layerId);
-                    map.removeSource(layerId);
-                }
-            };
+            this.drawPoints(pointsList);
         });
+    }
+    drawPoints(pointsList) {
         const sourceData = this.getData(pointsList);
+        const { map, layerId } = this;
+        map.addSource(layerId, {
+            type: 'geojson',
+            data: sourceData
+        });
+        map.addLayer({
+            id: layerId,
+            type: 'circle',
+            'paint': {
+                'circle-color': {
+                    'property': 'color',
+                    'stops': [['#ff0000', '#ff0000']],
+                    'type': 'categorical'
+                },
+                'circle-radius': 8
+            },
+            layout: {},
+            source: layerId
+        });
+        this.centerPoints = {
+            points: pointsList,
+            remove() {
+                map.removeLayer(layerId);
+                map.removeSource(layerId);
+            }
+        };
     }
     getBouds(pointsList) {
         const compareList = [];
@@ -167,7 +203,7 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
     }
     createArea(area) {
         const layerId = this.getLayerId('mobile-cell-');
-        const radius = area.radius || 1;
+        const radius = area.radius || 0.2;
         const map = this.map;
         this.map.addSource(layerId, {
             type: 'geojson',
@@ -254,17 +290,15 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
             })()
         };
     }
-    //+RESP:GTLBS,440503,866427030059602,GL520,0,0,100,0,2,,,0000,0255,0001,0715,487d,30,,0255,0001,0715,1402,23,,0255,0001,0715,487b,22,,0255,0001,0715,4fa7,13,,025$
-    get gtgbcViewModel() {
-        if (!this.gtgbc) {
-            return null;
-        }
-        return this.transformToView();
-    }
     gtgbcOnChange() {
     }
     onApplyClick() {
         this.router.navigate(['/auth', 'map', 'gtgbc', this.gtgbc]);
+    }
+    convertToLngLat(str) {
+        const arr = this.gtgbc.split(',');
+        arr.splice(0, 12);
+        return new lngLat_1.LngLat(Number(arr[1]), Number(arr[2]));
     }
     convertToMobileCell() {
         const mc = {
@@ -328,6 +362,7 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
         this.areaList && this.areaList.forEach(area => {
             area && area.remove();
         });
+        this.areaList.length = 0;
     }
     ngOnDestroy() {
         this.clearData();

@@ -1,8 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class LngLat extends Array {
-    constructor() {
+    constructor(lng, lat) {
         super();
+        if (typeof lng === 'number' && typeof lat === 'number') {
+            this.setValue({
+                lng,
+                lat
+            });
+        }
+        ;
     }
     setValue(lngLat) {
         this.lat = lngLat.lat;

@@ -7,6 +7,12 @@ import { MobileCell } from '../../../@types/global';
 import { MapArea as Area } from '../../interface/MapArea';
 import { deepCopy } from '../../util/deep-copy';
 import { distance } from '../../util/distance';
+import { LngLat } from '../../util/lngLat';
+
+enum MessageType {
+    GTSTR,
+    GTLBS
+}
 
 @Component({
     moduleId: module.id,
@@ -46,22 +52,47 @@ export class GtgbcComponent implements OnInit, OnDestroy {
                     return;
                 }
                 this.gtgbc = params['gtgbc'];
-                const arr: Array<MobileCell> = this.convertToMobileCell();
-                console.log('param: -> ', this.gtgbc);
-                this.clearData();
-                this.gtgbcService.getLatLng(arr)
-                    .then(pointsList => {
-                        this.drawPoints(pointsList);
-                    })
-                    .catch(e => {
-                        console.error(e);
-                    });
-
+                const type: MessageType = this.getType(this.gtgbc);
+                if (type === MessageType.GTLBS) {
+                    const arr: Array<MobileCell> = this.convertToMobileCell();
+                    this.clearData();
+                    this.gtgbcService.getLatLng(arr)
+                        .then(pointsList => {
+                            this.createStations(pointsList);
+                        })
+                        .catch(e => {
+                            console.error(e);
+                        });
+                }else if(type === MessageType.GTSTR){
+                    this.clearData();
+                    const lngLat  = this.convertToLngLat(this.gtgbc)
+                    this.createStations([lngLat]);
+                }
             });
     }
 
+    private getType(str: string): MessageType | null {
+        switch (true) {
+            case !str: {
+                return null;
+            }
+            case typeof str !== 'string': {
+                return null;
+            }
+            case !!str.match(/^([\s]+)?\+?RESP:GTSTR,\d+,\d+,.+/): {
+                return MessageType.GTSTR;
+            }
+            case !!str.match(/^([\s]+)?\+?RESP:GTLBS,\d+,\d+,.+/): {
+                return MessageType.GTLBS;
+            }
+            default: {
+                return null;
+            }
+        }
+    }
 
-    private drawPoints(pointsList: Array<{ lng: number, lat: number }>): void {
+
+    private createStations(pointsList: Array<{ lng: number, lat: number }>): void {
         const {layerId} = this;
         this.mapService.onLoad
             .then(map => {
@@ -69,55 +100,58 @@ export class GtgbcComponent implements OnInit, OnDestroy {
                 this.map = map;
 
                 const {bounds, max} = this.getBouds(pointsList);
-                if(bounds){
+                if (bounds) {
                     map.fitBounds([[bounds[0].lng, bounds[0].lat], [bounds[1].lng, bounds[1].lat]], {
                         padding: {top: 100, bottom: 100, left: 100, right: 100}
                     });
-                }else {
-                    this.map.panTo([pointsList[0].lng, pointsList[0].lat])
+                } else {
+                    this.map.panTo([pointsList[0].lng, pointsList[0].lat]);
                 }
 
 
                 pointsList.forEach((point: Area) => {
                     this.areaList.push(this.createArea(Object.assign({}, {...point}, {radius: max})));
                 });
-
-                map.addSource(layerId, {
-                    type: 'geojson',
-                    data: sourceData
-                });
-                map.addLayer({
-                    id: layerId,
-                    type: 'circle',
-                    'paint': {
-                        'circle-color': {
-                            'property': 'color',
-                            'stops': [['#ff0000', '#ff0000']],
-                            'type': 'categorical'
-                        },
-                        'circle-radius': 8
-                    },
-                    layout: {},
-                    source: layerId
-                });
-                this.centerPoints = {
-                    points: pointsList,
-                    remove() {
-                        map.removeLayer(layerId);
-                        map.removeSource(layerId);
-                    }
-                };
+                this.drawPoints(pointsList);
             });
-
-        const sourceData = this.getData(pointsList);
     }
 
-    private getBouds(pointsList: Array<{ lng: number, lat: number }>): {max: number, bounds: Array<{ lng: number, lat: number }>}  {
+    private drawPoints(pointsList: Array<{ lng: number, lat: number }>) {
+        const sourceData = this.getData(pointsList);
+        const {map, layerId} = this;
+        map.addSource(layerId, {
+            type: 'geojson',
+            data: sourceData
+        });
+        map.addLayer({
+            id: layerId,
+            type: 'circle',
+            'paint': {
+                'circle-color': {
+                    'property': 'color',
+                    'stops': [['#ff0000', '#ff0000']],
+                    'type': 'categorical'
+                },
+                'circle-radius': 8
+            },
+            layout: {},
+            source: layerId
+        });
+        this.centerPoints = {
+            points: pointsList,
+            remove() {
+                map.removeLayer(layerId);
+                map.removeSource(layerId);
+            }
+        };
+    }
+
+    private getBouds(pointsList: Array<{ lng: number, lat: number }>): { max: number, bounds: Array<{ lng: number, lat: number }> } {
 
 
         const compareList = [];
 
-        if(pointsList && 1<pointsList.length){
+        if (pointsList && 1 < pointsList.length) {
             let n = 1;
             for (let i = 0; i < pointsList.length - 1; i++) {
                 for (let c = n; c < pointsList.length; c++) {
@@ -174,28 +208,28 @@ export class GtgbcComponent implements OnInit, OnDestroy {
                 max: max,
                 bounds: [
                     {
-                        lng:  lngLatMin.lng,
+                        lng: lngLatMin.lng,
                         lat: lngLatMin.lat
-                    },{
-                        lng:lngLatMax.lng,
-                        lat:lngLatMax.lat
+                    }, {
+                        lng: lngLatMax.lng,
+                        lat: lngLatMax.lat
                     }
 
                 ]
-            }
-        }else{
+            };
+        } else {
             return {
                 max: null,
                 bounds: null
-            }
+            };
         }
 
 
     }
 
-    createArea(area: Area): Area {
+    private createArea(area: Area): Area {
         const layerId = this.getLayerId('mobile-cell-');
-        const radius = area.radius || 1;
+        const radius = area.radius || 0.2;
         const map = this.map;
 
         this.map.addSource(layerId,
@@ -270,7 +304,7 @@ export class GtgbcComponent implements OnInit, OnDestroy {
     }
 
 
-    getData(pointsList) {
+    private getData(pointsList) {
         return {
             'type': 'FeatureCollection',
             'features': (() => {
@@ -295,13 +329,6 @@ export class GtgbcComponent implements OnInit, OnDestroy {
         };
     }
 
-    //+RESP:GTLBS,440503,866427030059602,GL520,0,0,100,0,2,,,0000,0255,0001,0715,487d,30,,0255,0001,0715,1402,23,,0255,0001,0715,487b,22,,0255,0001,0715,4fa7,13,,025$
-    get gtgbcViewModel(): string {
-        if (!this.gtgbc) {
-            return null;
-        }
-        return this.transformToView();
-    }
 
     gtgbcOnChange() {
 
@@ -311,6 +338,12 @@ export class GtgbcComponent implements OnInit, OnDestroy {
         this.router.navigate(['/auth', 'map', 'gtgbc', this.gtgbc]);
     }
 
+    private convertToLngLat(str: string): LngLat{
+        const arr = this.gtgbc.split(',');
+        arr.splice(0, 12);
+        return new LngLat(Number(arr[1]), Number(arr[2]))
+
+    }
     private convertToMobileCell(): Array<MobileCell> {
         const mc = {
             mcc: null,
@@ -379,6 +412,7 @@ export class GtgbcComponent implements OnInit, OnDestroy {
         this.areaList && this.areaList.forEach(area => {
             area && area.remove();
         });
+        this.areaList.length = 0;
     }
 
     ngOnDestroy(): void {
