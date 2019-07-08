@@ -153,7 +153,9 @@ export class TrackService implements Resolve<any> {
 
         const updateLine = (points:Array<Point>) => {
             data.geometry.coordinates = points;
-            map.getSource(layerId).setData(data)
+            map.getSource(layerId).setData(data);
+            tr.distance = this.util.distance(tr);
+
         };
 
         let srcPoints; //= this.addSrcPoints(points, xmlDoc, update);

@@ -123,6 +123,7 @@ let TrackService = TrackService_1 = class TrackService {
         const updateLine = (points) => {
             data.geometry.coordinates = points;
             map.getSource(layerId).setData(data);
+            tr.distance = this.util.distance(tr);
         };
         let srcPoints; //= this.addSrcPoints(points, xmlDoc, update);
         let isShowPonts = false;
