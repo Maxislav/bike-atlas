@@ -12,9 +12,14 @@ var server = net.createServer((c) => {
         }
     });
     c.on('data', function (onStreamData)  {
-        console.log(onStreamData.toString())
-        //c.write(`Echo server\r\n ${onStreamData.toString()}`);
-        //c.end()
+        let str = '';
+        try {
+            str = onStreamData.toString()
+        }catch (e) {
+            console.error(e);
+            console.log('can\'t convert to string')
+        }
+        console.log(str);
     });
 });
 
