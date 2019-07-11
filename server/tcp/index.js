@@ -21,6 +21,9 @@ var server = net.createServer((c) => {
         }
         console.log(str);
     });
+    c.on('error', (err)=>{
+        console.error(err)
+    })
 });
 
 
