@@ -1,4 +1,6 @@
 const net = require('net');
+const fs = require('fs');
+const path = require('path');
 const streams = [];
 const PORT = 8090;
 
@@ -53,11 +55,25 @@ Object.defineProperties(String.prototype, {
     }
 });
 
+
+const writeToFile = (str) =>{
+  return new Promise((resolve, reject) => {
+      fs.appendFile(path.resolve(__dirname, 'log-file.txt'), str, function (err) {
+          if (err) {
+             return  reject(err)
+          }
+          resolve()
+      });
+  })
+};
+
 const server = net.createServer((c) => {
     console.log('connect', new Date().toISOString());
     streams.push(c);
+    writeToFile(new Date().toISOString().concat('\r\n','connect','\r\n'));
     c.on('end', () => {
         console.log('client disconnected');
+        writeToFile(new Date().toISOString().concat('\r\n','disconnected','\r\n'));
         const index = streams.indexOf(c);
         if(-1<index){
             streams.splice(index,1);
@@ -66,10 +82,13 @@ const server = net.createServer((c) => {
     c.on('data', function (onStreamData)  {
         let str = '';
         try {
-            str = onStreamData.toString()
+            str = onStreamData.toString();
         }catch (e) {
             console.error(e);
             console.log('can\'t convert to string')
+        }
+        if(str){
+            writeToFile(new Date().toISOString().concat('\r\n',str,'\r\n'))
         }
         console.log(str);
     });

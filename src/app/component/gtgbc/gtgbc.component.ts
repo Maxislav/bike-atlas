@@ -11,7 +11,8 @@ import { LngLat } from '../../util/lngLat';
 
 enum MessageType {
     GTSTR,
-    GTLBS
+    GTLBS,
+    GTGSM
 }
 
 @Component({
@@ -22,14 +23,16 @@ enum MessageType {
 })
 export class GtgbcComponent implements OnInit, OnDestroy {
     public gtgbc: string = null;
+    public messageTypeString: string;
+
     private mcArr;
     private static layerIds: Array<String> = [];
     private layerId: string;
     private map;
     private areaList: Array<Area>;
     private centerPoints;
+    private messageType: MessageType;
 
-    //public gtgbcViewModel: string = null;
 
     constructor(
         private mapService: MapService,
@@ -40,6 +43,7 @@ export class GtgbcComponent implements OnInit, OnDestroy {
         this.areaList = [];
         this.layerId = this.getLayerId('mobile-cell-');
     }
+
 
     onClose() {
         this.router.navigate(['/auth', 'map']);
@@ -52,8 +56,8 @@ export class GtgbcComponent implements OnInit, OnDestroy {
                     return;
                 }
                 this.gtgbc = params['gtgbc'];
-                const type: MessageType = this.getType(this.gtgbc);
-                if (type === MessageType.GTLBS) {
+                const type: MessageType = this.messageType = this.getType(this.gtgbc);
+                if (type === MessageType.GTLBS ||type === MessageType.GTGSM) {
                     const arr: Array<MobileCell> = this.convertToMobileCell();
                     this.clearData();
                     this.gtgbcService.getLatLng(arr)
@@ -80,10 +84,16 @@ export class GtgbcComponent implements OnInit, OnDestroy {
                 return null;
             }
             case !!str.match(/^([\s]+)?\+?RESP:GTSTR,\d+,\d+,.+/): {
+                this.messageTypeString = 'GTSTR';
                 return MessageType.GTSTR;
             }
             case !!str.match(/^([\s]+)?\+?RESP:GTLBS,\d+,\d+,.+/): {
+                this.messageTypeString = 'GTLBS';
                 return MessageType.GTLBS;
+            }
+            case !!str.match(/^([\s]+)?\+?RESP:GTGSM,\d+,\d+,.+/): {
+                this.messageTypeString = 'GTGSM';
+                return MessageType.GTGSM;
             }
             default: {
                 return null;
@@ -352,7 +362,13 @@ export class GtgbcComponent implements OnInit, OnDestroy {
             cellId: null
         };
         const arr = this.gtgbc.split(',');
-        arr.splice(0, 12);
+        if(this.messageType === MessageType.GTLBS){
+            arr.splice(0, 12);
+        }
+        if(this.messageType === MessageType.GTGSM){
+            arr.splice(0, 4);
+        }
+
         const res = [];
 
         while (arr.length) {

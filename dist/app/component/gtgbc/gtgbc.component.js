@@ -21,9 +21,9 @@ var MessageType;
 (function (MessageType) {
     MessageType[MessageType["GTSTR"] = 0] = "GTSTR";
     MessageType[MessageType["GTLBS"] = 1] = "GTLBS";
+    MessageType[MessageType["GTGSM"] = 2] = "GTGSM";
 })(MessageType || (MessageType = {}));
 let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
-    //public gtgbcViewModel: string = null;
     constructor(mapService, router, route, gtgbcService) {
         this.mapService = mapService;
         this.router = router;
@@ -43,8 +43,8 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
                 return;
             }
             this.gtgbc = params['gtgbc'];
-            const type = this.getType(this.gtgbc);
-            if (type === MessageType.GTLBS) {
+            const type = this.messageType = this.getType(this.gtgbc);
+            if (type === MessageType.GTLBS || type === MessageType.GTGSM) {
                 const arr = this.convertToMobileCell();
                 this.clearData();
                 this.gtgbcService.getLatLng(arr)
@@ -71,10 +71,16 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
                 return null;
             }
             case !!str.match(/^([\s]+)?\+?RESP:GTSTR,\d+,\d+,.+/): {
+                this.messageTypeString = 'GTSTR';
                 return MessageType.GTSTR;
             }
             case !!str.match(/^([\s]+)?\+?RESP:GTLBS,\d+,\d+,.+/): {
+                this.messageTypeString = 'GTLBS';
                 return MessageType.GTLBS;
+            }
+            case !!str.match(/^([\s]+)?\+?RESP:GTGSM,\d+,\d+,.+/): {
+                this.messageTypeString = 'GTGSM';
+                return MessageType.GTGSM;
             }
             default: {
                 return null;
@@ -308,7 +314,12 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
             cellId: null
         };
         const arr = this.gtgbc.split(',');
-        arr.splice(0, 12);
+        if (this.messageType === MessageType.GTLBS) {
+            arr.splice(0, 12);
+        }
+        if (this.messageType === MessageType.GTGSM) {
+            arr.splice(0, 4);
+        }
         const res = [];
         while (arr.length) {
             res.push(arr.splice(0, 6));
