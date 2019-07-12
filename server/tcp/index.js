@@ -31,7 +31,7 @@ const colors = {
     BgCyan: "\x1b[46m",
     BgWhite: "\x1b[47m"
 };
-
+/*
 Object.defineProperties(String.prototype, {
     yellow: {
         get: function () {
@@ -53,7 +53,7 @@ Object.defineProperties(String.prototype, {
             return colors.FgRed.concat(this).concat(colors.Reset)
         }
     }
-});
+});*/
 
 
 const writeToFile = (str) => {
@@ -68,37 +68,71 @@ const writeToFile = (str) => {
     })
 };
 
-const server = net.createServer((c) => {
-    console.log('connect', new Date().toISOString());
-    streams.push(c);
-    writeToFile(new Date().toISOString().concat('\r\n', 'connect', '\r\n'));
-    c.on('end', () => {
-        console.log('client disconnected');
-        writeToFile(new Date().toISOString().concat('\r\n', 'disconnected', '\r\n'));
-        const index = streams.indexOf(c);
-        if (-1 < index) {
-            streams.splice(index, 1);
-        }
-    });
-    c.on('data', function (onStreamData) {
-        let str = '';
-        try {
-            str = onStreamData.toString();
-        } catch (e) {
-            console.error(e);
-            console.log('can\'t convert to string')
-        }
-        if (str) {
-            writeToFile(new Date().toISOString().concat('\r\n', str, '\r\n'))
-        }
-        console.log(str);
-    });
-    c.on('error', (err) => {
-        console.error(err)
-    })
-});
+
+class TcpSever {
+    constructor(_ioServer, util) {
+        this._ioServer = _ioServer;
+        this.util = util;
+        this._server = null;
+        this.socketsConnected = [];
+    }
+
+    setSocketsConnected(s){
+        this.socketsConnected = s;
+        return this;
+    }
+    create() {
+
+        this._server = net.createServer((c) => {
+            console.log('connect', new Date().toISOString());
+            streams.push(c);
+            writeToFile(new Date().toISOString().concat('\r\n', 'connect', '\r\n'));
+            c.on('end', () => {
+                console.log('client disconnected');
+                writeToFile(new Date().toISOString().concat('\r\n', 'disconnected', '\r\n'));
+                const index = streams.indexOf(c);
+                if (-1 < index) {
+                    streams.splice(index, 1);
+                }
+            });
+            c.on('data', function (onStreamData) {
+                let str = '';
+                try {
+                    str = onStreamData.toString();
+                } catch (e) {
+                    console.error(e);
+                    console.log('can\'t convert to string')
+                }
+                if (str) {
+                    writeToFile(new Date().toISOString().concat('\r\n', str, '\r\n'))
+                }
+                console.log(str);
+            });
+            c.on('error', (err) => {
+                console.error(err)
+            })
+        });
+
+        this._server.listen(PORT, () => {
+            console.log('Tcp server is started'.yellow, `on port:`, `${PORT}`.green)
+        });
+        return this;
+    }
+
+    close() {
+        return new Promise((resolve) => {
+            if (this._server) {
+                this._server.close(() => {
+                    this._server = null;
+                    resolve()
+                })
+            }
+        })
+
+    }
+};
 
 
-server.listen(PORT, () => {
-    console.log('server is started'.yellow, `on port:`, `${PORT}`.green)
-});
+module.exports = {
+    TcpSever
+};

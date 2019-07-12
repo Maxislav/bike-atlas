@@ -17,6 +17,9 @@ const Chat = require('./chat');
 const TrackFromTo = require('./socket-data/track-from-to');
 const OnChat = require('./socket-data/on-chat');
 const Logger = require('./logger');
+
+const {TcpSever} = require('./tcp');
+
 const Util = require('./socket-data/util');
 const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
@@ -36,11 +39,13 @@ class SocketData {
         const util = new Util(connection);
         const ioServer = io(server);
         const logger = new Logger(app, ioServer, util);
+        this.tcpSever = new TcpSever(ioServer, util).create();
         const chat = new Chat(util);
 
         ioServer.on('connection', (socket) => {
             logger.sockets = ioServer.sockets.connected;
             chat.sockets = ioServer.sockets.connected;
+            this.tcpSever.socketsConnected(ioServer.sockets.connected);
             const onEnter = new OnEnter(socket, util, logger, chat);
             const onAuth = new OnAuth(socket, util, chat, logger);
             const device = new Device(socket, util, logger);
@@ -75,6 +80,10 @@ class SocketData {
         });
 
         this.updateConnect = (connection) => {
+            this.tcpSever.close()
+                .then(() => {
+                    this.tcpSever.create();
+                });
             this.connection = connection;
             util.updateConnect(connection)
         }
