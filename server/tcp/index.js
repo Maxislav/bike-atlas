@@ -51,10 +51,10 @@ Object.defineProperties(String.prototype, {
             return colors.FgRed.concat(this).concat(colors.Reset)
         }
     }
-})
+});
 
-var server = net.createServer((c) => {
-    console.log('connect');
+const server = net.createServer((c) => {
+    console.log('connect', new Date().toISOString());
     streams.push(c);
     c.on('end', () => {
         console.log('client disconnected');
