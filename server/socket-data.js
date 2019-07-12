@@ -45,7 +45,7 @@ class SocketData {
         ioServer.on('connection', (socket) => {
             logger.sockets = ioServer.sockets.connected;
             chat.sockets = ioServer.sockets.connected;
-            this.tcpSever.socketsConnected(ioServer.sockets.connected);
+            this.tcpSever.setSocketsConnected(ioServer.sockets.connected);
             const onEnter = new OnEnter(socket, util, logger, chat);
             const onAuth = new OnAuth(socket, util, chat, logger);
             const device = new Device(socket, util, logger);
