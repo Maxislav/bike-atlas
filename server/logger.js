@@ -49,6 +49,7 @@ class Logger {
             try {
                 data = this.parseGprmc(req.query.gprmc, req.query.id);
                 data.device_key = data.id = req.query.id;
+                data.type = 'POINT';
             } catch (err) {
                 console.error('Error parse', err)
             }
@@ -59,9 +60,9 @@ class Logger {
         }
         if (data) {
             util.insertLog(data)
-                .catch(err => [
+                .catch(err => {
                     console.error('insertLog error ->', err)
-                ])
+                })
         }
 
         console.log('onLog ->', data);

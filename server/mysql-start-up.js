@@ -113,7 +113,7 @@ function createTable() {
             '`azimuth` FLOAT(6,2) NULL DEFAULT NULL, ' +
             '`date` DATETIME NOT NULL, ' +
             '`type` VARCHAR(15) NULL DEFAULT NULL, ' +
-            '`src` VARCHAR(128) NULL DEFAULT NULL,' +
+            '`src` VARCHAR(256) NULL DEFAULT NULL,' +
             'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
         connection.query(query, (err) => {
             if (err) {

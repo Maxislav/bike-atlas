@@ -1,61 +1,10 @@
+const { Gl520Parser } = require ("./gl-520-parser");
+
 const net = require('net');
 const fs = require('fs');
 const path = require('path');
 const streams = [];
 const PORT = 8090;
-
-const colors = {
-    Reset: "\x1b[0m",
-    Bright: "\x1b[1m",
-    Dim: "\x1b[2m",
-    Underscore: "\x1b[4m",
-    Blink: "\x1b[5m",
-    Reverse: "\x1b[7m",
-    Hidden: "\x1b[8m",
-
-    FgBlack: "\x1b[30m",
-    FgRed: "\x1b[31m",
-    FgGreen: "\x1b[32m",
-    FgYellow: "\x1b[33m",
-    FgBlue: "\x1b[34m",
-    FgMagenta: "\x1b[35m",
-    FgCyan: "\x1b[36m",
-    FgWhite: "\x1b[37m",
-
-    BgBlack: "\x1b[40m",
-    BgRed: "\x1b[41m",
-    BgGreen: "\x1b[42m",
-    BgYellow: "\x1b[43m",
-    BgBlue: "\x1b[44m",
-    BgMagenta: "\x1b[45m",
-    BgCyan: "\x1b[46m",
-    BgWhite: "\x1b[47m"
-};
-/*
-Object.defineProperties(String.prototype, {
-    yellow: {
-        get: function () {
-            return colors.FgYellow.concat(this).concat(colors.Reset)
-        }
-    },
-    green: {
-        get: function () {
-            return colors.FgGreen.concat(this).concat(colors.Reset)
-        }
-    },
-    blue: {
-        get: function () {
-            return colors.FgBlue.concat(this).concat(colors.Reset)
-        }
-    },
-    red: {
-        get: function () {
-            return colors.FgRed.concat(this).concat(colors.Reset)
-        }
-    }
-});*/
-
-
 const writeToFile = (str) => {
     return new Promise((resolve, reject) => {
         fs.appendFile(path.resolve(__dirname, 'log-file.txt'), str, function (err) {
@@ -69,18 +18,28 @@ const writeToFile = (str) => {
 };
 
 
-class TcpSever {
+
+
+class Gl520 {
     constructor(_ioServer, util) {
         this._ioServer = _ioServer;
-        this.util = util;
+        this._util = util;
         this._server = null;
         this.socketsConnected = [];
+        this.devices = {};
     }
 
-    setSocketsConnected(s){
+    setSocketsConnected(s) {
         this.socketsConnected = s;
         return this;
     }
+
+
+    updateDevice(device_key, socket_id) {
+        this.devices[device_key] = this.devices[device_key] || [];
+        this.devices[device_key].push(socket_id);
+    }
+
     create() {
 
         this._server = net.createServer((c) => {
@@ -95,8 +54,9 @@ class TcpSever {
                     streams.splice(index, 1);
                 }
             });
-            c.on('data', function (onStreamData) {
+            c.on('data',  (onStreamData) => {
                 let str = '';
+                const gl520Parser = new Gl520Parser();
                 try {
                     str = onStreamData.toString();
                 } catch (e) {
@@ -104,7 +64,13 @@ class TcpSever {
                     console.log('can\'t convert to string')
                 }
                 if (str) {
-                    writeToFile(new Date().toISOString().concat('\r\n', str, '\r\n'))
+                    //writeToFile(new Date().toISOString().concat('\r\n', str, '\r\n'));
+                    const respData = gl520Parser.setSrcData(str).getData();
+                    this._util.insertLog(respData)
+                        .catch(err => {
+                            console.error('Err GL520 insertLog error ->', err)
+                        })
+
                 }
                 console.log(str);
             });
@@ -114,7 +80,7 @@ class TcpSever {
         });
 
         this._server.listen(PORT, () => {
-            console.log('Tcp server is started'.yellow, `on port:`, `${PORT}`.green)
+            console.log('GL520 server is started'.yellow, `on port:`, `${PORT}`.green)
         });
         return this;
     }
@@ -130,9 +96,13 @@ class TcpSever {
         })
 
     }
-};
+
+
+
+
+}
 
 
 module.exports = {
-    TcpSever
+    Gl520
 };

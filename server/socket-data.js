@@ -18,7 +18,7 @@ const TrackFromTo = require('./socket-data/track-from-to');
 const OnChat = require('./socket-data/on-chat');
 const Logger = require('./logger');
 
-const {TcpSever} = require('./tcp');
+const {Gl520} = require('./tcp/gl-520');
 
 const Util = require('./socket-data/util');
 const OnStrava = require('./socket-data/on-strava');
@@ -39,13 +39,13 @@ class SocketData {
         const util = new Util(connection);
         const ioServer = io(server);
         const logger = new Logger(app, ioServer, util);
-        this.tcpSever = new TcpSever(ioServer, util).create();
+        this.gl520 = new Gl520(ioServer, util).create();
         const chat = new Chat(util);
 
         ioServer.on('connection', (socket) => {
             logger.sockets = ioServer.sockets.connected;
             chat.sockets = ioServer.sockets.connected;
-            this.tcpSever.setSocketsConnected(ioServer.sockets.connected);
+            this.gl520.setSocketsConnected(ioServer.sockets.connected);
             const onEnter = new OnEnter(socket, util, logger, chat);
             const onAuth = new OnAuth(socket, util, chat, logger);
             const device = new Device(socket, util, logger);
