@@ -44,7 +44,7 @@ class Gl520Parser {
 
     /**
      *
-     * @param d
+     * @param {string} srcStr
      * @returns {Gl520Parser}
      */
     setSrcData(srcStr) {
