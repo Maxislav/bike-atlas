@@ -56,7 +56,11 @@ class Gl520Parser{
             date: null
         };
         respData.src = this.srcMsg;
-        return Object.assign(respData, this._parseData());
+        const parseData = this._parseData();
+        if(parseData){
+            return Object.assign(respData, this._parseData());
+        }
+        return null;
     }
 
     /**
@@ -66,7 +70,7 @@ class Gl520Parser{
      */
     _parseData() {
         const messageType = this._getType();
-        if(messageType === null){
+        if(messageType < 0){
             return null;
         }
         switch (messageType){
@@ -76,31 +80,40 @@ class Gl520Parser{
                 break;
             }
             case MessageType.GTSTR: {
-                this.type = 'POINT'
+                this.type = 'POINT';
+                break;
             }
         }
-        const arr = this.srcMsg.split(',');
-        /**
-         * @type {string}
-         */
-        const srcDate = arr[15];
+        if(messageType === MessageType.GTSTR){
+            const arr = this.srcMsg.split(',');
 
-        return {
-            device_key: arr[2],
-            id: arr[2],
-            speed: arr[10],
-            azimuth: arr[11],
-            alt: arr[12],
-            lng: arr[13],
-            lat: arr[14],
-            type: this.type,
-            date: new Date(Number(srcDate.slice(0,4)),
-                Number(srcDate.slice(4,6))-1,
-                Number(srcDate.slice(6,8)),
-                Number(srcDate.slice(8,10)),
-                Number(srcDate.slice(10,12)),
-                Number(srcDate.slice(12,14)))
+
+
+            /**
+             * @type {string}
+             */
+            const srcDate = arr[15];
+
+            return {
+                device_key: arr[2],
+                id: arr[2],
+                speed: arr[10],
+                azimuth: arr[11],
+                alt: arr[12],
+                lng: arr[13],
+                lat: arr[14],
+                type: this.type,
+                date: new Date(Number(srcDate.slice(0,4)),
+                    Number(srcDate.slice(4,6))-1,
+                    Number(srcDate.slice(6,8)),
+                    Number(srcDate.slice(8,10)),
+                    Number(srcDate.slice(10,12)),
+                    Number(srcDate.slice(12,14)))
+            }
+        }else {
+            return null
         }
+
     }
 
     _getType() {
@@ -125,7 +138,7 @@ class Gl520Parser{
                 return MessageType.GTGSM;
             }
             default: {
-                return null;
+                return -1;
             }
         }
     }
