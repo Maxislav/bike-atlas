@@ -278,11 +278,26 @@ class Util {
             })
     }
 
+    /**
+     *
+     * @param {{lng: number, id: string, lat: number}}data
+     * @returns {Promise}
+     *
+     *  date,
+         alt: 0,
+         lng,
+         lat,
+         azimuth: azimuth || 0,
+         speed,
+         src: gprmc
+
+     *
+     */
     insertLog(data) {
         return new Promise((resolve, reject) => {
-            this.connection.query('INSERT INTO `logger` (`id`, `device_key`, `lng`, `lat`, `alt`, `speed`, `azimuth`, `date`, `src`) VALUES (' +
-                'NULL, ?, ?, ?, ?, ?, ?, ?, ?)',
-                [data.id, data.lng, data.lat, data.alt, data.speed, data.azimuth, data.date, data.src], (err, result) => {
+            this.connection.query('INSERT INTO `logger` (`id`, `device_key`, `lng`, `lat`, `alt`, `speed`, `azimuth`, `date`, `type`, `src`) VALUES (' +
+                'NULL, ?, ?, ?, ?, ?, ?, ?, ?,?)',
+                [data.id, data.lng, data.lat, data.alt, data.speed, data.azimuth, data.date,  data.type,  data.src], (err, result) => {
 
                     if (err) {
                         reject(err);
