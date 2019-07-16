@@ -86,6 +86,7 @@ class Gl520Parser{
         const srcDate = arr[15];
 
         return {
+            device_key: arr[2],
             id: arr[2],
             speed: arr[10],
             azimuth: arr[11],

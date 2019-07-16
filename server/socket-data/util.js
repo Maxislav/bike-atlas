@@ -311,7 +311,7 @@ class Util {
 
     getLastPosition(device_key) {
         return new Promise((resolve, reject) => {
-            this.connection.query('SELECT * FROM `logger` WHERE `device_key`=? ORDER BY `date` DESC LIMIT 1 ', [device_key], (err, rows) => {
+            this.connection.query('SELECT * FROM `logger` WHERE `device_key`=? AND `type`=\'POINT\' ORDER BY `date` DESC LIMIT 1 ', [device_key], (err, rows) => {
                 if (err) {
                     reject(err);
                     return;

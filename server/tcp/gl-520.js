@@ -64,12 +64,22 @@ class Gl520 {
                     console.log('can\'t convert to string')
                 }
                 if (str) {
-                    //writeToFile(new Date().toISOString().concat('\r\n', str, '\r\n'));
+                    writeToFile(new Date().toISOString().concat('\r\n', str, '\r\n'));
                     const respData = gl520Parser.setSrcData(str).getData();
                     this._util.insertLog(respData)
                         .catch(err => {
                             console.error('Err GL520 insertLog error ->', err)
+                        });
+
+                    const device_id = respData.id;
+                    if (this.devices && this.devices[device_id]) {
+                        this.devices[device_id].forEach(socket_id => {
+                            if (respData) {
+                                //emitedSockets.push(socket_id);
+                                this.socketsConnected[socket_id] && this.socketsConnected[socket_id].emit('log', respData);
+                            }
                         })
+                    }
 
                 }
                 console.log(str);

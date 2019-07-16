@@ -7,7 +7,7 @@ config.mysql['database'] = 'monitoring';
 //let connection = mysql.createConnection(config.mysql);
 
 const OnEnter = require('./socket-data/on-enter');
-const OnAuth = require('./socket-data/on-auth');
+const {OnAuth} = require('./socket-data/on-auth');
 const Device = require('./socket-data/device');
 const OnRegist = require('./socket-data/on-regist');
 const OnProfile = require('./socket-data/on-profile');
@@ -47,7 +47,7 @@ class SocketData {
             chat.sockets = ioServer.sockets.connected;
             this.gl520.setSocketsConnected(ioServer.sockets.connected);
             const onEnter = new OnEnter(socket, util, logger, chat);
-            const onAuth = new OnAuth(socket, util, chat, logger);
+            const onAuth = new OnAuth(socket, util, chat, logger, this.gl520);
             const device = new Device(socket, util, logger);
             const onRegist = new OnRegist(socket, util, logger);
             const onProfile = new OnProfile(socket, util, logger);

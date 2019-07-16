@@ -2,10 +2,11 @@ const util = require('./util');
 const ProtoData = require('./proto-data');
 
 class OnAuth extends ProtoData {
-    constructor(socket, util, chat, logger) {
+    constructor(socket, util, chat, logger, gl520) {
         super(socket, util);
         this.chat = chat;
         this.logger = logger;
+        this.gl520 = gl520;
         this.socket.on('onAuth', this.onAuth.bind(this, 'onAuth'));
     }
 
@@ -82,7 +83,8 @@ class OnAuth extends ProtoData {
                             util.getLastPosition(key)
                                 .then(row => {
                                     //console.log('device key->', key)
-                                    this.logger.updateDevice(key, this.socket.id)
+                                    this.logger.updateDevice(key, this.socket.id);
+                                    this.gl520.updateDevice(key, this.socket.id);
                                     this.socket.emit('log', row);
                                     return row;
                                 }))
@@ -119,4 +121,6 @@ class OnAuth extends ProtoData {
 
 }
 
-module.exports = OnAuth;
+module.exports = {
+    OnAuth
+};
