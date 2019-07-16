@@ -1,4 +1,4 @@
-const { Gl520Parser } = require ("./gl-520-parser");
+const {Gl520Parser} = require("./gl-520-parser");
 
 const net = require('net');
 const fs = require('fs');
@@ -16,8 +16,6 @@ const writeToFile = (str) => {
         });
     })
 };
-
-
 
 
 class Gl520 {
@@ -54,7 +52,7 @@ class Gl520 {
                     streams.splice(index, 1);
                 }
             });
-            c.on('data',  (onStreamData) => {
+            c.on('data', (onStreamData) => {
                 let str = '';
                 const gl520Parser = new Gl520Parser();
                 try {
@@ -65,23 +63,32 @@ class Gl520 {
                 }
                 if (str) {
                     writeToFile(new Date().toISOString().concat('\r\n', str, '\r\n'));
-                    const respData = gl520Parser.setSrcData(str).getData();
-                    if(respData){
-                        this._util.insertLog(respData)
-                            .catch(err => {
-                                console.error('Err GL520 insertLog error ->', err)
-                            });
+                    gl520Parser.setSrcData(str)
+                        .getData()
+                        .then((respData) => {
+                            if (respData) {
+                                this._util.insertLog(respData)
+                                    .catch(err => {
+                                        console.error('Err GL520 insertLog error ->', err)
+                                    });
 
-                        const device_id = respData.id;
-                        if (this.devices && this.devices[device_id]) {
-                            this.devices[device_id].forEach(socket_id => {
-                                if (respData) {
-                                    //emitedSockets.push(socket_id);
-                                    this.socketsConnected[socket_id] && this.socketsConnected[socket_id].emit('log', respData);
+                                const device_id = respData.id;
+                                if (this.devices && this.devices[device_id]) {
+                                    this.devices[device_id].forEach(socket_id => {
+                                        if (respData) {
+                                            //emitedSockets.push(socket_id);
+                                            this.socketsConnected[socket_id] && this.socketsConnected[socket_id].emit('log', respData);
+                                        }
+                                    })
                                 }
-                            })
-                        }
-                    }
+                            } else {
+                                console.warn('no condition gl520 -> ');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('err parse gl520 -> ', err);
+                        })
+
                 }
                 console.log(str);
             });
@@ -107,8 +114,6 @@ class Gl520 {
         })
 
     }
-
-
 
 
 }

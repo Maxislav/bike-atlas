@@ -1,14 +1,22 @@
-
+const {Deferred} = require ('../deferred.js');
 
 const MessageType = {
     GTSTR: 0,
     GTLBS: 1,
-    GTGSM: 2
+    GTGSM: 2,
+    toString(n){
+        const r =  {
+            0: 'GTSTR',
+            1: 'GTLBS',
+            2: 'GTGSM'
+        };
+        return r[n]
+    }
 };
 
 
-class Gl520Parser{
-    constructor(){
+class Gl520Parser {
+    constructor() {
         /**
          * @private
          * @type {String}
@@ -21,12 +29,17 @@ class Gl520Parser{
         this.type = null;
 
         /**
-         * @private
-         * @type {String}
+         * @type {number}
          */
-        this.messageTypeString = null;
+        this.messageType = -1;
 
-        this._data = null
+        this._data = null;
+
+        /**
+         * @type {Deferred|*}
+         */
+        this._deferred = new Deferred();
+
     }
 
     /**
@@ -34,33 +47,18 @@ class Gl520Parser{
      * @param d
      * @returns {Gl520Parser}
      */
-    setSrcData(d){
-        this.srcMsg = d;
-        this._data = this._parse();
+    setSrcData(srcStr) {
+        this.srcMsg = srcStr;
+        this._setType(srcStr);
+        this._parseData();
         return this;
     }
 
-    getData(){
-        return this._data;
-    }
-
-
-    _parse(){
-        const respData = {
-            alt: null,
-            lng: null,
-            lat: null,
-            azimuth: null,
-            speed: null,
-            src: null,
-            date: null
-        };
-        respData.src = this.srcMsg;
-        const parseData = this._parseData();
-        if(parseData){
-            return Object.assign(respData, this._parseData());
-        }
-        return null;
+    /**
+     * @returns {Promise|Promise<any>}
+     */
+    getData() {
+        return this._deferred.promise;
     }
 
     /**
@@ -69,11 +67,76 @@ class Gl520Parser{
      * @private
      */
     _parseData() {
-        const messageType = this._getType();
-        if(messageType < 0){
-            return null;
+
+        const respData = {
+            alt: null,
+            lng: null,
+            lat: null,
+            azimuth: null,
+            speed: null,
+            date: null,
+            src: this.srcMsg
+        };
+
+        if (this.messageType === MessageType.GTSTR) {
+            const arr = this.srcMsg.split(',');
+            /**
+             * @type {string}
+             */
+            const srcDate = arr[15];
+            this._data = Object.assign(respData, {
+                device_key: arr[2],
+                id: arr[2],
+                speed: arr[10],
+                azimuth: arr[11],
+                alt: arr[12],
+                lng: arr[13],
+                lat: arr[14],
+                type: this.type,
+                date: new Date(Number(srcDate.slice(0, 4)),
+                    Number(srcDate.slice(4, 6)) - 1,
+                    Number(srcDate.slice(6, 8)),
+                    Number(srcDate.slice(8, 10)),
+                    Number(srcDate.slice(10, 12)),
+                    Number(srcDate.slice(12, 14)))
+            });
+
+            this._deferred.resolve(this._data)
+        } else {
+            this._deferred.resolve(null)
         }
-        switch (messageType){
+
+    }
+
+    _setType(str) {
+        switch (true) {
+            case !str: {
+                this.messageType = -1;
+                break;
+            }
+            case typeof str !== 'string': {
+                this.messageType = -1;
+                break;
+            }
+            case !!str.match(/^([\s]+)?\+?RESP:GTSTR,\d+,\d+,.+/): {
+                this.messageType = MessageType.GTSTR;
+                break;
+            }
+            case !!str.match(/^([\s]+)?\+?RESP:GTLBS,\d+,\d+,.+/): {
+                this.messageType = MessageType.GTLBS;
+                break;
+            }
+            case !!str.match(/^([\s]+)?\+?RESP:GTGSM,\d+,\d+,.+/): {
+                this.messageType = MessageType.GTGSM;
+                break;
+            }
+            default: {
+                this.messageType = -1;
+                break
+            }
+        }
+
+        switch (this.messageType) {
             case MessageType.GTGSM:
             case MessageType.GTLBS: {
                 this.type = 'BS';
@@ -84,67 +147,12 @@ class Gl520Parser{
                 break;
             }
         }
-        if(messageType === MessageType.GTSTR){
-            const arr = this.srcMsg.split(',');
-
-
-
-            /**
-             * @type {string}
-             */
-            const srcDate = arr[15];
-
-            return {
-                device_key: arr[2],
-                id: arr[2],
-                speed: arr[10],
-                azimuth: arr[11],
-                alt: arr[12],
-                lng: arr[13],
-                lat: arr[14],
-                type: this.type,
-                date: new Date(Number(srcDate.slice(0,4)),
-                    Number(srcDate.slice(4,6))-1,
-                    Number(srcDate.slice(6,8)),
-                    Number(srcDate.slice(8,10)),
-                    Number(srcDate.slice(10,12)),
-                    Number(srcDate.slice(12,14)))
-            }
-        }else {
-            return null
-        }
-
     }
 
-    _getType() {
-        const str = this.srcMsg;
-        switch (true) {
-            case !str: {
-                return null;
-            }
-            case typeof str !== 'string': {
-                return null;
-            }
-            case !!str.match(/^([\s]+)?\+?RESP:GTSTR,\d+,\d+,.+/): {
-                this.messageTypeString = 'GTSTR';
-                return MessageType.GTSTR;
-            }
-            case !!str.match(/^([\s]+)?\+?RESP:GTLBS,\d+,\d+,.+/): {
-                this.messageTypeString = 'GTLBS';
-                return MessageType.GTLBS;
-            }
-            case !!str.match(/^([\s]+)?\+?RESP:GTGSM,\d+,\d+,.+/): {
-                this.messageTypeString = 'GTGSM';
-                return MessageType.GTGSM;
-            }
-            default: {
-                return -1;
-            }
-        }
-    }
+
 }
 
-module.exports ={
+module.exports = {
     Gl520Parser
 };
 
