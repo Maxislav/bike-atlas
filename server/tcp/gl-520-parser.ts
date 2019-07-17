@@ -1,7 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const deferred_1 = require("./deferred");
-const base_station_location_1 = require("./base-station-location");
+import { Deferred } from './deferred';
+import { Point, MobileCell, BaseStationPoint, MobileCellWithDevice } from './types';
+import { BaseStationLocation } from './base-station-location';
+
+
+
 const MessageType = {
     GTSTR: 0,
     GTLBS: 1,
@@ -15,15 +17,21 @@ const MessageType = {
         return r[n];
     }
 };
-class Gl520Parser {
+
+
+export class Gl520Parser {
+
+    private srcMsg: string = null;
+    private type: 'POINT' | 'BS' = null;
+    private messageType: number = -1;
+    private _pointList: Array<Point> = null;
+    private _deferred: Deferred<Array<Point>> = new Deferred();
+    private baseStationLocation: BaseStationLocation;
+
     constructor() {
-        this.srcMsg = null;
-        this.type = null;
-        this.messageType = -1;
-        this._pointList = null;
-        this._deferred = new deferred_1.Deferred();
-        this.baseStationLocation = new base_station_location_1.BaseStationLocation();
+        this.baseStationLocation = new BaseStationLocation();
     }
+
     /**
      *
      * @param {string} srcStr
@@ -35,18 +43,21 @@ class Gl520Parser {
         this._parseData();
         return this;
     }
+
     /**
      * @returns {Promise|Promise<any>}
      */
     getData() {
         return this._deferred.promise;
     }
+
     /**
      *
      * @returns {*}
      * @private
      */
-    _parseData() {
+    private _parseData() {
+
         const respData = {
             alt: null,
             lng: null,
@@ -56,10 +67,11 @@ class Gl520Parser {
             date: null,
             src: this.srcMsg
         };
+
         if (this.messageType === MessageType.GTSTR) {
             const arr = this.srcMsg.split(',');
             const srcDate = arr[15];
-            const point = Object.assign(respData, {
+            const point: Point = Object.assign(respData, {
                 device_key: arr[2],
                 id: arr[2],
                 speed: arr[10],
@@ -68,18 +80,24 @@ class Gl520Parser {
                 lng: arr[13],
                 lat: arr[14],
                 type: this.type,
-                date: new Date(Number(srcDate.slice(0, 4)), Number(srcDate.slice(4, 6)) - 1, Number(srcDate.slice(6, 8)), Number(srcDate.slice(8, 10)), Number(srcDate.slice(10, 12)), Number(srcDate.slice(12, 14)))
+                date: new Date(Number(srcDate.slice(0, 4)),
+                    Number(srcDate.slice(4, 6)) - 1,
+                    Number(srcDate.slice(6, 8)),
+                    Number(srcDate.slice(8, 10)),
+                    Number(srcDate.slice(10, 12)),
+                    Number(srcDate.slice(12, 14)))
             });
             this._pointList = [point];
+
             this._deferred.resolve(this._pointList);
         }
         if (this.messageType === MessageType.GTGSM) {
-            const arr = this.convertToMobileCell();
+            const arr: Array<MobileCellWithDevice> = this.convertToMobileCell();
             Promise.all(arr.map(mobileCell => {
                 return this.baseStationLocation.getLatLng(mobileCell);
-            })).then((list) => {
-                this._pointList = list.map((baseStationPoint, index) => {
-                    return Object.assign({}, respData, {
+            })).then((list: Array<BaseStationPoint>) => {
+                this._pointList = list.map((baseStationPoint:BaseStationPoint, index: number) => {
+                    return  Object.assign({}, respData, {
                         device_key: arr[index].deviceId,
                         id: arr[index].deviceId,
                         date: arr[index].date,
@@ -89,19 +107,25 @@ class Gl520Parser {
                         azimuth: 0,
                         speed: 0,
                         alt: 0,
-                    });
+                    })
                 });
                 this._deferred.resolve(this._pointList);
             })
                 .catch(err => {
-                console.error('error get cell');
-            });
+                    console.error('error get cell');
+                });
+
+
         }
+
+
         else {
             this._deferred.resolve(null);
         }
+
     }
-    convertToMobileCell() {
+
+    private convertToMobileCell(): Array<MobileCellWithDevice> {
         const mc = {
             mcc: null,
             mnc: null,
@@ -110,21 +134,25 @@ class Gl520Parser {
         };
         const arr = this.srcMsg.split(',');
         let deviceId = null;
-        let date = null;
+        let date: Date = null;
         if (this.messageType === MessageType.GTLBS) {
-            date = this.strToDate(arr[arr.length - 2]);
+            date = this.strToDate(arr[arr.length-2]);
             const prefix = arr.splice(0, 12);
             deviceId = prefix[10];
         }
         if (this.messageType === MessageType.GTGSM) {
-            date = this.strToDate(arr[arr.length - 2]);
+            date = this.strToDate(arr[arr.length-2]);
             const prefix = arr.splice(0, 4);
             deviceId = prefix[2];
         }
+
         const res = [];
+
         while (arr.length) {
             res.push(arr.splice(0, 6));
         }
+
+
         return res.filter(item => 6 <= item.length).map(item => {
             return {
                 mcc: parseInt(item[0], 10),
@@ -136,10 +164,18 @@ class Gl520Parser {
             };
         });
     }
-    strToDate(str) {
-        return new Date(Number(str.slice(0, 4)), Number(str.slice(4, 6)) - 1, Number(str.slice(6, 8)), Number(str.slice(8, 10)), Number(str.slice(10, 12)), Number(str.slice(12, 14)));
+
+    private strToDate(str: string): Date {
+        return new Date(Number(str.slice(0, 4)),
+            Number(str.slice(4, 6)) - 1,
+            Number(str.slice(6, 8)),
+            Number(str.slice(8, 10)),
+            Number(str.slice(10, 12)),
+            Number(str.slice(12, 14)));
+
     }
-    _setType(str) {
+
+    private _setType(str) {
         switch (true) {
             case !str: {
                 this.messageType = -1;
@@ -166,6 +202,7 @@ class Gl520Parser {
                 break;
             }
         }
+
         switch (this.messageType) {
             case MessageType.GTGSM:
             case MessageType.GTLBS: {
@@ -179,5 +216,6 @@ class Gl520Parser {
         }
     }
 }
-exports.Gl520Parser = Gl520Parser;
-//# sourceMappingURL=gl-520-parser.js.map
+
+
+

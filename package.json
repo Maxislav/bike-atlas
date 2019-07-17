@@ -62,7 +62,7 @@
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
-    "@types/node": "^7.0.61",
+    "@types/node": "^7.10.6",
     "async": "^2.0.1",
     "chai": "^3.5.0",
     "concurrently": "^2.0.0",
