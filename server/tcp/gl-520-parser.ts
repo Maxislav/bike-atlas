@@ -24,8 +24,8 @@ export class Gl520Parser {
     private srcMsg: string = null;
     private type: 'POINT' | 'BS' = null;
     private messageType: number = -1;
-    private _pointList: Array<Point> = null;
-    private _deferred: Deferred<Array<Point>> = new Deferred();
+    private pointList: Array<Point> = null;
+    private deferred: Deferred<Array<Point>> = new Deferred();
     private baseStationLocation: BaseStationLocation;
 
     constructor() {
@@ -39,8 +39,8 @@ export class Gl520Parser {
      */
     setSrcData(srcStr) {
         this.srcMsg = srcStr;
-        this._setType(srcStr);
-        this._parseData();
+        this.setType(srcStr);
+        this.parseData();
         return this;
     }
 
@@ -48,7 +48,7 @@ export class Gl520Parser {
      * @returns {Promise|Promise<any>}
      */
     getData() {
-        return this._deferred.promise;
+        return this.deferred.promise;
     }
 
     /**
@@ -56,7 +56,7 @@ export class Gl520Parser {
      * @returns {*}
      * @private
      */
-    private _parseData() {
+    private parseData() {
 
         const respData = {
             alt: null,
@@ -67,6 +67,7 @@ export class Gl520Parser {
             date: null,
             src: this.srcMsg
         };
+
 
         if (this.messageType === MessageType.GTSTR) {
             const arr = this.srcMsg.split(',');
@@ -87,16 +88,16 @@ export class Gl520Parser {
                     Number(srcDate.slice(10, 12)),
                     Number(srcDate.slice(12, 14)))
             });
-            this._pointList = [point];
+            this.pointList = [point];
 
-            this._deferred.resolve(this._pointList);
+            this.deferred.resolve(this.pointList);
         }
         if (this.messageType === MessageType.GTGSM) {
             const arr: Array<MobileCellWithDevice> = this.convertToMobileCell();
             Promise.all(arr.map(mobileCell => {
                 return this.baseStationLocation.getLatLng(mobileCell);
             })).then((list: Array<BaseStationPoint>) => {
-                this._pointList = list.map((baseStationPoint:BaseStationPoint, index: number) => {
+                this.pointList = list.map((baseStationPoint:BaseStationPoint, index: number) => {
                     return  Object.assign({}, respData, {
                         device_key: arr[index].deviceId,
                         id: arr[index].deviceId,
@@ -109,7 +110,7 @@ export class Gl520Parser {
                         alt: 0,
                     })
                 });
-                this._deferred.resolve(this._pointList);
+                this.deferred.resolve(this.pointList);
             })
                 .catch(err => {
                     console.error('error get cell');
@@ -120,7 +121,7 @@ export class Gl520Parser {
 
 
         else {
-            this._deferred.resolve(null);
+            this.deferred.resolve(null);
         }
 
     }
@@ -175,7 +176,7 @@ export class Gl520Parser {
 
     }
 
-    private _setType(str) {
+    private setType(str) {
         switch (true) {
             case !str: {
                 this.messageType = -1;

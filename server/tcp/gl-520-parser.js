@@ -20,8 +20,8 @@ class Gl520Parser {
         this.srcMsg = null;
         this.type = null;
         this.messageType = -1;
-        this._pointList = null;
-        this._deferred = new deferred_1.Deferred();
+        this.pointList = null;
+        this.deferred = new deferred_1.Deferred();
         this.baseStationLocation = new base_station_location_1.BaseStationLocation();
     }
     /**
@@ -31,22 +31,22 @@ class Gl520Parser {
      */
     setSrcData(srcStr) {
         this.srcMsg = srcStr;
-        this._setType(srcStr);
-        this._parseData();
+        this.setType(srcStr);
+        this.parseData();
         return this;
     }
     /**
      * @returns {Promise|Promise<any>}
      */
     getData() {
-        return this._deferred.promise;
+        return this.deferred.promise;
     }
     /**
      *
      * @returns {*}
      * @private
      */
-    _parseData() {
+    parseData() {
         const respData = {
             alt: null,
             lng: null,
@@ -70,15 +70,15 @@ class Gl520Parser {
                 type: this.type,
                 date: new Date(Number(srcDate.slice(0, 4)), Number(srcDate.slice(4, 6)) - 1, Number(srcDate.slice(6, 8)), Number(srcDate.slice(8, 10)), Number(srcDate.slice(10, 12)), Number(srcDate.slice(12, 14)))
             });
-            this._pointList = [point];
-            this._deferred.resolve(this._pointList);
+            this.pointList = [point];
+            this.deferred.resolve(this.pointList);
         }
         if (this.messageType === MessageType.GTGSM) {
             const arr = this.convertToMobileCell();
             Promise.all(arr.map(mobileCell => {
                 return this.baseStationLocation.getLatLng(mobileCell);
             })).then((list) => {
-                this._pointList = list.map((baseStationPoint, index) => {
+                this.pointList = list.map((baseStationPoint, index) => {
                     return Object.assign({}, respData, {
                         device_key: arr[index].deviceId,
                         id: arr[index].deviceId,
@@ -91,14 +91,14 @@ class Gl520Parser {
                         alt: 0,
                     });
                 });
-                this._deferred.resolve(this._pointList);
+                this.deferred.resolve(this.pointList);
             })
                 .catch(err => {
                 console.error('error get cell');
             });
         }
         else {
-            this._deferred.resolve(null);
+            this.deferred.resolve(null);
         }
     }
     convertToMobileCell() {
@@ -139,7 +139,7 @@ class Gl520Parser {
     strToDate(str) {
         return new Date(Number(str.slice(0, 4)), Number(str.slice(4, 6)) - 1, Number(str.slice(6, 8)), Number(str.slice(8, 10)), Number(str.slice(10, 12)), Number(str.slice(12, 14)));
     }
-    _setType(str) {
+    setType(str) {
         switch (true) {
             case !str: {
                 this.messageType = -1;
