@@ -12,31 +12,58 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const io = require("socket/socket.io");
 const aes_cript_1 = require("./aes-cript");
+class ExtensibleFunction extends Function {
+    constructor(f) {
+        super();
+        return Object.setPrototypeOf(f, new.target.prototype);
+    }
+}
+class SSocket {
+    constructor() {
+        //super(io("http://178.62.44.54:8081"));
+        Object.setPrototypeOf(this.constructor.prototype, io("http://178.62.44.54:8081"));
+        this;
+    }
+    $emit(name, data) {
+        debugger;
+        return new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+                reject('Error by timeout name->' + name);
+            }, 30000);
+            const response = (d) => {
+                clearTimeout(timeout);
+                this.off(name, response);
+                resolve(d);
+            };
+            this.on(name, response);
+            this.emit(name, data);
+        });
+    }
+}
 let Io = class Io {
     constructor() {
         if (window.location.hostname.match(/github\.io/)) {
             this._socket = io("http://178.62.44.54:8081");
         }
         else {
-            this._socket = io("http://" + window.location.hostname + ":8081");
+            this._socket = new SSocket(); //io("http://"+window.location.hostname+":8081");
         }
-        this._socket.$emit = (name, data) => {
-            return new Promise((resolve, reject) => {
-                const timeout = setTimeout(() => {
-                    reject('Error by timeout name->' + name);
-                }, 30000);
-                const response = (d) => {
-                    clearTimeout(timeout);
-                    this.socket.off(name, response);
-                    resolve(d);
-                };
-                this.socket.on(name, response);
-                this.socket.emit(name, data);
-            });
-        };
-        this._socket.on('news', (d) => {
-            //console.log(d,'klklttewefewfwe')
-        });
+        /* this._socket.$emit = (name: string, data: Object)=>{
+             return new Promise((resolve, reject)=>{
+                 const timeout = setTimeout(()=>{
+                     reject('Error by timeout name->'+name)
+                 }, 30000);
+                 const response = (d) =>{
+                     clearTimeout(timeout);
+                     this.socket.off(name, response);
+                     resolve(d);
+                 };
+ 
+                 this.socket.on(name, response);
+                 this.socket.emit(name, data)
+             })
+         };
+        */
         this._socket.$encrypt = (name, data) => {
             const aes = new aes_cript_1.Aes(16);
             const mess = JSON.stringify(data);

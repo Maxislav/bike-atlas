@@ -35,12 +35,13 @@ export class LeafletResolver implements Resolve<any> {
 })
 
 export class JournalComponent implements  OnInit, OnDestroy{
-    ngOnInit(): void {
-        this.el.nativeElement.getElementsByClassName('scroll')[0].style.maxHeight = window.innerHeight-200+'px'
-    }
     list: Array<any>;
     private offset: number =  0;
     selectDate: Date;
+    ngOnInit(): void {
+        this.el.nativeElement.getElementsByClassName('scroll')[0].style.maxHeight = window.innerHeight-200+'px'
+    }
+
 
     constructor(private location: Location, public route:ActivatedRoute,  private journalService: JournalService, private el:ElementRef){
         this.list = journalService.list;
@@ -48,7 +49,7 @@ export class JournalComponent implements  OnInit, OnDestroy{
         journalService.getLastDate()
             .then(d=>{
                 if(d && d.date){
-                    this.selectDate = this.journalService.setSelectDate(new Date(d.date))
+                    this.selectDate = this.journalService.setSelectDate(new Date(d.date));
                     this.stepGo(0)
                 }
             })

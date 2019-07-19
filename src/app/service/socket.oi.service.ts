@@ -12,6 +12,47 @@ interface Socket{
 }
 
 
+class ExtensibleFunction extends Function {
+    emit: Function;
+    //$emit: Function;
+    $encrypt: Function;
+    $decrypt: Function;
+    on: Function;
+    off: Function;
+    constructor(f) {
+        super();
+        return Object.setPrototypeOf(f, new.target.prototype);
+    }
+}
+/*
+
+
+class SSocket {
+    constructor(){
+        //super(io("http://178.62.44.54:8081"));
+
+        Object.setPrototypeOf(this.constructor.prototype, io("http://178.62.44.54:8081") )
+        this;
+    }
+    $emit(name: string, data: Object){
+        debugger
+        return new Promise((resolve, reject)=>{
+            const timeout = setTimeout(()=>{
+                reject('Error by timeout name->'+name)
+            }, 30000);
+            const response = (d) =>{
+                clearTimeout(timeout);
+                this.off(name, response);
+                resolve(d);
+            };
+
+            this.on(name, response);
+            this.emit(name, data)
+        })
+    }
+}
+*/
+
 
 @Injectable()
 export class Io{
@@ -24,8 +65,12 @@ export class Io{
         if(window.location.hostname.match(/github\.io/)){
             this._socket = io("http://178.62.44.54:8081");
         }else{
+            //this._socket = new SSocket();//io("http://"+window.location.hostname+":8081");
             this._socket = io("http://"+window.location.hostname+":8081");
         }
+
+
+
 
 
         this._socket.$emit = (name: string, data: Object)=>{
@@ -42,10 +87,7 @@ export class Io{
                 this.socket.on(name, response);
                 this.socket.emit(name, data)
             })
-        }
-        this._socket.on('news',(d)=>{
-            //console.log(d,'klklttewefewfwe')
-        });
+        };
 
         this._socket.$encrypt = (name: string, data: any) => {
             const aes = new Aes(16);

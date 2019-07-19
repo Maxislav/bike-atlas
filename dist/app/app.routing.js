@@ -50,7 +50,7 @@ const appRouters = [
                     {
                         path: 'journal',
                         component: journal_component_1.JournalComponent,
-                        //canActivate:[UserService],
+                        canActivate: [auth_service_1.AuthService],
                         resolve: {
                             L: journal_component_1.LeafletResolver
                         },

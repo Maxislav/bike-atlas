@@ -43,6 +43,10 @@ class SocketData {
         const chat = new Chat(util);
 
         ioServer.on('connection', (socket) => {
+
+
+
+
             logger.sockets = ioServer.sockets.connected;
             chat.sockets = ioServer.sockets.connected;
             this.gl520.setSocketsConnected(ioServer.sockets.connected);
