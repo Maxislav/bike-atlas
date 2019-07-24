@@ -24,7 +24,7 @@
     '@angular':                   'node_modules/@angular',
     '@ngx-translate':             'node_modules/@ngx-translate',
     'ng2-translate':              'node_modules/ng2-translate',
-    'socket':                     'node_modules/socket.io-client/dist',
+    'socket.io-client':           'node_modules/socket.io-client',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'rxjs':                       'node_modules/rxjs',
     'css': 'node_modules/systemjs-plugin-css/css.js',
@@ -73,11 +73,7 @@
   // Bundled (~40 requests):
   function packUmd(pkgName) {
     packages['@angular/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.min.js', defaultExtension: 'js' };
-
-
     packages['ng2-translate/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
-
-
   }
 
   console.log(packages)
