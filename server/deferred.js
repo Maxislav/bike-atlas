@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Deferred {
     constructor() {
         this.status = 0;
@@ -25,7 +27,5 @@ class Deferred {
         return this;
     }
 }
-
-module.exports = {
-    Deferred
-};
+exports.Deferred = Deferred;
+//# sourceMappingURL=deferred.js.map

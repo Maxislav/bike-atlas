@@ -1,13 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const socketStream = require('socket.io-stream');
+
 const mysql = require('mysql');
 const config = require('./mysql.config.json');
-const io = require('socket.io');
+const io = require('socket.io')
 config.mysql['database'] = 'monitoring';
 //let connection = mysql.createConnection(config.mysql);
+
 const OnEnter = require('./socket-data/on-enter');
-const { OnAuth } = require('./socket-data/on-auth');
+const {OnAuth} = require('./socket-data/on-auth');
 const Device = require('./socket-data/device');
 const OnRegist = require('./socket-data/on-regist');
 const OnProfile = require('./socket-data/on-profile');
@@ -17,7 +17,9 @@ const Chat = require('./chat');
 const TrackFromTo = require('./socket-data/track-from-to');
 const OnChat = require('./socket-data/on-chat');
 const Logger = require('./logger');
-const gl_520_1 = require("./tcp/gl-520");
+
+import {Gl520}  from './tcp/gl-520';
+
 const Util = require('./socket-data/util');
 const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
@@ -25,34 +27,53 @@ const OnMyMarker = require('./socket-data/on-my-marker.js');
 const OnGtgbc = require('./socket-data/on-gtgbc.js');
 let connection, server, app;
 let resolveExport;
-let promiseExport = new Promise((resolve, reject) => {
-    resolveExport = resolve;
+let promiseExport: Promise<{server:any, app: any}> = new Promise((resolve, reject) => {
+    resolveExport = resolve
 });
 let socketData;
+
+
+
 class SSocket {
-    constructor(s) {
+    public on: Function;
+    public emit: Function;
+    public id: number;
+    constructor(s)  {
         Object.setPrototypeOf(this.constructor.prototype, s);
         this.on = s.on.bind(s);
         this.emit = s.emit.bind(s);
     }
-    $get(name) {
-        this.on(name, (d) => {
-        });
-        return new Promise((resolve, reject) => {
-            resolve;
-        });
+
+    $get(name){
+        this.on(name, (d: {hash: string, data: any}) =>{
+
+        })
+        return new Promise((resolve, reject) =>{
+            resolve
+        })
+
     }
+
+
 }
+
 class SocketData {
+    connection: any;
+    gl520: Gl520;
+    updateConnect: Function
     constructor(server, app, connection) {
         this.connection = connection;
         const util = new Util(connection);
         const ioServer = io(server);
         const logger = new Logger(app, ioServer, util);
-        this.gl520 = new gl_520_1.Gl520(ioServer, util).create();
+        this.gl520 = new Gl520(ioServer, util).create();
         const chat = new Chat(util);
+
         ioServer.on('connection', (s) => {
+
             const socket = new SSocket(s);
+
+
             logger.sockets = ioServer.sockets.connected;
             chat.sockets = ioServer.sockets.connected;
             this.gl520.setSocketsConnected(ioServer.sockets.connected);
@@ -69,31 +90,40 @@ class SocketData {
             const onImportKml = new OnImportKml(socket, util);
             const onMyMarker = new OnMyMarker(socket, util);
             const onGtgbc = new OnGtgbc(socket, util);
+
             socket.on('disconnect', () => {
                 logger.onDisconnect(socket.id);
                 chat.onDisconnect(socket.id);
             });
+
             socketStream(socket).on('file', function (stream) {
                 let data = [];
                 stream.on('data', (d) => {
                     data.push(d);
                 });
                 stream.on('end', (e, d) => {
-                    console.log("file send");
+                    console.log("file send")
                     socket.emit('file', Buffer.concat(data));
                 });
             });
+
+
         });
+
         this.updateConnect = (connection) => {
             this.gl520.close()
                 .then(() => {
-                this.gl520.create();
-            });
+                    this.gl520.create();
+                });
             this.connection = connection;
-            util.updateConnect(connection);
-        };
+            util.updateConnect(connection)
+        }
+
     }
+
 }
+
+
 const connectionConnect = () => {
     connection = mysql.createConnection(config.mysql);
     connection.on('error', (err) => {
@@ -101,38 +131,45 @@ const connectionConnect = () => {
         if (err.code == 'PROTOCOL_CONNECTION_LOST') {
             console.error('PROTOCOL_CONNECTION_LOST ->' + err);
             connection.end();
-            setTimeout(connectionConnect, 10000);
+            setTimeout(connectionConnect, 10000)
         }
     });
+
     connection.on('connect', (err) => {
         if (err) {
-            console.log('err.connect -> ', err);
+            console.log('err.connect -> ', err)
             return;
         }
+
         console.log('connected connect ->');
+
     });
     connection.connect((err) => {
-        if (err)
-            throw err;
+        if (err) throw err;
         console.log('connected as id ->' + connection.threadId);
         promiseExport
             .then(d => {
-            server = d.server;
-            app = d.app;
-            if (socketData) {
-                socketData.updateConnect(connection);
-            }
-            else {
-                socketData = new SocketData(server, app, connection);
-            }
-        });
-    });
+                server = d.server;
+                app = d.app;
+                if (socketData) {
+                    socketData.updateConnect(connection)
+                } else {
+                    socketData = new SocketData(server, app, connection)
+                }
+
+            });
+    })
+
 };
 connectionConnect();
+
+
 module.exports = (server, app) => {
     //server = _server; app = _app;
-    resolveExport({ server, app });
+    resolveExport({server, app})
+
     // socketData =   new SocketData(server, app, connection)
+
+
     //INSERT INTO `user` (`id`, `name`, `pass`, `opt`) VALUES (NULL, 'max', 'eeew', NULL);
 };
-//# sourceMappingURL=socket-data.js.map
