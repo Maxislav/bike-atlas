@@ -88,8 +88,10 @@ class GetListener {
         return rand;
     }
 }
+GetListener.hashKeys = [];
 class SSocket {
     constructor(uri) {
+        this.getListenerHashMap = {};
         Object.setPrototypeOf(this.constructor.prototype, io(uri));
         this.listenerHashMap = {};
     }
@@ -135,6 +137,15 @@ let Io = class Io {
             this.url = 'http://' + window.location.hostname + ':8081';
         }
         this._socket = new SSocket(this.url);
+        /*  this._socket.$get('gettt', 'kiska')
+              .then(data => {
+                  console.log(data)
+  
+                  return this._socket.$get('gettt', 'kiska2')
+              })
+              .then(data => {
+                  console.log(data)
+              })*/
     }
     get socket() {
         return this._socket;

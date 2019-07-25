@@ -1,5 +1,4 @@
 const {Gl520Parser} = require("./gl-520-parser");
-
 const net = require('net');
 const fs = require('fs');
 const path = require('path');

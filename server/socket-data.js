@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const socketStream = require('socket.io-stream');
 const mysql = require('mysql');
 const config = require('./mysql.config.json');
+require("./colors");
 const io = require('socket.io');
 config.mysql['database'] = 'monitoring';
 //let connection = mysql.createConnection(config.mysql);
@@ -32,17 +33,31 @@ let socketData;
 class SSocket {
     constructor(s) {
         Object.setPrototypeOf(this.constructor.prototype, s);
+        SSocket.listenerHashMap = {};
         this.on = s.on.bind(s);
         this.emit = s.emit.bind(s);
     }
-    $get(name) {
-        this.on(name, (d) => {
-        });
-        return new Promise((resolve, reject) => {
-            resolve;
-        });
+    $get(name, callback) {
+        if (SSocket.listenerHashMap[name]) {
+            throw new Error('Name space is used before');
+        }
+        const receive = (d) => {
+            callback({
+                hash: d.hash,
+                data: d.data
+            }, {
+                end: (data) => {
+                    this.emit(name, {
+                        hash: d.hash,
+                        data
+                    });
+                }
+            });
+        };
+        SSocket.listenerHashMap[name] = this.on(name, receive);
     }
 }
+SSocket.listenerHashMap = {};
 class SocketData {
     constructor(server, app, connection) {
         this.connection = connection;
@@ -53,6 +68,10 @@ class SocketData {
         const chat = new Chat(util);
         ioServer.on('connection', (s) => {
             const socket = new SSocket(s);
+            socket.$get('gettt', (req, res) => {
+                const reqData = req.data;
+                res.end(reqData);
+            });
             logger.sockets = ioServer.sockets.connected;
             chat.sockets = ioServer.sockets.connected;
             this.gl520.setSocketsConnected(ioServer.sockets.connected);
@@ -79,7 +98,7 @@ class SocketData {
                     data.push(d);
                 });
                 stream.on('end', (e, d) => {
-                    console.log("file send");
+                    console.log('file send');
                     socket.emit('file', Buffer.concat(data));
                 });
             });
@@ -114,7 +133,8 @@ const connectionConnect = () => {
     connection.connect((err) => {
         if (err)
             throw err;
-        console.log('connected as id ->' + connection.threadId);
+        //console.log('MySql connected as id ->'.yellow  +  ` ${connection.threadId}`);
+        console.log('MySql connected as id '.yellow + '->' + ` ${connection.threadId}`.green);
         promiseExport
             .then(d => {
             server = d.server;

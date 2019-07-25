@@ -1,8 +1,11 @@
-const socketStream = require('socket.io-stream');
+import { Deferred } from './deferred';
 
+const socketStream = require('socket.io-stream');
 const mysql = require('mysql');
 const config = require('./mysql.config.json');
-const io = require('socket.io')
+import './colors';
+
+const io = require('socket.io');
 config.mysql['database'] = 'monitoring';
 //let connection = mysql.createConnection(config.mysql);
 
@@ -18,7 +21,7 @@ const TrackFromTo = require('./socket-data/track-from-to');
 const OnChat = require('./socket-data/on-chat');
 const Logger = require('./logger');
 
-import {Gl520}  from './tcp/gl-520';
+import { Gl520 } from './tcp/gl-520';
 
 const Util = require('./socket-data/util');
 const OnStrava = require('./socket-data/on-strava');
@@ -27,40 +30,60 @@ const OnMyMarker = require('./socket-data/on-my-marker.js');
 const OnGtgbc = require('./socket-data/on-gtgbc.js');
 let connection, server, app;
 let resolveExport;
-let promiseExport: Promise<{server:any, app: any}> = new Promise((resolve, reject) => {
-    resolveExport = resolve
+let promiseExport: Promise<{ server: any, app: any }> = new Promise((resolve, reject) => {
+    resolveExport = resolve;
 });
 let socketData;
 
 
+declare global {
+    interface String {
+        yellow: string;
+        green: string;
+    }
+}
+
+
+
 
 class SSocket {
-    public on: Function;
+    public on: (name: string, callback: Function) => void;
     public emit: Function;
     public id: number;
-    constructor(s)  {
+    private static listenerHashMap: { [name: string]: any } = {};
+    constructor(s) {
         Object.setPrototypeOf(this.constructor.prototype, s);
+        SSocket.listenerHashMap = {};
         this.on = s.on.bind(s);
         this.emit = s.emit.bind(s);
     }
 
-    $get(name){
-        this.on(name, (d: {hash: string, data: any}) =>{
-
-        })
-        return new Promise((resolve, reject) =>{
-            resolve
-        })
-
+    $get(name: string, callback: (req, res) => void) {
+        if( SSocket.listenerHashMap[name]){
+            throw new Error('Name space is used before')
+        }
+        const receive = (d) => {
+            callback({
+                hash: d.hash,
+                data: d.data
+            }, {
+                end: (data) => {
+                    this.emit(name, {
+                        hash: d.hash,
+                        data
+                    })
+                }
+            })
+        };
+        SSocket.listenerHashMap[name] = this.on(name, receive);
     }
-
-
 }
 
 class SocketData {
     connection: any;
     gl520: Gl520;
-    updateConnect: Function
+    updateConnect: Function;
+
     constructor(server, app, connection) {
         this.connection = connection;
         const util = new Util(connection);
@@ -72,6 +95,11 @@ class SocketData {
         ioServer.on('connection', (s) => {
 
             const socket = new SSocket(s);
+
+            socket.$get('gettt', (req, res) => {
+                const  reqData = req.data;
+                res.end(reqData);
+            });
 
 
             logger.sockets = ioServer.sockets.connected;
@@ -102,7 +130,7 @@ class SocketData {
                     data.push(d);
                 });
                 stream.on('end', (e, d) => {
-                    console.log("file send")
+                    console.log('file send');
                     socket.emit('file', Buffer.concat(data));
                 });
             });
@@ -116,8 +144,8 @@ class SocketData {
                     this.gl520.create();
                 });
             this.connection = connection;
-            util.updateConnect(connection)
-        }
+            util.updateConnect(connection);
+        };
 
     }
 
@@ -131,13 +159,13 @@ const connectionConnect = () => {
         if (err.code == 'PROTOCOL_CONNECTION_LOST') {
             console.error('PROTOCOL_CONNECTION_LOST ->' + err);
             connection.end();
-            setTimeout(connectionConnect, 10000)
+            setTimeout(connectionConnect, 10000);
         }
     });
 
     connection.on('connect', (err) => {
         if (err) {
-            console.log('err.connect -> ', err)
+            console.log('err.connect -> ', err);
             return;
         }
 
@@ -146,19 +174,20 @@ const connectionConnect = () => {
     });
     connection.connect((err) => {
         if (err) throw err;
-        console.log('connected as id ->' + connection.threadId);
+        //console.log('MySql connected as id ->'.yellow  +  ` ${connection.threadId}`);
+        console.log('MySql connected as id '.yellow + '->' + ` ${connection.threadId}`.green);
         promiseExport
             .then(d => {
                 server = d.server;
                 app = d.app;
                 if (socketData) {
-                    socketData.updateConnect(connection)
+                    socketData.updateConnect(connection);
                 } else {
-                    socketData = new SocketData(server, app, connection)
+                    socketData = new SocketData(server, app, connection);
                 }
 
             });
-    })
+    });
 
 };
 connectionConnect();
@@ -166,7 +195,7 @@ connectionConnect();
 
 module.exports = (server, app) => {
     //server = _server; app = _app;
-    resolveExport({server, app})
+    resolveExport({server, app});
 
     // socketData =   new SocketData(server, app, connection)
 

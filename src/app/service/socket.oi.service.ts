@@ -31,7 +31,7 @@ class Listener {
 }
 
 class GetListener {
-    private static hashKeys: Array<string>;
+    private static hashKeys: Array<string> = [];
     private readonly hashMap: { [hash: string]: { timeout: number, deferred: Deferred<any> } };
 
     constructor(public name, private sSocket: SSocket) {
@@ -108,7 +108,7 @@ class SSocket {
 
     listenerHashMap: { [name: string]: Listener };
 
-    getListenerHashMap: { [name: string]: GetListener };
+    getListenerHashMap: { [name: string]: GetListener } = {};
 
     constructor(uri: string) {
         Object.setPrototypeOf(this.constructor.prototype, io(uri));
@@ -166,6 +166,16 @@ export class Io {
             this.url = 'http://' + window.location.hostname + ':8081';
         }
         this._socket = new SSocket(this.url);
+
+      /*  this._socket.$get('gettt', 'kiska')
+            .then(data => {
+                console.log(data)
+
+                return this._socket.$get('gettt', 'kiska2')
+            })
+            .then(data => {
+                console.log(data)
+            })*/
 
 
     }
