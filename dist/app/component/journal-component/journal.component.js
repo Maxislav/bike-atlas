@@ -43,16 +43,6 @@ let JournalComponent = class JournalComponent {
         console.log('deviceList -> ', this.deviceList);
         this.list = journalService.list;
         this.selectDate = null; //this.journalService.selectDate;
-        /* journalService.getLastDate()
-             .then((list: Array<{date: string, device_key: string}>) =>{
- 
- 
- 
-                 /!*if(d && d.date){
-                     this.selectDate = this.journalService.setSelectDate(new Date(d.date));
-                     this.stepGo(0)
-                 }*!/
-             })*/
     }
     ngOnInit() {
         this.el.nativeElement.getElementsByClassName('scroll')[0].style.maxHeight = window.innerHeight - 200 + 'px';
@@ -64,15 +54,21 @@ let JournalComponent = class JournalComponent {
             if (d.error)
                 throw new Error(d.error);
             this.selectDate = this.dateRoundDay(new Date(d.date));
-            const from = this.selectDate;
-            const to = this.stepForwardDate(this.selectDate);
-            this.getTrack(device.device_key, from, to);
+            this.getTrack(device.device_key);
         });
     }
     stepGo(step) {
-        this.selectDate = this.journalService.stepGo(step);
+        if (0 < step) {
+            this.selectDate = this.stepForwardDate(this.selectDate);
+        }
+        if (step < 0) {
+            this.selectDate = this.stepBackDate(this.selectDate);
+        }
+        this.getTrack(this.deviceSelected.device_key);
     }
-    getTrack(device_key, from, to) {
+    getTrack(device_key) {
+        const from = this.selectDate;
+        const to = this.stepForwardDate(this.selectDate);
         this.journalService.getTrack(device_key, from, to)
             .then(data => {
             console.log(data);
