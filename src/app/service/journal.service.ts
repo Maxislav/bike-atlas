@@ -42,10 +42,11 @@ export class JournalService {
         return this.selectDate;
     }
 
-    getTrack(from: Date, to: Date): Promise<any> {
+    getTrack(device_key: string, from: Date, to: Date): Promise<any> {
         const fromTo = String(new Date(from).toISOString()).concat(new Date(to).toISOString());
         return this.socket
-            .$emit('trackFromTo', {
+            .$get('trackDeviceFromTo', {
+                device_key,
                 from,
                 to
             })
@@ -59,12 +60,13 @@ export class JournalService {
             });
     }
 
-    getLastDate() {
-        return this.socket
-            .$emit('getLastDate', null)
-            .then((d) => {
-                return d;
-            });
+    public getLastDate(): Promise<Array<{date: string, device_key: string}>> {
+        return this.socket.$get('getLastDate', null)
+
+    }
+
+    public getLastDeviceDate(device_key: string){
+        return this.socket.$get('getLastDeviceDate', device_key)
     }
 
     fillList(list, rangeOfDate: string) {

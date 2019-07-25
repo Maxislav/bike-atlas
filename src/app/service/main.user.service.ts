@@ -1,25 +1,16 @@
 
 import {Injectable} from "@angular/core";
-import {Device} from "./device.service";
+import {Device, User} from  '../../@types/global';
 import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot} from "@angular/router";
 import {Io} from "./socket.oi.service";
 import {ToastService} from "../component/toast/toast.component";
 import {Router} from "@angular/router";
 import {Deferred} from "../util/deferred";
 import {AuthService} from './auth.service';
-import { MyMarker } from 'app/service/my-marker.service';
+import { MyMarker } from '../service/my-marker.service';
 
 
 
-export interface User{
-    id: number;
-    name: string;
-    image: string;
-    deviceKeys?:Array<string>;
-    setting?: any;
-    devices?: Array<Device>;
-    markers: Array<MyMarker>
-}
 
 
 @Injectable()

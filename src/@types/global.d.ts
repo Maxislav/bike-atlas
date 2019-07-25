@@ -1,4 +1,4 @@
-import { Marker } from './app/service/marker.service';
+import { Marker } from '../app/service/marker.service';
 
 interface Set<T> {
     add(value: T): this;
@@ -107,4 +107,23 @@ export interface MobileCell {
     cellId: number;
 }
 
+
+export interface MyMarker {
+    id: number,
+    image_id: number,
+    user_id: number,
+    lng: number,
+    lat: number,
+    title: string
+}
+
+export interface User{
+    id: number;
+    name: string;
+    image: string;
+    deviceKeys?:Array<string>;
+    setting?: any;
+    devices?: Array<Device>;
+    markers: Array<MyMarker>
+}
 

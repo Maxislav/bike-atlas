@@ -7,6 +7,8 @@ import {Resolve, ActivatedRoute} from "@angular/router";
 import {OneTrack} from "./one-track.component/one-track.component";
 import {JournalService} from "../../service/journal.service";
 import {Point} from "../../service/track.var";
+import { UserService } from '../../service/main.user.service';
+import { Device } from '../../../@types/global';
 
 declare var System: any;
 
@@ -23,7 +25,7 @@ export class LeafletResolver implements Resolve<any> {
     }
 }
 
-
+declare const module: any;
 
 
 @Component({
@@ -38,20 +40,48 @@ export class JournalComponent implements  OnInit, OnDestroy{
     list: Array<any>;
     private offset: number =  0;
     selectDate: Date;
+    public deviceList: Array<Device>;
+    public deviceSelected: Device = null;
+
     ngOnInit(): void {
-        this.el.nativeElement.getElementsByClassName('scroll')[0].style.maxHeight = window.innerHeight-200+'px'
+        this.el.nativeElement.getElementsByClassName('scroll')[0].style.maxHeight = window.innerHeight-200+'px';
     }
 
 
-    constructor(private location: Location, public route:ActivatedRoute,  private journalService: JournalService, private el:ElementRef){
+    constructor(
+        private location: Location,
+        public route:ActivatedRoute,
+        private journalService: JournalService,
+        private el:ElementRef,
+        private userService: UserService
+    ){
+
+        this.deviceList = userService.user.devices;
+        console.log('deviceList -> ',this.deviceList);
         this.list = journalService.list;
-        this.selectDate = this.journalService.selectDate;
-        journalService.getLastDate()
-            .then(d=>{
-                if(d && d.date){
+        this.selectDate = null;//this.journalService.selectDate;
+       /* journalService.getLastDate()
+            .then((list: Array<{date: string, device_key: string}>) =>{
+
+
+
+                /!*if(d && d.date){
                     this.selectDate = this.journalService.setSelectDate(new Date(d.date));
                     this.stepGo(0)
-                }
+                }*!/
+            })*/
+    }
+
+    onSelectDevice(device: Device){
+        this.deviceSelected = device;
+        this.journalService.getLastDeviceDate(device.device_key)
+            .then(d=>{
+                if(d.error) throw new Error(d.error);
+                this.selectDate = this.dateRoundDay(new Date(d.date));
+                const from = this.selectDate;
+                const to = this.stepForwardDate( this.selectDate);
+                this.getTrack(device.device_key, from, to);
+
             })
     }
 
@@ -59,8 +89,11 @@ export class JournalComponent implements  OnInit, OnDestroy{
         this.selectDate = this.journalService.stepGo(step);
     }
 
-    getTrack(from: Date, to: Date){
-        this.journalService.getTrack(from, to);
+    getTrack(device_key: string, from: Date, to: Date){
+        this.journalService.getTrack(device_key, from, to)
+            .then(data=>{
+                console.log(data)
+            })
     }
 
 
@@ -70,5 +103,20 @@ export class JournalComponent implements  OnInit, OnDestroy{
 
     ngOnDestroy(): void {
         this.journalService.cleadData();
+    }
+
+    private stepBackDate(d: Date): Date{
+        return new Date(d.getFullYear(), d.getMonth(), d.getDate()-1)
+    }
+
+    private stepForwardDate(d: Date): Date{
+        return new Date(d.getFullYear(), d.getMonth(), d.getDate()+1)
+    }
+
+
+    private dateRoundDay(d: Date): Date{
+
+        return new Date(d.getFullYear(), d.getMonth(), d.getDate())
+
     }
 }

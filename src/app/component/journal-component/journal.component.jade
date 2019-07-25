@@ -2,6 +2,10 @@ div.content
     div
         .close((click)="onClose()") &times;
         .row
+            p Devices
+        .row
+            p.pointer(*ngFor="let device of deviceList; let i = index;", [ngClass]="{'selected': device === deviceSelected}", (click)="onSelectDevice(device)") {{device.name}}
+        .row
             .title-row
                 p
 

@@ -45,6 +45,9 @@ body {
 .gray {
   color: #b2b4b7;
 }
+.pointer {
+  cursor: pointer;
+}
 button,
 .button {
   padding: 8px 15px;

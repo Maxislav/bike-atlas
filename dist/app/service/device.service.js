@@ -14,6 +14,7 @@ const socket_oi_service_1 = require("./socket.oi.service");
 const local_storage_service_1 = require("./local-storage.service");
 const friends_service_1 = require("./friends.service");
 const main_user_service_1 = require("./main.user.service");
+//import {Device} from '../../global';
 let DeviceService = class DeviceService {
     constructor(io, ls, user, friend) {
         this.io = io;

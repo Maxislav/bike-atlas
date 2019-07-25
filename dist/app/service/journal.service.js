@@ -33,10 +33,11 @@ let JournalService = class JournalService {
         this.getTrack(from, to);
         return this.selectDate;
     }
-    getTrack(from, to) {
+    getTrack(device_key, from, to) {
         const fromTo = String(new Date(from).toISOString()).concat(new Date(to).toISOString());
         return this.socket
-            .$emit('trackFromTo', {
+            .$get('trackDeviceFromTo', {
+            device_key,
             from,
             to
         })
@@ -51,11 +52,10 @@ let JournalService = class JournalService {
         });
     }
     getLastDate() {
-        return this.socket
-            .$emit('getLastDate', null)
-            .then((d) => {
-            return d;
-        });
+        return this.socket.$get('getLastDate', null);
+    }
+    getLastDeviceDate(device_key) {
+        return this.socket.$get('getLastDeviceDate', device_key);
     }
     fillList(list, rangeOfDate) {
         list.forEach((obj) => {

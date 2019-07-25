@@ -9,7 +9,7 @@ import {TailClass} from './tail.class'
 import {distance} from "../util/distance";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { MapBoxGl } from 'src/@types/global';
+import { MapBoxGl } from '../../@types/global';
 
 export interface MarkerInterface {
     id:string;
