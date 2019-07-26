@@ -91,7 +91,7 @@ class Marker {
     static getNewLayer(min, max, int) {
         let rand = min + Math.random() * (max - min);
         if (int) {
-            rand = 'marker' + Math.round(rand);
+            rand = String('marker-').concat(Math.round(rand).toString());
         }
         if (Marker.layerIds.has(rand)) {
             return Marker.getNewLayer(min, max, int);

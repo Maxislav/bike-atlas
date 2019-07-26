@@ -26,6 +26,7 @@ export class Marker {
     image: string;
     tail: TailClass;
     speedSubject: Observable<number>;
+    type: 'POINT' | 'BS';
 
 
     private speedBehaviorSubject: BehaviorSubject<number>;
@@ -43,6 +44,8 @@ export class Marker {
 
     //TODO creating and update user marker
     constructor(devData: DeviceData, private user: User, private mapboxgl: MapBoxGl, private map: MapGl, private timerService: TimerService) {
+
+
         Object.keys(devData).forEach(key => {
             this[key] = devData[key];
         });
@@ -56,6 +59,8 @@ export class Marker {
         img.src = this.user.image || 'src/img/no-avatar.gif';
         icoContainer.appendChild(img);
         this.icoContainer = icoContainer;
+
+
 
         this.popup = new mapboxgl.Popup({
             closeOnClick: false, offset: {
@@ -122,7 +127,7 @@ export class Marker {
     static getNewLayer(min, max, int): string {
         let rand = min + Math.random() * (max - min);
         if (int) {
-            rand = 'marker' + Math.round(rand);
+            rand = String('marker-').concat(Math.round(rand).toString());
         }
         if (Marker.layerIds.has(rand)) {
             return Marker.getNewLayer(min, max, int);

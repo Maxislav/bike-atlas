@@ -44,8 +44,8 @@ class Robot {
         const point = points[i];
         for(let id in this.sockets){
           this.sockets[id].emit('log', {
-            lng:point.lng,
-            lat: point.lat,
+            lng: Number(point.lng),
+            lat: Number(point.lat),
             device_key: '0000',
             name: 'Demo robot',
             ownerId:this.ownerId,
