@@ -22,7 +22,10 @@
     '@lib':                        'lib', // 'dist',
     '@ramda':                      'node_modules/ramda/dist', // 'dist',
     '@angular':                   'node_modules/@angular',
+     'ramda':                     'node_modules/ramda', 
+     'dateformat':                 'node_modules/dateformat',
     'socket.io-client':           'node_modules/socket.io-client',
+    'socket.io-stream':           'node_modules/socket.io-stream',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'ng2-translate':              'node_modules/ng2-translate',
     'rxjs':                       'node_modules/rxjs',
@@ -37,6 +40,8 @@
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
+     'dateformat':                  { main: 'lib/dateformat.js',  defaultExtension: 'js' },
+    'ramda':                      { main: 'dist/ramda.js',  defaultExtension: 'js' },
     'app':                        { main: 'init.js',  defaultExtension: 'js' },
     'rxjs':                       { main : 'Rx.js', defaultExtension: 'js' },
     'socket':                     {defaultExtension: 'js' },
