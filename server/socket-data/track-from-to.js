@@ -81,10 +81,8 @@ class TrackFromTo extends ProtoData {
                         list: [{ userId: device.user_id, name: device.name, points: points }]
                     });
                 });
-                //return this.util.getLastDateTrack(device_key);
             }
             else {
-                //console.error('->Device is not registered on this user');
                 res.end({
                     error: 'Device is not registered on this user'
                 });
