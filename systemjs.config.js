@@ -22,7 +22,7 @@
     '@lib':                        'lib', // 'dist',
     '@ramda':                      'node_modules/ramda/dist', // 'dist',
     '@angular':                   'node_modules/@angular',
-    'socket':                     'node_modules/socket.io-client/dist',
+    'socket.io-client':           'node_modules/socket.io-client',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'ng2-translate':              'node_modules/ng2-translate',
     'rxjs':                       'node_modules/rxjs',
