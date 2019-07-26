@@ -41,7 +41,7 @@ class Robot {
       }
       
       setTimeout(()=>{
-        const point = points[i]
+        const point = points[i];
         for(let id in this.sockets){
           this.sockets[id].emit('log', {
             lng:point.lng,
@@ -50,7 +50,8 @@ class Robot {
             name: 'Demo robot',
             ownerId:this.ownerId,
             bearing: 0,
-            date: new Date().toISOString()
+            date: new Date().toISOString(),
+            type: 'POINT'
           })
         }
         if(i<points.length-2){

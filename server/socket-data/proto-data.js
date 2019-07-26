@@ -11,7 +11,6 @@ class ProtoData{
      */
     constructor(socket, util) {
         this.socket = socket;
-
         this.util = util;
     }
     getUserId() {

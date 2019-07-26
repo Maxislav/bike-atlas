@@ -94,7 +94,7 @@ let MyMarkerService = class MyMarkerService {
             }
         };
         this.markerList.push(myMarker);
-        console.log(myMarker);
+        //console.log(myMarker);
     }
     removeMarker(marker) {
         this.socket.$emit('removeMyMarker', {

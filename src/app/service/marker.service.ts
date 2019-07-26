@@ -1,43 +1,18 @@
-import {Injectable} from "@angular/core";
-import {MapService} from "./map.service";
-import {DeviceData} from "./log.service";
-import {TimerService, Timer} from "./timer.service";
-import {elapsedStatus} from "../util/elapsed-status";
-import {Point} from "./track.var";
-import {TailClass} from './tail.class'
-import {distance} from "../util/distance";
+import { Injectable } from '@angular/core';
+import { MapService } from './map.service';
+import { DeviceData } from './log.service';
+import { TimerService, Timer } from './timer.service';
+import { elapsedStatus } from '../util/elapsed-status';
+import { Point } from './track.var';
+import { TailClass } from './tail.class';
+import { distance } from '../util/distance';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { MapBoxGl, MapGl, MapMarker, Popup, User } from '../../@types/global';
-
-export interface MarkerInterface {
-    id:string;
-    image: string;
-    lng: number;
-    lat: number;
-    name: string;
-    popup:any;
-    azimuth: number;
-    status:string;
-    elapsed:string;
-    speed: number;
-    date: string;
-    device_key?:string;
-    deviceData: DeviceData;
-    hide:Function;
-    rotate:Function;
-    update:Function;
-    remove: Function;
-    ownerId?: number;
-    updateSetImage: Function,
-    tail: TailClass,
-    updateMarker():void;
-}
+import { LngLat } from '../util/lngLat';
 
 
-
-
-export class Marker implements DeviceData {
+export class Marker {
 
     id: string;
     alt: number;
@@ -53,8 +28,7 @@ export class Marker implements DeviceData {
     speedSubject: Observable<number>;
 
 
-
-    private speedBehaviorSubject: BehaviorSubject<number>
+    private speedBehaviorSubject: BehaviorSubject<number>;
     static layerIds: Set<String> = new Set();
     private layerId: string;
     private icoContainer: HTMLElement;
@@ -67,24 +41,27 @@ export class Marker implements DeviceData {
     private img: any;
 
 
+    //TODO creating and update user marker
     constructor(devData: DeviceData, private user: User, private mapboxgl: MapBoxGl, private map: MapGl, private timerService: TimerService) {
         Object.keys(devData).forEach(key => {
-            this[key] = devData[key]
+            this[key] = devData[key];
         });
-        this.speedBehaviorSubject = new BehaviorSubject<number>(0)
+        this.speedBehaviorSubject = new BehaviorSubject<number>(0);
         this.speedSubject = this.speedBehaviorSubject.asObservable();
         this.timer = new Timer(devData.date);
         this.layerId = Marker.getNewLayer(0, 5000000, true) + '';
         const icoContainer = document.createElement('div');
-        icoContainer.classList.add("user-icon");
+        icoContainer.classList.add('user-icon');
         const img = this.img = new Image();
         img.src = this.user.image || 'src/img/no-avatar.gif';
         icoContainer.appendChild(img);
         this.icoContainer = icoContainer;
 
-        this.popup = new mapboxgl.Popup({closeOnClick: false, offset: {
-              'bottom': [0, -20],
-            }, closeButton: false})
+        this.popup = new mapboxgl.Popup({
+            closeOnClick: false, offset: {
+                'bottom': [0, -20],
+            }, closeButton: false
+        })
             .setLngLat([devData.lng, devData.lat])
             .setHTML('<div>' + devData.name + '</div>')
             .addTo(map);
@@ -97,7 +74,7 @@ export class Marker implements DeviceData {
 
         this.elapsed = '...';
 
-        this.tail = new TailClass(this.layerId, this.map)
+        this.tail = new TailClass(this.layerId, this.map);
 
         this.intervalUpdateMarker = setInterval(() => {
             this.updateMarker();
@@ -109,26 +86,26 @@ export class Marker implements DeviceData {
         const prevLngLat: Point = new Point(this.lng, this.lat);
         const t = this.timer.tick(devData.date);
         for (let opt in devData) {
-            this[opt] = devData[opt]
+            this[opt] = devData[opt];
         }
         const nextLngLat: Point = new Point(this.lng, this.lat);
-        this.speed = 3600 * 1000 * distance(prevLngLat, nextLngLat)/t; //km/h
-        this.speedBehaviorSubject.next(this.speed)
+        this.speed = 3600 * 1000 * distance(prevLngLat, nextLngLat) / t; //km/h
+        this.speedBehaviorSubject.next(this.speed);
         this.popup.setLngLat([this.lng, this.lat]);
         this.status = elapsedStatus(this);
         this.iconMarker.setLngLat([this.lng, this.lat]);
         this.icoContainer.setAttribute('status', this.status);
-        this.tail.update(new Point(devData.lng, devData.lat))
+        this.tail.update(new Point(devData.lng, devData.lat));
 
-        return this
+        return this;
     }
 
     updateMarker(): Marker {
 
         this.status = elapsedStatus(this);
         this.icoContainer.setAttribute('status', this.status);
-        this.elapsed = this.timerService.elapse(this.date)
-        return this
+        this.elapsed = this.timerService.elapse(this.date);
+        return this;
     }
 
     remove(): void {
@@ -137,7 +114,7 @@ export class Marker implements DeviceData {
         this.intervalUpdateMarker && clearInterval(this.intervalUpdateMarker);
     };
 
-    updateSetImage(src){
+    updateSetImage(src) {
         this.img.src = src;
         this.image = src;
     }
@@ -145,21 +122,22 @@ export class Marker implements DeviceData {
     static getNewLayer(min, max, int): string {
         let rand = min + Math.random() * (max - min);
         if (int) {
-            rand = 'marker' + Math.round(rand)
+            rand = 'marker' + Math.round(rand);
         }
         if (Marker.layerIds.has(rand)) {
-            return Marker.getNewLayer(min, max, int)
+            return Marker.getNewLayer(min, max, int);
         }
-        Marker.layerIds.add(rand)
-        return rand
+        Marker.layerIds.add(rand);
+        return rand;
     }
 }
 
 @Injectable()
 export class MarkerService {
-    constructor(private mapService: MapService, private timer: TimerService) {}
+    constructor(private mapService: MapService, private timer: TimerService) {
+    }
 
-    marker(devData:DeviceData, user: User):Marker {
+    marker(devData: DeviceData, user: User): Marker {
         return new Marker(devData, user, this.mapService.mapboxgl, this.mapService.map, this.timer);
     }
 }

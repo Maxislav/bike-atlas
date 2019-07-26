@@ -68,7 +68,7 @@ let AuthService = class AuthService {
     }
     onConnect() {
         console.info('connect');
-        return this.socket.$emit('onAuth', {
+        return this.socket.$get('onAuth', {
             hash: this.ls.userKey
         }).then((d) => {
             if (d.result == 'ok') {

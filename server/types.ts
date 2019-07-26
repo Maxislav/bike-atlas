@@ -1,4 +1,12 @@
-export interface LoggerRow{
+export interface DeviceRow {
+    'id': number,
+    'user_id': number,
+    'device_key': string,
+    'name': string,
+    'phone': string
+}
+
+export interface LoggerRow {
     alt: number;
     azimuth: number;
     date: Date;
@@ -9,4 +17,16 @@ export interface LoggerRow{
     speed: number;
     src: string;
     type: 'POINT' | 'BS'
+}
+
+
+export interface User {
+    id: number,
+    name: string,
+    image: string,
+    devices: Array<DeviceRow>,
+    markers: Array<any>,
+    friends: Array<User>,
+    hash: string,
+    setting: { [key: string]: any }
 }

@@ -26,6 +26,7 @@ let LogService = class LogService {
         };
     }
     log(devData) {
+        console.log('log -> ', devData);
         if (!devData)
             return;
         let user;

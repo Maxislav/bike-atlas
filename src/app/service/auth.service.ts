@@ -83,7 +83,7 @@ export class AuthService implements Resolve<boolean>, CanActivate {
 
     onConnect() {
         console.info('connect');
-        return this.socket.$emit('onAuth', {
+        return this.socket.$get('onAuth', {
             hash: this.ls.userKey
         }).then((d) => {
             if (d.result == 'ok') {
@@ -103,6 +103,7 @@ export class AuthService implements Resolve<boolean>, CanActivate {
             console.log('onAuth ->', d);
             this.resolveAuth(true);
         });
+
     }
 
     get userName() {

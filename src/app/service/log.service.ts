@@ -20,13 +20,14 @@ export interface DeviceData {
     image?:string,
     device_key?:string;
     ownerId?:number;
+    type: 'POINT' | 'BS'
 }
 
 
 @Injectable()
 export class LogService {
     private socket:any;
-    private devices:{};//Object<DeviceService>
+    private readonly devices:{};//Object<DeviceService>
     constructor(io:Io, private user:UserService, private markerService:MarkerService) {
         this.socket = io.socket;
         this.socket.on('log', this.log.bind(this));
@@ -40,9 +41,10 @@ export class LogService {
     }
 
     log(devData:DeviceData) {
+        console.log('log -> ', devData);
         if (!devData) return;
         let user: any;
-        let device:Device = this.getDevice(this.user.user, devData);
+        let device: Device = this.getDevice(this.user.user, devData);
         if (device) {
             user = this.user.user
         }

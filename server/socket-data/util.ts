@@ -1,4 +1,4 @@
-import { LoggerRow } from '../types';
+import { LoggerRow , DeviceRow} from '../types';
 
 const dateFormat = require('dateformat');
 const hashKeys = [];
@@ -149,7 +149,7 @@ class Util {
         })
     }
 
-    getDeviceByUserId(user_id) {
+    getDeviceByUserId(user_id: string): Promise<Array<DeviceRow>> {
         return new Promise((resolve, reject) => {
             this.connection.query('SELECT * FROM `device` WHERE `user_id`=?', [user_id], function (err, rows) {
                 if (err) {
