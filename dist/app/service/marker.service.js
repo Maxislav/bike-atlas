@@ -18,6 +18,7 @@ const tail_class_1 = require("./tail.class");
 const distance_1 = require("../util/distance");
 const BehaviorSubject_1 = require("rxjs/BehaviorSubject");
 class Marker {
+    //TODO creating and update user marker
     constructor(devData, user, mapboxgl, map, timerService) {
         this.user = user;
         this.mapboxgl = mapboxgl;
@@ -32,14 +33,16 @@ class Marker {
         this.timer = new timer_service_1.Timer(devData.date);
         this.layerId = Marker.getNewLayer(0, 5000000, true) + '';
         const icoContainer = document.createElement('div');
-        icoContainer.classList.add("user-icon");
+        icoContainer.classList.add('user-icon');
         const img = this.img = new Image();
         img.src = this.user.image || 'src/img/no-avatar.gif';
         icoContainer.appendChild(img);
         this.icoContainer = icoContainer;
-        this.popup = new mapboxgl.Popup({ closeOnClick: false, offset: {
+        this.popup = new mapboxgl.Popup({
+            closeOnClick: false, offset: {
                 'bottom': [0, -20],
-            }, closeButton: false })
+            }, closeButton: false
+        })
             .setLngLat([devData.lng, devData.lat])
             .setHTML('<div>' + devData.name + '</div>')
             .addTo(map);
