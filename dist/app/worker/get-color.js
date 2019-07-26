@@ -1,8 +1,8 @@
 const f = parseFloat;
-function fc() {
+function fc(color, hue) {
     let res = 0;
     let arr = arguments;
-    Array.prototype.forEach.call(arguments, item => {
+    Array.prototype.forEach.call([color, hue], item => {
         res += getC(item);
     });
     function getC(v) {
@@ -40,7 +40,7 @@ const getRgbColor2 = (speed, limit, hue) => {
         s = speed - step;
         c = 255 - ((255 / step) * s);
         c = c.toFixed(0);
-        return [hue, 255, fc(c + hue)];
+        return [hue, 255, fc(c, hue)];
     }
     else if (speed < 3 * step) { // (0, 255,0 ) зеленый -> (255, 255,0 ) желтый
         s = speed - 2 * step;

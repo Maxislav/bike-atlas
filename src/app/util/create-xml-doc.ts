@@ -36,6 +36,7 @@ export const pointsToXmlDoc = (points:Array<Point>)=> {
     })
 };
 
+
 export const xml2string = (node)=> {
     if (typeof(XMLSerializer) !== 'undefined') {
         const serializer = new XMLSerializer();

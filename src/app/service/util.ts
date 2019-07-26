@@ -1,11 +1,8 @@
 /**
  * Created by maxislav on 01.12.16.
  */
-  
-//import Tr from "app/service/track.var";
-//import {Point} from "./track.var";
-import {Track, Point} from 'app/service/track.var';
-
+import { Point, Track } from './track.var';
+import { LngLat } from '../util/lngLat';
 
 export class Util{
   constructor(){
@@ -13,7 +10,7 @@ export class Util{
   }
 
   distance(track: Track){
-    const arrTrackFull = track.points;
+    const arrTrackFull: Array<Point> = track.points;
     var dist_sum = 0;
     var R = 6372795;  //радиус Земли
     var lat1, lat2, long1, long2;
@@ -21,14 +18,10 @@ export class Util{
     for (var i = 0; i < (arrTrackFull.length - 1); i++) {
 
       var dist = this.distanceBetween2(
-          {
-            lng: arrTrackFull[i].lng,
-            lat: arrTrackFull[i].lat,
-          },
-          {
-            lng: arrTrackFull[i + 1].lng,
-            lat: arrTrackFull[i + 1].lat
-          }
+          new LngLat(arrTrackFull[i].lng, arrTrackFull[i].lat),
+          new LngLat(arrTrackFull[i+1].lng, arrTrackFull[i+1].lat),
+
+
       );
       dist_sum = dist_sum + dist;
     }
@@ -37,7 +30,7 @@ export class Util{
     return dist_sum;
   }
 
-  distanceBetween2(point1: Point, point2: Point){
+  distanceBetween2(point1: LngLat, point2: LngLat){
     const R = 6372795;  //радиус Земли
     var lat1, lat2, long1, long2;
     lat1 = point1.lat;

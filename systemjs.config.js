@@ -21,10 +21,12 @@
     'app':                        'dist/app', // 'dist',
     '@lib':                       'lib', // 'dist',
     '@ramda':                     'node_modules/ramda/dist', // 'dist',
+    'ramda':                     'node_modules/ramda', // 'dist',
     '@angular':                   'node_modules/@angular',
     '@ngx-translate':             'node_modules/@ngx-translate',
     'ng2-translate':              'node_modules/ng2-translate',
     'socket.io-client':           'node_modules/socket.io-client',
+    'dateformat':                 'node_modules/dateformat',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'rxjs':                       'node_modules/rxjs',
     'css': 'node_modules/systemjs-plugin-css/css.js',
@@ -38,6 +40,8 @@
 
   };
   var packages = {
+    'dateformat':                  { main: 'lib/dateformat.js',  defaultExtension: 'js' },
+    'ramda':                      { main: 'dist/ramda.js',  defaultExtension: 'js' },
     'app':                        { main: 'init.js',  defaultExtension: 'js' },
     'ng2-translate':              { main: 'bundles/ng2-translate.umd.js',  defaultExtension: 'js' },
     'socket':                     {defaultExtension: 'js' },

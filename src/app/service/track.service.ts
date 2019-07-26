@@ -3,14 +3,14 @@
  */
 
 import {Injectable, transition} from '@angular/core';
-import * as R from '@ramda/ramda.min.js';
+import * as R from 'ramda';
 import {Util} from './util';
 import {Io} from "./socket.oi.service";
 import {MapService} from "./map.service";
 import {Track as Tr, Point} from "./track.var";
 import {distance} from '../util/distance';
 
-import * as dateformat from "node_modules/dateformat/lib/dateformat.js";
+import * as dateformat from "dateformat/lib/dateformat.js";
 import {ToastService} from "../component/toast/toast.component";
 
 import {Resolve} from "@angular/router";

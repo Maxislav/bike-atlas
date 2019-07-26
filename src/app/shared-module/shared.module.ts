@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuListComponent } from 'app/shared-module/menu-list-component/menu-list-component';
+import { MenuListComponent } from './menu-list-component/menu-list-component';
 
 @NgModule({
     imports: [

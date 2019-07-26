@@ -14,13 +14,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var TrackService_1;
 const core_1 = require("@angular/core");
-const R = require("@ramda/ramda.min.js");
+const R = require("ramda");
 const util_1 = require("./util");
 const socket_oi_service_1 = require("./socket.oi.service");
 const map_service_1 = require("./map.service");
 const track_var_1 = require("./track.var");
 const distance_1 = require("../util/distance");
-const dateformat = require("node_modules/dateformat/lib/dateformat.js");
+const dateformat = require("dateformat/lib/dateformat.js");
 const toast_component_1 = require("../component/toast/toast.component");
 //console.log(dateformat)
 const F = parseFloat;

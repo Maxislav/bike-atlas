@@ -6,21 +6,25 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
-    "rootDir": "./src",
-    "outDir": "dist/",
-    "typeRoots" : ["./src/@types"]
+    "rootDir": "./server",
+    "outDir": "server/",
+    "typeRoots" : ["./typings"],
+    "types": [
+      "node"
+    ]
 
   },
   "filesGlob": [
     "./src/types.d.ts",
     "!./node_modules/**/*.ts"
   ],
+
   "exclude": [
+    "src",
     "dist",
     "@angular",
     "**/node_modules/*",
     "./node_modules/*",
-    "node_modules",
-    "server"
+    "node_modules"
   ]
 }

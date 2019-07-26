@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@angular/core");
 const common_1 = require("@angular/common");
-const menu_list_component_1 = require("app/shared-module/menu-list-component/menu-list-component");
+const menu_list_component_1 = require("./menu-list-component/menu-list-component");
 let SharedModule = class SharedModule {
 };
 SharedModule = __decorate([

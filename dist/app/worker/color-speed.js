@@ -13,7 +13,7 @@ onmessage = (e) => {
     colors.forEach(item => {
         resColors.push([item, item]);
     });
-    postMessage([points, resColors]);
+    postMessage([points, resColors], null);
     close();
 };
 //# sourceMappingURL=color-speed.js.map

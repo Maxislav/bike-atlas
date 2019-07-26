@@ -25,6 +25,6 @@ onmessage = (e)=>{
     })
     
 
-    postMessage([points, resColors]);
+    postMessage([points, resColors], null);
     close()
 };

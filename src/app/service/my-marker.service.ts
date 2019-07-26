@@ -1,9 +1,9 @@
 import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector } from '@angular/core';
-import { MapService } from 'app/service/map.service';
-import { LngLat, MapMarker, Popup } from 'src/@types/global';
-import { MyInputPopupComponent } from 'app/component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
-import { Io } from 'app/service/socket.oi.service';
-import { ToastService } from 'app/component/toast/toast.component';
+import { MapService } from '../service/map.service';
+import { LngLat, MapMarker, Popup } from '../../@types/global';
+import { MyInputPopupComponent } from '../component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
+import { Io } from '../service/socket.oi.service';
+import { ToastService } from '../component/toast/toast.component';
 
 export interface MyMarker {
     id: number,
@@ -167,7 +167,7 @@ export class MyMarkerService {
     private createInputPopup(el: HTMLElement, title: string, id: number): ComponentRef<MyInputPopupComponent> {
         const inputEl = document.createElement('my-input-popup-component');
         const factory = this.componentFactoryResolver.resolveComponentFactory(MyInputPopupComponent);
-        const inputRef: MyInputPopupComponent = factory.create(this.injector, [], inputEl);
+        const inputRef: ComponentRef<any> = factory.create(this.injector, [], inputEl);
         inputRef.instance.title = title;
         inputRef.instance.id = id;
         inputRef.instance.onSave.subscribe(v => {

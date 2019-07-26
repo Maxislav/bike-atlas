@@ -24,10 +24,10 @@ class MyImage extends Image {
 const images = {};
 function createCORSRequest(method, url) {
     var xhr = new XMLHttpRequest();
-    if ("withCredentials" in xhr) {
+    if ('withCredentials' in xhr) {
         xhr.open(method, url, true);
     }
-    else if (typeof XDomainRequest != "undefined") {
+    else if (typeof XDomainRequest != 'undefined') {
         xhr = new XDomainRequest();
         xhr.open(method, url);
     }
@@ -38,7 +38,7 @@ function createCORSRequest(method, url) {
 }
 function loadPromise(url) {
     return new Promise((resolve, reject) => {
-        var xhr = createCORSRequest("GET", url);
+        var xhr = createCORSRequest('GET', url);
         xhr.open('GET', url, true);
         xhr.responseType = 'arraybuffer';
         xhr.onerror = function (e) {

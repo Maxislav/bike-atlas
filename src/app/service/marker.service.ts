@@ -9,7 +9,7 @@ import {TailClass} from './tail.class'
 import {distance} from "../util/distance";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { MapBoxGl } from '../../@types/global';
+import { MapBoxGl, MapGl, MapMarker, Popup } from '../../@types/global';
 
 export interface MarkerInterface {
     id:string;
@@ -65,7 +65,7 @@ export class Marker implements DeviceData {
     private status: string = 'white';
     private intervalUpdateMarker: number;
     private timer: Timer;
-    private img: Image;
+    private img: any;
 
 
     constructor(devData: DeviceData, private user: User, private mapboxgl: MapBoxGl, private map: MapGl, private timerService: TimerService) {

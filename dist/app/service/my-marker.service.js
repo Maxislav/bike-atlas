@@ -9,12 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a, _b, _c;
 const core_1 = require("@angular/core");
-const map_service_1 = require("app/service/map.service");
-const my_input_popup_component_1 = require("app/component/my-marker-list-component/my-input-popup-component/my-input-popup-component");
-const socket_oi_service_1 = require("app/service/socket.oi.service");
-const toast_component_1 = require("app/component/toast/toast.component");
+const map_service_1 = require("../service/map.service");
+const my_input_popup_component_1 = require("../component/my-marker-list-component/my-input-popup-component/my-input-popup-component");
+const socket_oi_service_1 = require("../service/socket.oi.service");
+const toast_component_1 = require("../component/toast/toast.component");
 let MyMarkerService = class MyMarkerService {
     constructor(io, mapService, injector, applicationRef, componentFactoryResolver, toast) {
         this.io = io;
@@ -146,9 +145,12 @@ let MyMarkerService = class MyMarkerService {
 };
 MyMarkerService = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [typeof (_a = typeof socket_oi_service_1.Io !== "undefined" && socket_oi_service_1.Io) === "function" && _a || Object, typeof (_b = typeof map_service_1.MapService !== "undefined" && map_service_1.MapService) === "function" && _b || Object, core_1.Injector,
+    __metadata("design:paramtypes", [socket_oi_service_1.Io,
+        map_service_1.MapService,
+        core_1.Injector,
         core_1.ApplicationRef,
-        core_1.ComponentFactoryResolver, typeof (_c = typeof toast_component_1.ToastService !== "undefined" && toast_component_1.ToastService) === "function" && _c || Object])
+        core_1.ComponentFactoryResolver,
+        toast_component_1.ToastService])
 ], MyMarkerService);
 exports.MyMarkerService = MyMarkerService;
 //# sourceMappingURL=my-marker.service.js.map

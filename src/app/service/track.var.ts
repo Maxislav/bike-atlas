@@ -28,10 +28,10 @@ export class Point extends Array<number>{
     set bearing(val: number){
         this[2] = val
     }
-    get date():Date | String {
+    get date():Date | string {
         return this._date;
     }
-    set date(value: String | Date) {
+    set date(value: string | Date) {
         this._date = new Date(value);
     }
 

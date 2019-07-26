@@ -38,7 +38,11 @@ export interface LngLat extends Array<number> {
 interface MapMarker {
     new(HTMLElement, options: Object)
     setLngLat(lngLat: Array<number> | LngLat): this
+    getLngLat(): LngLat
+
+    addTo(map:any)
     remove(): this
+    togglePopup()
 }
 
 export declare interface MapGl {

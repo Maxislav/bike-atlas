@@ -1,8 +1,6 @@
 "use strict";
-/**
- * Created by maxislav on 01.12.16.
- */
 Object.defineProperty(exports, "__esModule", { value: true });
+const lngLat_1 = require("../util/lngLat");
 class Util {
     constructor() {
     }
@@ -12,13 +10,7 @@ class Util {
         var R = 6372795; //радиус Земли
         var lat1, lat2, long1, long2;
         for (var i = 0; i < (arrTrackFull.length - 1); i++) {
-            var dist = this.distanceBetween2({
-                lng: arrTrackFull[i].lng,
-                lat: arrTrackFull[i].lat,
-            }, {
-                lng: arrTrackFull[i + 1].lng,
-                lat: arrTrackFull[i + 1].lat
-            });
+            var dist = this.distanceBetween2(new lngLat_1.LngLat(arrTrackFull[i].lng, arrTrackFull[i].lat), new lngLat_1.LngLat(arrTrackFull[i + 1].lng, arrTrackFull[i + 1].lat));
             dist_sum = dist_sum + dist;
         }
         dist_sum = dist_sum / 1000;
