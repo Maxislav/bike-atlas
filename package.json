@@ -8,7 +8,8 @@
     "gulpDev": "node_modules/.bin/gulp",
     "lite": "lite-server",
     "tsc": "tsc --project tsconfig.json",
-    "tsc:w": "tsc -w",
+    "tsc:w": "tsc -w --project tsconfig-ui.json",
+    "tsc-be:w": "tsc -w --project tsconfig-be.json",
     "typings": "typings"
   },
   "repository": {
