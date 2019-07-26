@@ -86,8 +86,36 @@ class OnAuth extends ProtoData {
                         this.gl520.updateDevice(key, this.socket.id);
                         row.lng = Number(row.lng);
                         row.lat = Number(row.lat);
-                        this.socket.emit('log', row);
-                        return row;
+                        return util.getLastBSPosition(key)
+                            .then(rowList => {
+                            let loggerRow = row;
+                            const arrGroup = this.groupByDate(rowList);
+                            let lastGroup = [];
+                            let lastPointDate = new Date(row.date).getTime();
+                            let lastGroupDate = 0;
+                            if (arrGroup.length) {
+                                lastGroup = arrGroup[arrGroup.length - 1];
+                            }
+                            if (lastGroup.length) {
+                                lastGroupDate = new Date(lastGroup[lastGroup.length - 1].date).getTime();
+                            }
+                            if (lastPointDate < lastGroupDate) {
+                                loggerRow = {
+                                    alt: 0,
+                                    azimuth: 0,
+                                    date: lastGroup[lastGroup.length - 1].date,
+                                    device_key: key,
+                                    id: lastGroup[lastGroup.length - 1].id,
+                                    lng: this.getRound(...lastGroup.map(item => Number(item.lng))),
+                                    lat: this.getRound(...lastGroup.map(item => Number(item.lat))),
+                                    speed: 0,
+                                    src: lastGroup.map(item => item.src).join(';'),
+                                    type: 'BS',
+                                    bs: lastGroup
+                                };
+                            }
+                            this.socket.emit('log', loggerRow);
+                        });
                     });
                 })).then((rows) => {
                     deferred.resolve(rows);
@@ -119,11 +147,30 @@ class OnAuth extends ProtoData {
                 result: false,
                 message: err
             });
-            /*this.socket.emit(eName, {
-                result: false,
-                message: err
-            });*/
         });
+    }
+    getRound(...list) {
+        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+        return list.reduce(reducer) / list.length;
+    }
+    groupByDate(list) {
+        const s = new Set();
+        const idMap = {};
+        const resArr = [];
+        const _list = list.map(item => {
+            idMap[item.id] = item;
+            const dateInt = new Date(item.date).getTime();
+            s.add(dateInt);
+            return Object.assign({
+                dateInt
+            }, item);
+        });
+        const arr = Array.from(s).sort();
+        arr.forEach(dateInt => {
+            const group = _list.filter(it => it.dateInt === dateInt).map(item => idMap[item.id]);
+            resArr.push(group);
+        });
+        return resArr;
     }
 }
 module.exports = {

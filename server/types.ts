@@ -19,6 +19,10 @@ export interface LoggerRow {
     type: 'POINT' | 'BS'
 }
 
+export interface LoggerBsRow extends LoggerRow{
+    bs: Array<LoggerRow>
+}
+
 
 export interface User {
     id: number,
