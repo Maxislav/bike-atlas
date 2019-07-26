@@ -9,9 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const core_1 = require("@angular/core");
-const track_service_1 = require("app/service/track.service");
+const track_service_1 = require("../../service/track.service");
 let TrackList = class TrackList {
     constructor(trackService) {
         this.trackService = trackService;
@@ -25,7 +24,7 @@ TrackList = __decorate([
         templateUrl: "./track-list.html",
         styleUrls: ['./track-list.css']
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof track_service_1.TrackService !== "undefined" && track_service_1.TrackService) === "function" && _a || Object])
+    __metadata("design:paramtypes", [track_service_1.TrackService])
 ], TrackList);
 exports.TrackList = TrackList;
 //# sourceMappingURL=track-list.component.js.map

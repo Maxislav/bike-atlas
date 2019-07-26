@@ -8,7 +8,7 @@ import {InfoPositionComponent} from "../info-position/info-position-component";
 import {MenuComponent} from "../menu/menu.component";
 import {AuthService} from "../../service/auth.service";
 
-
+declare const module: any;
 @Component({
     moduleId: module.id,
     templateUrl:'auth.component.html',

@@ -7,12 +7,12 @@ import {
     Injector,
     OnDestroy
 } from '@angular/core';
-import { MyMarkerService } from 'app/service/my-marker.service';
-import { MapService } from 'app/service/map.service';
-import { MapMarker } from 'src/@types/global';
-import { MyInputPopupComponent } from 'app/component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
-import { MyMapMarker, MyMarker } from 'src/app/service/my-marker.service';
-import { MenuItem } from 'src/app/shared-module/menu-list-component/menu-list-component';
+import { MyMarkerService } from '../../service/my-marker.service';
+import { MapService } from '../../service/map.service';
+import { MyInputPopupComponent } from '../../component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
+import { MyMapMarker } from '../../service/my-marker.service';
+import { MenuItem } from '../../shared-module/menu-list-component/menu-list-component';
+import { MyMarker } from '../../../@types/global';
 
 declare var module: { id: string };
 

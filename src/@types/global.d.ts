@@ -31,6 +31,7 @@ interface ModuleInterface {
 declare var module: ModuleInterface;
 
 export interface LngLat extends Array<number> {
+    new(lng: number, lat: number) : LngLat
     lng: number,
     lat: number
 }
@@ -82,13 +83,16 @@ interface Popup {
 
     addTo(MapBoxGl): this
 
+    setDOMContent(HTMLElement): this
+
     remove(): this
 }
 
 interface MapBoxGl {
     Popup: Popup,
     Map: MapGl
-    Marker: MapMarker
+    Marker: MapMarker;
+    LngLat:  LngLat
 }
 
 
@@ -119,6 +123,7 @@ export interface MyMarker {
     lng: number,
     lat: number,
     title: string
+    remove(): void
 }
 
 export interface User{
@@ -128,6 +133,7 @@ export interface User{
     deviceKeys?:Array<string>;
     setting?: any;
     devices?: Array<Device>;
-    markers: Array<MyMarker>
+    markers: Array<MyMarker>;
+
 }
 

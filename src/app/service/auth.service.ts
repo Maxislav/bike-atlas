@@ -7,7 +7,7 @@ import { UserService } from './main.user.service';
 import { ChatService } from './chat.service';
 import { ToastService } from '../component/toast/toast.component';
 import { Deferred } from '../util/deferred';
-import { MyMarkerService } from 'app/service/my-marker.service';
+import { MyMarkerService } from '../service/my-marker.service';
 
 export interface Setting {
     hill?: boolean;

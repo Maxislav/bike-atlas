@@ -4,17 +4,16 @@ import { Directive, ElementRef, Input, Renderer } from '@angular/core';
 import { MapService } from '../service/map.service';
 import { PositionSize } from '../service/position-size.service';
 import { LocalStorage } from '../service/local-storage.service';
-import * as mapboxgl from '@lib/mapbox-gl/mapbox-gl.js';
+import * as mapboxgl from '../../../lib/mapbox-gl/mapbox-gl.js';
 import { Resolve } from '@angular/router';
 import { AuthService, Setting } from '../service/auth.service';
 import { UserService } from '../service/main.user.service';
 import { MapBoxGl, MapGl } from '../../@types/global';
 
-
-
 class MyMap extends mapboxgl.Map {
-    onLoad: Promise<MapGl>;
-
+    onLoad: Promise<MyMap>;
+    on: (name: string, callback: () => void) => void;
+    addControl: (any) => void;
     constructor(...args) {
         super(...args);
         this.onLoad = new Promise((resoleve) => {

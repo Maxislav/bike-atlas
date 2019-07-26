@@ -1,11 +1,12 @@
 
 import {Component, Directive, ElementRef, Renderer} from "@angular/core";
 import {Location} from '@angular/common';
-import {FriendsService, User} from "../../service/friends.service";
+import {FriendsService} from "../../service/friends.service";
 import {ToastService} from "../toast/toast.component";
 import {Router, ActivatedRoute} from "@angular/router";
 import {ChatService} from "../../service/chat.service";
 import {NavigationHistory} from "../../app.component";
+import { User } from '../../../@types/global';
 
 
 @Directive({
@@ -24,7 +25,7 @@ export class UsersContainer{
     }
 }
 
-
+declare const module: any;
 @Component({
     //noinspection TypeScriptUnresolvedVariable
     moduleId: module.id,

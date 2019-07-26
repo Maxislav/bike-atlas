@@ -1,15 +1,16 @@
 import { Component, Output, EventEmitter, HostListener } from '@angular/core';
-import { MenuService } from 'app/service/menu.service';
-import { Io } from 'app/service/socket.oi.service';
-import { TrackService } from 'app/service/track.service';
+import { MenuService } from '../../../service/menu.service';
+import { Io } from '../../../service/socket.oi.service';
+import { TrackService } from '../../../service/track.service';
 import { Router } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-import * as ss from 'node_modules/socket.io-stream/socket.io-stream.js';
+//import * as ss from 'node_modules/socket.io-stream/socket.io-stream.js';
+import * as ss from 'socket.io-stream/socket.io-stream.js';
 import { Subscriber } from 'rxjs/Subscriber';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/src/Subscription';
 import { Observer } from 'rxjs/Observer';
-import { MyMarkerService } from 'app/service/my-marker.service';
+import { MyMarkerService } from '../../../service/my-marker.service';
 
 const log = console.log;
 
@@ -142,7 +143,7 @@ export class MenuTrackComponent {
 
     }
 
-    loadFile(e: Event) {
+    loadFile(e: any) {
         this.clickLoad++;
         const elFile: myElement = e.target.parentElement.getElementsByTagName('input')[1];
         elFile.addEventListener('change', () => {
@@ -172,7 +173,7 @@ export class MenuTrackComponent {
         }
     }
 
-    importFromGoogleKml(e: Event) {
+    importFromGoogleKml(e: any) {
         this.clickLoad++;
         const elFile: myElement = e.target.parentElement.getElementsByTagName('input')[1];
         elFile.addEventListener('change', () => {
@@ -202,7 +203,7 @@ export class MenuTrackComponent {
         }
     }
 
-    importFile(e: Event) {
+    importFile(e: any) {
         this.clickLoad++;
 
         const trackService = this.trackService;

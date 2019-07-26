@@ -2,7 +2,6 @@
 
 
 import {Component, Input, OnInit, AfterViewInit, ElementRef} from "@angular/core";
-import {User} from "../../../service/main.user.service";
 import {deepCopy} from "../../../util/deep-copy";
 import {ChatService} from "../../../service/chat.service";
 import {FriendsService} from "../../../service/friends.service";

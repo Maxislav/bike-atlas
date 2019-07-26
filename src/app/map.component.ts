@@ -7,6 +7,8 @@ import {LogService} from "./service/log.service";
 import { APP_INITIALIZER } from '@angular/core';
 import {Resolve} from "@angular/router";
 import {fadeInAnimation} from  './animation/animation'
+
+declare const module: any;
 @Component({
     moduleId: module.id,
     template: [

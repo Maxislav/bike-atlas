@@ -2,14 +2,13 @@ import {Injectable} from "@angular/core";
 import {MapService} from "./map.service";
 import {DeviceData} from "./log.service";
 import {TimerService, Timer} from "./timer.service";
-import {User} from "./main.user.service";
 import {elapsedStatus} from "../util/elapsed-status";
 import {Point} from "./track.var";
 import {TailClass} from './tail.class'
 import {distance} from "../util/distance";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { MapBoxGl, MapGl, MapMarker, Popup } from '../../@types/global';
+import { MapBoxGl, MapGl, MapMarker, Popup, User } from '../../@types/global';
 
 export interface MarkerInterface {
     id:string;

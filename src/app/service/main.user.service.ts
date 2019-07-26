@@ -7,7 +7,6 @@ import {ToastService} from "../component/toast/toast.component";
 import {Router} from "@angular/router";
 import {Deferred} from "../util/deferred";
 import {AuthService} from './auth.service';
-import { MyMarker } from '../service/my-marker.service';
 
 
 

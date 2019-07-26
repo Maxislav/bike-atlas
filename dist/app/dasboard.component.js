@@ -17,6 +17,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 const core_1 = require("@angular/core");
 const router_1 = require("@angular/router");
+//import {TransactionResolver} from "./transaction.resolve";
 let DashboardComponent = class DashboardComponent {
     constructor(router) {
         this.router = router;

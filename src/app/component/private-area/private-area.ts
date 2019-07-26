@@ -2,11 +2,11 @@ import {Component} from "@angular/core";
 import {Router} from "@angular/router";
 import {NavigationHistory} from "../../app.component";
 import {Location} from '@angular/common';
-import {PrivateAreaService, Area} from "../../service/private.area.service";
+import {PrivateAreaService} from "../../service/private.area.service";
 import {UserService} from "../../service/main.user.service";
 import {Setting} from "../../service/auth.service";
 import {distance} from "../../util/distance";
-
+declare  const module: any;
 @Component({
     //noinspection TypeScriptUnresolvedVariable
     moduleId: module.id,
@@ -16,8 +16,8 @@ import {distance} from "../../util/distance";
 export class PrivateArea{
 
 
-    private myArea: Area;
-    private areas: Array<Area>;
+    private myArea: any;
+    private areas: Array<any>;
     private clickCount: number = 0;
     private map: any;
     private _lng:number;
@@ -118,11 +118,11 @@ export class PrivateArea{
         
     }
 
-    onDel(area: Area){
+    onDel(area: any){
         console.log(area)
         this.areaService.removeArea(area.id)
     }
-    onOver(area: Area){
+    onOver(area: any){
         this.map.panTo([area.lng, area.lat])
     }
 

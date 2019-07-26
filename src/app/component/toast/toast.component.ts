@@ -54,7 +54,7 @@ export class ToastService{
 
 }
 
-
+declare const module: any;
 @Component({
     moduleId: module.id,
     selector: 'toast-component',

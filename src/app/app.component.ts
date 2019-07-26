@@ -4,7 +4,9 @@ import { Router, NavigationEnd } from '@angular/router';
 import { MenuService } from './service/menu.service';
 import { TrackService } from './service/track.service';
 import { Track as Tr } from './service/track.var';
-import { Marker, MyMarkerService } from './service/my-marker.service';
+import { MyMarkerService } from './service/my-marker.service';
+import { Marker } from './service/marker.service';
+import { MyMapMarker } from './service/my-marker.service';
 
 declare var module: { id: string };
 
@@ -35,7 +37,7 @@ export class NavigationHistory {
 export class AppComponent {
     title = 'Tour of Heroes';
     trackList: Array<Tr>;
-    markerList: Array<Marker>;
+    markerList: Array<MyMapMarker>;
     constructor(private router: Router,
                 nh: NavigationHistory,
                 private menuService: MenuService,

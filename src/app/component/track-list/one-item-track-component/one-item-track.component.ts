@@ -7,7 +7,7 @@ import {Util} from "../../../service/util";
 import {ToastService} from "../../toast/toast.component";
 import {StravaService} from "../../../service/strava.service";
 import {Router} from "@angular/router";
-import * as R from "@ramda/ramda.min.js";
+import * as R from "ramda";
 import {MapArea as Area} from "../../../interface/MapArea";
 import {distance} from "../../../util/distance"
 declare const module: any;
@@ -102,7 +102,7 @@ export class OneItemTrackComponent implements OnInit{
             }
         };
 
-        this.mouseMapDown = (e: Event)=>{
+        this.mouseMapDown = (e: {lngLat: LngLat})=>{
             center.setValue(e.lngLat);
             this.map.on('mousemove', this.mouseMove)
         };
@@ -343,7 +343,7 @@ export class OneItemTrackComponent implements OnInit{
 
     }
 
-    private createXmlDoc(points: Array<Point>): Promise<Document>{
+    private createXmlDoc(points: Array<Point>): Promise<Element>{
         return new Promise((resolve, reject)=>{
             const parser = new DOMParser();
             const xmlDoc: Element = document.createElement('gpx');
@@ -380,7 +380,7 @@ export class OneItemTrackComponent implements OnInit{
         })
     }
 
-    private download(xmlDoc: Document){
+    private download(xmlDoc: Document | Element){
         const time = xmlDoc.getElementsByTagName('time')[0];
         download(time.innerHTML + '.gpx', xml2string(xmlDoc));
 

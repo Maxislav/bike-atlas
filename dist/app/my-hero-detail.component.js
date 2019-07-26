@@ -9,12 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 /**
  * Created by maxislav on 18.08.16.
  */
 const core_1 = require("@angular/core");
-const hero_1 = require("./hero");
 let HeroDetailComponent = class HeroDetailComponent {
     constructor() {
         this.hero = {
@@ -25,7 +23,7 @@ let HeroDetailComponent = class HeroDetailComponent {
 };
 __decorate([
     core_1.Input(),
-    __metadata("design:type", typeof (_a = typeof hero_1.Hero !== "undefined" && hero_1.Hero) === "function" && _a || Object)
+    __metadata("design:type", Object)
 ], HeroDetailComponent.prototype, "hero", void 0);
 HeroDetailComponent = __decorate([
     core_1.Component({

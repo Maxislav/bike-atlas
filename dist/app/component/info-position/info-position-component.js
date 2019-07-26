@@ -18,8 +18,8 @@ const mercator_service_1 = require("../../service/mercator.service");
 let InfoPositionComponent = class InfoPositionComponent {
     constructor(mercator, mapService) {
         this.changes = (lat, lng, zoom) => {
-            this.mapService.latMap = lat;
-            this.mapService.lngMap = lng;
+            this.mapService.latMap = String(lat);
+            this.mapService.lngMap = String(lng);
             //console.log(lat, lng)
             // this.pixelY = this.mercator.getYpixel(lat, zoom);
             //this.pixelX = this.mercator.getYpixel(lng, zoom);

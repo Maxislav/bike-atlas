@@ -2,9 +2,9 @@
 
 import {Injectable} from "@angular/core";
 import {Room, Message} from "../component/chat-component/chat-room/chat-room.component";
-import {User} from "./main.user.service";
 import {Io} from "./socket.oi.service";
 import {Deferred} from "../util/deferred";
+import { User } from '../../@types/global';
 
 interface ResMessage {
     userId: number
@@ -21,7 +21,7 @@ export class ChatService{
     messages: {[roomId:number]:Array<Message>}={};
     roomsObj: {[id:number]:Room} = {};
     private socket;
-    unViewedDefer: Deferred;
+    unViewedDefer: Deferred<any>;
     private _unViewedIds: Array<number> = [];
     addChatUnViewed: Function;
 

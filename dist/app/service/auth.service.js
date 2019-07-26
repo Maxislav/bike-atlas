@@ -9,7 +9,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const core_1 = require("@angular/core");
 const socket_oi_service_1 = require("./socket.oi.service");
 const local_storage_service_1 = require("./local-storage.service");
@@ -19,7 +18,7 @@ const main_user_service_1 = require("./main.user.service");
 const chat_service_1 = require("./chat.service");
 const toast_component_1 = require("../component/toast/toast.component");
 const deferred_1 = require("../util/deferred");
-const my_marker_service_1 = require("app/service/my-marker.service");
+const my_marker_service_1 = require("../service/my-marker.service");
 let AuthService = class AuthService {
     constructor(io, ls, friend, userService, chatService, toast, myMarkerService, router) {
         this.io = io;
@@ -121,7 +120,9 @@ AuthService = __decorate([
         friends_service_1.FriendsService,
         main_user_service_1.UserService,
         chat_service_1.ChatService,
-        toast_component_1.ToastService, typeof (_a = typeof my_marker_service_1.MyMarkerService !== "undefined" && my_marker_service_1.MyMarkerService) === "function" && _a || Object, router_1.Router])
+        toast_component_1.ToastService,
+        my_marker_service_1.MyMarkerService,
+        router_1.Router])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

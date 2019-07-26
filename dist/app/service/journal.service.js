@@ -30,7 +30,7 @@ let JournalService = class JournalService {
         this.selectDate = new Date(d.getFullYear(), d.getMonth(), d.getDate() + step);
         let from = this.selectDate;
         let to = new Date(this.selectDate.getFullYear(), this.selectDate.getMonth(), this.selectDate.getDate() + 1);
-        this.getTrack(from, to);
+        // this.getTrack(from, to);
         return this.selectDate;
     }
     getTrack(device_key, from, to) {

@@ -11,12 +11,14 @@ import {TrackService} from "../../service/track.service";
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
 import {FriendsService} from "../../service/friends.service";
-import {UserService, User} from "../../service/main.user.service";
+import {UserService} from "../../service/main.user.service";
 import {ToastService} from "../toast/toast.component";
 import {MapService} from "../../service/map.service";
 import {ChatService} from "../../service/chat.service";
 import {ngIfAnimation} from '../../animation/animation'
+import { User } from '../../../@types/global';
 
+declare var module: any;
 declare var document: any;
 declare const System: any;
 

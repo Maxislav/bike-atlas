@@ -14,7 +14,7 @@ enum MessageType {
     GTLBS,
     GTGSM
 }
-
+declare const module: any;
 @Component({
     moduleId: module.id,
     templateUrl: './gtgbc.component.html',

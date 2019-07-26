@@ -4,7 +4,6 @@
 
 import {Component, AfterViewInit} from '@angular/core';
 import { Directive, ElementRef, Input, Renderer } from '@angular/core';
-import any = jasmine.any;
 import {MapService} from "../service/map.service";
 import {PositionSize} from "../service/position-size.service";
 

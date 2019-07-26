@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 //import { Rp } from '@angular/core';
-import {MenuService} from "app/service/menu.service";
+import {MenuService} from "../../../service/menu.service";
 import {Router} from "@angular/router";
 import {Io} from "../../../service/socket.oi.service";
 import {Md5} from "../../../service/md5.service";
@@ -11,9 +11,10 @@ import {DeviceService} from "../../../service/device.service";
 import {LoginService} from "../../../service/login.service";
 import {LogService} from "../../../service/log.service";
 import {FriendsService} from "../../../service/friends.service";
-import {UserService, User} from "../../../service/main.user.service";
+import {UserService} from "../../../service/main.user.service";
+import { User } from '../../../../@types/global';
 //import {RouterLink} from "@angular/router-deprecated";
-
+declare const module: any;
 
 @Component({
     moduleId: module.id,

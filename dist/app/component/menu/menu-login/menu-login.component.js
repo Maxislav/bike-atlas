@@ -9,10 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a;
 const core_1 = require("@angular/core");
 //import { Rp } from '@angular/core';
-const menu_service_1 = require("app/service/menu.service");
+const menu_service_1 = require("../../../service/menu.service");
 const router_1 = require("@angular/router");
 const socket_oi_service_1 = require("../../../service/socket.oi.service");
 const md5_service_1 = require("../../../service/md5.service");
@@ -24,7 +23,6 @@ const login_service_1 = require("../../../service/login.service");
 const log_service_1 = require("../../../service/log.service");
 const friends_service_1 = require("../../../service/friends.service");
 const main_user_service_1 = require("../../../service/main.user.service");
-//import {RouterLink} from "@angular/router-deprecated";
 let MenuLoginComponent = class MenuLoginComponent {
     constructor(router, ms, io, md5, ls, as, ds, ts, logService, friend, loginService, userService) {
         this.router = router;
@@ -81,7 +79,9 @@ MenuLoginComponent = __decorate([
         templateUrl: './menu-login.component.html',
         styleUrls: ['./menu-login.css'],
     }),
-    __metadata("design:paramtypes", [router_1.Router, typeof (_a = typeof menu_service_1.MenuService !== "undefined" && menu_service_1.MenuService) === "function" && _a || Object, socket_oi_service_1.Io,
+    __metadata("design:paramtypes", [router_1.Router,
+        menu_service_1.MenuService,
+        socket_oi_service_1.Io,
         md5_service_1.Md5,
         local_storage_service_1.LocalStorage,
         auth_service_1.AuthService,

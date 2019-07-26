@@ -4,7 +4,7 @@
 import { Injectable, ApplicationRef } from '@angular/core';
 import { SimpleChanges, OnChanges } from '@angular/core';
 import { LocalStorage } from '../service/local-storage.service';
-import { MapBoxGl, MapGl } from 'src/@types/global';
+import { MapBoxGl, MapGl } from '../../@types/global';
 
 
 @Injectable()
@@ -14,8 +14,8 @@ export class MapService {
     public _map: any;
     public lat: number;
     public lng: number;
-    public lngMap: string;
-    public latMap: string;
+    public lngMap: string ;
+    public latMap: string ;
     public zoom: string;
     public foo: Function;
     public pitch: string;

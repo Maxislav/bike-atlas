@@ -26,6 +26,7 @@
     '@ngx-translate':             'node_modules/@ngx-translate',
     'ng2-translate':              'node_modules/ng2-translate',
     'socket.io-client':           'node_modules/socket.io-client',
+    'socket.io-stream':           'node_modules/socket.io-stream',
     'dateformat':                 'node_modules/dateformat',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     'rxjs':                       'node_modules/rxjs',

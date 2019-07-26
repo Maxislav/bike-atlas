@@ -9,15 +9,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a, _b, _c, _d;
 const core_1 = require("@angular/core");
-const menu_service_1 = require("app/service/menu.service");
-const socket_oi_service_1 = require("app/service/socket.oi.service");
-const track_service_1 = require("app/service/track.service");
+const menu_service_1 = require("../../../service/menu.service");
+const socket_oi_service_1 = require("../../../service/socket.oi.service");
+const track_service_1 = require("../../../service/track.service");
 const router_1 = require("@angular/router");
 const fromEvent_1 = require("rxjs/observable/fromEvent");
-const ss = require("node_modules/socket.io-stream/socket.io-stream.js");
-const my_marker_service_1 = require("app/service/my-marker.service");
+//import * as ss from 'node_modules/socket.io-stream/socket.io-stream.js';
+const ss = require("socket.io-stream/socket.io-stream.js");
+const my_marker_service_1 = require("../../../service/my-marker.service");
 const log = console.log;
 const MENU = [
     {
@@ -220,7 +220,11 @@ MenuTrackComponent = __decorate([
         templateUrl: './menu-track.html',
         styleUrls: ['./menu-track.css'],
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof menu_service_1.MenuService !== "undefined" && menu_service_1.MenuService) === "function" && _a || Object, typeof (_b = typeof socket_oi_service_1.Io !== "undefined" && socket_oi_service_1.Io) === "function" && _b || Object, typeof (_c = typeof track_service_1.TrackService !== "undefined" && track_service_1.TrackService) === "function" && _c || Object, router_1.Router, typeof (_d = typeof my_marker_service_1.MyMarkerService !== "undefined" && my_marker_service_1.MyMarkerService) === "function" && _d || Object])
+    __metadata("design:paramtypes", [menu_service_1.MenuService,
+        socket_oi_service_1.Io,
+        track_service_1.TrackService,
+        router_1.Router,
+        my_marker_service_1.MyMarkerService])
 ], MenuTrackComponent);
 exports.MenuTrackComponent = MenuTrackComponent;
 //# sourceMappingURL=menu-track.component.js.map

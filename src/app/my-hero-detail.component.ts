@@ -2,7 +2,10 @@
  * Created by maxislav on 18.08.16.
  */
 import { Component, Input } from '@angular/core';
-import { Hero } from './hero'
+
+interface Hero {
+
+}
 
 @Component({
     selector: 'my-hero-detail',

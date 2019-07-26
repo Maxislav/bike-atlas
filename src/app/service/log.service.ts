@@ -1,9 +1,10 @@
 import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
-import {DeviceService, Device} from "./device.service";
+import {DeviceService} from "./device.service";
 import {MarkerService, Marker} from "./marker.service";
-import {UserService, User} from "./main.user.service";
+import {UserService} from "./main.user.service";
 import {deepCopy} from "../util/deep-copy";
+import { Device, User } from '../../@types/global';
 //import {MarkerService} from "./marker.service";
 
 export interface DeviceData {
@@ -40,7 +41,7 @@ export class LogService {
 
     log(devData:DeviceData) {
         if (!devData) return;
-        let user:User;
+        let user: any;
         let device:Device = this.getDevice(this.user.user, devData);
         if (device) {
             user = this.user.user

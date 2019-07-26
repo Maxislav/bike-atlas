@@ -8,7 +8,9 @@ import {LocalStorage} from "./local-storage.service";
 import {UserService} from "./main.user.service";
 import {ChatService} from "./chat.service";
 import {Message} from "../component/chat-component/chat-room/chat-room.component";
+import { User } from '../../@types/global';
 
+/*
 
 export interface User{
     id: number;
@@ -17,6 +19,11 @@ export interface User{
     image: string;
     marker ?: Marker;
     chatUnViewed?: Array<number>
+}
+*/
+
+export interface UserWithChat extends User{
+    chatUnViewed: any
 }
 
 
@@ -33,10 +40,10 @@ export class FriendsService {
     
     private socket: any;
     //private _friends: Array<User>;
-    private _users: Array<User>;
+    private _users: Array<UserWithChat>;
     private _invites: Array<User>;
     private _myInvites: Array<User>;
-    private _friends: Array<User> =[];
+    private _friends: Array<UserWithChat> =[];
 
 
     constructor(
@@ -74,7 +81,7 @@ export class FriendsService {
 
             })
     }
-    bindChatUnViewed(user: Array<User>){
+    bindChatUnViewed(user: Array<UserWithChat>){
         this.chatService.unViewedDefer.promise.then(d=>{
             console.log('unViewedDefer->',d)
             user.forEach(user=>{
@@ -97,7 +104,7 @@ export class FriendsService {
             }
         });
 
-        function push(user: User){
+        function push(user: UserWithChat){
             user.chatUnViewed = user.chatUnViewed || [];
             user.chatUnViewed.push(mesId)
         }
@@ -222,7 +229,7 @@ export class FriendsService {
     }
 
 
-    set friends(value:Array<User>){
+    set friends(value:Array<UserWithChat>){
         this._friends.length = 0;
 
         if(value){
@@ -231,14 +238,14 @@ export class FriendsService {
             })
         }
     }
-    get friends(): Array<User>{
+    get friends(): Array<UserWithChat>{
      return this._friends
     }
-    get users(): Array<User> {
+    get users(): Array<UserWithChat> {
         return this._users;
     }
 
-    set users(value: Array<User>) {
+    set users(value: Array<UserWithChat>) {
         this._users.length = 0;
         if(value){
             value.forEach(item=>{

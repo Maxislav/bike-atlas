@@ -1,18 +1,19 @@
 import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector } from '@angular/core';
 import { MapService } from '../service/map.service';
-import { LngLat, MapMarker, Popup } from '../../@types/global';
+import { LngLat, MapMarker, MyMarker, Popup } from '../../@types/global';
 import { MyInputPopupComponent } from '../component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
 import { Io } from '../service/socket.oi.service';
 import { ToastService } from '../component/toast/toast.component';
 
-export interface MyMarker {
+/*export interface MyMarker {
     id: number,
     image_id: number,
     user_id: number,
     lng: number,
     lat: number,
-    title: string
-}
+    title: string,
+
+}*/
 
 export interface MyMapMarker {
     id: number,
@@ -30,6 +31,7 @@ export class MyMarkerService {
     markerList: Array<MyMapMarker>;
     isShow: boolean = false;
     socket: any;
+
 
     constructor(
         private  io: Io,

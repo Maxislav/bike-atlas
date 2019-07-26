@@ -1,15 +1,15 @@
 
 import {Component, EventEmitter, Output} from "@angular/core";
-import {DeviceService, Device} from "../../../service/device.service";
+import {DeviceService} from "../../../service/device.service";
 import {MapService} from "../../../service/map.service";
 import {LogService} from "../../../service/log.service";
 import {UserService} from "../../../service/main.user.service";
-import {forEach} from "@angular/router/esm/src/utils/collection";
 import {fromEvent} from 'rxjs/observable/fromEvent'
+import { Device } from '../../../../@types/global';
 
 
 
-
+declare const module: any;
 
 @Component({
     moduleId: module.id,

@@ -6,7 +6,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {TransactionResolver} from "./transaction.resolve";
+//import {TransactionResolver} from "./transaction.resolve";
 @Component({
     //selector: 'router-outlet',
     //templateUrl: 'src/app/template/my-app.html'

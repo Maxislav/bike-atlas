@@ -1,8 +1,10 @@
 
 import {Component} from "@angular/core";
 import {FriendsService} from "../../service/friends.service";
-import {User} from "../../service/main.user.service";
 import {ChatService} from "../../service/chat.service";
+import { User } from '../../../@types/global';
+
+declare const module: any;
 @Component({
     moduleId: module.id,
     templateUrl: './all-user.component.html',

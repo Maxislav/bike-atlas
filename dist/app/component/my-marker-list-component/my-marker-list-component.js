@@ -9,10 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var _a, _b;
 const core_1 = require("@angular/core");
-const my_marker_service_1 = require("app/service/my-marker.service");
-const map_service_1 = require("app/service/map.service");
+const my_marker_service_1 = require("../../service/my-marker.service");
+const map_service_1 = require("../../service/map.service");
 let MyMarkerListComponent = class MyMarkerListComponent {
     constructor(myMarkerService, mapService) {
         this.myMarkerService = myMarkerService;
@@ -60,7 +59,8 @@ MyMarkerListComponent = __decorate([
         templateUrl: './my-marker-list-component.html',
         styleUrls: ['./my-marker-list-component.css']
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof my_marker_service_1.MyMarkerService !== "undefined" && my_marker_service_1.MyMarkerService) === "function" && _a || Object, typeof (_b = typeof map_service_1.MapService !== "undefined" && map_service_1.MapService) === "function" && _b || Object])
+    __metadata("design:paramtypes", [my_marker_service_1.MyMarkerService,
+        map_service_1.MapService])
 ], MyMarkerListComponent);
 exports.MyMarkerListComponent = MyMarkerListComponent;
 //# sourceMappingURL=my-marker-list-component.js.map

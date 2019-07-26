@@ -4,10 +4,11 @@ import {
 } from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from "@angular/router";
-import {DeviceService, Device} from "../../service/device.service";
+import {DeviceService} from "../../service/device.service";
 import {NavigationHistory} from "../../app.component";
 import {ToastService} from "../toast/toast.component";
-import {UserService, User} from "../../service/main.user.service";
+import {UserService} from "../../service/main.user.service";
+import { Device, User } from '../../../@types/global';
 
 
 @Directive({

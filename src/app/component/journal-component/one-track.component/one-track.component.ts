@@ -3,7 +3,6 @@ import {Component, Input, OnInit, ElementRef, AfterViewInit} from "@angular/core
 import {LeafletResolver} from "../journal.component";
 import {JournalService} from "../../../service/journal.service";
 import {LocalStorage} from "../../../service/local-storage.service";
-import * as dateformat from "node_modules/dateformat/lib/dateformat.js";
 import {TrackService} from "../../../service/track.service";
 import {UserService} from "../../../service/main.user.service";
 declare const module: any

@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {TrackService} from "app/service/track.service";
-import {Track} from "app/service/track.var";
+import {TrackService} from "../../service/track.service";
+import { Track } from '../../service/track.var';
+//import {Track} from "app/service/track.var";
 declare const module: any;
 @Component({
     moduleId: module.id,

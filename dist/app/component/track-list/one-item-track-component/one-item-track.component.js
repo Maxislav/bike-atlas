@@ -18,7 +18,7 @@ const util_1 = require("../../../service/util");
 const toast_component_1 = require("../../toast/toast.component");
 const strava_service_1 = require("../../../service/strava.service");
 const router_1 = require("@angular/router");
-const R = require("@ramda/ramda.min.js");
+const R = require("ramda");
 const distance_1 = require("../../../util/distance");
 let OneItemTrackComponent = OneItemTrackComponent_1 = class OneItemTrackComponent {
     constructor(trackService, mapService, toast, router, stravaService) {

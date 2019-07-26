@@ -8,7 +8,7 @@ import {
     OnInit,
     Output
 } from '@angular/core';
-import { MyMarkerService } from 'app/service/my-marker.service';
+// import { MyMarkerService } from '../../../service/my-marker.service';
 
 declare const module:any;
 

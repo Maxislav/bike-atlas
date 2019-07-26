@@ -30,7 +30,7 @@ export class Util{
     return dist_sum;
   }
 
-  distanceBetween2(point1: LngLat, point2: LngLat){
+  distanceBetween2(point1: LngLat | Point, point2: LngLat | Point){
     const R = 6372795;  //радиус Земли
     var lat1, lat2, long1, long2;
     lat1 = point1.lat;

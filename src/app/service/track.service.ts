@@ -62,7 +62,7 @@ export class TrackService implements Resolve<any> {
         });
     }
 
-    showGpxTrack(xmlStr:string, src: string) {
+    showGpxTrack(xmlStr:string, src?: string) {
         const track = [];
         const parser = new DOMParser();
         const xmlDoc: Document = parser.parseFromString(xmlStr, "text/xml");

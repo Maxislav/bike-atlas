@@ -61,7 +61,7 @@ import { MyMarkerListComponent } from './component/my-marker-list-component/my-m
 import { MenuService } from './service/menu.service';
 import { MyMarkerService } from './service/my-marker.service';
 import { MyInputPopupComponent } from './component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
-import { SharedModule } from 'app/shared-module/shared.module';
+import { SharedModule } from './shared-module/shared.module';
 import { GtgbcComponent } from './component/gtgbc/gtgbc.component';
 import { GtgbcService } from './api/gtgbc.service';
 @Component({
@@ -79,6 +79,12 @@ export function createTranslateLoader(http: Http) {
     return new TranslateStaticLoader(http, System.baseURL+'/langs', '.json');
 }
 
+
+declare global {
+    interface Navigator {
+        userLanguage: string
+    }
+}
 
 @NgModule({
     imports: [
