@@ -63,7 +63,11 @@ export declare interface MapGl {
 
     getBearing(): number
 
-    addLayer(Object): this
+    addLayer(Object): this;
+
+    removeLayer(id: string): this;
+
+    removeSource(id: string): this;
 
     addSource(string, Object): this
 
@@ -136,4 +140,22 @@ export interface User{
     markers: Array<MyMarker>;
 
 }
+
+export interface DeviceData {
+    id:string;
+    alt:number;
+    name:string;
+    azimuth:number;
+    date:string;
+    lat:number,
+    lng:number,
+    speed:number,
+    src:string;
+    image?:string,
+    device_key?:string;
+    ownerId?:number;
+    type: 'POINT' | 'BS',
+    bs?: Array<DeviceData>
+}
+
 

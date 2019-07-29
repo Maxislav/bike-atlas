@@ -29,7 +29,7 @@ export class Logger {
         //this.connection = connection;
 
 
-        this.robot = new Robot(util);
+        //this.robot = new Robot(util);
         this._sockets = [];
         this.devices = {};
         app.get('/log*', this.onLog.bind(this))
@@ -216,7 +216,7 @@ export class Logger {
 
     set sockets(connected) {
         this._sockets = connected;
-        this.robot.sockets = connected;
+        //this.robot.sockets = connected;
     }
 
     get sockets() {

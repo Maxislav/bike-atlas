@@ -19,7 +19,7 @@ class Logger {
         ioServer = _ioServer;
         this.util = util;
         //this.connection = connection;
-        this.robot = new Robot(util);
+        //this.robot = new Robot(util);
         this._sockets = [];
         this.devices = {};
         app.get('/log*', this.onLog.bind(this));
@@ -175,7 +175,7 @@ class Logger {
     }
     set sockets(connected) {
         this._sockets = connected;
-        this.robot.sockets = connected;
+        //this.robot.sockets = connected;
     }
     get sockets() {
         return this._sockets;
