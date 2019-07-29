@@ -19,8 +19,9 @@ const OnPrivateArea = require('./socket-data/on-private-area');
 const Chat = require('./chat');
 const TrackFromTo = require('./socket-data/track-from-to');
 const OnChat = require('./socket-data/on-chat');
-const Logger = require('./logger');
+//const Logger = require('./logger');
 
+import { Logger } from './gps-logger/gps-logger';
 import { Gl520 } from './tcp/gl-520';
 
 const Util = require('./socket-data/util');
@@ -42,13 +43,15 @@ declare global {
         green: string;
     }
 }
+
 // declare const Callback: (req: {hash: string, data: any}, res: {end: (data: any)=> void}) => void
 
-class SSocket {
+export class SSocket {
     public on: (name: string, callback: Function) => void;
     public emit: Function;
     public id: number;
     private static listenerHashMap: { [name: string]: any } = {};
+
     constructor(s) {
         Object.setPrototypeOf(this.constructor.prototype, s);
         SSocket.listenerHashMap = {};
@@ -56,9 +59,9 @@ class SSocket {
         this.emit = s.emit.bind(s);
     }
 
-    $get(name: string, callback: (req: {hash: string, data: any}, res: {end: (data: any)=> void}) => void) {
-        if( SSocket.listenerHashMap[name]){
-            throw new Error('Name space is used before')
+    $get(name: string, callback: (req: { hash: string, data: any }, res: { end: (data: any) => void }) => void) {
+        if (SSocket.listenerHashMap[name]) {
+            throw new Error('Name space is used before');
         }
         const receive = (d) => {
             callback({
@@ -69,9 +72,9 @@ class SSocket {
                     this.emit(name, {
                         hash: d.hash,
                         data
-                    })
+                    });
                 }
-            })
+            });
         };
         SSocket.listenerHashMap[name] = this.on(name, receive);
     }
@@ -95,7 +98,7 @@ class SocketData {
             const socket = new SSocket(s);
 
             socket.$get('gettt', (req, res) => {
-                const  reqData = req.data;
+                const reqData = req.data;
                 res.end(reqData);
             });
 
@@ -118,6 +121,9 @@ class SocketData {
             const onGtgbc = new OnGtgbc(socket, util);
 
             socket.on('disconnect', () => {
+
+                this.gl520.onDisconnect(socket.id);
+
                 logger.onDisconnect(socket.id);
                 chat.onDisconnect(socket.id);
             });

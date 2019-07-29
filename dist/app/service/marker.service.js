@@ -25,13 +25,15 @@ class Marker {
         this.map = map;
         this.timerService = timerService;
         this.status = 'white';
+        this.areaList = [];
+        console.log(devData.type);
         Object.keys(devData).forEach(key => {
             this[key] = devData[key];
         });
         this.speedBehaviorSubject = new BehaviorSubject_1.BehaviorSubject(0);
         this.speedSubject = this.speedBehaviorSubject.asObservable();
         this.timer = new timer_service_1.Timer(devData.date);
-        this.layerId = Marker.getNewLayer(0, 5000000, true) + '';
+        this.layerId = Marker.getNewLayer();
         const icoContainer = document.createElement('div');
         icoContainer.classList.add('user-icon');
         const img = this.img = new Image();
@@ -55,6 +57,12 @@ class Marker {
         this.intervalUpdateMarker = setInterval(() => {
             this.updateMarker();
         }, 1000);
+        if (devData.type === 'BS') {
+            this.map.onLoad
+                .then(m => {
+                this.createStations(devData.bs);
+            });
+        }
     }
     update(devData) {
         const prevLngLat = new track_var_1.Point(this.lng, this.lat);
@@ -70,6 +78,16 @@ class Marker {
         this.iconMarker.setLngLat([this.lng, this.lat]);
         this.icoContainer.setAttribute('status', this.status);
         this.tail.update(new track_var_1.Point(devData.lng, devData.lat));
+        if (this.baseStationPoints) {
+            this.baseStationPoints.remove();
+        }
+        this.areaList.forEach(area => {
+            area.remove();
+        });
+        this.areaList = [];
+        if (devData.type === 'BS') {
+            this.createStations(devData.bs);
+        }
         return this;
     }
     updateMarker() {
@@ -88,16 +106,217 @@ class Marker {
         this.img.src = src;
         this.image = src;
     }
-    static getNewLayer(min, max, int) {
+    createStations(pointsList) {
+        // this.baseStationLayerId = Marker.getNewLayer();
+        const { bounds, max } = this.getBouds(pointsList);
+        pointsList.forEach((point) => {
+            this.areaList.push(this.createArea(Object.assign({}, Object.assign({}, point), { radius: max })));
+        });
+        this.drawPoints(pointsList);
+    }
+    createArea(area) {
+        const layerId = Marker.getNewLayer(); // this.getLayerId('mobile-cell-');
+        const radius = area.radius || 0.2;
+        const map = this.map;
+        this.map.addSource(layerId, {
+            type: 'geojson',
+            data: createGeoJSONCircle([area.lng, area.lat], radius)
+        });
+        this.map.addLayer({
+            'id': layerId,
+            'type': 'fill',
+            'source': layerId,
+            'layout': {},
+            'paint': {
+                'fill-color': '#ff0047',
+                'fill-opacity': 0.1
+            }
+        });
+        function createGeoJSONCircle(center, radiusInKm, points = 64) {
+            const coords = {
+                latitude: center[1],
+                longitude: center[0]
+            };
+            const km = radiusInKm;
+            const ret = [];
+            let distanceX = km / (111.320 * Math.cos(coords.latitude * Math.PI / 180));
+            let distanceY = km / 110.574;
+            let theta, x, y;
+            for (let i = 0; i < points; i++) {
+                theta = (i / points) * (2 * Math.PI);
+                x = distanceX * Math.cos(theta);
+                y = distanceY * Math.sin(theta);
+                ret.push([coords.longitude + x, coords.latitude + y]);
+            }
+            ret.push(ret[0]);
+            return {
+                'type': 'FeatureCollection',
+                'features': [{
+                        'type': 'Feature',
+                        'geometry': {
+                            'type': 'Polygon',
+                            'coordinates': [ret]
+                        }
+                    }]
+            };
+        }
+        ;
+        return {
+            id: area.id || null,
+            layerId: layerId,
+            lng: area.lng,
+            lat: area.lat,
+            radius: radius,
+            update: function ([lng, lat], r) {
+                this.lng = lng;
+                this.lat = lat;
+                map.getSource(layerId)
+                    .setData(createGeoJSONCircle([lng, lat], r));
+            },
+            remove: function () {
+                map.removeLayer(layerId);
+                map.removeSource(layerId);
+            }
+        };
+    }
+    drawPoints(pointsList) {
+        const sourceData = this.getData(pointsList);
+        const { map } = this;
+        const layerId = Marker.getNewLayer();
+        map.addSource(layerId, {
+            type: 'geojson',
+            data: sourceData
+        });
+        map.addLayer({
+            id: layerId,
+            type: 'circle',
+            'paint': {
+                'circle-color': {
+                    'property': 'color',
+                    'stops': [['#ff0000', '#ff0000']],
+                    'type': 'categorical'
+                },
+                'circle-radius': 8
+            },
+            layout: {},
+            source: layerId
+        });
+        this.baseStationPoints = {
+            layerId: layerId,
+            points: pointsList,
+            remove() {
+                map.removeLayer(layerId);
+                map.removeSource(layerId);
+            }
+        };
+    }
+    getData(pointsList) {
+        return {
+            'type': 'FeatureCollection',
+            'features': (() => {
+                const features = [];
+                pointsList.forEach((item, i) => {
+                    const f = {
+                        properties: {
+                            color: '#ff0000',
+                            point: item,
+                            id: item.id,
+                        },
+                        'type': 'Feature',
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': [item.lng, item.lat]
+                        }
+                    };
+                    features.push(f);
+                });
+                return features;
+            })()
+        };
+    }
+    getBouds(pointsList) {
+        const compareList = [];
+        if (pointsList && 1 < pointsList.length) {
+            let n = 1;
+            for (let i = 0; i < pointsList.length - 1; i++) {
+                for (let c = n; c < pointsList.length; c++) {
+                    compareList.push([i, c]);
+                }
+                n++;
+            }
+            const pointWithDist = [];
+            let max = 0;
+            const lngLatMin = {
+                lng: 0,
+                lat: 0
+            };
+            const lngLatMax = {
+                lng: 0,
+                lat: 0
+            };
+            compareList.forEach(compare => {
+                const p1 = pointsList[compare[0]], p2 = pointsList[compare[1]], dist = distance_1.distance([p1.lng, p1.lat], [p2.lng, p2.lat]);
+                pointWithDist.push({
+                    p1,
+                    p2,
+                    dist
+                });
+                const lngMin = p1.lng < p2.lng ? p1.lng : p2.lng;
+                lngLatMin.lng = lngLatMin.lng || lngMin;
+                if (lngMin < lngLatMin.lng) {
+                    lngLatMin.lng = lngMin;
+                }
+                const latMin = p1.lat < p2.lat ? p1.lat : p2.lat;
+                lngLatMin.lat = lngLatMin.lat || latMin;
+                if (latMin < lngLatMin.lat) {
+                    lngLatMin.lat = latMin;
+                }
+                const lngMax = p1.lng < p2.lng ? p2.lng : p1.lng;
+                lngLatMax.lng = lngLatMax.lng || lngMax;
+                if (lngLatMax.lng < lngMax) {
+                    lngLatMax.lng = lngMax;
+                }
+                const latMax = p1.lat < p2.lat ? p2.lat : p1.lat;
+                lngLatMax.lat = lngLatMax.lat || latMax;
+                if (lngLatMax.lat < latMax) {
+                    lngLatMax.lat = latMax;
+                }
+                if (max < dist) {
+                    max = dist;
+                }
+            });
+            return {
+                max: max,
+                bounds: [
+                    {
+                        lng: lngLatMin.lng,
+                        lat: lngLatMin.lat
+                    }, {
+                        lng: lngLatMax.lng,
+                        lat: lngLatMax.lat
+                    }
+                ]
+            };
+        }
+        else {
+            return {
+                max: null,
+                bounds: null
+            };
+        }
+    }
+    static getNewLayer() {
+        const min = 0, max = 5000000, int = true;
         let rand = min + Math.random() * (max - min);
+        let layerId = '';
         if (int) {
-            rand = String('marker-').concat(Math.round(rand).toString());
+            layerId = String('marker-').concat(Math.round(rand).toString());
         }
-        if (Marker.layerIds.has(rand)) {
-            return Marker.getNewLayer(min, max, int);
+        if (Marker.layerIds.has(layerId)) {
+            return Marker.getNewLayer();
         }
-        Marker.layerIds.add(rand);
-        return rand;
+        Marker.layerIds.add(layerId);
+        return layerId;
     }
 }
 Marker.layerIds = new Set();

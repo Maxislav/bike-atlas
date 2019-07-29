@@ -4,24 +4,9 @@ import {DeviceService} from "./device.service";
 import {MarkerService, Marker} from "./marker.service";
 import {UserService} from "./main.user.service";
 import {deepCopy} from "../util/deep-copy";
-import { Device, User } from '../../@types/global';
+import { Device, DeviceData, User } from '../../@types/global';
 //import {MarkerService} from "./marker.service";
 
-export interface DeviceData {
-    id:string;
-    alt:number;
-    name:string;
-    azimuth:number;
-    date:string;
-    lat:number,
-    lng:number,
-    speed:number,
-    src:string;
-    image?:string,
-    device_key?:string;
-    ownerId?:number;
-    type: 'POINT' | 'BS'
-}
 
 
 @Injectable()

@@ -13,6 +13,7 @@ const core_1 = require("@angular/core");
 const socket_oi_service_1 = require("./socket.oi.service");
 const marker_service_1 = require("./marker.service");
 const main_user_service_1 = require("./main.user.service");
+//import {MarkerService} from "./marker.service";
 let LogService = class LogService {
     constructor(io, user, markerService) {
         this.user = user;

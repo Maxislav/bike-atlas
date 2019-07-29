@@ -3,6 +3,50 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const util = require('./util');
 const ProtoData = require("./proto-data");
 const deferred_1 = require("../deferred");
+class LastBsPosition {
+    constructor(rows) {
+        this.rows = rows;
+        this.type = "BS";
+        const arrGroup = this.groupByDate(rows);
+        this.lastGroup = [];
+        this.lastGroupDate = 0;
+        if (arrGroup.length) {
+            this.lastGroup = arrGroup[arrGroup.length - 1];
+        }
+        if (this.lastGroup.length) {
+            this.id = this.lastGroup[0].id;
+            this.date = new Date(this.lastGroup[this.lastGroup.length - 1].date);
+            this.lastGroupDate = this.date.getTime();
+            this.src = this.lastGroup.map(item => item.src).join(';');
+            this.bs = this.lastGroup;
+            this.lng = this.getRound(...this.lastGroup.map(item => Number(item.lng)));
+            this.lat = this.getRound(...this.lastGroup.map(item => Number(item.lat)));
+        }
+    }
+    groupByDate(list) {
+        const s = new Set();
+        const idMap = {};
+        const resArr = [];
+        const _list = list.map(item => {
+            idMap[item.id] = item;
+            const dateInt = new Date(item.date).getTime();
+            s.add(dateInt);
+            return Object.assign({
+                dateInt
+            }, item);
+        });
+        const arr = Array.from(s).sort();
+        arr.forEach(dateInt => {
+            const group = _list.filter(it => it.dateInt === dateInt).map(item => idMap[item.id]);
+            resArr.push(group);
+        });
+        return resArr;
+    }
+    getRound(...list) {
+        const reducer = (accumulator, currentValue) => accumulator + currentValue;
+        return list.reduce(reducer) / list.length;
+    }
+}
 class OnAuth extends ProtoData {
     constructor(socket, util, chat, logger, gl520) {
         super(socket, util);
@@ -88,33 +132,28 @@ class OnAuth extends ProtoData {
                         row.lat = Number(row.lat);
                         return util.getLastBSPosition(key)
                             .then(rowList => {
+                            const lastBsPosition = new LastBsPosition(rowList);
                             let loggerRow = row;
-                            const arrGroup = this.groupByDate(rowList);
-                            let lastGroup = [];
                             let lastPointDate = new Date(row.date).getTime();
-                            let lastGroupDate = 0;
-                            if (arrGroup.length) {
-                                lastGroup = arrGroup[arrGroup.length - 1];
-                            }
-                            if (lastGroup.length) {
-                                lastGroupDate = new Date(lastGroup[lastGroup.length - 1].date).getTime();
-                            }
-                            if (lastPointDate < lastGroupDate) {
+                            if (lastPointDate < lastBsPosition.lastGroupDate) {
                                 loggerRow = {
                                     alt: 0,
                                     azimuth: 0,
-                                    date: lastGroup[lastGroup.length - 1].date,
+                                    date: lastBsPosition.date,
                                     device_key: key,
-                                    id: lastGroup[lastGroup.length - 1].id,
-                                    lng: this.getRound(...lastGroup.map(item => Number(item.lng))),
-                                    lat: this.getRound(...lastGroup.map(item => Number(item.lat))),
+                                    id: lastBsPosition.id,
+                                    lng: lastBsPosition.lng,
+                                    lat: lastBsPosition.lat,
                                     speed: 0,
-                                    src: lastGroup.map(item => item.src).join(';'),
+                                    src: lastBsPosition.src,
                                     type: 'BS',
-                                    bs: lastGroup
+                                    bs: lastBsPosition.bs
                                 };
                             }
                             this.socket.emit('log', loggerRow);
+                        }).catch(err => {
+                            console.log('err -> ', err);
+                            return err;
                         });
                     });
                 })).then((rows) => {

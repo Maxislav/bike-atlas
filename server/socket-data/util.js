@@ -917,6 +917,7 @@ class Util {
         hashKeys.splice(hashKeys.indexOf(hash), 1);
     }
 }
+exports.Util = Util;
 function getRandom(min, max, int) {
     var rand = min + Math.random() * (max - min);
     if (int) {

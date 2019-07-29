@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "start": "concurrently  \"npm run gulpDev\" \"npm run server-dev\" \"npm run tsc:w\"  \"npm run tsc-be:w\"",
-    "server": "node server/index.js",
-    "server-dev": "node-dev server/index.js",
+    "server": "tsc --project tsconfig-be.json && node server/index.js",
+    "server-dev": "concurrently \"npm run tsc-be:w\" \"npm run node-dev\" ",
+    "node-dev": "node-dev server/index.js",
     "gulpDev": "node_modules/.bin/gulp",
     "lite": "lite-server",
     "tsc": "tsc --project tsconfig-ui.json",

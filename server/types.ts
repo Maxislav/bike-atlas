@@ -23,6 +23,14 @@ export interface LoggerBsRow extends LoggerRow{
     bs: Array<LoggerRow>
 }
 
+export interface SettingRow {
+    id: number,
+    user_id: number,
+    map: 'ggl' | 'sat',
+    hill: 0 | 1
+    lock: 0 | 1
+
+}
 
 export interface User {
     id: number,

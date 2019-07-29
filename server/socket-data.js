@@ -17,7 +17,8 @@ const OnPrivateArea = require('./socket-data/on-private-area');
 const Chat = require('./chat');
 const TrackFromTo = require('./socket-data/track-from-to');
 const OnChat = require('./socket-data/on-chat');
-const Logger = require('./logger');
+//const Logger = require('./logger');
+const gps_logger_1 = require("./gps-logger/gps-logger");
 const gl_520_1 = require("./tcp/gl-520");
 const Util = require('./socket-data/util');
 const OnStrava = require('./socket-data/on-strava');
@@ -59,12 +60,13 @@ class SSocket {
     }
 }
 SSocket.listenerHashMap = {};
+exports.SSocket = SSocket;
 class SocketData {
     constructor(server, app, connection) {
         this.connection = connection;
         const util = new Util(connection);
         const ioServer = io(server);
-        const logger = new Logger(app, ioServer, util);
+        const logger = new gps_logger_1.Logger(app, ioServer, util);
         this.gl520 = new gl_520_1.Gl520(ioServer, util).create();
         const chat = new Chat(util);
         ioServer.on('connection', (s) => {
@@ -90,6 +92,7 @@ class SocketData {
             const onMyMarker = new OnMyMarker(socket, util);
             const onGtgbc = new OnGtgbc(socket, util);
             socket.on('disconnect', () => {
+                this.gl520.onDisconnect(socket.id);
                 logger.onDisconnect(socket.id);
                 chat.onDisconnect(socket.id);
             });
