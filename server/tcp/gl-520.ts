@@ -1,23 +1,43 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const { Gl520Parser } = require("./gl-520-parser");
+import { Util } from '../socket-data/util';
+import { Server } from "net";
+import { SSocket } from '../socket-data';
+
+const {Gl520Parser} = require("./gl-520-parser");
 const net = require('net');
 const fs = require('fs');
 const path = require('path');
 const streams = [];
 const PORT = 8090;
+
+
+
+declare global {
+    interface String {
+        yellow: string;
+        green: string;
+        red: string
+    }
+}
+
 const writeToFile = (str) => {
     return new Promise((resolve, reject) => {
         fs.appendFile(path.resolve(__dirname, 'log-file.txt'), str, function (err) {
             if (err) {
                 console.log('Err write to file ->'.red, err);
-                return reject(err);
+                return reject(err)
             }
-            resolve();
+            resolve()
         });
-    });
+    })
 };
-class Gl520 {
+
+
+export class Gl520 {
+    _ioServer: any;
+    _util: Util;
+    _server: Server;
+    socketsConnected:{[socket_id: number]: SSocket};
+    devices:  {[device_key: string]: Array<number>};
     constructor(_ioServer, util) {
         this._ioServer = _ioServer;
         this._util = util;
@@ -25,29 +45,34 @@ class Gl520 {
         this.socketsConnected = [];
         this.devices = {};
     }
+
     setSocketsConnected(s) {
         this.socketsConnected = s;
         return this;
     }
-    onDisconnect(socket_id) {
+
+    onDisconnect(socket_id: number){
         for (let opt in this.devices) {
             let ids = this.devices[opt];
             let i = 0;
             while (i < ids.length) {
                 if (ids[i] == socket_id) {
                     ids.splice(i, 1);
-                }
-                else {
-                    i++;
+                } else {
+                    i++
                 }
             }
         }
     }
+
+
     updateDevice(device_key, socket_id) {
         this.devices[device_key] = this.devices[device_key] || [];
         this.devices[device_key].push(socket_id);
     }
+
     create() {
+
         this._server = net.createServer((c) => {
             console.log('connect', new Date().toISOString());
             streams.push(c);
@@ -65,62 +90,64 @@ class Gl520 {
                 const gl520Parser = new Gl520Parser();
                 try {
                     str = onStreamData.toString();
-                }
-                catch (e) {
+                } catch (e) {
                     console.error(e);
-                    console.log('can\'t convert to string');
+                    console.log('can\'t convert to string')
                 }
                 if (str) {
                     writeToFile(new Date().toISOString().concat('\r\n', str, '\r\n'));
                     gl520Parser.setSrcData(str)
                         .getData()
                         .then((respDataList) => {
-                        if (respDataList) {
-                            respDataList.forEach(respData => {
-                                this._util.insertLog(respData)
-                                    .catch(err => {
-                                    console.error('Err GL520 insertLog error ->', err);
-                                });
-                                const device_id = respData.id;
-                                if (this.devices && this.devices[device_id]) {
-                                    this.devices[device_id].forEach(socket_id => {
-                                        if (respData) {
-                                            //emitedSockets.push(socket_id);
-                                            this.socketsConnected[socket_id] && this.socketsConnected[socket_id].emit('log', respData);
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                        else {
-                            console.warn('no condition gl520 -> ');
-                        }
-                    })
+                            if (respDataList) {
+                                respDataList.forEach(respData=> {
+                                    this._util.insertLog(respData)
+                                        .catch(err => {
+                                            console.error('Err GL520 insertLog error ->', err)
+                                        });
+
+                                    const device_id = respData.id;
+                                    if (this.devices && this.devices[device_id]) {
+                                        this.devices[device_id].forEach(socket_id => {
+                                            if (respData) {
+                                                //emitedSockets.push(socket_id);
+                                                this.socketsConnected[socket_id] && this.socketsConnected[socket_id].emit('log', respData);
+                                            }
+                                        })
+                                    }
+                                })
+                            } else {
+                                console.warn('no condition gl520 -> ');
+                            }
+                        })
                         .catch(err => {
-                        console.error('err parse gl520 -> ', err);
-                    });
+                            console.error('err parse gl520 -> ', err);
+                        })
+
                 }
                 console.log(str);
             });
             c.on('error', (err) => {
-                console.error(err);
-            });
+                console.error(err)
+            })
         });
+
         this._server.listen(PORT, () => {
-            console.log('GL520 server is started'.yellow, `on port:`, `${PORT}`.green);
+            console.log('GL520 server is started'.yellow, `on port:`, `${PORT}`.green)
         });
         return this;
     }
+
     close() {
         return new Promise((resolve) => {
             if (this._server) {
                 this._server.close(() => {
                     this._server = null;
-                    resolve();
-                });
+                    resolve()
+                })
             }
-        });
+        })
+
     }
 }
-exports.Gl520 = Gl520;
-//# sourceMappingURL=gl-520.js.map
+

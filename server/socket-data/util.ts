@@ -1,10 +1,10 @@
-import { LoggerRow , DeviceRow} from '../types';
+import { LoggerRow , DeviceRow, SettingRow} from '../types';
 
 const dateFormat = require('dateformat');
 const hashKeys = [];
 
 
-class Util {
+export class Util {
     private  connection
     constructor(connection) {
         this.connection = connection;
@@ -462,7 +462,7 @@ class Util {
         })
     }
 
-    getUserSettingByUserId(user_id) {
+    getUserSettingByUserId(user_id): Promise<SettingRow> {
         return new Promise((resolve, reject) => {
             const query = 'SELECT * from `setting` WHERE `user_id`=? order by `id` desc limit 150';
             this.connection.query(query, [user_id], (err, rows) => {
@@ -540,7 +540,7 @@ class Util {
         });
     }
 
-    getOwnerDevice(device_key) {
+    getOwnerDevice(device_key): Promise<Array<any>> {
         return new Promise((resolve, reject) => {
             const query = 'SELECT user.id, device.name from `user` INNER JOIN `device` ON device.user_id = user.id AND device_key=? ';
             this.connection.query(query, [device_key], (err, rows) => {
