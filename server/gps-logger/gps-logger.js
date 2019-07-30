@@ -5,7 +5,16 @@ const dateFormat = require('dateformat');
 //const util = require('./socket-data/util');
 const http = require("http");
 const distance_1 = require("../distance");
-const Robot = require('../robot');
+const robot_1 = require("../robot");
+class Gprmc {
+    constructor(gprmcData) {
+        Object.assign(this, gprmcData);
+    }
+    setId(id) {
+        this.id = this.device_key = id;
+        return this;
+    }
+}
 class Logger {
     /** @namespace this.connection */
     // $GPRMC,074624,A,5005.91360,N,3033.15540,E,13.386224,222.130005,290718,,*1E wrong  -> 50.98559952
@@ -15,11 +24,12 @@ class Logger {
     //  /log?id=862614000171302 &dev=862614000171302&acct=862614000171302&batt=0&code=0xF020&alt=0.0&gprmc=$GPRMC,152524,A,5005.91360,N,3033.15540,E,13.386224,222.130005,010818,,*1E
     //  /log?id=222222222222&dev=222222222222&acct=222222222222&batt=0&code=0xF020&alt=0.0&gprmc=$GPRMC,043137,A,5026.94750,N,3024.56420,E,0.000000,216.429993,150963,,*20
     constructor(_app, _ioServer, util) {
+        this.lastGprmcHash = {};
         app = _app;
         ioServer = _ioServer;
         this.util = util;
         //this.connection = connection;
-        //this.robot = new Robot(util);
+        this.robot = new robot_1.Robot(util);
         this._sockets = [];
         this.devices = {};
         app.get('/log*', this.onLog.bind(this));
@@ -40,8 +50,9 @@ class Logger {
             checkSum = checkSum.replace(/\*/, '');
             res.end(checkSum);
             try {
-                data = this.parseGprmc(req.query.gprmc, req.query.id);
-                data.device_key = data.id = req.query.id;
+                data = new Gprmc(this.parseGprmc(req.query.gprmc, req.query.id));
+                //data.device_key = data.id = req.query.id;
+                data.setId(req.query.id);
                 data.type = 'POINT';
             }
             catch (err) {
@@ -53,10 +64,14 @@ class Logger {
             res.end();
         }
         if (data) {
-            util.insertLog(data)
-                .catch(err => {
-                console.error('insertLog error ->', err);
-            });
+            const lastDate = this.lastGprmcHash[data.id] ? this.lastGprmcHash[data.id].date.getTime() : 0;
+            if (lastDate < data.date.getTime()) {
+                this.lastGprmcHash[data.id] = data;
+                util.insertLog(data)
+                    .catch(err => {
+                    console.error('insertLog error ->', err);
+                });
+            }
         }
         console.log('onLog ->', data);
         const emitedSockets = [];
@@ -175,7 +190,7 @@ class Logger {
     }
     set sockets(connected) {
         this._sockets = connected;
-        //this.robot.sockets = connected;
+        this.robot.sockets = connected;
     }
     get sockets() {
         return this._sockets;

@@ -791,7 +791,7 @@ export class Util {
         })
     }
 
-    getDemoId() {
+    getDemoId(): Promise<number> {
         return new Promise((resolve, reject) => {
             this.connection.query('SELECT id FROM `user` WHERE `name`=?', ['demo'], function (err, rows) {
                 if (err) {

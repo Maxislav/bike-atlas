@@ -6,14 +6,50 @@ const dateFormat = require('dateformat');
 const http = require("http");
 import {distance} from '../distance';
 import { SSocket } from '../socket-data';
-const Robot = require('../robot');
+import { Robot } from '../robot';
+
+
+interface GprmcData {
+    date: Date,
+    alt: number,
+    lng: number,
+    lat: number,
+    azimuth: number,
+    speed: number,
+    src: string
+}
+
+class Gprmc implements GprmcData{
+    alt: number;
+    azimuth: number;
+    date: Date;
+    lat: number;
+    lng: number;
+    speed: number;
+    src: string;
+
+    id: string;
+    device_key: string;
+    type: 'POINT' | 'BS';
+
+    constructor(gprmcData: GprmcData){
+        Object.assign(this, gprmcData)
+    }
+
+    setId(id): Gprmc{
+       this.id = this.device_key = id;
+       return this;
+    }
+
+}
 
 export class Logger {
 
     util: Util;
-    robot: any;
+    robot: Robot;
     _sockets:  {[socket_id: number]: SSocket};
     devices:  {[device_key: string]: Array<number>};
+    lastGprmcHash: {[device_key: string]:  Gprmc} = {};
     /** @namespace this.connection */
 // $GPRMC,074624,A,5005.91360,N,3033.15540,E,13.386224,222.130005,290718,,*1E wrong  -> 50.98559952
 // $GPRMC,074553,A,5006.02390,N,3033.30500,E,16.895118,220.089996,290718,,*1A   -> 50.10039902
@@ -29,7 +65,7 @@ export class Logger {
         //this.connection = connection;
 
 
-        //this.robot = new Robot(util);
+        this.robot = new Robot(util);
         this._sockets = [];
         this.devices = {};
         app.get('/log*', this.onLog.bind(this))
@@ -40,7 +76,7 @@ export class Logger {
         const util = this.util;
 
         const device_id = req.query.id;
-        let data = null;
+        let data: Gprmc = null;
 
         let checkSum;
         try {
@@ -54,8 +90,9 @@ export class Logger {
             checkSum = checkSum.replace(/\*/, '');
             res.end(checkSum);
             try {
-                data = this.parseGprmc(req.query.gprmc, req.query.id);
-                data.device_key = data.id = req.query.id;
+                data = new Gprmc(this.parseGprmc(req.query.gprmc, req.query.id));
+                //data.device_key = data.id = req.query.id;
+                data.setId(req.query.id);
                 data.type = 'POINT';
             } catch (err) {
                 console.error('Error parse', err)
@@ -66,10 +103,16 @@ export class Logger {
             res.end();
         }
         if (data) {
-            util.insertLog(data)
-                .catch(err => {
-                    console.error('insertLog error ->', err)
-                })
+
+            const lastDate: number = this.lastGprmcHash[data.id] ?  this.lastGprmcHash[data.id].date.getTime() : 0;
+
+            if(lastDate<data.date.getTime()){
+                this.lastGprmcHash[data.id] = data;
+                util.insertLog(data)
+                    .catch(err => {
+                        console.error('insertLog error ->', err)
+                    })
+            }
         }
 
         console.log('onLog ->', data);
@@ -164,7 +207,7 @@ export class Logger {
 
 
     //$GPRMC,030853,A,5026.98660,N,3024.51060,E,2.798506,109.540001, 15 09 63   ,,*20
-    parseGprmc(gprmc, id) {
+    private  parseGprmc(gprmc, id): GprmcData {
         const arrData = gprmc.split(',');
         const timeStamp = arrData[1];
         const dateStamp = arrData[9];
@@ -216,7 +259,7 @@ export class Logger {
 
     set sockets(connected) {
         this._sockets = connected;
-        //this.robot.sockets = connected;
+        this.robot.sockets = connected;
     }
 
     get sockets() {
