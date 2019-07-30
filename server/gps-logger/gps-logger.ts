@@ -10,37 +10,16 @@ import { Robot } from '../robot';
 
 
 interface GprmcData {
+    id: string;
     date: Date,
     alt: number,
     lng: number,
     lat: number,
     azimuth: number,
     speed: number,
-    src: string
-}
-
-class Gprmc implements GprmcData{
-    alt: number;
-    azimuth: number;
-    date: Date;
-    lat: number;
-    lng: number;
-    speed: number;
     src: string;
-
-    id: string;
     device_key: string;
     type: 'POINT' | 'BS';
-
-    constructor(gprmcData: GprmcData){
-        Object.assign(this, gprmcData)
-    }
-
-    setId(id): Gprmc{
-       this.id = this.device_key = id;
-       return this;
-    }
-
 }
 
 export class Logger {
@@ -49,7 +28,7 @@ export class Logger {
     robot: Robot;
     _sockets:  {[socket_id: number]: SSocket};
     devices:  {[device_key: string]: Array<number>};
-    lastGprmcHash: {[device_key: string]:  Gprmc} = {};
+    lastGprmcHash: {[device_key: string]:  GprmcData} = {};
     /** @namespace this.connection */
 // $GPRMC,074624,A,5005.91360,N,3033.15540,E,13.386224,222.130005,290718,,*1E wrong  -> 50.98559952
 // $GPRMC,074553,A,5006.02390,N,3033.30500,E,16.895118,220.089996,290718,,*1A   -> 50.10039902
@@ -76,7 +55,7 @@ export class Logger {
         const util = this.util;
 
         const device_id = req.query.id;
-        let data: Gprmc = null;
+        let data: GprmcData = null;
 
         let checkSum;
         try {
@@ -90,10 +69,9 @@ export class Logger {
             checkSum = checkSum.replace(/\*/, '');
             res.end(checkSum);
             try {
-                data = new Gprmc(this.parseGprmc(req.query.gprmc, req.query.id));
-                //data.device_key = data.id = req.query.id;
-                data.setId(req.query.id);
-                data.type = 'POINT';
+                data = this.parseGprmc(req.query.gprmc, req.query.id)
+
+
             } catch (err) {
                 console.error('Error parse', err)
             }
@@ -105,9 +83,9 @@ export class Logger {
         if (data) {
 
             const lastDate: number = this.lastGprmcHash[data.id] ?  this.lastGprmcHash[data.id].date.getTime() : 0;
-
+            this.lastGprmcHash[data.id] = data;
             if(lastDate<data.date.getTime()){
-                this.lastGprmcHash[data.id] = data;
+
                 util.insertLog(data)
                     .catch(err => {
                         console.error('insertLog error ->', err)
@@ -207,7 +185,7 @@ export class Logger {
 
 
     //$GPRMC,030853,A,5026.98660,N,3024.51060,E,2.798506,109.540001, 15 09 63   ,,*20
-    private  parseGprmc(gprmc, id): GprmcData {
+    private  parseGprmc(gprmc: string, id): GprmcData {
         const arrData = gprmc.split(',');
         const timeStamp = arrData[1];
         const dateStamp = arrData[9];
@@ -253,7 +231,10 @@ export class Logger {
             lat,
             azimuth: azimuth || 0,
             speed,
-            src: gprmc
+            src: gprmc,
+            id,
+            device_key: id,
+            type: 'POINT'
         }
     }
 

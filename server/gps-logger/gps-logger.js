@@ -6,15 +6,6 @@ const dateFormat = require('dateformat');
 const http = require("http");
 const distance_1 = require("../distance");
 const robot_1 = require("../robot");
-class Gprmc {
-    constructor(gprmcData) {
-        Object.assign(this, gprmcData);
-    }
-    setId(id) {
-        this.id = this.device_key = id;
-        return this;
-    }
-}
 class Logger {
     /** @namespace this.connection */
     // $GPRMC,074624,A,5005.91360,N,3033.15540,E,13.386224,222.130005,290718,,*1E wrong  -> 50.98559952
@@ -50,10 +41,7 @@ class Logger {
             checkSum = checkSum.replace(/\*/, '');
             res.end(checkSum);
             try {
-                data = new Gprmc(this.parseGprmc(req.query.gprmc, req.query.id));
-                //data.device_key = data.id = req.query.id;
-                data.setId(req.query.id);
-                data.type = 'POINT';
+                data = this.parseGprmc(req.query.gprmc, req.query.id);
             }
             catch (err) {
                 console.error('Error parse', err);
@@ -65,8 +53,8 @@ class Logger {
         }
         if (data) {
             const lastDate = this.lastGprmcHash[data.id] ? this.lastGprmcHash[data.id].date.getTime() : 0;
+            this.lastGprmcHash[data.id] = data;
             if (lastDate < data.date.getTime()) {
-                this.lastGprmcHash[data.id] = data;
                 util.insertLog(data)
                     .catch(err => {
                     console.error('insertLog error ->', err);
@@ -185,7 +173,10 @@ class Logger {
             lat,
             azimuth: azimuth || 0,
             speed,
-            src: gprmc
+            src: gprmc,
+            id,
+            device_key: id,
+            type: 'POINT'
         };
     }
     set sockets(connected) {
