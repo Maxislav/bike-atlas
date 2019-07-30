@@ -200,7 +200,7 @@ class OnAuth extends ProtoData {
                                         }
                                         this.socket.emit('log', loggerRow);
                                     }).catch(err => {
-                                        console.log('err -> ', err);
+                                        console.log('err 1 -> ', err);
                                         return err;
                                     });
                             });
@@ -210,10 +210,9 @@ class OnAuth extends ProtoData {
                             deferred.resolve(rows);
                         })
                         .catch(err => {
-                            console.log('err -> ', err);
+                            console.log('err 2 -> ', err);
                             return err;
                         });
-
 
                 };
                 this.socket.on(hash, emitLastPosition);
@@ -242,7 +241,7 @@ class OnAuth extends ProtoData {
             })
 
             .catch(err => {
-                console.log('err -> ', err);
+                console.log('err 3 -> ', err);
                 res.end({
                     result: false,
                     message: err
