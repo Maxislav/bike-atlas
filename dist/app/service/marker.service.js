@@ -17,6 +17,7 @@ const track_var_1 = require("./track.var");
 const tail_class_1 = require("./tail.class");
 const distance_1 = require("../util/distance");
 const BehaviorSubject_1 = require("rxjs/BehaviorSubject");
+const lngLat_1 = require("../util/lngLat");
 class Marker {
     //TODO creating and update user marker
     constructor(devData, user, mapboxgl, map, timerService) {
@@ -25,7 +26,6 @@ class Marker {
         this.map = map;
         this.timerService = timerService;
         this.status = 'white';
-        this.areaList = [];
         console.log(devData.type);
         Object.keys(devData).forEach(key => {
             this[key] = devData[key];
@@ -78,13 +78,12 @@ class Marker {
         this.iconMarker.setLngLat([this.lng, this.lat]);
         this.icoContainer.setAttribute('status', this.status);
         this.tail.update(new track_var_1.Point(devData.lng, devData.lat));
+        if (this.areaList) {
+            this.areaList.remove();
+        }
         if (this.baseStationPoints) {
             this.baseStationPoints.remove();
         }
-        this.areaList.forEach(area => {
-            area.remove();
-        });
-        this.areaList = [];
         if (devData.type === 'BS') {
             this.createStations(devData.bs);
         }
@@ -109,20 +108,30 @@ class Marker {
     createStations(pointsList) {
         // this.baseStationLayerId = Marker.getNewLayer();
         const { bounds, max } = this.getBouds(pointsList);
-        pointsList.forEach((point) => {
-            this.areaList.push(this.createArea(Object.assign({}, Object.assign({}, point), { radius: max })));
-        });
-        this.drawPoints(pointsList);
+        this.areaList = this.createAreaList(pointsList, max);
+        this.baseStationPoints = this.drawPoints(pointsList);
     }
-    createArea(area) {
-        const layerId = Marker.getNewLayer(); // this.getLayerId('mobile-cell-');
-        const radius = area.radius || 0.2;
+    createAreaList(pointsList, radius = 0.2) {
+        const layerId = Marker.getNewLayer('area-');
         const map = this.map;
         this.map.addSource(layerId, {
             type: 'geojson',
-            data: createGeoJSONCircle([area.lng, area.lat], radius)
+            data: {
+                'type': 'FeatureCollection',
+                'features': []
+            }
         });
-        this.map.addLayer({
+        const features = [];
+        pointsList.forEach(point => {
+            const f = this.createGeoJSONCircle(new lngLat_1.LngLat().setValue(point), radius);
+            features.push(f);
+        });
+        map.getSource(layerId)
+            .setData({
+            'type': 'FeatureCollection',
+            'features': features
+        });
+        map.addLayer({
             'id': layerId,
             'type': 'fill',
             'source': layerId,
@@ -132,50 +141,43 @@ class Marker {
                 'fill-opacity': 0.1
             }
         });
-        function createGeoJSONCircle(center, radiusInKm, points = 64) {
-            const coords = {
-                latitude: center[1],
-                longitude: center[0]
-            };
-            const km = radiusInKm;
-            const ret = [];
-            let distanceX = km / (111.320 * Math.cos(coords.latitude * Math.PI / 180));
-            let distanceY = km / 110.574;
-            let theta, x, y;
-            for (let i = 0; i < points; i++) {
-                theta = (i / points) * (2 * Math.PI);
-                x = distanceX * Math.cos(theta);
-                y = distanceY * Math.sin(theta);
-                ret.push([coords.longitude + x, coords.latitude + y]);
-            }
-            ret.push(ret[0]);
-            return {
-                'type': 'FeatureCollection',
-                'features': [{
-                        'type': 'Feature',
-                        'geometry': {
-                            'type': 'Polygon',
-                            'coordinates': [ret]
-                        }
-                    }]
-            };
-        }
-        ;
         return {
-            id: area.id || null,
-            layerId: layerId,
-            lng: area.lng,
-            lat: area.lat,
-            radius: radius,
-            update: function ([lng, lat], r) {
-                this.lng = lng;
-                this.lat = lat;
-                map.getSource(layerId)
-                    .setData(createGeoJSONCircle([lng, lat], r));
-            },
-            remove: function () {
+            layerId,
+            remove() {
                 map.removeLayer(layerId);
                 map.removeSource(layerId);
+                Marker.removeLayer(layerId);
+                return this;
+            },
+            update(data) {
+                map.getSource(layerId)
+                    .setData(data);
+                return this;
+            }
+        };
+    }
+    createGeoJSONCircle(center, radiusInKm, points = 64) {
+        const coords = {
+            latitude: center[1],
+            longitude: center[0]
+        };
+        const km = radiusInKm;
+        const ret = [];
+        let distanceX = km / (111.320 * Math.cos(coords.latitude * Math.PI / 180));
+        let distanceY = km / 110.574;
+        let theta, x, y;
+        for (let i = 0; i < points; i++) {
+            theta = (i / points) * (2 * Math.PI);
+            x = distanceX * Math.cos(theta);
+            y = distanceY * Math.sin(theta);
+            ret.push([coords.longitude + x, coords.latitude + y]);
+        }
+        ret.push(ret[0]);
+        return {
+            'type': 'Feature',
+            'geometry': {
+                'type': 'Polygon',
+                'coordinates': [ret]
             }
         };
     }
@@ -201,12 +203,13 @@ class Marker {
             layout: {},
             source: layerId
         });
-        this.baseStationPoints = {
+        return {
             layerId: layerId,
             points: pointsList,
             remove() {
                 map.removeLayer(layerId);
                 map.removeSource(layerId);
+                Marker.removeLayer(layerId);
             }
         };
     }
@@ -305,12 +308,17 @@ class Marker {
             };
         }
     }
-    static getNewLayer() {
+    static removeLayer(layerId) {
+        if (Marker.layerIds.has(layerId)) {
+            Marker.layerIds.delete(layerId);
+        }
+    }
+    static getNewLayer(prefix = 'marker-') {
         const min = 0, max = 5000000, int = true;
         let rand = min + Math.random() * (max - min);
         let layerId = '';
         if (int) {
-            layerId = String('marker-').concat(Math.round(rand).toString());
+            layerId = String(prefix).concat(Math.round(rand).toString());
         }
         if (Marker.layerIds.has(layerId)) {
             return Marker.getNewLayer();

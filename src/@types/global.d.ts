@@ -158,4 +158,19 @@ export interface DeviceData {
     bs?: Array<DeviceData>
 }
 
+export  interface MapArea{
+    id?: number;
+    lng: number;
+    lat: number;
+    layerId?: string,
+    radius: number;
+    update: (data: any) => this;
+    remove: () => this;
+}
+
+export  interface MapAreaList {
+    layerId: string,
+    update: (data: any) => this;
+    remove: () => this;
+}
 
