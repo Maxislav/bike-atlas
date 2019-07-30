@@ -160,10 +160,12 @@ let OneItemTrackComponent = OneItemTrackComponent_1 = class OneItemTrackComponen
                 this.lat = lat;
                 map.getSource(layerId)
                     .setData(createGeoJSONCircle([lng, lat], r));
+                return this;
             },
             remove: function () {
                 map.removeLayer(layerId);
                 map.removeSource(layerId);
+                return this;
             }
         };
     }

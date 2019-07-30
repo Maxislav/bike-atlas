@@ -265,10 +265,12 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
                 this.lat = lat;
                 map.getSource(layerId)
                     .setData(createGeoJSONCircle([lng, lat], r));
+                return this;
             },
             remove: function () {
                 map.removeLayer(layerId);
                 map.removeSource(layerId);
+                return this;
             }
         };
     }

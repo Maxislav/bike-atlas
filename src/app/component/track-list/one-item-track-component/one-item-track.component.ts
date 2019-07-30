@@ -8,7 +8,7 @@ import {ToastService} from "../../toast/toast.component";
 import {StravaService} from "../../../service/strava.service";
 import {Router} from "@angular/router";
 import * as R from "ramda";
-import {MapArea as Area} from "../../../interface/MapArea";
+import {MapArea as Area} from "../../../../@types/global";
 import {distance} from "../../../util/distance"
 declare const module: any;
 @Component({
@@ -120,7 +120,7 @@ export class OneItemTrackComponent implements OnInit{
     }
 
 
-    createArea(area: Area): Area{
+    createArea(area: {radius: number, lng: number, lat: number, id?: number| null}): Area{
         const layerId = OneItemTrackComponent.getNewLayerId();
         const radius = area.radius || 0.5;
         const map = this.map;
@@ -188,11 +188,13 @@ export class OneItemTrackComponent implements OnInit{
                 this.lng = lng;
                 this.lat = lat;
                 map.getSource(layerId)
-                    .setData(createGeoJSONCircle([lng, lat], r))
+                    .setData(createGeoJSONCircle([lng, lat], r));
+                return this;
             },
             remove: function () {
                 map.removeLayer(layerId);
-                map.removeSource(layerId)
+                map.removeSource(layerId);
+                return this;
             }
         }
     }

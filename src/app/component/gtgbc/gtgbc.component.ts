@@ -3,8 +3,7 @@ import { ngIfAnimation } from '../../animation/animation';
 import { MapService } from '../../service/map.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GtgbcService } from '../../api/gtgbc.service';
-import { MobileCell } from '../../../@types/global';
-import { MapArea as Area } from '../../interface/MapArea';
+import { MobileCell, MapArea as Area } from '../../../@types/global';
 import { deepCopy } from '../../util/deep-copy';
 import { distance } from '../../util/distance';
 import { LngLat } from '../../util/lngLat';
@@ -305,10 +304,12 @@ export class GtgbcComponent implements OnInit, OnDestroy {
                 this.lat = lat;
                 map.getSource(layerId)
                     .setData(createGeoJSONCircle([lng, lat], r));
+                return this;
             },
             remove: function () {
                 map.removeLayer(layerId);
                 map.removeSource(layerId);
+                return this;
             }
         };
     }
