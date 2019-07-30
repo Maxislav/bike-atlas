@@ -216,6 +216,7 @@ class OnAuth extends ProtoData {
                                                 bs: lastBsPosition.bs
                                             };
                                         }
+                                        console.log('emit log', loggerRow.device_key);
                                         this.socket.emit('log', loggerRow);
                                     }).catch(err => {
                                         console.log('err 1 -> ', err);
