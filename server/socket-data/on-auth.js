@@ -133,6 +133,7 @@ class OnAuth extends ProtoData {
             const emitLastPosition = () => {
                 this.socket.removeListener(hash, emitLastPosition);
                 util.clearHash(hash);
+                console.log('deviceKeys', deviceKeys);
                 Promise.all(deviceKeys.map(key => {
                     return util.getLastPosition(key)
                         .then((row) => {
@@ -160,7 +161,6 @@ class OnAuth extends ProtoData {
                                     bs: lastBsPosition.bs
                                 };
                             }
-                            console.log('emit log', loggerRow.device_key);
                             this.socket.emit('log', loggerRow);
                         }).catch(err => {
                             console.log('err 1 -> ', err);
