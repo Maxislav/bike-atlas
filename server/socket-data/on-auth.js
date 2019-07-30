@@ -6,7 +6,7 @@ const deferred_1 = require("../deferred");
 class LastBsPosition {
     constructor(rows) {
         this.rows = rows;
-        this.type = "BS";
+        this.type = 'BS';
         const arrGroup = this.groupByDate(rows);
         this.lastGroup = [];
         this.lastGroupDate = 0;
@@ -156,8 +156,13 @@ class OnAuth extends ProtoData {
                             return err;
                         });
                     });
-                })).then((rows) => {
+                }))
+                    .then((rows) => {
                     deferred.resolve(rows);
+                })
+                    .catch(err => {
+                    console.log('err -> ', err);
+                    return err;
                 });
             };
             this.socket.on(hash, emitLastPosition);
@@ -182,6 +187,7 @@ class OnAuth extends ProtoData {
             return deferred.promise;
         })
             .catch(err => {
+            console.log('err -> ', err);
             res.end({
                 result: false,
                 message: err

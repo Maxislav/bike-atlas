@@ -18,10 +18,10 @@ class LastBsPosition implements LoggerBsRow {
     id: number;
     speed: number;
     src: string;
-    type: "POINT" | "BS" = "BS";
+    type: 'POINT' | 'BS' = 'BS';
     bs: Array<LoggerRow>;
 
-    constructor(private rows: Array<LoggerRow>){
+    constructor(private rows: Array<LoggerRow>) {
         const arrGroup = this.groupByDate(rows);
         this.lastGroup = [];
         this.lastGroupDate = 0;
@@ -34,7 +34,7 @@ class LastBsPosition implements LoggerBsRow {
             this.date = new Date(this.lastGroup[this.lastGroup.length - 1].date);
             this.lastGroupDate = this.date.getTime();
             this.src = this.lastGroup.map(item => item.src).join(';');
-            this.bs =  this.lastGroup;
+            this.bs = this.lastGroup;
             this.lng = this.getRound(...this.lastGroup.map(item => Number(item.lng)));
             this.lat = this.getRound(...this.lastGroup.map(item => Number(item.lat)));
         }
@@ -70,9 +70,6 @@ class LastBsPosition implements LoggerBsRow {
         const reducer = (accumulator, currentValue) => accumulator + currentValue;
         return list.reduce(reducer) / list.length;
     }
-
-
-
 
 
 }
@@ -203,14 +200,19 @@ class OnAuth extends ProtoData {
                                         }
                                         this.socket.emit('log', loggerRow);
                                     }).catch(err => {
-                                        console.log('err -> ',err);
+                                        console.log('err -> ', err);
                                         return err;
-                                    })
+                                    });
                             });
 
-                    })).then((rows) => {
-                        deferred.resolve(rows);
-                    });
+                    }))
+                        .then((rows) => {
+                            deferred.resolve(rows);
+                        })
+                        .catch(err => {
+                            console.log('err -> ', err);
+                            return err;
+                        });
 
 
                 };
@@ -240,6 +242,7 @@ class OnAuth extends ProtoData {
             })
 
             .catch(err => {
+                console.log('err -> ', err);
                 res.end({
                     result: false,
                     message: err
