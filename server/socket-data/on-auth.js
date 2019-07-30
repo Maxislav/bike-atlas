@@ -3,6 +3,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const util = require('./util');
 const ProtoData = require("./proto-data");
 const deferred_1 = require("../deferred");
+class LG {
+    constructor(row) {
+        this.date = new Date(0);
+        if (row) {
+            Object.assign(this, row, {
+                lng: Number(row.lng),
+                lat: Number(row.lat)
+            });
+        }
+    }
+}
 class LastBsPosition {
     constructor(rows) {
         this.rows = rows;
@@ -128,8 +139,7 @@ class OnAuth extends ProtoData {
                         //console.log('device key->', key)
                         this.logger.updateDevice(key, this.socket.id);
                         this.gl520.updateDevice(key, this.socket.id);
-                        row.lng = Number(row.lng);
-                        row.lat = Number(row.lat);
+                        row = new LG(row);
                         return util.getLastBSPosition(key)
                             .then(rowList => {
                             const lastBsPosition = new LastBsPosition(rowList);
