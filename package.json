@@ -2,14 +2,14 @@
   "name": "atlas-angular2",
   "version": "1.0.0",
   "scripts": {
-    "start": "concurrently  \"npm run gulpDev\" \"npm run server-dev\" \"npm run tsc:w\"  \"npm run tsc-be:w\"",
+    "start": "concurrently  \"npm run gulpDev\" \"npm run server-dev\" \"npm run tsc-ui:w\"  \"npm run tsc-be:w\"",
     "server": "tsc --project tsconfig-be.json && node server/index.js",
     "server-dev": "concurrently \"npm run tsc-be:w\" \"npm run node-dev\" ",
     "node-dev": "node-dev server/index.js",
     "gulpDev": "node_modules/.bin/gulp",
     "lite": "lite-server",
-    "tsc": "tsc --project tsconfig-ui.json",
-    "tsc:w": "tsc -w --project tsconfig-ui.json",
+    "tsc-ui": "tsc --project tsconfig-ui.json",
+    "tsc-ui:w": "tsc -w --project tsconfig-ui.json",
     "tsc-be:w": "tsc -w --project tsconfig-be.json",
     "typings": "typings"
   },

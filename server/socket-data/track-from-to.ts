@@ -1,8 +1,9 @@
+import { LoggerRow } from '../types';
+
 const ProtoData = require('./proto-data');
 const R = require('ramda');
-
-const {distance} = require('../distance');
-
+import {distance} from '../util/distance';
+import {LngLat} from '../util/lngLat';
 /**
  * Class olo
  * @extends Array
@@ -67,7 +68,7 @@ class TrackFromTo extends ProtoData {
     }
 
     trackDeviceFromTo(req: { data: { from: string, to: string, device_key: string } }, res) {
-		const {from, to, device_key} = req.data;
+        const {from, to, device_key} = req.data;
         let _userId;
         this.getUserId()
             .then(userId => {
@@ -79,18 +80,18 @@ class TrackFromTo extends ProtoData {
                     return device.device_key === device_key;
                 });
             })
-            .then((device)=>{
+            .then((device) => {
                 if (device) {
 
                     return this.util.getTrackFromTo(device_key, from, to)
-                        .then(rows =>{
-                            const points = TrackFromTo._clearTrashPoints(new Points(...rows));
-
+                        .then((rows: Array<LoggerRow>) => {
+                            let  points = TrackFromTo._clearParkingPoints(rows);
+                            points = TrackFromTo._clearInvalidPoint(points);
                             res.end({
                                 result: 'ok',
                                 list: [{userId: device.user_id, name: device.name, points: points}]
                             });
-                        })
+                        });
                 } else {
                     res.end({
                         error: 'Device is not registered on this user'
@@ -105,7 +106,7 @@ class TrackFromTo extends ProtoData {
             })*/
             .catch(err => {
                 console.error(err);
-            })
+            });
 
     }
 
@@ -148,22 +149,17 @@ class TrackFromTo extends ProtoData {
 
             })
             .then(devices => {
-                const promises = [];
                 const list = [];
-
-                devices.forEach(/** @param {{device_key: String}} device */(device) => {
-                    promises.push(this.util.getTrackFromTo(device.device_key, data.from, data.to)
+                return Promise.all(devices.map(device => {
+                    return this.util.getTrackFromTo(device.device_key, data.from, data.to)
                         .then(rows => {
-
-                            const points = TrackFromTo._clearTrashPoints(new Points(...rows));
+                            const points = TrackFromTo._clearParkingPoints(new Points(...rows));
 
                             list.push({userId: device.user_id, name: device.name, points: points});
                             return rows;
-                        })
-                    );
-                });
-                return Promise.all(promises)
-                    .then(rows => {
+                        });
+                }))
+                    .then(() => {
                         return list;
                     });
             })
@@ -257,25 +253,45 @@ class TrackFromTo extends ProtoData {
 
     }
 
+
+    static _clearInvalidPoint(points: Array<LoggerRow>): Array<LoggerRow> {
+
+        for (let i = 0 ; i < points.length - 2; i++){
+            const p1 = points [i];
+            const p2 = points [i+1];
+            const p3 = points [i+2];
+            const dist1 = distance(LngLat.fromObject(p1), LngLat.fromObject(p2));
+            const dist2 = distance(LngLat.fromObject(p2), LngLat.fromObject(p3));
+            if(1<dist1 && 1<dist2){
+                points.splice(i+1, 1);
+                return TrackFromTo._clearInvalidPoint(points);
+            }
+        }
+
+        return points
+
+
+    }
+
     /**
      * @param {Points} points
      * @param {number?} k
      * @private
      */
-    static _clearTrashPoints(points: any, k?: number) {
+    static _clearParkingPoints(points: Array<LoggerRow>, k?: number) {
         let i = k || 0;
         const point1 = points[i];
         if (!point1 || k == points.length) {
             return points;
         } else if (0.1 < point1.speed) {
             i++;
-            return TrackFromTo._clearTrashPoints(points, i);
+            return TrackFromTo._clearParkingPoints(points, i);
         } else {
             const arrForSum = [];
             let i2 = i;
             while (i2 < points.length - 1) {
                 const point2 = points[i2 + 1];
-                if (distance([point1.lng, point1.lat], [point2.lng, point2.lat]) < 0.05) {
+                if (distance(new LngLat(point1.lng, point1.lat), LngLat.fromArray([point2.lng, point2.lat])) < 0.05) {
                     if (!arrForSum.length) arrForSum.push(point1);
                     arrForSum.push(point2);
                 }
@@ -287,7 +303,7 @@ class TrackFromTo extends ProtoData {
             });
             points = points.filter(it => it);
             i++;
-            return TrackFromTo._clearTrashPoints(points, i);
+            return TrackFromTo._clearParkingPoints(points, i);
         }
 
     }

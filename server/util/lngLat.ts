@@ -17,4 +17,13 @@ export class LngLat extends Array{
         this[1] = this.lat;
         return this
     }
+
+    public static fromArray(arr: number[]): LngLat{
+        return new LngLat(...arr);
+    }
+
+    public static fromObject(lngLat: {lng: number, lat: number}){
+        return new LngLat().setValue(lngLat);
+
+    }
 }

@@ -161,7 +161,7 @@ export class Util {
         })
     }
 
-    getTrackFromTo(deviceKey, from, to) {
+    getTrackFromTo(deviceKey, from, to):Promise<Array<LoggerRow>> {
         return new Promise((resolve, reject) => {
             this.connection.query('SELECT * FROM `logger` WHERE `device_key`=? AND date>? AND date<? ORDER BY date', [deviceKey, from, to], function (err, rows) {
                 if (err) {

@@ -17,6 +17,12 @@ class LngLat extends Array {
         this[1] = this.lat;
         return this;
     }
+    static fromArray(arr) {
+        return new LngLat(...arr);
+    }
+    static fromObject(lngLat) {
+        return new LngLat().setValue(lngLat);
+    }
 }
 exports.LngLat = LngLat;
 //# sourceMappingURL=lngLat.js.map
