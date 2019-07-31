@@ -15,7 +15,6 @@ class Logger {
     //  /log?id=862614000171302 &dev=862614000171302&acct=862614000171302&batt=0&code=0xF020&alt=0.0&gprmc=$GPRMC,152524,A,5005.91360,N,3033.15540,E,13.386224,222.130005,010818,,*1E
     //  /log?id=222222222222&dev=222222222222&acct=222222222222&batt=0&code=0xF020&alt=0.0&gprmc=$GPRMC,043137,A,5026.94750,N,3024.56420,E,0.000000,216.429993,150963,,*20
     constructor(_app, _ioServer, util) {
-        this.lastGprmcHash = {};
         app = _app;
         ioServer = _ioServer;
         this.util = util;
@@ -41,7 +40,7 @@ class Logger {
             checkSum = checkSum.replace(/\*/, '');
             res.end(checkSum);
             try {
-                data = this.parseGprmc(req.query.gprmc, req.query.id);
+                data = this.parseGprmc(req.query.gprmc, req.url, req.query.id);
             }
             catch (err) {
                 console.error('Error parse', err);
@@ -52,14 +51,10 @@ class Logger {
             res.end();
         }
         if (data) {
-            const lastDate = this.lastGprmcHash[data.id] ? this.lastGprmcHash[data.id].date.getTime() : 0;
-            this.lastGprmcHash[data.id] = data;
-            if (lastDate < data.date.getTime()) {
-                util.insertLog(data)
-                    .catch(err => {
-                    console.error('insertLog error ->', err);
-                });
-            }
+            util.insertLog(data)
+                .catch(err => {
+                console.error('insertLog error ->', err);
+            });
         }
         console.log('onLog ->', data);
         const emitedSockets = [];
@@ -139,11 +134,12 @@ class Logger {
     }
     // $GPRMC,153946,A,5023.31220,N,3029.63150,E,0.000000,0.000000,030117,,*2A
     //$GPRMC,030853,A,5026.98660,N,3024.51060,E,2.798506,109.540001, 15 09 63   ,,*20
-    parseGprmc(gprmc, id) {
+    parseGprmc(gprmc, reqUrl, id) {
         const arrData = gprmc.split(',');
         const timeStamp = arrData[1];
         const dateStamp = arrData[9];
         let lat, lng, azimuth, speed, date;
+        const src = reqUrl.replace(/^\/?log\?/, '');
         let year = Number(String('20').concat(dateStamp[4], dateStamp[5]));
         if (new Date().getFullYear() < year) {
             year = new Date().getFullYear();
@@ -173,7 +169,7 @@ class Logger {
             lat,
             azimuth: azimuth || 0,
             speed,
-            src: gprmc,
+            src,
             id,
             device_key: id,
             type: 'POINT'

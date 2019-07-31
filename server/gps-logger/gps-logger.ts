@@ -28,7 +28,6 @@ export class Logger {
     robot: Robot;
     _sockets:  {[socket_id: number]: SSocket};
     devices:  {[device_key: string]: Array<number>};
-    lastGprmcHash: {[device_key: string]:  GprmcData} = {};
     /** @namespace this.connection */
 // $GPRMC,074624,A,5005.91360,N,3033.15540,E,13.386224,222.130005,290718,,*1E wrong  -> 50.98559952
 // $GPRMC,074553,A,5006.02390,N,3033.30500,E,16.895118,220.089996,290718,,*1A   -> 50.10039902
@@ -54,6 +53,7 @@ export class Logger {
 
         const util = this.util;
 
+
         const device_id = req.query.id;
         let data: GprmcData = null;
 
@@ -69,7 +69,7 @@ export class Logger {
             checkSum = checkSum.replace(/\*/, '');
             res.end(checkSum);
             try {
-                data = this.parseGprmc(req.query.gprmc, req.query.id)
+                data = this.parseGprmc(req.query.gprmc, req.url, req.query.id)
 
 
             } catch (err) {
@@ -82,15 +82,11 @@ export class Logger {
         }
         if (data) {
 
-            const lastDate: number = this.lastGprmcHash[data.id] ?  this.lastGprmcHash[data.id].date.getTime() : 0;
-            this.lastGprmcHash[data.id] = data;
-            if(lastDate<data.date.getTime()){
 
                 util.insertLog(data)
                     .catch(err => {
                         console.error('insertLog error ->', err)
                     })
-            }
         }
 
         console.log('onLog ->', data);
@@ -185,11 +181,12 @@ export class Logger {
 
 
     //$GPRMC,030853,A,5026.98660,N,3024.51060,E,2.798506,109.540001, 15 09 63   ,,*20
-    private  parseGprmc(gprmc: string, id): GprmcData {
+    private  parseGprmc(gprmc: string, reqUrl: string, id: string): GprmcData {
         const arrData = gprmc.split(',');
         const timeStamp = arrData[1];
         const dateStamp = arrData[9];
         let lat, lng, azimuth, speed, date;
+        const src = reqUrl.replace(/^\/?log\?/, '');
         let year = Number(String('20').concat(dateStamp[4], dateStamp[5]));
         if(new Date().getFullYear() < year){
             year = new Date().getFullYear()
@@ -231,7 +228,7 @@ export class Logger {
             lat,
             azimuth: azimuth || 0,
             speed,
-            src: gprmc,
+            src,
             id,
             device_key: id,
             type: 'POINT'
