@@ -10,9 +10,11 @@ export class BaseStationLocation {
     getLatLng(mc: MobileCell): Promise<BaseStationPoint> {
         return new Promise((resolve, reject) => {
             const req = https.request({
-                hostname: 'cellphonetrackers.org',
+                hostname: 'opencellid.org',
                 port: 443,
-                path: `/gsm/classes/Cell.Search.php?mcc=${mc.mcc}&mnc=${mc.mnc}&lac=${mc.lac}&cid=${mc.cellId}`,
+                //path: `/gsm/classes/Cell.Search.php?mcc=${mc.mcc}&mnc=${mc.mnc}&lac=${mc.lac}&cid=${mc.cellId}`,
+                //cell/get?key=c0a03eae5fa12e&mcc=260&mnc=2&lac=10250&cellid=26511&format=json
+                path: `/cell/get?key=c0a03eae5fa12e&mcc=${mc.mcc}&mnc=${mc.mnc}&lac=${mc.lac}&cellid=${mc.cellId}&format=json`,
                 method: 'GET'
             }, (proxyResponse) => {
                 let resData = '';
@@ -21,12 +23,20 @@ export class BaseStationLocation {
                 });
                 proxyResponse.on('end', function () {
                     const str = resData.toString();
-                    const lat = str.match(/Lat=-?[\d\.]+/)[0].replace(/^Lat=/, '');
-                    const lng = str.match(/Lon=-?[\d\.]+/)[0].replace(/^Lon=/, '');
+                    let j:{lat: number, lon: number, cellid: number};
+                    try{
+                        j = JSON.parse(str);
+                    }catch(e){
+                        console.error('Parse error ->',e);
+                        return reject(e);
+
+                    }
+
+
                     resolve({
                         id: mc.cellId,
-                        lng: Number(lng),
-                        lat: Number(lat)
+                        lng: Number(j.lon),
+                        lat: Number(j.lat)
                     });
                 });
             })

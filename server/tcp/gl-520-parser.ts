@@ -154,7 +154,7 @@ export class Gl520Parser {
         }
 
 
-        return res.filter(item => 6 <= item.length).map(item => {
+        return res.filter(item => item[5]).map(item => {
             return {
                 mcc: parseInt(item[0], 10),
                 mnc: parseInt(item[1], 10),

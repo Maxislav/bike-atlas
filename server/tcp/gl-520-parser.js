@@ -125,7 +125,7 @@ class Gl520Parser {
         while (arr.length) {
             res.push(arr.splice(0, 6));
         }
-        return res.filter(item => 6 <= item.length).map(item => {
+        return res.filter(item => item[5]).map(item => {
             return {
                 mcc: parseInt(item[0], 10),
                 mnc: parseInt(item[1], 10),
