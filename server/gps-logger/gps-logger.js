@@ -5,6 +5,7 @@ const dateFormat = require('dateformat');
 //const util = require('./socket-data/util');
 const http = require("http");
 const distance_1 = require("../distance");
+const robot_1 = require("../robot");
 class Logger {
     /** @namespace this.connection */
     // $GPRMC,074624,A,5005.91360,N,3033.15540,E,13.386224,222.130005,290718,,*1E wrong  -> 50.98559952
@@ -18,7 +19,7 @@ class Logger {
         ioServer = _ioServer;
         this.util = util;
         //this.connection = connection;
-        //this.robot = new Robot(util);
+        this.robot = new robot_1.Robot(util);
         this._sockets = [];
         this.devices = {};
         app.get('/log*', this.onLog.bind(this));
@@ -176,7 +177,7 @@ class Logger {
     }
     set sockets(connected) {
         this._sockets = connected;
-        // this.robot.sockets = connected;
+        this.robot.sockets = connected;
     }
     get sockets() {
         return this._sockets;
