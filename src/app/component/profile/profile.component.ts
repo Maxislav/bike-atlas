@@ -100,7 +100,7 @@ export class ProfileComponent implements AfterViewInit{
             context.restore();
             $this.user.image =   elCanvas.toDataURL()
             imageObj.parentElement.removeChild(imageObj)
-        };
+        }
         imageObj.onload = function () {
             drawClipped(context, imageObj);
         };

@@ -10,7 +10,7 @@ declare const module: any;
 })
 export class MenuAthleteItemComponent implements OnInit{
     speed: string;
-    subscription: Subscription
+    subscription: Subscription;
     @Input() device: Device;
     constructor(){
     }

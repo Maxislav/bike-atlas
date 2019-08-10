@@ -3,7 +3,8 @@ export interface DeviceRow {
     'user_id': number,
     'device_key': string,
     'name': string,
-    'phone': string
+    'phone': string,
+    image: string
 }
 
 export interface LoggerRow {

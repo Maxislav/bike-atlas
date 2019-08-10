@@ -62,6 +62,13 @@ export class DeviceService {
         this._devices.length = 0;
     }
 
+    onAddDeviceImage(device: Device){
+        return this.socket.$get('onAddDeviceImage', {
+            deviceKey: device.device_key,
+            image: device.image
+        })
+    }
+
     get devices(): Array<Device> {
         return this._devices;
     }

@@ -1,13 +1,13 @@
 import {
     Component, Pipe, PipeTransform, TemplateRef, ViewContainerRef, Directive, ElementRef,
-    Renderer
+    Renderer, AfterViewInit, ViewChildren, QueryList, ViewChild, ContentChild, ContentChildren
 } from '@angular/core';
-import {Location} from '@angular/common';
-import {Router} from "@angular/router";
-import {DeviceService} from "../../service/device.service";
-import {NavigationHistory} from "../../app.component";
-import {ToastService} from "../toast/toast.component";
-import {UserService} from "../../service/main.user.service";
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { DeviceService } from '../../service/device.service';
+import { NavigationHistory } from '../../app.component';
+import { ToastService } from '../toast/toast.component';
+import { UserService } from '../../service/main.user.service';
 import { Device, User } from '../../../@types/global';
 
 
@@ -15,7 +15,7 @@ import { Device, User } from '../../../@types/global';
     selector: 'help-container',
 })
 export class HelpContainer {
-    constructor(el:ElementRef, renderer:Renderer) {
+    constructor(el: ElementRef, renderer: Renderer) {
 
         let w = window,
             d = document,
@@ -28,9 +28,10 @@ export class HelpContainer {
         renderer.setElementStyle(el.nativeElement, 'height', y - 300 + 'px');
     }
 }
-declare const module:{
-    id:any
-}
+
+declare const module: {
+    id: any
+};
 
 
 @Pipe({
@@ -38,16 +39,16 @@ declare const module:{
     pure: false
 })
 export class IsOwner implements PipeTransform {
-    constructor(private user:UserService) {
+    constructor(private user: UserService) {
 
     }
 
     transform(value, args?) {
 
         // console.log('fds')
-        return value.filter(item=> {
-            return item.ownerId == this.user.user.id
-        })
+        return value.filter(item => {
+            return item.ownerId == this.user.user.id;
+        });
     }
 }
 
@@ -59,21 +60,23 @@ export class IsOwner implements PipeTransform {
         'device.component.css',
     ]
 })
-export class DeviceComponent {
+export class DeviceComponent implements AfterViewInit {
 
-    private device:Device;
-    private devices:Array<Device>;
-    public btnPreDel:{index:number};
-    private user:User;
-    private showHelp:boolean = false;
+    private device: Device;
+    private devices: Array<Device>;
+    public btnPreDel: { index: number };
+    private user: User;
+    private showHelp: boolean = false;
 
+    private inputList: Set<any> = new Set();
 
-    constructor(private location:Location,
-                private router:Router,
-                private userService:UserService,
+    constructor(private location: Location,
+                private router: Router,
+                private userService: UserService,
                 private deviceService: DeviceService,
-                private toast:ToastService,
-                private lh:NavigationHistory) {
+                private toast: ToastService,
+                private lh: NavigationHistory,
+                private el: ElementRef) {
 
         this.user = userService.user;
 
@@ -87,14 +90,15 @@ export class DeviceComponent {
             index: -1
         };
         this.devices = deviceService.devices;
-        deviceService.updateDevices()
+        deviceService.updateDevices();
     }
 
-    ngOnChanges(a){
-        console.log('ngOnChanges->', a)
+    ngOnChanges(a) {
+        console.log('ngOnChanges->', a);
     }
+
     onShowHelp() {
-        this.showHelp = !this.showHelp
+        this.showHelp = !this.showHelp;
     }
 
     onAdd(e) {
@@ -108,27 +112,27 @@ export class DeviceComponent {
         if (!this.device.name || !this.device.id) {
             this.toast.show({
                 type: 'warning',
-                text: "Имя или Идентификатор не заполнено"
+                text: 'Имя или Идентификатор не заполнено'
             });
             return;
         }
 
         this.deviceService.onAddDevice(this.device)
-            .then(d=> {
+            .then(d => {
                 if (d && d.result == 'ok') {
-                    this.reset()
-                }else if(d && d.result === false && d.message == 'device exist'){
+                    this.reset();
+                } else if (d && d.result === false && d.message == 'device exist') {
                     this.toast.show({
                         type: 'warning',
-                        text: "Устройство зарегистрированно на другого пользователя"
+                        text: 'Устройство зарегистрированно на другого пользователя'
                     });
                 }
-            })
+            });
     }
 
     onDel(e, device) {
         this.deviceService.onDelDevice(device)
-            .then(d=> {
+            .then(d => {
                 console.log(d);
                 this.clearPredel();
             });
@@ -136,11 +140,11 @@ export class DeviceComponent {
 
     preDel(e, i) {
         e.stopPropagation();
-        this.btnPreDel.index = i
+        this.btnPreDel.index = i;
     }
 
     clearPredel() {
-        this.btnPreDel.index = -1
+        this.btnPreDel.index = -1;
     }
 
     reset() {
@@ -152,20 +156,88 @@ export class DeviceComponent {
         };
     }
 
-    ngDoCheck(){
+
+    onLoadImage(device: Device, i: number) {
+       const el: any = Array.from(this.el.nativeElement.getElementsByTagName('input')).find((item: {id: string}) => {
+            return item.id === 'input-img-'+i
+        });
+        this.initEl(el, device)
 
     }
 
-    getF(f){
-        console.log(f)
+    private initEl(el: any, device: Device){
+        if(!this.inputList.has(el)){
+            this.inputList.add(el);
+            el.addEventListener('change', ()=>{
+                const file = el.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const the_url = event.target.result;
+                    device.image =  this.crop(the_url);
+                    this.onAddDeviceImage(device)
+
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        el.click()
+    }
+
+    private onAddDeviceImage(device: Device){
+        this.deviceService.onAddDeviceImage(device)
+            .then(d =>{
+                console.log(d)
+            })
+    }
+
+    private crop(base64) {
+        //const $this = this;
+        const imageObj = new Image();
+        imageObj.style.display = 'none';
+        const elCanvas = document.createElement('canvas');
+        elCanvas.width = 100;
+        elCanvas.height = 100;
+        const context = elCanvas.getContext('2d');
+        function drawClipped(context, myImage) {
+            context.save();
+            context.beginPath();
+            context.arc(50, 50, 50, 0, Math.PI * 2, true);
+            context.closePath();
+            context.clip();
+            context.drawImage(myImage, 0, 0, 100, 100);
+            context.restore();
+            //$this.user.image =   elCanvas.toDataURL();
+            //imageObj.parentElement.removeChild(imageObj)
+        }
+        imageObj.onload = function () {
+            drawClipped(context, imageObj);
+        };
+        imageObj.src = base64;
+        return base64
+        //document.body.appendChild(imageObj)
+    }
+
+    ngDoCheck() {
+
+    }
+
+
+    getF(f) {
+        console.log(f);
     }
 
     onClose() {
         if (this.lh.is) {
-            this.location.back()
+            this.location.back();
         } else {
             this.router.navigate(['/auth/map']);
         }
+    }
+
+    ngAfterViewInit(): void {
+
+
+         console.log( this.el.nativeElement.getElementsByTagName('input'))
     }
 
 }

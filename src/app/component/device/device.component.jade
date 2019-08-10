@@ -1,25 +1,30 @@
 div.content
     div((click)="clearPredel()")
         .close((click)="onClose()") &times;
-        div
+        div#oloe
             | Регистрация устройства
         form(#f="ngForm" )
             div.row()
                 table()
                     thead
                         tr
-                            td.required Имя
-                            td.required Идентификатор устройства
-                            td Телефон
-                            td
+                            th image
+                            th.required Имя
+                            th.required Идентификатор устройства
+                            th Телефон
+                            th
                     tbody
                         tr(*ngFor="let dev of devices \;  let i = index ", (click)="preDel($event, i)")
+                            td
+                                img.logo([src]="dev.image || 'src/img/speedway_4_logo.jpg' ", (click)="onLoadImage(dev, i)")
+                                input(type="file", [attr.id]="'input-img-'+i", name="files[]" multiple="", style="display: none")
                             td {{dev.name}}
                             td {{dev.device_key}}
                             td {{dev.phone}}
                             td.predelCell
                                 .predel(*ngIf="btnPreDel.index==i", (click)='onDel($event, dev)') &times;
                         tr
+                            td
                             td
                                 input(type='text', [(ngModel)]='device.name', name='deviceName', placeholder="{{user.name}}", required, minlength="3" )
                             td

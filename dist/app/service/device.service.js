@@ -62,6 +62,12 @@ let DeviceService = class DeviceService {
     clearDevices() {
         this._devices.length = 0;
     }
+    onAddDeviceImage(device) {
+        return this.socket.$get('onAddDeviceImage', {
+            deviceKey: device.device_key,
+            image: device.image
+        });
+    }
     get devices() {
         return this._devices;
     }

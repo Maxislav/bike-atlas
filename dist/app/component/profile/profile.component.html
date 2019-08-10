@@ -25,13 +25,12 @@
       </div>
       <div class="border-hidden"></div>
     </div>
-    <div class="row border">
-      <form [formGroup]="profileForm">
-        <input formControlName="oldPass"/>
-        <div>{{ profileForm.value | json }}</div>
-        <div>{{ profileForm.status | json }}</div>
-      </form>
-    </div>
+    <!--.row.border
+    //form([formGroup]='profileForm')
+        input(formControlName="oldPass")
+        div {{ profileForm.value | json }}
+        div {{ profileForm.status | json }}
+    -->
     <div class="border-hidden"></div>
   </div>
 </div>

@@ -40,7 +40,7 @@ const appRouters = [
                     {
                         path: 'device',
                         component: device_component_1.DeviceComponent,
-                        canActivate: [main_user_service_1.UserService]
+                        canActivate: [auth_service_1.AuthService]
                     },
                     {
                         path: 'profile',

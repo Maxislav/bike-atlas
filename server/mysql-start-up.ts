@@ -1,19 +1,22 @@
 const mysql = require('mysql');
 let config = require('./mysql.config.json');
 let connection = null;
+
+
 connect()
     .then(createDatabase)
     .then(connect)
     .then(createTable)
     .then(() => {
-    connection.end();
-    console.log("Success");
-})
+        connection.end();
+        console.log("Success");
+    })
     .catch((err) => {
-    console.log(err);
-    connection.end();
-});
+        console.log(err);
+        connection.end()
+    });
 //ALTER TABLE `logger` CHANGE `date` `date` datetime(2) NOT NULL
+
 function connect() {
     connection = mysql.createConnection(config.mysql);
     return new Promise((resolve, reject) => {
@@ -23,30 +26,31 @@ function connect() {
                 reject(err);
                 return;
             }
-            resolve(connection);
+            resolve(connection)
         });
-    });
+    })
 }
+
 function createDatabase() {
     return new Promise((resolve, reject) => {
         connection.query('CREATE DATABASE IF NOT EXISTS `monitoring` CHARACTER SET utf8 COLLATE utf8_general_ci', (err, rows, field) => {
             if (err) {
                 console.log('Error createDatabase');
                 reject(err);
-            }
-            else {
+            } else {
                 config.mysql['database'] = 'monitoring';
                 connection.end((err) => {
                     if (err) {
                         reject(err);
                         return;
                     }
-                    resolve(connection);
+                    resolve(connection)
                 });
             }
         });
-    });
+    })
 }
+
 function createTable() {
     const tableUser = new Promise((res, rej) => {
         const query = 'CREATE TABLE IF NOT EXISTS `monitoring`.`user` ' +
@@ -63,15 +67,17 @@ function createTable() {
                 return;
             }
             res(connection);
-        });
+        })
     });
+
     const tableHash = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`hash` ' +
             '( `id` INT NOT NULL AUTO_INCREMENT , ' +
-            '`user_id` INT NOT NULL, ' +
-            '`socket_id` VARCHAR(32) NOT NULL, ' +
-            '`key` VARCHAR(32) NULL,' +
-            ' PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+          '`user_id` INT NOT NULL, ' +
+          '`socket_id` VARCHAR(32) NOT NULL, ' +
+          '`key` VARCHAR(32) NULL,' +
+          ' PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+
         connection.query(query, (err) => {
             if (err) {
                 console.log('Error  tableHash create');
@@ -79,8 +85,9 @@ function createTable() {
                 return;
             }
             res(connection);
-        });
+        })
     });
+
     const tableDevice = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`device` ' +
             '( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `device_key` VARCHAR(32) NOT NULL , ' +
@@ -95,8 +102,10 @@ function createTable() {
                 return;
             }
             res(connection);
-        });
+        })
     });
+
+
     const tableLogger = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`logger` ' +
             '( `id` INT NOT NULL AUTO_INCREMENT , ' +
@@ -117,8 +126,9 @@ function createTable() {
                 return;
             }
             res(connection);
-        });
+        })
     });
+
     const tableSetting = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`setting` ' +
             '( `id` INT NOT NULL AUTO_INCREMENT , ' +
@@ -135,7 +145,7 @@ function createTable() {
                 return;
             }
             res(connection);
-        });
+        })
     });
     const tableInvite = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`invite` ' +
@@ -151,8 +161,10 @@ function createTable() {
                 return;
             }
             res(connection);
-        });
+        })
     });
+
+
     const tableFriends = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`friends` ' +
             '( `id` INT NOT NULL AUTO_INCREMENT , ' +
@@ -166,7 +178,7 @@ function createTable() {
                 return;
             }
             res(connection);
-        });
+        })
     });
     const tablePrivateArea = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`private_area` ' +
@@ -183,17 +195,18 @@ function createTable() {
                 return;
             }
             res(connection);
-        });
+        })
     });
+
     const tableChat = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`chat` ' +
-            '( `id` INT NOT NULL AUTO_INCREMENT , ' +
-            '`from_user_id` INT NOT NULL , ' +
-            '`to_user_id` INT NOT NULL , ' +
-            '`text` TEXT COLLATE utf8_general_ci NULL DEFAULT NULL, ' +
-            '`viewed` BOOLEAN NOT NULL DEFAULT 0, ' +
-            '`date` DATETIME NOT NULL, ' +
-            'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+          '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+          '`from_user_id` INT NOT NULL , ' +
+          '`to_user_id` INT NOT NULL , ' +
+          '`text` TEXT COLLATE utf8_general_ci NULL DEFAULT NULL, ' +
+          '`viewed` BOOLEAN NOT NULL DEFAULT 0, ' +
+          '`date` DATETIME NOT NULL, ' +
+          'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
         connection.query(query, (err) => {
             if (err) {
                 console.log('Error table chat create');
@@ -201,7 +214,7 @@ function createTable() {
                 return;
             }
             res(connection);
-        });
+        })
     });
     const tableStrava = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`strava` ' +
@@ -221,8 +234,9 @@ function createTable() {
                 return;
             }
             res(connection);
-        });
+        })
     });
+
     const tableMarker = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`marker` ' +
             '( `id` INT NOT NULL AUTO_INCREMENT , ' +
@@ -242,8 +256,9 @@ function createTable() {
                 return;
             }
             res(connection);
-        });
+        })
     });
+
     const tableImage = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`image` ' +
             '( `id` INT NOT NULL AUTO_INCREMENT , ' +
@@ -256,22 +271,26 @@ function createTable() {
                 return;
             }
             res(connection);
-        });
+        })
     });
+
+
+
+
     return Promise.all([
-        tableUser,
-        tableHash,
-        tableDevice,
-        tableLogger,
-        tableSetting,
-        tableInvite,
+        tableUser, 
+        tableHash, 
+        tableDevice, 
+        tableLogger, 
+        tableSetting, 
+        tableInvite, 
         tableFriends,
         tableChat,
         tablePrivateArea,
         tableStrava,
         tableMarker,
-        tableImage
-    ]);
+        tableImage])
     //return Promise.all([tableHash])
+
+
 }
-//# sourceMappingURL=mysql-start-up.js.map

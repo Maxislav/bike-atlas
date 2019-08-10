@@ -78,7 +78,6 @@ let ProfileComponent = class ProfileComponent {
             $this.user.image = elCanvas.toDataURL();
             imageObj.parentElement.removeChild(imageObj);
         }
-        ;
         imageObj.onload = function () {
             drawClipped(context, imageObj);
         };

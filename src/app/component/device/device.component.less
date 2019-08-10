@@ -1,148 +1,174 @@
 @import "../../css/constant";
-:host{
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 5;
-  width: 100%;
-}
-.content{
-  position: absolute;
-  background: rgba(255, 255, 255, 0.9);
-  min-width: 600px;
-  max-width: 600px;
-  margin-left: -300px;
-  padding: 0;
-  left: 50%;
-  top: calc(~"100% +"20px);
-  box-shadow: @box-shadow;
-  &>div{
-    position: relative;
-    padding: 30px;
-  }
-}
-.row{
-  //padding: 10px;
-}
-.close{
-  position: absolute;
-  right: 0;
-  top: 0;
-  color: darkred;
-  cursor: pointer;
-  padding: 15px;
-  font-size: 20px;
-  font: 30px/15px bold;
-}
-.disabled{
-  color: gray;
-}
-.relative{
-  position: relative;
 
-}
-.absolute{
-  position: absolute;
-  top: 100%;
-  &.helper{
-  font-size: 10px;
-  color: #c80e00;
-  }
-}
-
-@media screen and (max-width: 600px){
-  .content{
-    position: relative;
-    width: 100%;
-    min-width: inherit;;
+:host {
+    position: absolute;
     left: 0;
-    margin-left: 0;
-  }
+    top: 0;
+    z-index: 5;
+    width: 100%;
 }
-input{
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 8px 0;
-  font-size: 14px;
-  outline: none;
-  border: none;
-  border-radius: 2px;
-  background: none;
-  border-bottom: 2px solid darkgrey;
-  margin: -2px;
-}
-table{
-  margin-top: 15px;
-  width: 100%;
-}
-.row{
-  margin: 0 -5px;
-}
-thead{
-  font-size: 10px;
-}
-td{
-  padding: 5px;
-  &:last-child{
-    width: 40px;
-  }
-  &.required{
-  //  padding-left: 5px;
-  }
-  &.required:after{
-    float: left;
-    padding: 0 5px;
-    content: '*';
-    display: block;
-    color: red;
-  }
-  &.predelCell{
+
+.content {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    min-width: 600px;
+    max-width: 600px;
+    margin-left: -300px;
     padding: 0;
-  }
-}
-.predel{
-  display: inline-block;
-  float: right;
-  color: darkred;
-  cursor: pointer;
-  padding: 5px;
-  font-size: 20px;
-  font: 30px/15px bold;
-}
-help-container{
-  display: block;
-  overflow: auto;
-  font-size: 12px;
-  width: 100%;
-  *{
-    box-sizing: border-box;
-  }
-  table{
-    img{
-      width: 120px;
-      height: 200px;
+    left: 50%;
+    top: calc(~"100% +" 20px);
+    box-shadow: @box-shadow;
+    & > div {
+	position: relative;
+	padding: 30px;
     }
-  }
-  img.ico{
-    width: 60px;
-    height: 60px;
-    float: left;
-    margin-right: 10px;
-  }
-
-  td:nth-child(3){
-    width: 30%;
-  }
-
-  span{
-    white-space: nowrap;
-    margin: 05px;
-    color: dodgerblue;
-  }
 }
-.bnt-help{
-  float: right;
-  padding: 5px;
-  cursor: pointer;
+
+.logo {
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+
+    padding: 3px; //border: ;
+}
+
+.close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: darkred;
+    cursor: pointer;
+    padding: 15px;
+    font-size: 20px;
+    font: 30px/15px bold;
+}
+
+.disabled {
+    color: gray;
+}
+
+.relative {
+    position: relative;
+
+}
+
+.absolute {
+    position: absolute;
+    top: 100%;
+    &.helper {
+	font-size: 10px;
+	color: #c80e00;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .content {
+	position: relative;
+	width: 100%;
+	min-width: inherit;;
+	left: 0;
+	margin-left: 0;
+    }
+}
+
+input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 0;
+    font-size: 14px;
+    outline: none;
+    border: none;
+    border-radius: 2px;
+    background: none;
+    border-bottom: 2px solid darkgrey;
+    margin: -2px;
+}
+
+table {
+    margin-top: 15px;
+    width: 100%;
+    th:first-child{
+	width: 40px;
+    }
+}
+
+.row {
+    margin: 0 -5px;
+}
+
+thead {
+    font-size: 10px;
+}
+
+td, th {
+    padding: 5px;
+    text-align: left;
+    &:last-child {
+	width: 40px;
+    }
+    &.required {
+	position: relative;
+    }
+    &.required:after {
+	position: absolute;
+	left: -5px;
+	top: 0;
+	padding: 0 5px;
+	content: '*';
+	display: block;
+	color: red;
+    }
+    &.predelCell {
+	padding: 0;
+    }
+}
+
+.predel {
+    display: inline-block;
+    float: right;
+    color: darkred;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 20px;
+    font: 30px/15px bold;
+}
+
+help-container {
+    display: block;
+    overflow: auto;
+    font-size: 12px;
+    width: 100%;
+    * {
+	box-sizing: border-box;
+    }
+    table {
+	img {
+	    width: 120px;
+	    height: 200px;
+	}
+    }
+    img.ico {
+	width: 60px;
+	height: 60px;
+	float: left;
+	margin-right: 10px;
+    }
+
+    td:nth-child(3) {
+	width: 30%;
+    }
+
+    span {
+	white-space: nowrap;
+	margin: 05px;
+	color: dodgerblue;
+    }
+}
+
+.bnt-help {
+    float: right;
+    padding: 5px;
+    cursor: pointer;
 }

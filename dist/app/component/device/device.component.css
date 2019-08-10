@@ -20,6 +20,13 @@
   position: relative;
   padding: 30px;
 }
+.logo {
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 3px;
+}
 .close {
   position: absolute;
   right: 0;
@@ -70,26 +77,40 @@ table {
   margin-top: 15px;
   width: 100%;
 }
+table th:first-child {
+  width: 40px;
+}
 .row {
   margin: 0 -5px;
 }
 thead {
   font-size: 10px;
 }
-td {
+td,
+th {
   padding: 5px;
+  text-align: left;
 }
-td:last-child {
+td:last-child,
+th:last-child {
   width: 40px;
 }
-td.required:after {
-  float: left;
+td.required,
+th.required {
+  position: relative;
+}
+td.required:after,
+th.required:after {
+  position: absolute;
+  left: -5px;
+  top: 0;
   padding: 0 5px;
   content: '*';
   display: block;
   color: red;
 }
-td.predelCell {
+td.predelCell,
+th.predelCell {
   padding: 0;
 }
 .predel {

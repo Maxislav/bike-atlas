@@ -47,7 +47,7 @@ const  appRouters: Routes = [
                     {
                         path:'device',
                         component: DeviceComponent,
-                        canActivate:[UserService]
+                        canActivate:[AuthService]
                     },
                     {
                         path: 'profile',

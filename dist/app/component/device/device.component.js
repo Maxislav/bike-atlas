@@ -49,14 +49,16 @@ IsOwner = __decorate([
 ], IsOwner);
 exports.IsOwner = IsOwner;
 let DeviceComponent = class DeviceComponent {
-    constructor(location, router, userService, deviceService, toast, lh) {
+    constructor(location, router, userService, deviceService, toast, lh, el) {
         this.location = location;
         this.router = router;
         this.userService = userService;
         this.deviceService = deviceService;
         this.toast = toast;
         this.lh = lh;
+        this.el = el;
         this.showHelp = false;
+        this.inputList = new Set();
         this.user = userService.user;
         this.device = {
             ownerId: -1,
@@ -84,7 +86,7 @@ let DeviceComponent = class DeviceComponent {
         if (!this.device.name || !this.device.id) {
             this.toast.show({
                 type: 'warning',
-                text: "Имя или Идентификатор не заполнено"
+                text: 'Имя или Идентификатор не заполнено'
             });
             return;
         }
@@ -96,7 +98,7 @@ let DeviceComponent = class DeviceComponent {
             else if (d && d.result === false && d.message == 'device exist') {
                 this.toast.show({
                     type: 'warning',
-                    text: "Устройство зарегистрированно на другого пользователя"
+                    text: 'Устройство зарегистрированно на другого пользователя'
                 });
             }
         });
@@ -123,6 +125,60 @@ let DeviceComponent = class DeviceComponent {
             image: ''
         };
     }
+    onLoadImage(device, i) {
+        const el = Array.from(this.el.nativeElement.getElementsByTagName('input')).find((item) => {
+            return item.id === 'input-img-' + i;
+        });
+        this.initEl(el, device);
+    }
+    initEl(el, device) {
+        if (!this.inputList.has(el)) {
+            this.inputList.add(el);
+            el.addEventListener('change', () => {
+                const file = el.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const the_url = event.target.result;
+                    device.image = this.crop(the_url);
+                    this.onAddDeviceImage(device);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        el.click();
+    }
+    onAddDeviceImage(device) {
+        this.deviceService.onAddDeviceImage(device)
+            .then(d => {
+            console.log(d);
+        });
+    }
+    crop(base64) {
+        //const $this = this;
+        const imageObj = new Image();
+        imageObj.style.display = 'none';
+        const elCanvas = document.createElement('canvas');
+        elCanvas.width = 100;
+        elCanvas.height = 100;
+        const context = elCanvas.getContext('2d');
+        function drawClipped(context, myImage) {
+            context.save();
+            context.beginPath();
+            context.arc(50, 50, 50, 0, Math.PI * 2, true);
+            context.closePath();
+            context.clip();
+            context.drawImage(myImage, 0, 0, 100, 100);
+            context.restore();
+            //$this.user.image =   elCanvas.toDataURL();
+            //imageObj.parentElement.removeChild(imageObj)
+        }
+        imageObj.onload = function () {
+            drawClipped(context, imageObj);
+        };
+        imageObj.src = base64;
+        return base64;
+        //document.body.appendChild(imageObj)
+    }
     ngDoCheck() {
     }
     getF(f) {
@@ -135,6 +191,9 @@ let DeviceComponent = class DeviceComponent {
         else {
             this.router.navigate(['/auth/map']);
         }
+    }
+    ngAfterViewInit() {
+        console.log(this.el.nativeElement.getElementsByTagName('input'));
     }
 };
 DeviceComponent = __decorate([
@@ -150,7 +209,8 @@ DeviceComponent = __decorate([
         main_user_service_1.UserService,
         device_service_1.DeviceService,
         toast_component_1.ToastService,
-        app_component_1.NavigationHistory])
+        app_component_1.NavigationHistory,
+        core_1.ElementRef])
 ], DeviceComponent);
 exports.DeviceComponent = DeviceComponent;
 //# sourceMappingURL=device.component.js.map
