@@ -108,7 +108,7 @@ let UserService = class UserService {
         return this._user;
     }
     set user(value) {
-        console.log('Usert ->', value);
+        console.log('set user ->', value);
         for (let opt in value) {
             this._user[opt] = value[opt];
         }

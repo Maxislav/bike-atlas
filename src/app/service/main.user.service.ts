@@ -125,7 +125,7 @@ export class UserService implements CanActivate{
     }
 
     set user(value: User) {
-        console.log('Usert ->', value)
+        console.log('set user ->', value);
         for(let opt in value){
             this._user[opt] = value[opt]
         }

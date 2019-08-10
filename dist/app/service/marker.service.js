@@ -98,6 +98,12 @@ class Marker {
     remove() {
         this.popup.remove();
         this.iconMarker.remove();
+        if (this.areaList) {
+            this.areaList.remove();
+        }
+        if (this.baseStationPoints) {
+            this.baseStationPoints.remove();
+        }
         this.intervalUpdateMarker && clearInterval(this.intervalUpdateMarker);
     }
     ;
