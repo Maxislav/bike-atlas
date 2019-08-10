@@ -37,7 +37,7 @@ class Marker {
         const icoContainer = document.createElement('div');
         icoContainer.classList.add('user-icon');
         const img = this.img = new Image();
-        img.src = this.getDeviceImage(devData.device_key) || 'src/img/speedway_4_logo.jpg';
+        this.image = img.src = this.getDeviceImage(devData.device_key) || this.user.image || 'src/img/speedway_4_logo.jpg';
         icoContainer.appendChild(img);
         this.icoContainer = icoContainer;
         this.popup = new mapboxgl.Popup({
@@ -51,7 +51,6 @@ class Marker {
         this.iconMarker = new mapboxgl.Marker(icoContainer, { offset: [0, 0] })
             .setLngLat([devData.lng, devData.lat])
             .addTo(map);
-        this.image = img.src || 'src/img/no-avatar.gif';
         this.elapsed = '...';
         this.tail = new tail_class_1.TailClass(this.layerId, this.map);
         this.intervalUpdateMarker = setInterval(() => {
@@ -65,9 +64,12 @@ class Marker {
         }
     }
     getDeviceImage(deviceKey) {
-        return this.user.devices.find(device => {
-            return device.device_key === deviceKey;
-        }).image;
+        if (this.user.devices) {
+            return this.user.devices.find(device => {
+                return device.device_key === deviceKey;
+            }).image;
+        }
+        return null;
     }
     update(devData) {
         const prevLngLat = new track_var_1.Point(this.lng, this.lat);

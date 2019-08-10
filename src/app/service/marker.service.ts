@@ -72,7 +72,7 @@ export class Marker {
         const img = this.img = new Image();
 
 
-        img.src = this.getDeviceImage(devData.device_key) || 'src/img/speedway_4_logo.jpg';
+        this.image =  img.src  = this.getDeviceImage(devData.device_key) ||  this.user.image || 'src/img/speedway_4_logo.jpg';
         icoContainer.appendChild(img);
         this.icoContainer = icoContainer;
 
@@ -89,7 +89,7 @@ export class Marker {
             .setLngLat([devData.lng, devData.lat])
             .addTo(map);
 
-        this.image =  img.src  || 'src/img/no-avatar.gif';
+
 
         this.elapsed = '...';
 
@@ -109,9 +109,13 @@ export class Marker {
     }
 
     private getDeviceImage(deviceKey: string): string{
-        return this.user.devices.find(device => {
-            return device.device_key === deviceKey
-        }).image
+        if( this.user.devices){
+            return this.user.devices.find(device => {
+                return device.device_key === deviceKey
+            }).image
+        }
+        return null;
+
     }
 
     update(devData: DeviceData): Marker {
