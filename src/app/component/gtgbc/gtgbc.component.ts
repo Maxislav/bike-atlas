@@ -3,7 +3,7 @@ import { ngIfAnimation } from '../../animation/animation';
 import { MapService } from '../../service/map.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GtgbcService } from '../../api/gtgbc.service';
-import { MobileCell, MapArea as Area } from '../../../@types/global';
+import { MobileCell, MapArea as Area } from '../../../types/global';
 import { deepCopy } from '../../util/deep-copy';
 import { distance } from '../../util/distance';
 import { LngLat } from '../../util/lngLat';

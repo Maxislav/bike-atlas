@@ -1,0 +1,8 @@
+
+<div (click)="onOpen()" class="list-menu">
+  <ul *ngIf="isShow">
+    <li *ngFor="let item of menu" (click)="onAction($event, item)">
+      <button class="primary">{{item.text}}</button>
+    </li>
+  </ul>
+</div>

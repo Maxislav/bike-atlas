@@ -1,4 +1,0 @@
-.list-menu((click)="onOpen()")
-    ul(*ngIf='isShow')
-        li(*ngFor='let item of menu', (click)="onAction($event, item)")
-            button.primary {{item.text}}

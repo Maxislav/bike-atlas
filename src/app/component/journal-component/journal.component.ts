@@ -8,7 +8,7 @@ import {OneTrack} from "./one-track.component/one-track.component";
 import {JournalService} from "../../service/journal.service";
 import {Point} from "../../service/track.var";
 import { UserService } from '../../service/main.user.service';
-import { Device } from '../../../@types/global';
+import { Device } from '../../../types/global';
 
 declare var System: any;
 

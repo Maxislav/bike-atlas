@@ -8,7 +8,7 @@ import { DeviceService } from '../../service/device.service';
 import { NavigationHistory } from '../../app.component';
 import { ToastService } from '../toast/toast.component';
 import { UserService } from '../../service/main.user.service';
-import { Device, User } from '../../../@types/global';
+import { Device, User } from '../../../types/global';
 
 
 @Directive({

@@ -4,7 +4,7 @@ import {DeviceService} from "./device.service";
 import {MarkerService, Marker} from "./marker.service";
 import {UserService} from "./main.user.service";
 import {deepCopy} from "../util/deep-copy";
-import { Device, DeviceData, User } from '../../@types/global';
+import { Device, DeviceData, User } from '../../types/global';
 //import {MarkerService} from "./marker.service";
 
 

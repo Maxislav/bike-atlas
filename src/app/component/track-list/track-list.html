@@ -1,0 +1,9 @@
+
+<div>Список</div>
+<div>
+  <ul>
+    <li *ngFor="let track of list; let i = index">
+      <one-item-track-component [track]="track"></one-item-track-component>
+    </li>
+  </ul>
+</div>

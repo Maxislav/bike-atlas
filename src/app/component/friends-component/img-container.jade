@@ -1,4 +1,0 @@
-.img-container
-    img([src]="user.image || 'src/img/no-avatar.gif' ")
-    .ico-chat((click)="startChat(user)", [ngClass]="{'chat-un-viewed': user.chatUnViewed && user.chatUnViewed.length}", title="отправить личное сообщение")
-    .ico-un-viewed(*ngIf="user.chatUnViewed && user.chatUnViewed.length") {{user.chatUnViewed.length}}

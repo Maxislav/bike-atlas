@@ -9,7 +9,7 @@ import {UserService} from "../../service/main.user.service";
 import {PrivateAreaService} from "../../service/private.area.service";
 import {hashgeneral} from "../../util/hash";
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { User } from '../../../@types/global';
+import { User } from '../../../types/global';
 
 declare const module: any;
 declare const System: any;

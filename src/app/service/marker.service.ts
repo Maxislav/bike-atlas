@@ -16,7 +16,7 @@ import {
     DeviceData,
     MapArea as Area,
     MapAreaList as AreaList
-} from '../../@types/global';
+} from '../../types/global';
 import { LngLat } from '../util/lngLat';
 
 

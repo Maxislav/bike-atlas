@@ -8,7 +8,7 @@ import * as mapboxgl from '../../../lib/mapbox-gl/mapbox-gl.js';
 import { Resolve } from '@angular/router';
 import { AuthService, Setting } from '../service/auth.service';
 import { UserService } from '../service/main.user.service';
-import { MapBoxGl, MapGl } from '../../@types/global';
+import { MapBoxGl, MapGl } from '../../types/global';
 
 class MyMap extends mapboxgl.Map {
     onLoad: Promise<MyMap>;

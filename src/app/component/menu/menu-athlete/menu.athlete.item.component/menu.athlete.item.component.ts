@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {  Subscription } from 'rxjs/Subscription';
-import {Device} from '../../../../../@types/global';
+import {Device} from '../../../../../types/global';
 declare const module: any;
 @Component({
     moduleId: module.id,

@@ -5,7 +5,7 @@ import {MapService} from "../../../service/map.service";
 import {LogService} from "../../../service/log.service";
 import {UserService} from "../../../service/main.user.service";
 import {fromEvent} from 'rxjs/observable/fromEvent'
-import { Device } from '../../../../@types/global';
+import { Device } from '../../../../types/global';
 
 
 

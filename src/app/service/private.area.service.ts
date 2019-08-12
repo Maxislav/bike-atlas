@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {MapService} from "./map.service";
 import {Io} from "./socket.oi.service";
 import {ToastService} from "../component/toast/toast.component";
-import {MapArea as Area} from "../../@types/global";
+import {MapArea as Area} from "../../types/global";
 /*
 export  interface Area{
     id?: number;

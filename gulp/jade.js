@@ -18,7 +18,7 @@ module.exports = function (gulp) {
           locals: LOCALS,
           pretty: true
         }))
-        .pipe(gulp.dest('./dist/app'))
+        .pipe(gulp.dest('./src/app'))
         .pipe(livereload());
 
     let b = gulp.src('./*.jade')

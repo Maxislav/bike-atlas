@@ -4,7 +4,7 @@ import {Injectable} from "@angular/core";
 import {Room, Message} from "../component/chat-component/chat-room/chat-room.component";
 import {Io} from "./socket.oi.service";
 import {Deferred} from "../util/deferred";
-import { User } from '../../@types/global';
+import { User } from '../../types/global';
 
 interface ResMessage {
     userId: number

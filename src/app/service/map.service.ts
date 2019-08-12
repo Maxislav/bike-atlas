@@ -4,7 +4,7 @@
 import { Injectable, ApplicationRef } from '@angular/core';
 import { SimpleChanges, OnChanges } from '@angular/core';
 import { LocalStorage } from '../service/local-storage.service';
-import { MapBoxGl, MapGl } from '../../@types/global';
+import { MapBoxGl, MapGl } from '../../types/global';
 
 
 @Injectable()

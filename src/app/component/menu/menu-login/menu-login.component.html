@@ -1,0 +1,41 @@
+
+<div (click)="$event.stopPropagation();$event.preventDefault()">
+  <form name="formLogin" (submit)="onEnter()">
+    <div *ngIf="!user.name">
+      <ul>
+        <li>
+          <label>{{'NAME' | translate}}</label>
+          <input type="text" [(ngModel)]="name" name="name"/>
+        </li>
+        <li>
+          <label>{{'PASS' | translate}}</label>
+          <input type="password" [(ngModel)]="pass" name="pass"/>
+        </li>
+        <li>
+          <button (click)="onEnter($event)">{{'SIGN_IN' | translate}}</button>
+        </li>
+        <li><a (click)="goToReg()">{{'REGISTRATION' | translate}}</a></li>
+      </ul>
+    </div>
+  </form>
+  <div class="border-hidden"></div>
+  <ng-template [ngIf]="user.name">
+    <ul>
+      <li (click)="goToProfile()">
+        <div>{{ 'PROFILE' | translate }}</div>
+      </li>
+      <li (click)="goToFriends()">
+        <div>{{'FRIENDS'| translate}}</div>
+      </li>
+      <li (click)="goToPrivateArea()">
+        <div>{{'PRIVATE_AREA'| translate}}</div>
+      </li>
+      <li (click)="goDevice()">
+        <div>{{'DEVICES'| translate}}</div>
+      </li>
+      <li>
+        <div (click)="onExit($event)">{{'ON_EXIT'| translate }}</div>
+      </li>
+    </ul>
+  </ng-template>
+</div>

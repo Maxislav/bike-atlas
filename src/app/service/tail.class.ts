@@ -1,5 +1,5 @@
 import {Point} from "./track.var";
-import { MapGl } from '../../@types/global';
+import { MapGl } from '../../types/global';
 
 export class TailClass {
     layer: any;

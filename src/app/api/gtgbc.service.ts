@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Io } from '../service/socket.oi.service';
-import { MobileCell, LngLat } from '../../@types/global';
+import { MobileCell, LngLat } from '../../types/global';
 
 
 @Injectable()

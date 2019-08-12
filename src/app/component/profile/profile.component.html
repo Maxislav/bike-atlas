@@ -1,0 +1,36 @@
+
+<div class="content">
+  <div>
+    <div (click)="onClose()" class="close">&times;</div>
+    <div class="row">
+      <p>{{'PROFILE' | translate}}</p>
+    </div>
+    <div class="row border">
+      <div class="load-img"><img [src]="user.image || 'src/img/no-avatar.gif' " (click)="onOpenImage()"/>
+        <div class="row">{{user.name}}</div>
+        <div class="row">
+          <p>
+            <input type="checkbox" id="test1" [(ngModel)]="setting.lock" (ngModelChange)="saveLock(setting.lock)"/>
+            <label for="test1">Мой лог закрытый</label>
+          </p>
+          <div *ngIf="setting.lock" class="help">снять галочку  чтобы все пользователи вас видели онлайн, если вы не находитесь в приватной зоне</div>
+          <div *ngIf="!setting.lock" class="help">поставьте галочку чтобы запретить показ моего местоположения всем кроме друзей</div>
+        </div>
+        <input type="file" id="files" name="files[]" multiple="" style="display: none"/>
+      </div>
+      <div class="border-hidden">
+        <div>
+          <button style="float: right" (click)="onSave($event)" class="primary">{{'ON_SAVE'| translate}}</button>
+        </div>
+      </div>
+      <div class="border-hidden"></div>
+    </div>
+    <!--.row.border
+    //form([formGroup]='profileForm')
+        input(formControlName="oldPass")
+        div {{ profileForm.value | json }}
+        div {{ profileForm.status | json }}
+    -->
+    <div class="border-hidden"></div>
+  </div>
+</div>

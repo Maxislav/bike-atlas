@@ -8,7 +8,7 @@ import {ToastService} from "../../toast/toast.component";
 import {StravaService} from "../../../service/strava.service";
 import {Router} from "@angular/router";
 import * as R from "ramda";
-import {MapArea as Area} from "../../../../@types/global";
+import {MapArea as Area} from "../../../../types/global";
 import {distance} from "../../../util/distance"
 declare const module: any;
 @Component({

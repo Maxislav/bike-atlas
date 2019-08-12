@@ -1,0 +1,29 @@
+
+<div (click)="hideTrack()" class="close">&times;</div>
+<div class="title">
+  <div>
+    <div [style.background]="track.color" class="color"></div>
+  </div>
+  <div class="date">{{track.date | date: 'dd/MM/yyyy'}}</div>
+</div>
+<div class="action">
+  <div>Дистанция</div><b>{{track.distance}} km</b>
+</div>
+<div class="action">
+  <div>Макс скорость</div><b>{{maxSpeed}} km/h</b>
+</div>
+<div class="action">
+  <div>Точек</div><b>{{track.points.length}}</b>
+  <div>
+    <div (click)="track.showSrcPoint()" title="Показать исходные точки" class="route-points"></div>
+  </div>
+</div>
+<div class="action">
+  <div (click)="onGo(track)" class="go">Play &#9658;</div>
+</div>
+<div class="action">
+  <div (click)="onDownload()" title="Скачать на комп" class="download"></div>
+  <div (click)="saveChange()" title="сохранить трек" class="save"></div>
+  <div *ngIf="stravaService.athlete" (click)="stravaExport()" title="отправить в Strava" class="strava-export"></div>
+  <div *ngIf="!stravaService.athlete" (click)="stravaExport()" title="Авторизироваться в Strava" class="strava-export opacity-0-5"></div>
+</div>

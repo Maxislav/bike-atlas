@@ -1,6 +1,6 @@
 import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector } from '@angular/core';
 import { MapService } from '../service/map.service';
-import { LngLat, MapMarker, MyMarker, Popup } from '../../@types/global';
+import { LngLat, MapMarker, MyMarker, Popup } from '../../types/global';
 import { MyInputPopupComponent } from '../component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
 import { Io } from '../service/socket.oi.service';
 import { ToastService } from '../component/toast/toast.component';

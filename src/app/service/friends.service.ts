@@ -8,7 +8,7 @@ import {LocalStorage} from "./local-storage.service";
 import {UserService} from "./main.user.service";
 import {ChatService} from "./chat.service";
 import {Message} from "../component/chat-component/chat-room/chat-room.component";
-import { User } from '../../@types/global';
+import { User } from '../../types/global';
 
 /*
 

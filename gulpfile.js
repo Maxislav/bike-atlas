@@ -25,6 +25,13 @@ require('./gulp/jade')(gulp);
  */
 require('./gulp/less')(gulp);
 
+
+/**
+ * html copy
+ */
+require('./gulp/html-copy')(gulp);
+
+
 /**
  * watch
  */

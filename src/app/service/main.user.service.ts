@@ -1,6 +1,6 @@
 
 import {Injectable} from "@angular/core";
-import {Device, User} from  '../../@types/global';
+import {Device, User} from  '../../types/global';
 import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot} from "@angular/router";
 import {Io} from "./socket.oi.service";
 import {ToastService} from "../component/toast/toast.component";

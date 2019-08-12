@@ -2,7 +2,7 @@
 import {Component} from "@angular/core";
 import {FriendsService} from "../../service/friends.service";
 import {ChatService} from "../../service/chat.service";
-import { User } from '../../../@types/global';
+import { User } from '../../../types/global';
 
 declare const module: any;
 @Component({

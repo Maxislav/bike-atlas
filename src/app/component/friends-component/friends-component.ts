@@ -6,7 +6,7 @@ import {ToastService} from "../toast/toast.component";
 import {Router, ActivatedRoute} from "@angular/router";
 import {ChatService} from "../../service/chat.service";
 import {NavigationHistory} from "../../app.component";
-import { User } from '../../../@types/global';
+import { User } from '../../../types/global';
 
 
 @Directive({

@@ -1,0 +1,44 @@
+
+<div class="content">
+  <div>
+    <div>
+      <div (click)="onClose()" class="close">&times;</div>
+    </div>
+    <div class="row">
+      <div class="flex-cell gray">В разработке *</div>
+    </div>
+    <div class="flex center row space-between">
+      <div class="flex-cell">
+        <div class="ico-strava-text"></div>
+      </div>
+    </div>
+    <div *ngIf="authInProgress" class="flex row center">
+      <div class="flex-cell">Авторизация..</div>
+      <div class="flex-cell">
+        <div class="ico-z"></div>
+      </div>
+    </div>
+    <div *ngIf="firstName" class="flex row center">
+      <table class="athlete">
+        <tr>
+          <td rowspan="3"><img [src]="profile" class="profile"/></td>
+          <td>FirstName</td>
+          <td>{{firstName}}</td>
+        </tr>
+        <tr>
+          <td>LastName</td>
+          <td>{{lastName}}</td>
+        </tr>
+        <tr>
+          <td>City</td>
+          <td>{{city}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="flex flex-end">
+      <div class="flex-cell">
+        <div *ngIf="code" (click)="goNext()" class="button primary">Продолжить</div>
+      </div>
+    </div>
+  </div>
+</div>

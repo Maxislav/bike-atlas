@@ -12,7 +12,7 @@ import { MapService } from '../../service/map.service';
 import { MyInputPopupComponent } from '../../component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
 import { MyMapMarker } from '../../service/my-marker.service';
 import { MenuItem } from '../../shared-module/menu-list-component/menu-list-component';
-import { MyMarker } from '../../../@types/global';
+import { MyMarker } from '../../../types/global';
 
 declare var module: { id: string };
 

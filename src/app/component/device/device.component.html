@@ -1,0 +1,89 @@
+
+<div class="content">
+  <div (click)="clearPredel()">
+    <div (click)="onClose()" class="close">&times;</div>
+    <div id="oloe">Регистрация устройства</div>
+    <form #f="ngForm">
+      <div class="row">
+        <table>
+          <thead>
+            <tr>
+              <th>image</th>
+              <th class="required">Имя</th>
+              <th class="required">Идентификатор устройства</th>
+              <th>Телефон</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dev of devices ;  let i = index " (click)="preDel($event, i)">
+              <td><img [src]="dev.image || 'src/img/speedway_4_logo.jpg' " (click)="onLoadImage(dev, i)" class="logo"/>
+                <input type="file" [attr.id]="'input-img-'+i" name="files[]" multiple="" style="display: none"/>
+              </td>
+              <td>{{dev.name}}</td>
+              <td>{{dev.device_key}}</td>
+              <td>{{dev.phone}}</td>
+              <td class="predelCell">
+                <div *ngIf="btnPreDel.index==i" (click)="onDel($event, dev)" class="predel">&times;</div>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <input type="text" [(ngModel)]="device.name" name="deviceName" placeholder="{{user.name}}" required="required" minlength="3"/>
+              </td>
+              <td>
+                <div class="relative">
+                  <input type="text" id="deviceId" [(ngModel)]="device.id" name="deviceId" placeholder="88888888888" required="required" minlength="12" #deviceId="ngModel"/>
+                  <div *ngIf="deviceId.invalid &amp;&amp; (deviceId.dirty || deviceId.touched)" class="absolute helper">
+                    <div *ngIf="deviceId.errors.minlength">must be at least 12 characters long.</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <input type="text" [(ngModel)]="device.phone" name="devicePhone"/>
+              </td>
+              <td>
+                <button (click)="onAdd($event)" [disabled]="f.invalid" [ngClass]="{disabled: f.invalid }">Добавить</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+    <div class="border-hidden"></div>
+    <div class="row">
+      <div>
+        <div (click)="onShowHelp()" class="bnt-help">&#9660; ?</div>
+      </div>
+      <help-container *ngIf="showHelp">
+        <div class="help">
+          <!--.row--><a href="https://play.google.com/store/apps/details?id=com.mendhak.gpslogger" target="_blank"><img src="src/img/help/ico.webp" class="ico"/></a><a href="https://play.google.com/store/apps/details?id=com.mendhak.gpslogger" target="_blank">GPS-логгер (GPS Logger)</a>
+          <table>
+            <tbody>
+              <tr>
+                <td>Настройка записи лога</td>
+                <td>Отправлять коордиты на сервер OpenGTS</td>
+                <td>
+                  <p>Сервер Имя хоста или IP<span> 178.62.44.54</span></p>
+                  <p>Порт<span>8080</span></p>
+                  <p> Способ связи<span>HTTP</span></p>
+                  <p>Путь на сервере<span>log</span></p>
+                </td>
+                <td>
+                  <p>Идентификатор<span> 12 цифр</span></p>
+                </td>
+              </tr>
+              <tr>
+                <td><img src="src/img/help/01.png"/></td>
+                <td><img src="src/img/help/02.png"/></td>
+                <td><img src="src/img/help/03.png"/></td>
+                <td><img src="src/img/help/04.png"/></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </help-container>
+    </div>
+  </div>
+</div>
