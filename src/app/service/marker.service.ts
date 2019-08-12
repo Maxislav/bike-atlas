@@ -185,7 +185,7 @@ export class Marker {
         this. baseStationPoints = this.drawPoints(pointsList);
     }
 
-    createAreaList(pointsList: Array<{ lng: number, lat: number }>, radius: number = 0.2): AreaList {
+   private createAreaList(pointsList: Array<{ lng: number, lat: number }>, radius: number = 0.2): AreaList {
         const layerId = Marker.getNewLayer('area-');
         const map = this.map;
 
@@ -210,12 +210,12 @@ export class Marker {
 
         map.addLayer({
             'id': layerId,
-            'type': 'fill',
+            'type': 'line',
             'source': layerId,
             'layout': {},
             'paint': {
-                'fill-color': '#ff0047',
-                'fill-opacity': 0.1
+                'line-color': 'rgba(129, 150, 253, 0.6784313725490196)',
+                "line-width": 2
             }
         });
 
