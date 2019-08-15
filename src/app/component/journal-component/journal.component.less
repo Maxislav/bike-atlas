@@ -6,6 +6,23 @@
   z-index: 5;
   width: 100%;
 }
+.devices{
+  margin: 0 15px 5px;
+  &>*{
+    margin-left: 15px;
+  }
+  &.selected{
+    font-weight: bold;
+
+    &:before{
+      content: "\25BA";
+      margin-left: -15px;
+    }
+  }
+  p{
+    margin: 0 15px;
+  }
+}
 .content{
   position: absolute;
   background: rgba(255, 255, 255, 0.9);
@@ -19,6 +36,15 @@
     position: relative;
     padding: 30px;
   }
+}
+
+.logo {
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+
+  padding: 3px; //border: ;
 }
 .close{
   position: absolute;
@@ -55,17 +81,7 @@
 }
 .row{
   margin: 0 -15px 15px;
-  &>p{
-    margin: 0 15px;
-    &.selected{
-      font-weight: bold;
-      margin-left: 15px;
-      &:before{
-        content: "\25BA";
-        margin-left: -15px;
-      }
-    }
-  }
+
 }
 @media screen and (max-width: 600px){
   .content{

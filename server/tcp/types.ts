@@ -18,7 +18,14 @@ export interface Point {
     type: 'POINT' | 'BS';
     date: Date;
 }
-
+export interface CountryNetworkCode {
+    mcc: number;
+    mnc: number;
+}
+export interface MCell {
+    lac: number;
+    cellId: number;
+}
 
 export interface MobileCell {
     mcc: number;

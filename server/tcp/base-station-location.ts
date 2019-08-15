@@ -1,10 +1,75 @@
 import * as https from 'https';
-import { BaseStationPoint, MobileCell } from './types';
+import { BaseStationPoint, MobileCell, CountryNetworkCode, MCell } from './types';
+
+
+class ReqData {
+    static readonly token: string = 'c0a03eae5fa12e';
+    radio: string = 'gsm';
+    cells: Array<MCell> = [];
+
+    constructor(private mcc: number, private mnc: number) {
+
+    }
+
+    setCells(cellList: Array<MCell>): ReqData {
+        this.cells.length = 0;
+        cellList.forEach(cell => {
+            this.cells.push(cell);
+        });
+        return this
+    }
+
+
+    toJsonString(): string{
+        return JSON.stringify(Object.assign({token: ReqData.token}, this));
+    }
+
+}
 
 
 export class BaseStationLocation {
     constructor() {
 
+    }
+
+    getLatLngList(d: { mcc: number, mnc: number, cells: Array<MCell> }) {
+        const reqData = new ReqData(d.mcc, d.mnc).setCells(d.cells);
+
+        const postData = reqData.toJsonString();
+
+        return new Promise((resolve, reject) => {
+            const req = https.request({
+                hostname: 'us1.unwiredlabs.com',
+                port: 443,
+                path: '/v2/process.php',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Length': Buffer.byteLength(postData)
+                }
+            }, (proxyResponse) => {
+                let resData = '';
+                proxyResponse.on('data', function (chunk) {
+                    resData += chunk;
+                });
+                proxyResponse.on('end', function () {
+                    const str = resData.toString();
+                    let j: { lat: number, lon: number, cellid: number };
+                    try {
+                        j = JSON.parse(str);
+                    } catch (e) {
+                        console.error('Parse error ->', e);
+                        return reject(e);
+
+                    }
+
+
+                    resolve(j);
+                });
+            });
+            req.write(postData);
+            req.end();
+        });
     }
 
     getLatLng(mc: MobileCell): Promise<BaseStationPoint> {
@@ -23,11 +88,11 @@ export class BaseStationLocation {
                 });
                 proxyResponse.on('end', function () {
                     const str = resData.toString();
-                    let j:{lat: number, lon: number, cellid: number};
-                    try{
+                    let j: { lat: number, lon: number, cellid: number };
+                    try {
                         j = JSON.parse(str);
-                    }catch(e){
-                        console.error('Parse error ->',e);
+                    } catch (e) {
+                        console.error('Parse error ->', e);
                         return reject(e);
 
                     }
