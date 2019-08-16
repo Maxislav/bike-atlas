@@ -1,5 +1,15 @@
 import { Marker } from '../app/service/marker.service';
 
+interface Geometry{
+    type: 'Polygon' | 'LineString',
+    coordinates: Array<Array<number>>
+}
+
+export interface Feature{
+    type: 'Feature';
+    geometry: Geometry
+}
+
 interface Set<T> {
     add(value: T): this;
 

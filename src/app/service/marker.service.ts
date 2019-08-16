@@ -15,12 +15,15 @@ import {
     User,
     DeviceData,
     MapArea as Area,
-    MapAreaList as AreaList
+    MapAreaList as AreaList,
+    Feature
 } from '../../types/global';
 import { LngLat } from '../util/lngLat';
 
 
 export class Marker {
+
+    static readonly color = 'rgba(129, 150, 253, 0.7)';
 
     id: string;
     alt: number;
@@ -177,6 +180,17 @@ export class Marker {
         this.image = src;
     }
 
+    private createLinkedLine(center: LngLat, station: LngLat): Feature{
+
+        return {
+            'type': 'Feature',
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': [[center.lng, center.lat], [station.lng, station.lat]]
+            }
+        }
+    }
+
 
     private createStations(pointsList: Array<{ lng: number, lat: number }>): void {
         // this.baseStationLayerId = Marker.getNewLayer();
@@ -200,8 +214,12 @@ export class Marker {
         const features = [];
         pointsList.forEach(point => {
             const f = this.createGeoJSONCircle(new LngLat().setValue(point), radius);
+            const linkedLine = this.createLinkedLine(new  LngLat(this.lng, this.lat), new LngLat().setValue(point));
             features.push(f);
+            features.push(linkedLine);
         });
+
+
         map.getSource(layerId)
             .setData({
                 'type': 'FeatureCollection',
@@ -214,7 +232,7 @@ export class Marker {
             'source': layerId,
             'layout': {},
             'paint': {
-                'line-color': 'rgba(129, 150, 253, 0.6784313725490196)',
+                'line-color':Marker.color,
                 "line-width": 2
             }
         });
@@ -237,7 +255,7 @@ export class Marker {
 
 
 
-    private createGeoJSONCircle(center, radiusInKm, points: number = 64) {
+    private createGeoJSONCircle(center, radiusInKm, points: number = 64): Feature {
 
         const coords = {
             latitude: center[1],
@@ -285,7 +303,7 @@ export class Marker {
             'paint': {
                 'circle-color': {
                     'property': 'color',
-                    'stops': [['#ff0000', '#ff0000']],
+                    'stops': [['superColor', Marker.color]],
                     'type': 'categorical'
                 },
                 'circle-radius': 8
@@ -315,7 +333,7 @@ export class Marker {
                 pointsList.forEach((item, i) => {
                     const f = {
                         properties: {
-                            color: '#ff0000',
+                            color: 'superColor',
                             point: item,
                             id: item.id,
                         },

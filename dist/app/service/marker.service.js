@@ -118,6 +118,15 @@ class Marker {
         this.img.src = src;
         this.image = src;
     }
+    createLinkedLine(center, station) {
+        return {
+            'type': 'Feature',
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': [[center.lng, center.lat], [station.lng, station.lat]]
+            }
+        };
+    }
     createStations(pointsList) {
         // this.baseStationLayerId = Marker.getNewLayer();
         const { bounds, max } = this.getBouds(pointsList);
@@ -137,7 +146,9 @@ class Marker {
         const features = [];
         pointsList.forEach(point => {
             const f = this.createGeoJSONCircle(new lngLat_1.LngLat().setValue(point), radius);
+            const linkedLine = this.createLinkedLine(new lngLat_1.LngLat(this.lng, this.lat), new lngLat_1.LngLat().setValue(point));
             features.push(f);
+            features.push(linkedLine);
         });
         map.getSource(layerId)
             .setData({
@@ -150,7 +161,7 @@ class Marker {
             'source': layerId,
             'layout': {},
             'paint': {
-                'line-color': 'rgba(129, 150, 253, 0.6784313725490196)',
+                'line-color': Marker.color,
                 "line-width": 2
             }
         });
@@ -208,7 +219,7 @@ class Marker {
             'paint': {
                 'circle-color': {
                     'property': 'color',
-                    'stops': [['#ff0000', '#ff0000']],
+                    'stops': [['superColor', Marker.color]],
                     'type': 'categorical'
                 },
                 'circle-radius': 8
@@ -234,7 +245,7 @@ class Marker {
                 pointsList.forEach((item, i) => {
                     const f = {
                         properties: {
-                            color: '#ff0000',
+                            color: 'superColor',
                             point: item,
                             id: item.id,
                         },
@@ -340,6 +351,7 @@ class Marker {
         return layerId;
     }
 }
+Marker.color = 'rgba(129, 150, 253, 0.7)';
 Marker.layerIds = new Set();
 exports.Marker = Marker;
 let MarkerService = class MarkerService {
