@@ -4,6 +4,7 @@ export interface BaseStationPoint {
     lng: number;
     lat: number;
     id: number;
+    range: number;
 }
 
 

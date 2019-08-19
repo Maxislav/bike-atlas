@@ -23,12 +23,13 @@ const OnChat = require('./socket-data/on-chat');
 
 import { Logger } from './gps-logger/gps-logger';
 import { Gl520 } from './tcp/gl-520';
+import  {OnGtgbc} from './socket-data/on-gtgbc.js';
 
 const Util = require('./socket-data/util');
 const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
 const OnMyMarker = require('./socket-data/on-my-marker.js');
-const OnGtgbc = require('./socket-data/on-gtgbc.js');
+
 let connection, server, app;
 let resolveExport;
 let promiseExport: Promise<{ server: any, app: any }> = new Promise((resolve, reject) => {

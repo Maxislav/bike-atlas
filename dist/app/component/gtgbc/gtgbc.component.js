@@ -316,22 +316,26 @@ let GtgbcComponent = GtgbcComponent_1 = class GtgbcComponent {
             cellId: null
         };
         const arr = this.gtgbc.split(',');
+        let deviceId = null;
         if (this.messageType === MessageType.GTLBS) {
-            arr.splice(0, 12);
+            const prefix = arr.splice(0, 12);
+            deviceId = prefix[10];
         }
         if (this.messageType === MessageType.GTGSM) {
-            arr.splice(0, 4);
+            const prefix = arr.splice(0, 4);
+            deviceId = prefix[2];
         }
         const res = [];
         while (arr.length) {
             res.push(arr.splice(0, 6));
         }
-        return res.filter(item => 6 <= item.length).map(item => {
+        return res.filter(item => item[4]).map(item => {
             return {
                 mcc: parseInt(item[0], 10),
                 mnc: parseInt(item[1], 10),
                 lac: parseInt(item[2], 16),
-                cellId: parseInt(item[3], 16)
+                cellId: parseInt(item[3], 16),
+                deviceId: deviceId,
             };
         });
     }

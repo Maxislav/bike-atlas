@@ -18,18 +18,21 @@ let GtgbcService = class GtgbcService {
     }
     getLatLng(arr) {
         console.log(arr);
-        return this.socket.$emit('onGtgbc', arr)
+        return this.socket.$get('onGtgbc', arr)
             .then(d => {
-            const resArr = d.result.map((str, i) => {
-                const lat = str.match(/Lat=-?[\d\.]+/)[0].replace(/^Lat=/, '');
-                const lng = str.match(/Lon=-?[\d\.]+/)[0].replace(/^Lon=/, '');
-                return {
-                    lat: Number(lat),
-                    lng: Number(lng),
-                    id: arr[i].cellId
-                };
-            });
-            return resArr;
+            if (d.error) {
+                return Promise.reject(d.error);
+            }
+            /* const resArr = d.result.map((str, i)=>{
+                 const lat  = str.match(/Lat=-?[\d\.]+/)[0].replace(/^Lat=/, '');
+                 const lng  = str.match(/Lon=-?[\d\.]+/)[0].replace(/^Lon=/, '');
+                 return {
+                     lat: Number(lat),
+                     lng: Number(lng),
+                     id: arr[i].cellId
+                 }
+             });*/
+            return d.cells;
         });
     }
 };

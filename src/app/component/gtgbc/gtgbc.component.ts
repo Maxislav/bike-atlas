@@ -355,6 +355,7 @@ export class GtgbcComponent implements OnInit, OnDestroy {
         return new LngLat(Number(arr[1]), Number(arr[2]))
 
     }
+
     private convertToMobileCell(): Array<MobileCell> {
         const mc = {
             mcc: null,
@@ -363,11 +364,15 @@ export class GtgbcComponent implements OnInit, OnDestroy {
             cellId: null
         };
         const arr = this.gtgbc.split(',');
-        if(this.messageType === MessageType.GTLBS){
-            arr.splice(0, 12);
+        let deviceId = null;
+        if (this.messageType === MessageType.GTLBS) {
+            const prefix = arr.splice(0, 12);
+            deviceId = prefix[10];
         }
-        if(this.messageType === MessageType.GTGSM){
-            arr.splice(0, 4);
+
+        if (this.messageType === MessageType.GTGSM) {
+            const prefix = arr.splice(0, 4);
+            deviceId = prefix[2];
         }
 
         const res = [];
@@ -377,12 +382,13 @@ export class GtgbcComponent implements OnInit, OnDestroy {
         }
 
 
-        return res.filter(item => 6 <= item.length).map(item => {
+        return res.filter(item => item[4]).map(item => {
             return {
                 mcc: parseInt(item[0], 10),
                 mnc: parseInt(item[1], 10),
                 lac: parseInt(item[2], 16),
-                cellId: parseInt(item[3], 16)
+                cellId: parseInt(item[3], 16),
+                deviceId: deviceId,
             };
         });
     }

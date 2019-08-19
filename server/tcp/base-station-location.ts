@@ -5,13 +5,13 @@ import { BaseStationPoint, MobileCell, CountryNetworkCode, MCell } from './types
 class ReqData {
     static readonly token: string = 'c0a03eae5fa12e';
     radio: string = 'gsm';
-    cells: Array<MCell> = [];
+    cells: Array<{lac: number, cid: number}> = [];
 
     constructor(private mcc: number, private mnc: number) {
 
     }
 
-    setCells(cellList: Array<MCell>): ReqData {
+    setCells(cellList: Array<{lac: number, cid: number}>): ReqData {
         this.cells.length = 0;
         cellList.forEach(cell => {
             this.cells.push(cell);
@@ -32,7 +32,7 @@ export class BaseStationLocation {
 
     }
 
-    getLatLngList(d: { mcc: number, mnc: number, cells: Array<MCell> }) {
+    getLatLngList(d: { mcc: number, mnc: number, cells: Array<{lac: number, cid: number}> }) {
         const reqData = new ReqData(d.mcc, d.mnc).setCells(d.cells);
 
         const postData = reqData.toJsonString();
@@ -88,7 +88,7 @@ export class BaseStationLocation {
                 });
                 proxyResponse.on('end', function () {
                     const str = resData.toString();
-                    let j: { lat: number, lon: number, cellid: number };
+                    let j: { lat: number, lon: number, cellid: number, range: number };
                     try {
                         j = JSON.parse(str);
                     } catch (e) {
@@ -101,7 +101,8 @@ export class BaseStationLocation {
                     resolve({
                         id: mc.cellId,
                         lng: Number(j.lon),
-                        lat: Number(j.lat)
+                        lat: Number(j.lat),
+                        range: Number(j.range)
                     });
                 });
             })

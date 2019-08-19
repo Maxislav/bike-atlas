@@ -13,9 +13,14 @@ export class GtgbcService {
 
     getLatLng(arr: Array<MobileCell>){
         console.log(arr)
-        return this.socket.$emit('onGtgbc', arr)
-            .then(d=>{
-                const resArr = d.result.map((str, i)=>{
+        return this.socket.$get('onGtgbc', arr)
+            .then(d =>{
+
+                if(d.error){
+                    return Promise.reject(d.error)
+                }
+
+               /* const resArr = d.result.map((str, i)=>{
                     const lat  = str.match(/Lat=-?[\d\.]+/)[0].replace(/^Lat=/, '');
                     const lng  = str.match(/Lon=-?[\d\.]+/)[0].replace(/^Lon=/, '');
                     return {
@@ -23,8 +28,8 @@ export class GtgbcService {
                         lng: Number(lng),
                         id: arr[i].cellId
                     }
-                });
-                return resArr
+                });*/
+                return d.cells
             })
     }
 }

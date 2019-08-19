@@ -1,44 +1,36 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const base_station_location_1 = require("../tcp/base-station-location");
 const path = require('path');
 const https = require('https');
 const ProtoData = require('./proto-data');
-
-class OnGtgbc extends ProtoData{
-    constructor(socket, util, logger, chat) {
+class OnGtgbc extends ProtoData {
+    constructor(socket, util, logger) {
         super(socket, util);
-
-        this.socket.on('onGtgbc', this.onGtgbc.bind(this, 'onGtgbc'))
+        this.socket = socket;
+        this.util = util;
+        this.logger = logger;
+        const onGtgbc = this.onGtgbc.bind(this);
+        this.socket.$get('onGtgbc', onGtgbc);
     }
-
-    onGtgbc(eName, array){
-        Promise.all(array.map(mc => {
-            return this.getLatLng(mc);
+    onGtgbc(req, res) {
+        const data = req.data;
+        new base_station_location_1.BaseStationLocation();
+        Promise.all(data.map(cell => {
+            return new base_station_location_1.BaseStationLocation()
+                .getLatLng(cell);
         }))
-            .then(d=>{
-                this.socket.emit(eName, {
-                    result: d
-                })
-            })
-    }
-
-    getLatLng(mc){
-        return new Promise((resolve, reject) => {
-            https.get(`https://cellphonetrackers.org/gsm/classes/Cell.Search.php?mcc=${mc.mcc}&mnc=${mc.mnc}&lac=${mc.lac}&cid=${mc.cellId}`, (proxyResponse) => {
-                let resData = '';
-                proxyResponse.on('data', function(chunk) {
-                    resData += chunk;
-                });
-                proxyResponse.on( 'end', function () {
-                    resData.toString();
-                    //res.sendFile(path.resolve(__dirname, 'index.html' ));
-                    resolve(resData.toString())
-                } );
-
-            }).on('error', (e) => {
-                console.error(e);
-                reject(e);
+            .then((lngLatList) => {
+            res.end({
+                cells: lngLatList
             });
         })
+            .catch(err => {
+            res.end({
+                error: err.toString()
+            });
+        });
     }
 }
-
-module.exports = OnGtgbc
+exports.OnGtgbc = OnGtgbc;
+//# sourceMappingURL=on-gtgbc.js.map

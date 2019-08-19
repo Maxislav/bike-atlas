@@ -85,7 +85,8 @@ class BaseStationLocation {
                     resolve({
                         id: mc.cellId,
                         lng: Number(j.lon),
-                        lat: Number(j.lat)
+                        lat: Number(j.lat),
+                        range: Number(j.range)
                     });
                 });
             })
