@@ -25,8 +25,10 @@ class Marker {
         this.mapboxgl = mapboxgl;
         this.map = map;
         this.timerService = timerService;
+        this.accuracy = 0;
         this.status = 'white';
         console.log(devData.type);
+        devData.bs = devData.bs ? devData.bs.filter(p => p.lat && p.lng) : [];
         Object.keys(devData).forEach(key => {
             this[key] = devData[key];
         });
@@ -72,6 +74,7 @@ class Marker {
         return null;
     }
     update(devData) {
+        devData.bs = devData.bs ? devData.bs.filter(p => p.lat && p.lng) : [];
         const prevLngLat = new track_var_1.Point(this.lng, this.lat);
         const t = this.timer.tick(devData.date);
         for (let opt in devData) {
@@ -144,10 +147,12 @@ class Marker {
             }
         });
         const features = [];
+        const f = this.createGeoJSONCircle(new lngLat_1.LngLat().setValue(this), this.accuracy / 1000);
+        features.push(f);
         pointsList.forEach(point => {
-            const f = this.createGeoJSONCircle(new lngLat_1.LngLat().setValue(point), radius);
+            // const f = this.createGeoJSONCircle(new LngLat().setValue(point), radius);
             const linkedLine = this.createLinkedLine(new lngLat_1.LngLat(this.lng, this.lat), new lngLat_1.LngLat().setValue(point));
-            features.push(f);
+            //features.push(f);
             features.push(linkedLine);
         });
         map.getSource(layerId)
@@ -162,7 +167,7 @@ class Marker {
             'layout': {},
             'paint': {
                 'line-color': Marker.color,
-                "line-width": 2
+                'line-width': 2
             }
         });
         return {

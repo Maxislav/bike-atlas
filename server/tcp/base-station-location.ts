@@ -5,6 +5,7 @@ import { BaseStationPoint, MobileCell, CountryNetworkCode, MCell } from './types
 class ReqData {
     static readonly token: string = 'c0a03eae5fa12e';
     radio: string = 'gsm';
+    // address: number =  1;
     cells: Array<{lac: number, cid: number}> = [];
 
     constructor(private mcc: number, private mnc: number) {
@@ -32,7 +33,7 @@ export class BaseStationLocation {
 
     }
 
-    getLatLngList(d: { mcc: number, mnc: number, cells: Array<{lac: number, cid: number}> }) {
+    getAverageLatLng(d: { mcc: number, mnc: number, cells: Array<{lac: number, cid: number}> }): Promise<{ lat: number, lng: number, accuracy: number, address: string }>  {
         const reqData = new ReqData(d.mcc, d.mnc).setCells(d.cells);
 
         const postData = reqData.toJsonString();
@@ -54,7 +55,7 @@ export class BaseStationLocation {
                 });
                 proxyResponse.on('end', function () {
                     const str = resData.toString();
-                    let j: { lat: number, lon: number, cellid: number };
+                    let j: { lat: number, lon: number, accuracy: number, address: string };
                     try {
                         j = JSON.parse(str);
                     } catch (e) {
@@ -64,7 +65,12 @@ export class BaseStationLocation {
                     }
 
 
-                    resolve(j);
+                    resolve({
+                        lng: j.lon,
+                        lat: j.lat,
+                        accuracy: j.accuracy,
+                        address: j.address
+                    });
                 });
             });
             req.write(postData);
@@ -77,8 +83,6 @@ export class BaseStationLocation {
             const req = https.request({
                 hostname: 'opencellid.org',
                 port: 443,
-                //path: `/gsm/classes/Cell.Search.php?mcc=${mc.mcc}&mnc=${mc.mnc}&lac=${mc.lac}&cid=${mc.cellId}`,
-                //cell/get?key=c0a03eae5fa12e&mcc=260&mnc=2&lac=10250&cellid=26511&format=json
                 path: `/cell/get?key=c0a03eae5fa12e&mcc=${mc.mcc}&mnc=${mc.mnc}&lac=${mc.lac}&cellid=${mc.cellId}&format=json`,
                 method: 'GET'
             }, (proxyResponse) => {
@@ -88,7 +92,7 @@ export class BaseStationLocation {
                 });
                 proxyResponse.on('end', function () {
                     const str = resData.toString();
-                    let j: { lat: number, lon: number, cellid: number, range: number };
+                    let j: { lat: number, lon: number, cellid: number, range: number, error: string };
                     try {
                         j = JSON.parse(str);
                     } catch (e) {
@@ -96,14 +100,22 @@ export class BaseStationLocation {
                         return reject(e);
 
                     }
+                    if(j.error){
+                        resolve({
+                            id: mc.cellId,
+                            lng: null,
+                            lat: null,
+                            range: null
+                        })
+                    }else {
+                        resolve({
+                            id: mc.cellId,
+                            lng: Number(j.lon),
+                            lat: Number(j.lat),
+                            range: Number(j.range)
+                        });
+                    }
 
-
-                    resolve({
-                        id: mc.cellId,
-                        lng: Number(j.lon),
-                        lat: Number(j.lat),
-                        range: Number(j.range)
-                    });
                 });
             })
                 .on('error', (e) => {

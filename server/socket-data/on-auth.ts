@@ -1,11 +1,10 @@
-import { LoggerRow, User } from '../types';
 
 const util = require('./util');
 import * as ProtoData from './proto-data';
 import { Deferred } from '../deferred';
-import { DeviceRow, LoggerBsRow } from '../types';
+import { DeviceRow, LoggerRow, User  } from '../types';
 
-class LG implements LoggerRow {
+/*class LG implements LoggerRow {
     alt: number;
     azimuth: number;
     date: Date = new Date(0);
@@ -25,8 +24,8 @@ class LG implements LoggerRow {
         }
     }
 
-}
-
+}*/
+/*
 class LastBsPosition implements LoggerBsRow {
     lastGroup: Array<LoggerRow>;
     lastGroupDate: number;
@@ -93,7 +92,7 @@ class LastBsPosition implements LoggerBsRow {
     }
 
 
-}
+}*/
 
 class OnAuth extends ProtoData {
 
@@ -195,34 +194,24 @@ class OnAuth extends ProtoData {
                                 //console.log('device key->', key)
                                 this.logger.updateDevice(key, this.socket.id);
                                 this.gl520.updateDevice(key, this.socket.id);
-                                row = new LG(row);
-                                return util.getLastBSPosition(key)
-                                    .then(rowList => {
-                                        const lastBsPosition = new LastBsPosition(rowList);
 
-                                        let loggerRow: LoggerRow | LoggerBsRow = row;
-                                        let lastPointDate = new Date(row.date).getTime();
-                                        if (lastPointDate < lastBsPosition.lastGroupDate) {
-                                            loggerRow = {
-                                                alt: 0,
-                                                azimuth: 0,
-                                                date: lastBsPosition.date,
-                                                device_key: key,
-                                                id: lastBsPosition.id,
-                                                lng: lastBsPosition.lng,
-                                                lat: lastBsPosition.lat,
-                                                speed: 0,
-                                                src: lastBsPosition.src,
-                                                type: 'BS',
-                                                bs: lastBsPosition.bs
-                                            };
-                                        }
+                                const   loggerRow = {
+                                    alt: 0,
+                                    azimuth: 0,
+                                    date: row.date,
+                                    device_key: key,
+                                    id: row.id,
+                                    lng: row.lng,
+                                    lat: row.lat,
+                                    speed: row.speed,
+                                    src: row.src,
+                                    type: row.type,
+                                    bs: row.bs,
+                                    accuracy: row.accuracy
+                                };
 
-                                        this.socket.emit('log', loggerRow);
-                                    }).catch(err => {
-                                        console.log('err 1 -> ', err);
-                                        return err;
-                                    });
+                                this.socket.emit('log', loggerRow);
+
                             });
 
                     }))

@@ -3,26 +3,50 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const util = require('./util');
 const ProtoData = require("./proto-data");
 const deferred_1 = require("../deferred");
-class LG {
-    constructor(row) {
-        this.date = new Date(0);
-        if (row) {
+/*class LG implements LoggerRow {
+    alt: number;
+    azimuth: number;
+    date: Date = new Date(0);
+    device_key: string;
+    id: number;
+    lat: number;
+    lng: number;
+    speed: number;
+    src: string;
+    type: "POINT" | "BS";
+    constructor(row :LoggerRow ){
+        if(row){
             Object.assign(this, row, {
                 lng: Number(row.lng),
                 lat: Number(row.lat)
-            });
+            })
         }
     }
-}
-class LastBsPosition {
-    constructor(rows) {
-        this.rows = rows;
-        this.type = 'BS';
+
+}*/
+/*
+class LastBsPosition implements LoggerBsRow {
+    lastGroup: Array<LoggerRow>;
+    lastGroupDate: number;
+    lng: number;
+    lat: number;
+    alt: number;
+    azimuth: number;
+    date: Date;
+    device_key: string;
+    id: number;
+    speed: number;
+    src: string;
+    type: 'POINT' | 'BS' = 'BS';
+    bs: Array<LoggerRow>;
+
+    constructor(private rows: Array<LoggerRow>) {
         const arrGroup = this.groupByDate(rows);
         this.lastGroup = [];
         this.lastGroupDate = 0;
         if (arrGroup.length) {
             this.lastGroup = arrGroup[arrGroup.length - 1];
+
         }
         if (this.lastGroup.length) {
             this.id = this.lastGroup[0].id;
@@ -33,10 +57,14 @@ class LastBsPosition {
             this.lng = this.getRound(...this.lastGroup.map(item => Number(item.lng)));
             this.lat = this.getRound(...this.lastGroup.map(item => Number(item.lat)));
         }
+
     }
-    groupByDate(list) {
+
+    private groupByDate(list) {
         const s = new Set();
         const idMap = {};
+
+
         const resArr = [];
         const _list = list.map(item => {
             idMap[item.id] = item;
@@ -46,18 +74,24 @@ class LastBsPosition {
                 dateInt
             }, item);
         });
+
         const arr = Array.from(s).sort();
         arr.forEach(dateInt => {
             const group = _list.filter(it => it.dateInt === dateInt).map(item => idMap[item.id]);
             resArr.push(group);
         });
+
         return resArr;
+
     }
-    getRound(...list) {
+
+    private getRound(...list: number[]) {
         const reducer = (accumulator, currentValue) => accumulator + currentValue;
         return list.reduce(reducer) / list.length;
     }
-}
+
+
+}*/
 class OnAuth extends ProtoData {
     constructor(socket, util, chat, logger, gl520) {
         super(socket, util);
@@ -140,32 +174,21 @@ class OnAuth extends ProtoData {
                         //console.log('device key->', key)
                         this.logger.updateDevice(key, this.socket.id);
                         this.gl520.updateDevice(key, this.socket.id);
-                        row = new LG(row);
-                        return util.getLastBSPosition(key)
-                            .then(rowList => {
-                            const lastBsPosition = new LastBsPosition(rowList);
-                            let loggerRow = row;
-                            let lastPointDate = new Date(row.date).getTime();
-                            if (lastPointDate < lastBsPosition.lastGroupDate) {
-                                loggerRow = {
-                                    alt: 0,
-                                    azimuth: 0,
-                                    date: lastBsPosition.date,
-                                    device_key: key,
-                                    id: lastBsPosition.id,
-                                    lng: lastBsPosition.lng,
-                                    lat: lastBsPosition.lat,
-                                    speed: 0,
-                                    src: lastBsPosition.src,
-                                    type: 'BS',
-                                    bs: lastBsPosition.bs
-                                };
-                            }
-                            this.socket.emit('log', loggerRow);
-                        }).catch(err => {
-                            console.log('err 1 -> ', err);
-                            return err;
-                        });
+                        const loggerRow = {
+                            alt: 0,
+                            azimuth: 0,
+                            date: row.date,
+                            device_key: key,
+                            id: row.id,
+                            lng: row.lng,
+                            lat: row.lat,
+                            speed: row.speed,
+                            src: row.src,
+                            type: row.type,
+                            bs: row.bs,
+                            accuracy: row.accuracy
+                        };
+                        this.socket.emit('log', loggerRow);
                     });
                 }))
                     .then((rows) => {

@@ -5,11 +5,10 @@ const path = require('path');
 const https = require('https');
 const ProtoData = require('./proto-data');
 class OnGtgbc extends ProtoData {
-    constructor(socket, util, logger) {
+    constructor(socket, util) {
         super(socket, util);
         this.socket = socket;
         this.util = util;
-        this.logger = logger;
         const onGtgbc = this.onGtgbc.bind(this);
         this.socket.$get('onGtgbc', onGtgbc);
     }

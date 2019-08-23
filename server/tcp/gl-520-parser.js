@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const deferred_1 = require("./deferred");
 const base_station_location_1 = require("./base-station-location");
+const deep_copy_1 = require("../util/deep-copy");
 const MessageType = {
     GTSTR: 0,
     GTLBS: 1,
@@ -21,6 +22,7 @@ class Gl520Parser {
         this.type = null;
         this.messageType = -1;
         this.pointList = null;
+        //private point: Point;
         this.deferred = new deferred_1.Deferred();
         this.baseStationLocation = new base_station_location_1.BaseStationLocation();
     }
@@ -68,38 +70,97 @@ class Gl520Parser {
                 lng: arr[13],
                 lat: arr[14],
                 type: this.type,
+                accuracy: 0,
                 date: new Date(Number(srcDate.slice(0, 4)), Number(srcDate.slice(4, 6)) - 1, Number(srcDate.slice(6, 8)), Number(srcDate.slice(8, 10)), Number(srcDate.slice(10, 12)), Number(srcDate.slice(12, 14)))
             });
-            this.pointList = [point];
-            this.deferred.resolve(this.pointList);
+            this.deferred.resolve({
+                result: 'ok',
+                points: [point]
+            });
         }
         if (this.messageType === MessageType.GTGSM) {
             const arr = this.convertToMobileCell();
-            Promise.all(arr.map(mobileCell => {
-                return this.baseStationLocation.getLatLng(mobileCell);
-            })).then((list) => {
-                this.pointList = list.map((baseStationPoint, index) => {
-                    return Object.assign({}, respData, {
-                        device_key: arr[index].deviceId,
-                        id: arr[index].deviceId,
-                        date: arr[index].date,
-                        lng: baseStationPoint.lng,
-                        lat: baseStationPoint.lat,
-                        type: this.type,
-                        azimuth: 0,
-                        speed: 0,
-                        alt: 0,
+            const group = this.cellGroup(arr);
+            const deviceId = this.getDeviceId();
+            const date = this.getDate();
+            Promise.all(group.map(cell => {
+                return this.baseStationLocation.getAverageLatLng(cell)
+                    .then((c) => {
+                    const arr = cell.cells.map(cc => {
+                        return {
+                            mnc: cell.mnc,
+                            mcc: cell.mcc,
+                            lac: cc.lac,
+                            cellId: cc.cid
+                        };
+                    });
+                    return Promise.all(arr.map(mobileCell => {
+                        return this.baseStationLocation.getLatLng(mobileCell);
+                    })).then((bsPointList) => {
+                        return Object.assign({}, respData, c, { date: date, device_key: deviceId, id: deviceId, speed: 0, alt: 0, type: 'BS', bs: bsPointList.map(station => {
+                                return Object.assign({}, station);
+                            }) });
                     });
                 });
-                this.deferred.resolve(this.pointList);
-            })
-                .catch(err => {
-                console.error('error get cell');
+            }))
+                .then((points) => {
+                let _points = points;
+                return this.deferred.resolve({
+                    result: 'ok',
+                    points: _points
+                });
             });
         }
         else {
             this.deferred.resolve(null);
         }
+    }
+    cellGroup(cellList, arrCell = []) {
+        const cList = deep_copy_1.deepCopy(cellList);
+        if (cList.length) {
+            const countryNetworkCode = { mcc: cList[0].mcc, mnc: cList[0].mnc };
+            const cells = cList.filter(c => {
+                return c.mnc === countryNetworkCode.mnc && c.mcc === countryNetworkCode.mcc;
+            });
+            arrCell.push(Object.assign({}, countryNetworkCode, { cells: cells.map(c => {
+                    return {
+                        lac: c.lac,
+                        cid: c.cellId
+                    };
+                }) }));
+            const unList = cList.filter(c => {
+                return c.mnc !== countryNetworkCode.mnc || c.mcc !== countryNetworkCode.mcc;
+            });
+            if (unList.length) {
+                return this.cellGroup(unList, arrCell);
+            }
+        }
+        return arrCell;
+    }
+    getDeviceId() {
+        let deviceId;
+        const arr = this.srcMsg.split(',');
+        if (this.messageType === MessageType.GTSTR) {
+            deviceId = arr[2];
+        }
+        if (this.messageType === MessageType.GTLBS) {
+            deviceId = arr[10];
+        }
+        if (this.messageType === MessageType.GTGSM) {
+            deviceId = arr[2];
+        }
+        return deviceId;
+    }
+    getDate() {
+        const arr = this.srcMsg.split(',');
+        let date = new Date();
+        if (this.messageType === MessageType.GTLBS) {
+            date = this.strToDate(arr[arr.length - 2]);
+        }
+        if (this.messageType === MessageType.GTGSM) {
+            date = this.strToDate(arr[arr.length - 2]);
+        }
+        return date;
     }
     convertToMobileCell() {
         const mc = {

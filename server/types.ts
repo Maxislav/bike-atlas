@@ -7,6 +7,26 @@ export interface DeviceRow {
     image: string
 }
 
+
+export interface Point {
+    id: string | number;
+    device_key: string | number;
+    speed: number;
+    azimuth: number;
+    alt: number;
+    lng: number;
+    lat: number;
+    type: 'POINT' | 'BS';
+    date: Date;
+    bs?: Array<{lng: number, lat: number, range: number}>,
+    accuracy?: number
+}
+
+export interface PointWithSrc extends Point{
+    src: string
+}
+
+
 export interface LoggerRow {
     alt: number;
     azimuth: number;
@@ -17,12 +37,16 @@ export interface LoggerRow {
     lat: number;
     speed: number;
     src: string;
-    type: 'POINT' | 'BS'
+    type: 'POINT' | 'BS',
+    accuracy: number,
+    bs: Array<LoggerRow>
 }
+/*
 
 export interface LoggerBsRow extends LoggerRow{
     bs: Array<LoggerRow>
 }
+*/
 
 export interface SettingRow {
     id: number,

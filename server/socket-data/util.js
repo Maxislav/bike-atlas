@@ -268,22 +268,23 @@ class Util {
      * @returns {Promise}
      *
      *  date,
-         alt: 0,
-         lng,
-         lat,
-         azimuth: azimuth || 0,
-         speed,
-         src: gprmc
+     alt: 0,
+     lng,
+     lat,
+     azimuth: azimuth || 0,
+     speed,
+     src: gprmc
 
      *
      */
     insertLog(data) {
         return new Promise((resolve, reject) => {
-            this.connection.query('INSERT INTO `logger` (`id`, `device_key`, `lng`, `lat`, `alt`, `speed`, `azimuth`, `date`, `type`, `src`) VALUES (' +
-                'NULL, ?, ?, ?, ?, ?, ?, ?, ?,?)', [data.id, data.lng, data.lat, data.alt, data.speed, data.azimuth, data.date, data.type, data.src], (err, result) => {
+            this.connection.query('INSERT INTO `logger` (`id`, `device_key`, `lng`, `lat`, `alt`, `accuracy`,`base_station`, `speed`, `azimuth`, `date`, `type`, `src`) VALUES (' +
+                'NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)', [data.id, data.lng, data.lat, data.alt,
+                Number.isNaN(data.accuracy) ? '0.0' : data.accuracy.toFixed(2),
+                JSON.stringify(data.bs), data.speed, data.azimuth, data.date, data.type, data.src], (err, result) => {
                 if (err) {
-                    reject(err);
-                    return;
+                    return reject(err);
                 }
                 resolve(result);
             });
@@ -291,13 +292,12 @@ class Util {
     }
     getLastPosition(device_key) {
         return new Promise((resolve, reject) => {
-            this.connection.query('SELECT * FROM `logger` WHERE `device_key`=? AND `type`=\'POINT\' ORDER BY `date` DESC LIMIT 1 ', [device_key], (err, rows) => {
+            this.connection.query('SELECT * FROM `logger` WHERE `device_key`=?  ORDER BY `date` DESC LIMIT 1 ', [device_key], (err, rows) => {
                 if (err) {
                     reject(err);
                     return;
                 }
-                // rows[0].name = device.name;
-                resolve(rows[0]);
+                resolve(Object.assign({}, rows[0], { bs: rows[0].base_station ? JSON.parse(rows[0].base_station) : [] }));
             });
         });
     }
@@ -912,7 +912,7 @@ class Util {
         };
     }
     getHash() {
-        const $possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        const $possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let hash = '';
         for (let i = 0; i < 32; i++) {
             hash += '' + $possible[getRandom(0, 61, true)];

@@ -18,14 +18,33 @@ export interface Point {
     lat: number;
     type: 'POINT' | 'BS';
     date: Date;
+    bs?: Array<{lng: number, lat: number, range: number}>,
+    accuracy?: number
 }
+
 export interface CountryNetworkCode {
     mcc: number;
     mnc: number;
 }
+
+
+
 export interface MCell {
     lac: number;
     cellId: number;
+}
+
+
+
+export interface MACell {
+    lac: number;
+    cid: number;
+}
+
+
+
+export interface MobileCellArray extends CountryNetworkCode{
+    cells: Array<MACell>;
 }
 
 export interface MobileCell {

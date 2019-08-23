@@ -1,11 +1,12 @@
-import { LoggerRow , DeviceRow, SettingRow} from '../types';
+import { LoggerRow, DeviceRow, SettingRow, PointWithSrc } from '../types';
 
 const dateFormat = require('dateformat');
 const hashKeys = [];
 
 
 export class Util {
-    private  connection
+    private connection;
+
     constructor(connection) {
         this.connection = connection;
     }
@@ -25,11 +26,11 @@ export class Util {
                 if (rows && rows.length) {
                     resolve(rows[0].user_id);
                 } else {
-                    resolve(null)
+                    resolve(null);
                 }
 
             });
-        })
+        });
     }
 
     getUserById(id) {
@@ -41,7 +42,7 @@ export class Util {
                 }
                 resolve(rows[0]);
             });
-        })
+        });
 
     }
 
@@ -59,7 +60,7 @@ export class Util {
                 }
                 resolve(rows);
             });
-        })
+        });
     }
 
     updateSocketIdByHash(hash, socket_id) {
@@ -69,9 +70,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve()
-            })
-        })
+                resolve();
+            });
+        });
     }
 
     deleteHashRow(hash) {
@@ -81,9 +82,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(result)
-            })
-        })
+                resolve(result);
+            });
+        });
     }
 
     delDeviceByUserDeviceKey(user_id, device_key) {
@@ -93,9 +94,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(result)
-            })
-        })
+                resolve(result);
+            });
+        });
     }
 
     detDeviceByUserId(useIds) {
@@ -105,9 +106,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(result)
-            })
-        })
+                resolve(result);
+            });
+        });
     }
 
     getDeviceByHash(connection, hash) {
@@ -119,10 +120,10 @@ export class Util {
                             reject(err);
                             return;
                         }
-                        resolve(rows)
-                    })
-                })
-            })
+                        resolve(rows);
+                    });
+                });
+            });
     }
 
     getDeviceByIds(connection, ids) {
@@ -132,9 +133,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
     getDeviceByKey(device_key) {
@@ -144,9 +145,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
     getDeviceByUserId(user_id: string): Promise<Array<DeviceRow>> {
@@ -156,33 +157,33 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
-    upadetDeviceImage(device_key: string, image: string){
+    upadetDeviceImage(device_key: string, image: string) {
         return new Promise((resolve, reject) => {
             this.connection.query('UPDATE `device` SET image = ? WHERE device.device_key = ?', [image, device_key], (err, rows) => {
                 if (err) {
                     reject(err);
                     return;
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
-    getTrackFromTo(deviceKey, from, to):Promise<Array<LoggerRow>> {
+    getTrackFromTo(deviceKey, from, to): Promise<Array<LoggerRow>> {
         return new Promise((resolve, reject) => {
             this.connection.query('SELECT * FROM `logger` WHERE `device_key`=? AND date>? AND date<? ORDER BY date', [deviceKey, from, to], function (err, rows) {
                 if (err) {
                     reject(err);
                     return;
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
     getLastDateTrack(keys) {
@@ -193,9 +194,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(rows[0])
-            })
-        })
+                resolve(rows[0]);
+            });
+        });
 
     }
 
@@ -211,7 +212,7 @@ export class Util {
             });
         })
             .catch(err => {
-                console.error('Error getUserByHash', err)
+                console.error('Error getUserByHash', err);
             });
 
     }
@@ -224,8 +225,8 @@ export class Util {
                     return;
                 }
                 resolve(rows[0]);
-            })
-        })
+            });
+        });
     }
 
     delPointsByIds(ids) {
@@ -237,8 +238,8 @@ export class Util {
                     return;
                 }
                 resolve(rows);
-            })
-        })
+            });
+        });
     }
 
 
@@ -252,10 +253,10 @@ export class Util {
                 if (rows && rows.length) {
                     resolve(rows[0].user_id);
                 } else {
-                    reject(rows)
+                    reject(rows);
                 }
             });
-        })
+        });
     }
 
     getUserNameById(userId) {
@@ -268,13 +269,13 @@ export class Util {
                 if (rows && rows.length) {
                     resolve(rows[0].name);
                 } else {
-                    reject(rows)
+                    reject(rows);
                 }
             });
         })
             .catch(err => {
-                console.error('getUserNameBySocketId - >', err)
-            })
+                console.error('getUserNameBySocketId - >', err);
+            });
     }
 
     addDeviceBySocketId(socket_id, device) {
@@ -285,12 +286,12 @@ export class Util {
                     this.connection.query('INSERT INTO `device` (`id`, `user_id`, `device_key`, `name` ,`phone`) VALUES (NULL, ?, ?, ?, ?)',
                         [user_id, device.id, device.name, device.phone], (err, results) => {
                             if (err) {
-                                reject(err)
+                                reject(err);
                             }
-                            resolve(true)
+                            resolve(true);
                         });
-                })
-            })
+                });
+            });
     }
 
     /**
@@ -299,47 +300,53 @@ export class Util {
      * @returns {Promise}
      *
      *  date,
-         alt: 0,
-         lng,
-         lat,
-         azimuth: azimuth || 0,
-         speed,
-         src: gprmc
+     alt: 0,
+     lng,
+     lat,
+     azimuth: azimuth || 0,
+     speed,
+     src: gprmc
 
      *
      */
-    insertLog(data) {
+    insertLog(data: PointWithSrc) {
         return new Promise((resolve, reject) => {
-            this.connection.query('INSERT INTO `logger` (`id`, `device_key`, `lng`, `lat`, `alt`, `speed`, `azimuth`, `date`, `type`, `src`) VALUES (' +
-                'NULL, ?, ?, ?, ?, ?, ?, ?, ?,?)',
-                [data.id, data.lng, data.lat, data.alt, data.speed, data.azimuth, data.date,  data.type,  data.src], (err, result) => {
+            this.connection.query('INSERT INTO `logger` (`id`, `device_key`, `lng`, `lat`, `alt`, `accuracy`,`base_station`, `speed`, `azimuth`, `date`, `type`, `src`) VALUES (' +
+                'NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)',
+                [data.id, data.lng, data.lat, data.alt,
+                    Number.isNaN(data.accuracy) ? '0.0' : data.accuracy.toFixed(2),
+                    JSON.stringify(data.bs), data.speed, data.azimuth, data.date, data.type, data.src], (err, result) => {
 
                     if (err) {
-                        reject(err);
-                        return;
-                    }
-                    resolve(result)
 
-                })
-        })
+                        return reject(err);
+                    }
+                    resolve(result);
+
+                });
+        });
     }
 
     getLastPosition(device_key: string): Promise<LoggerRow> {
         return new Promise((resolve, reject) => {
-            this.connection.query('SELECT * FROM `logger` WHERE `device_key`=? AND `type`=\'POINT\' ORDER BY `date` DESC LIMIT 1 ', [device_key], (err, rows) => {
+            this.connection.query('SELECT * FROM `logger` WHERE `device_key`=?  ORDER BY `date` DESC LIMIT 1 ', [device_key], (err, rows) => {
                 if (err) {
                     reject(err);
                     return;
                 }
-                // rows[0].name = device.name;
-                resolve(rows[0])
 
-            })
-        })
+                resolve({
+                        ...rows[0],
+                        bs: rows[0].base_station ? JSON.parse(rows[0].base_station) : []
+                    }
+                );
+
+            });
+        });
 
     }
 
-    getLastBSPosition(device_key: string): Promise<Array<LoggerRow>>{
+    getLastBSPosition(device_key: string): Promise<Array<LoggerRow>> {
         return new Promise((resolve, reject) => {
             this.connection.query('SELECT * FROM `logger` WHERE `device_key`=? AND `type`=\'BS\' ORDER BY `date` DESC LIMIT 50 ', [device_key], (err, rows) => {
                 if (err) {
@@ -347,36 +354,36 @@ export class Util {
                     return;
                 }
                 // rows[0].name = device.name;
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
-    onRegist(d): Promise<any>{
+    onRegist(d): Promise<any> {
         return this.checkExistUser(d)
             .then((rows: Array<any>) => {
                 if (rows.length) {
                     return Promise.resolve({
                         result: false,
                         message: 'User exist'
-                    })
+                    });
                 } else {
                     return <any>this.addUser(d)
                         .then(result => {
                             return this.addSettingUser(result.insertId)
                                 .then((result) => {
-                                    return Promise.resolve( {
+                                    return Promise.resolve({
                                         result: 'ok',
                                         message: null
-                                    })
-                                })
-                        })
+                                    });
+                                });
+                        });
                 }
             })
             .catch((err) => {
                 console.log('onRegist ++>', err);
                 return err;
-            })
+            });
     }
 
     checkExistUser(d): Promise<any[]> {
@@ -387,12 +394,12 @@ export class Util {
 
                     return reject(err);
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
-    addUser(d): Promise<{[key: string]: string}> {
+    addUser(d): Promise<{ [key: string]: string }> {
         return new Promise((resolve, reject) => {
             this.connection.query('INSERT INTO `user` ' +
                 '(`id`, `name`, `pass`, `opt`) VALUES (NULL, ?, ?, NULL)', [d.name, d.pass], (err, results) => {
@@ -402,8 +409,8 @@ export class Util {
                 }
                 console.log('results ->', results);
                 resolve(results);
-            })
-        })
+            });
+        });
     }
 
     getPrivateArea(user_id) {
@@ -412,11 +419,11 @@ export class Util {
             this.connection.query(query, [user_id], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
 
@@ -427,10 +434,10 @@ export class Util {
             this.connection.query(query, [area_id], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
+                resolve(rows);
+            });
         });
     }
 
@@ -444,8 +451,8 @@ export class Util {
                 }
                 console.log('results ->', results);
                 resolve(results);
-            })
-        })
+            });
+        });
     }
 
     lockPrivateArea(user_id, lock) {
@@ -456,9 +463,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve()
-            })
-        })
+                resolve();
+            });
+        });
     }
 
     addSettingUser(user_id) {
@@ -470,8 +477,8 @@ export class Util {
                     return;
                 }
                 resolve(results);
-            })
-        })
+            });
+        });
     }
 
     getUserSettingByUserId(user_id): Promise<SettingRow> {
@@ -480,11 +487,11 @@ export class Util {
             this.connection.query(query, [user_id], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows[0])
-            })
-        })
+                resolve(rows[0]);
+            });
+        });
     }
 
     setImageProfile(user_id, base64) {
@@ -494,9 +501,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve()
-            })
-        })
+                resolve();
+            });
+        });
     }
 
     getUsersNotSelf(user_id) {
@@ -505,10 +512,10 @@ export class Util {
             this.connection.query(query, [user_id], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
+                resolve(rows);
+            });
         });
 
     }
@@ -523,8 +530,8 @@ export class Util {
                     return;
                 }
                 resolve(results);
-            })
-        })
+            });
+        });
     }
 
     onCancelInvite(user_id, enemy_id) {
@@ -534,9 +541,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(result)
-            })
-        })
+                resolve(result);
+            });
+        });
     }
 
     getInvites(user_id) {
@@ -545,10 +552,10 @@ export class Util {
             this.connection.query(query, [user_id], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
+                resolve(rows);
+            });
         });
     }
 
@@ -558,10 +565,10 @@ export class Util {
             this.connection.query(query, [device_key], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
+                resolve(rows);
+            });
         });
     }
 
@@ -571,10 +578,10 @@ export class Util {
             this.connection.query(query, [user_id], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
+                resolve(rows);
+            });
         });
     }
 
@@ -584,22 +591,22 @@ export class Util {
             this.connection.query(query, [user_id, friend_id], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
+                resolve(rows);
+            });
         });
         const fr2 = new Promise((resolve, reject) => {
             const query = 'DELETE from `friends` WHERE `user_id` = ? AND `friend_id`= ?';
             this.connection.query(query, [friend_id, user_id], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
+                resolve(rows);
+            });
         });
-        return Promise.all([fr1, fr2])
+        return Promise.all([fr1, fr2]);
     }
 
     getInviteByOwnerId(user_id, friend_id) {
@@ -608,10 +615,10 @@ export class Util {
             this.connection.query(query, [friend_id, user_id], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
+                resolve(rows);
+            });
         });
     }
 
@@ -621,15 +628,15 @@ export class Util {
             this.connection.query(query, [user_id], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
                 if (rows && rows.length) {
-                    resolve(rows[0].image)
+                    resolve(rows[0].image);
                 } else {
-                    reject(`no user-> ${rows}`)
+                    reject(`no user-> ${rows}`);
                 }
 
-            })
+            });
         });
     }
 
@@ -643,7 +650,7 @@ export class Util {
                     return;
                 }
                 resolve(results);
-            })
+            });
         });
         const fr2 = new Promise((resolve, reject) => {
             this.connection.query('INSERT INTO `friends` ' +
@@ -654,9 +661,9 @@ export class Util {
                     return;
                 }
                 resolve(results);
-            })
+            });
         });
-        return Promise.all([fr1, fr2])
+        return Promise.all([fr1, fr2]);
     }
 
     delInvite(id) {
@@ -666,9 +673,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(result)
-            })
-        })
+                resolve(result);
+            });
+        });
     }
 
     delInviteByUserId(id) {
@@ -678,9 +685,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(result)
-            })
-        })
+                resolve(result);
+            });
+        });
     }
 
     getFriends(user_id) {
@@ -690,10 +697,10 @@ export class Util {
             this.connection.query(query, [user_id], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
+                resolve(rows);
+            });
         });
     }
 
@@ -703,11 +710,11 @@ export class Util {
             this.connection.query(query, [userId], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
 
     }
 
@@ -718,22 +725,22 @@ export class Util {
                 this.connection.query(query, [fromUserId, toUserId], (err, rows) => {
                     if (err) {
                         reject(err);
-                        return
+                        return;
                     }
-                    resolve(rows)
-                })
+                    resolve(rows);
+                });
             }),
             new Promise((resolve, reject) => {
                 const query = 'SELECT * from `chat` WHERE from_user_id=? AND to_user_id=? ORDER BY `date` DESC LIMIT 40';
                 this.connection.query(query, [toUserId, fromUserId], (err, rows) => {
                     if (err) {
                         reject(err);
-                        return
+                        return;
                     }
-                    resolve(rows)
-                })
+                    resolve(rows);
+                });
             })
-        ])
+        ]);
 
     }
 
@@ -743,11 +750,11 @@ export class Util {
             this.connection.query(query, [userId, 0], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
     chatResolveUnViewed(userId, ids) {
@@ -758,11 +765,11 @@ export class Util {
             this.connection.query(query, [1, userId], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
     /**
@@ -781,7 +788,7 @@ export class Util {
                     return;
                 }
                 resolve(results);
-            })
+            });
         });
     }
 
@@ -796,11 +803,11 @@ export class Util {
             this.connection.query(query, [date, userId], (err, rows) => {
                 if (err) {
                     reject(err);
-                    return
+                    return;
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
     getDemoId(): Promise<number> {
@@ -811,9 +818,9 @@ export class Util {
                     return;
                 }
 
-                resolve(rows[0] ? rows[0].id : -1)
+                resolve(rows[0] ? rows[0].id : -1);
             });
-        })
+        });
     }
 
     onStrava(userId, stravaClientId, stravaClientSecret, atlasToken) {
@@ -829,15 +836,15 @@ export class Util {
                                     reject(err);
                                     return;
                                 }
-                                resolve(result)
+                                resolve(result);
                             });
                     } else {
                         reject(err);
                     }
                 }
                 resolve(results);
-            })
-        })
+            });
+        });
 
     }
 
@@ -848,9 +855,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(rows[0])
+                resolve(rows[0]);
             });
-        })
+        });
     }
 
     stravaUpdateCode(userId, code) {
@@ -860,9 +867,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
 
@@ -873,14 +880,14 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
     downloadTrack(deviceKey, point) {
         return this.checkExistPoint(deviceKey, point.lng, point.date)
-            .then((res: {[key: string]: string}) => {
+            .then((res: { [key: string]: string }) => {
                 if (res) {
                     return new Promise((resolve, reject) => {
                         this.connection.query('DELETE FROM `logger` WHERE id=?', [res.id], (err, result) => {
@@ -888,11 +895,11 @@ export class Util {
                                 reject(err);
                                 return;
                             }
-                            resolve(true)
-                        })
-                    })
+                            resolve(true);
+                        });
+                    });
                 } else {
-                    return Promise.resolve(true)
+                    return Promise.resolve(true);
                 }
             })
             .then(d => {
@@ -904,10 +911,10 @@ export class Util {
                                 reject(err);
                                 return;
                             }
-                            resolve(results)
-                        })
-                })
-            })
+                            resolve(results);
+                        });
+                });
+            });
     }
 
     checkExistPoint(deviceKey, lng, date) {
@@ -919,13 +926,13 @@ export class Util {
                     return;
                 }
                 if (rows && rows.length) {
-                    resolve(rows[0])
+                    resolve(rows[0]);
                 } else {
-                    resolve(false)
+                    resolve(false);
                 }
 
-            })
-        })
+            });
+        });
 
     }
 
@@ -939,8 +946,8 @@ export class Util {
                         reject(err);
                         return;
                     }
-                    resolve(markerData)
-                })
+                    resolve(markerData);
+                });
             } else {
                 this.connection.query('INSERT INTO `marker` ' +
                     '(`id`, `user_id`, `lng`, `lat`, `title`, `date`) VALUES (NULL, ?, ?, ?, ?, ?);',
@@ -949,12 +956,12 @@ export class Util {
                             reject(err);
                             return;
                         }
-                        resolve(results)
-                    })
+                        resolve(results);
+                    });
             }
 
 
-        })
+        });
     }
 
     getMyMarker(userId): Promise<Array<any>> {
@@ -964,9 +971,9 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve(rows)
-            })
-        })
+                resolve(rows);
+            });
+        });
     }
 
     removeMyMarker(userId, markerId) {
@@ -974,20 +981,20 @@ export class Util {
         return this.getMyMarker(userId)
             .then(markers => {
                 return new Promise((resolve, reject) => {
-                    if (markers.find(m => m.id === markerId)){
+                    if (markers.find(m => m.id === markerId)) {
                         this.connection.query('DELETE FROM `marker` WHERE `id`=?', [markerId], function (err, rows) {
                             if (err) {
                                 reject(err);
                                 return;
                             }
-                            resolve(rows)
-                        })
-                    }else {
-                        reject('You don\'t have permissions')
+                            resolve(rows);
+                        });
+                    } else {
+                        reject('You don\'t have permissions');
                     }
-                })
+                });
 
-            })
+            });
 
 
     }
@@ -1003,24 +1010,24 @@ export class Util {
             speed: d.speed,
             src: d.src,
             name: d.name
-        }
+        };
     }
 
     getHash() {
-        const $possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        const $possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let hash = '';
         for (let i = 0; i < 32; i++) {
             hash += '' + $possible[getRandom(0, 61, true)];
         }
         if (-1 < hashKeys.indexOf[hash]) {
-            return this.getHash()
+            return this.getHash();
         } else {
             return hash;
         }
     }
 
     clearHash(hash) {
-        hashKeys.splice(hashKeys.indexOf(hash), 1)
+        hashKeys.splice(hashKeys.indexOf(hash), 1);
     }
 
 }
@@ -1028,7 +1035,7 @@ export class Util {
 function getRandom(min, max, int) {
     var rand = min + Math.random() * (max - min);
     if (int) {
-        rand = Math.round(rand)
+        rand = Math.round(rand);
     }
     return rand;
 }

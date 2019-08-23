@@ -74,9 +74,9 @@ class Gl520 {
                     writeToFile(new Date().toISOString().concat('\r\n', str, '\r\n'));
                     gl520Parser.setSrcData(str)
                         .getData()
-                        .then((respDataList) => {
-                        if (respDataList) {
-                            respDataList.forEach(respData => {
+                        .then((resp) => {
+                        if (resp.result === 'ok') {
+                            resp.points.forEach(respData => {
                                 this._util.insertLog(respData)
                                     .catch(err => {
                                     console.error('Err GL520 insertLog error ->', err);
@@ -92,9 +92,26 @@ class Gl520 {
                                 }
                             });
                         }
-                        else {
+                        /*if (respDataList) {
+                            respDataList.forEach(respData=> {
+                                this._util.insertLog(respData)
+                                    .catch(err => {
+                                        console.error('Err GL520 insertLog error ->', err)
+                                    });
+
+                                const device_id = respData.id;
+                                if (this.devices && this.devices[device_id]) {
+                                    this.devices[device_id].forEach(socket_id => {
+                                        if (respData) {
+                                            //emitedSockets.push(socket_id);
+                                            this.socketsConnected[socket_id] && this.socketsConnected[socket_id].emit('log', respData);
+                                        }
+                                    })
+                                }
+                            })
+                        } else {
                             console.warn('no condition gl520 -> ');
-                        }
+                        }*/
                     })
                         .catch(err => {
                         console.error('err parse gl520 -> ', err);

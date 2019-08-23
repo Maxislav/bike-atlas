@@ -14,7 +14,7 @@ interface MobileCell {
 
 export class OnGtgbc extends ProtoData {
 
-    constructor(private socket, private util, private logger) {
+    constructor(private socket, private util) {
         super(socket, util);
         const onGtgbc = this.onGtgbc.bind(this);
         this.socket.$get('onGtgbc', onGtgbc);

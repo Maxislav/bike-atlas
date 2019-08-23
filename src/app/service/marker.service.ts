@@ -38,6 +38,7 @@ export class Marker {
     tail: TailClass;
     speedSubject: Observable<number>;
     type: 'POINT' | 'BS';
+    accuracy: number = 0;
 
 
     private speedBehaviorSubject: BehaviorSubject<number>;
@@ -52,6 +53,7 @@ export class Marker {
     private timer: Timer;
     private img: any;
 
+
     private areaList: AreaList;
 
     private baseStationLayerId: string;
@@ -63,9 +65,12 @@ export class Marker {
     constructor(devData: DeviceData, private user: User, private mapboxgl: MapBoxGl, private map: MapGl, private timerService: TimerService) {
 
         console.log(devData.type);
+        devData.bs = devData.bs ? devData.bs.filter(p => p.lat && p.lng) : [];
         Object.keys(devData).forEach(key => {
             this[key] = devData[key];
         });
+
+
         this.speedBehaviorSubject = new BehaviorSubject<number>(0);
         this.speedSubject = this.speedBehaviorSubject.asObservable();
         this.timer = new Timer(devData.date);
@@ -75,7 +80,7 @@ export class Marker {
         const img = this.img = new Image();
 
 
-        this.image =  img.src  = this.getDeviceImage(devData.device_key) ||  this.user.image || 'src/img/speedway_4_logo.jpg';
+        this.image = img.src = this.getDeviceImage(devData.device_key) || this.user.image || 'src/img/speedway_4_logo.jpg';
         icoContainer.appendChild(img);
         this.icoContainer = icoContainer;
 
@@ -91,7 +96,6 @@ export class Marker {
         this.iconMarker = new mapboxgl.Marker(icoContainer, {offset: [0, 0]})
             .setLngLat([devData.lng, devData.lat])
             .addTo(map);
-
 
 
         this.elapsed = '...';
@@ -111,17 +115,19 @@ export class Marker {
 
     }
 
-    private getDeviceImage(deviceKey: string): string{
-        if( this.user.devices){
+    private getDeviceImage(deviceKey: string): string {
+        if (this.user.devices) {
             return this.user.devices.find(device => {
-                return device.device_key === deviceKey
-            }).image
+                return device.device_key === deviceKey;
+            }).image;
         }
         return null;
 
     }
 
     update(devData: DeviceData): Marker {
+        devData.bs = devData.bs ? devData.bs.filter(p => p.lat && p.lng) : [];
+
         const prevLngLat: Point = new Point(this.lng, this.lat);
         const t = this.timer.tick(devData.date);
         for (let opt in devData) {
@@ -137,7 +143,7 @@ export class Marker {
         this.tail.update(new Point(devData.lng, devData.lat));
 
 
-        if(this.areaList){
+        if (this.areaList) {
             this.areaList.remove();
         }
 
@@ -165,7 +171,7 @@ export class Marker {
     remove(): void {
         this.popup.remove();
         this.iconMarker.remove();
-        if(this.areaList){
+        if (this.areaList) {
             this.areaList.remove();
         }
 
@@ -180,7 +186,7 @@ export class Marker {
         this.image = src;
     }
 
-    private createLinkedLine(center: LngLat, station: LngLat): Feature{
+    private createLinkedLine(center: LngLat, station: LngLat): Feature {
 
         return {
             'type': 'Feature',
@@ -188,7 +194,7 @@ export class Marker {
                 'type': 'LineString',
                 'coordinates': [[center.lng, center.lat], [station.lng, station.lat]]
             }
-        }
+        };
     }
 
 
@@ -196,10 +202,10 @@ export class Marker {
         // this.baseStationLayerId = Marker.getNewLayer();
         const {bounds, max} = this.getBouds(pointsList);
         this.areaList = this.createAreaList(pointsList, max);
-        this. baseStationPoints = this.drawPoints(pointsList);
+        this.baseStationPoints = this.drawPoints(pointsList);
     }
 
-   private createAreaList(pointsList: Array<{ lng: number, lat: number }>, radius: number = 0.2): AreaList {
+    private createAreaList(pointsList: Array<{ lng: number, lat: number }>, radius: number = 0.2): AreaList {
         const layerId = Marker.getNewLayer('area-');
         const map = this.map;
 
@@ -212,10 +218,12 @@ export class Marker {
                 }
             });
         const features = [];
+        const f = this.createGeoJSONCircle(new LngLat().setValue(this), this.accuracy/1000);
+        features.push(f);
         pointsList.forEach(point => {
-            const f = this.createGeoJSONCircle(new LngLat().setValue(point), radius);
-            const linkedLine = this.createLinkedLine(new  LngLat(this.lng, this.lat), new LngLat().setValue(point));
-            features.push(f);
+           // const f = this.createGeoJSONCircle(new LngLat().setValue(point), radius);
+            const linkedLine = this.createLinkedLine(new LngLat(this.lng, this.lat), new LngLat().setValue(point));
+            //features.push(f);
             features.push(linkedLine);
         });
 
@@ -232,8 +240,8 @@ export class Marker {
             'source': layerId,
             'layout': {},
             'paint': {
-                'line-color':Marker.color,
-                "line-width": 2
+                'line-color': Marker.color,
+                'line-width': 2
             }
         });
 
@@ -252,7 +260,6 @@ export class Marker {
             }
         };
     }
-
 
 
     private createGeoJSONCircle(center, radiusInKm, points: number = 64): Feature {
@@ -313,7 +320,6 @@ export class Marker {
         });
 
 
-
         return {
             layerId: layerId,
             points: pointsList,
@@ -322,7 +328,7 @@ export class Marker {
                 map.removeSource(layerId);
                 Marker.removeLayer(layerId);
             }
-        }
+        };
     }
 
     private getData(pointsList) {
@@ -431,7 +437,7 @@ export class Marker {
 
     }
 
-    static removeLayer(layerId: string){
+    static removeLayer(layerId: string) {
         if (Marker.layerIds.has(layerId)) {
             Marker.layerIds.delete(layerId);
         }

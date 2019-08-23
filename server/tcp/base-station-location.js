@@ -6,6 +6,7 @@ class ReqData {
         this.mcc = mcc;
         this.mnc = mnc;
         this.radio = 'gsm';
+        // address: number =  1;
         this.cells = [];
     }
     setCells(cellList) {
@@ -23,7 +24,7 @@ ReqData.token = 'c0a03eae5fa12e';
 class BaseStationLocation {
     constructor() {
     }
-    getLatLngList(d) {
+    getAverageLatLng(d) {
         const reqData = new ReqData(d.mcc, d.mnc).setCells(d.cells);
         const postData = reqData.toJsonString();
         return new Promise((resolve, reject) => {
@@ -51,7 +52,12 @@ class BaseStationLocation {
                         console.error('Parse error ->', e);
                         return reject(e);
                     }
-                    resolve(j);
+                    resolve({
+                        lng: j.lon,
+                        lat: j.lat,
+                        accuracy: j.accuracy,
+                        address: j.address
+                    });
                 });
             });
             req.write(postData);
@@ -63,8 +69,6 @@ class BaseStationLocation {
             const req = https.request({
                 hostname: 'opencellid.org',
                 port: 443,
-                //path: `/gsm/classes/Cell.Search.php?mcc=${mc.mcc}&mnc=${mc.mnc}&lac=${mc.lac}&cid=${mc.cellId}`,
-                //cell/get?key=c0a03eae5fa12e&mcc=260&mnc=2&lac=10250&cellid=26511&format=json
                 path: `/cell/get?key=c0a03eae5fa12e&mcc=${mc.mcc}&mnc=${mc.mnc}&lac=${mc.lac}&cellid=${mc.cellId}&format=json`,
                 method: 'GET'
             }, (proxyResponse) => {
@@ -82,12 +86,22 @@ class BaseStationLocation {
                         console.error('Parse error ->', e);
                         return reject(e);
                     }
-                    resolve({
-                        id: mc.cellId,
-                        lng: Number(j.lon),
-                        lat: Number(j.lat),
-                        range: Number(j.range)
-                    });
+                    if (j.error) {
+                        resolve({
+                            id: mc.cellId,
+                            lng: null,
+                            lat: null,
+                            range: null
+                        });
+                    }
+                    else {
+                        resolve({
+                            id: mc.cellId,
+                            lng: Number(j.lon),
+                            lat: Number(j.lat),
+                            range: Number(j.range)
+                        });
+                    }
                 });
             })
                 .on('error', (e) => {
