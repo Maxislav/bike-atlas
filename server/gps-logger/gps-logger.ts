@@ -20,6 +20,9 @@ interface GprmcData {
     src: string;
     device_key: string;
     type: 'POINT' | 'BS';
+    bs: Array<any>,
+    accuracy: number
+
 }
 
 export class Logger {
@@ -231,7 +234,9 @@ export class Logger {
             src,
             id,
             device_key: id,
-            type: 'POINT'
+            type: 'POINT',
+            bs: [],
+            accuracy: 0
         }
     }
 

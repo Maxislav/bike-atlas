@@ -113,6 +113,7 @@ function createTable() {
             '`lng` FLOAT(10,8) NOT NULL, ' +
             '`lat` FLOAT(10,8) NOT NULL, ' +
             '`alt` FLOAT(8,2) DEFAULT 0, ' +
+            '`accuracy` FLOAT(16,8) DEFAULT 0, ' +
             '`base_station` VARCHAR(1024) NULL DEFAULT NULL, ' +
             '`speed` FLOAT(8,2) NULL DEFAULT NULL, ' +
             '`azimuth` FLOAT(6,2) NULL DEFAULT NULL, ' +

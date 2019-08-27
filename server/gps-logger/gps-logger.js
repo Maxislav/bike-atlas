@@ -174,7 +174,7 @@ class Logger {
             device_key: id,
             type: 'POINT',
             bs: [],
-            accuracy:0
+            accuracy: 0
         };
     }
     set sockets(connected) {
