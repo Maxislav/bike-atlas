@@ -8,7 +8,7 @@
     <div class="row">
       <div *ngFor="let device of deviceList; let i = index;" [ngClass]="{'selected': device === deviceSelected}"   (click)="onSelectDevice(device)" class="flex vertical-center pointer devices" >
 
-        <img [src]="device.image || 'src/img/speedway_4_logo.jpg' "  class="logo"/>
+        <img [src]="device.image || 'img/speedway_4_logo.jpg' "  class="logo"/>
         <p  >{{device.name}}</p>
       </div>
     </div>

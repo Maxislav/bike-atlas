@@ -27,7 +27,8 @@
             ],
             "styles": [
               "src/app/css/index.less",
-              "src/lib/mapbox-gl/mapbox-gl.css"
+              "src/lib/mapbox-gl/mapbox-gl.css",
+              "src/lib/leaflet/leaflet.css"
             ],
             "scripts": []
           },
