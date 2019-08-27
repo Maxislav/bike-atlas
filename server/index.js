@@ -19,14 +19,14 @@ const gtgbc = require('./gtgbc');
 
 
 
-const dirname =  path.normalize(__dirname+'/../');
+const dirname =  path.join(__dirname, '../', 'dist');
 
 const app = express();
 
 app.use(fileUpload());
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json())

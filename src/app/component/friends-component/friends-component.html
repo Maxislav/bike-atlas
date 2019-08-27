@@ -10,7 +10,7 @@
             <tbody>
               <tr *ngFor="let user of friends; let i = index">
                 <td>
-                  <div class="img-container"><img [src]="user.image || 'src/img/no-avatar.gif' "/>
+                  <div class="img-container"><img [src]="user.image || 'img/no-avatar.gif' "/>
                     <div (click)="startChat(user)" [ngClass]="{'chat-un-viewed': user.chatUnViewed &amp;&amp; user.chatUnViewed.length}" title="отправить личное сообщение" class="ico-chat"></div>
                     <div *ngIf="user.chatUnViewed &amp;&amp; user.chatUnViewed.length" class="ico-un-viewed">{{user.chatUnViewed.length}}</div>
                   </div>
@@ -35,7 +35,7 @@
             <tbody>
               <tr *ngFor="let user of invites; let i = index">
                 <td>
-                  <div class="img-container"><img [src]="user.image || 'src/img/no-avatar.gif' "/>
+                  <div class="img-container"><img [src]="user.image || 'img/no-avatar.gif' "/>
                     <div (click)="startChat(user)" [ngClass]="{'chat-un-viewed': user.chatUnViewed &amp;&amp; user.chatUnViewed.length}" title="отправить личное сообщение" class="ico-chat"></div>
                     <div *ngIf="user.chatUnViewed &amp;&amp; user.chatUnViewed.length" class="ico-un-viewed">{{user.chatUnViewed.length}}</div>
                   </div>

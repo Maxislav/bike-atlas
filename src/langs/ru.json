@@ -1,0 +1,20 @@
+{
+  "ROUTS": "Маршруты",
+  "IN_CONNECTION": "На связи",
+  "SIGN_IN": "Войти",
+  "JOURNAL": "Журнал",
+  "DOWNLOAD_GPX": "Загрузить GPX",
+  "IMPORT_FROM_GOOGLE_KML": "Импорт from Google KML",
+  "PROFILE": "Профиль",
+  "FRIENDS": "Друзья",
+  "PRIVATE_AREA": "Приватные зоны",
+  "DEVICES": "Устройства",
+  "ON_EXIT": "Выйти",
+  "ON_SAVE": "Сохранить",
+  "REGISTRATION": "Регистрация",
+  "NAME": "Имя",
+  "PASS": "Пароль",
+  "NOT_LOGGED": " Вы не вошли в систему",
+  "MY_MARKER": "Маркеры",
+  "GL520BS": "GL520 Location"
+}

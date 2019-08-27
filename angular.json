@@ -21,7 +21,9 @@
             "baseHref": ".",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/langs",
+              "src/img"
             ],
             "styles": [
               "src/app/css/index.less",

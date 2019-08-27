@@ -73,7 +73,7 @@ export class MyMarkerService {
         const {mapboxgl, map} = this.mapService;
         const icoContainer = document.createElement('div');
         const img = new Image();
-        img.src = 'src/img/my-marker.png';
+        img.src = 'img/my-marker.png';
         img.style.width = '100%';
         img.style.height = '100%';
         icoContainer.appendChild(img);
