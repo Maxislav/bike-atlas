@@ -19,6 +19,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "baseHref": ".",
+            "deployUrl": "http://178.62.44.54:8080/",
             "assets": [
               "src/favicon.ico",
               "src/assets",
