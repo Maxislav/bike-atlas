@@ -18,7 +18,7 @@
             "main": "src/app/init.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
-            "baseHref": ".",
+            "baseHref": "/bike-atlas/",
             "deployUrl": "http://178.62.44.54:8080/",
             "assets": [
               "src/favicon.ico",
