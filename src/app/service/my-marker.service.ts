@@ -147,7 +147,7 @@ export class MyMarkerService {
     }
 
     private saveMarker(component: MyInputPopupComponent) {
-        const myMarker: MyMapMarker = this.markerList.find(({scope}) => scope === component);
+        const myMarker: MyMapMarker = this.markerList.find((m) => m.scope === component);
         console.log('save ->', myMarker);
         this.socket.$emit('saveMyMarker', {
             id: myMarker.id,

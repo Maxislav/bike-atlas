@@ -6,24 +6,22 @@ import {PrivateAreaService} from "../../service/private.area.service";
 import {UserService} from "../../service/main.user.service";
 import {Setting} from "../../service/auth.service";
 import {distance} from "../../util/distance";
-declare  const module: any;
 @Component({
     //noinspection TypeScriptUnresolvedVariable
-    moduleId: module.id,
     templateUrl: './private-area.html',
-    styleUrls: ['./private-area.css']
+    styleUrls: ['./private-area.less']
 })
 export class PrivateArea{
 
 
     private myArea: any;
-    private areas: Array<any>;
-    private clickCount: number = 0;
+    public areas: Array<any>;
+    public clickCount: number = 0;
     private map: any;
     private _lng:number;
     private _lat:number;
     private _rad:number;
-    private setting: Setting;
+    public setting: Setting;
 
     constructor(
         private lh: NavigationHistory ,

@@ -10,12 +10,10 @@ import {Router} from "@angular/router";
 import * as R from "ramda";
 import {MapArea as Area} from "../../../../types/global";
 import {distance} from "../../../util/distance"
-declare const module: any;
 @Component({
-    moduleId: module.id,
     selector:'one-item-track-component',
     templateUrl: "./one-item-track.component.html",
-    styleUrls: ['./one-item-track.component.css']
+    styleUrls: ['./one-item-track.component.less']
 })
 export class OneItemTrackComponent implements OnInit{
 
@@ -23,7 +21,7 @@ export class OneItemTrackComponent implements OnInit{
     private util: Util;
     stop: Function;
     private map: any;
-    private maxSpeed: number;
+    public maxSpeed: number;
     private isAuthStrava: boolean;
     private static layerIds: Array<string> = [];
     private mouseMapDown: Function;
@@ -33,7 +31,7 @@ export class OneItemTrackComponent implements OnInit{
                   private mapService: MapService,
                   private toast:ToastService,
                   private router: Router,
-                  private stravaService: StravaService
+                  public stravaService: StravaService
     ){
         this.util = new Util();
         //this.isAuthStrava = !!stravaService.athlete;

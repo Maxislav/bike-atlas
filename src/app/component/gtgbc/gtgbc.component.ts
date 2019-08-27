@@ -13,11 +13,9 @@ enum MessageType {
     GTLBS,
     GTGSM
 }
-declare const module: any;
 @Component({
-    moduleId: module.id,
     templateUrl: './gtgbc.component.html',
-    styleUrls: ['./gtgbc.component.css'],
+    styleUrls: ['./gtgbc.component.less'],
     animations: [ngIfAnimation]
 })
 export class GtgbcComponent implements OnInit, OnDestroy {

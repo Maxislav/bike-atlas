@@ -9,17 +9,15 @@ import { Device } from '../../../../types/global';
 
 
 
-declare const module: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'menu-athlete',
     templateUrl: './menu.athlete.component.html',
-    styleUrls: ['./menu.athlete.component.css'],
+    styleUrls: ['./menu.athlete.component.less'],
 })
 export class MenuAthleteComponent{
-    private userDevices: Array<Device>;
-    private otherDevices: Array<Device>;
+    public userDevices: Array<Device>;
+    public otherDevices: Array<Device>;
 
 
     @Output() onCloseMenuAthlete:EventEmitter<boolean> = new EventEmitter()

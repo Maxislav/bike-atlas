@@ -1,27 +1,25 @@
 /**
  * Created by maxislav on 05.10.16.
  */
-import { ModuleWithProviders }  from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {AuthComponent} from "./component/auth-component/auth.component";
-import {MapComponent} from "./map.component";
-import {RegistrationComponent} from "./component/registration/registration.component";
-import {DeviceComponent} from "./component/device/device.component";
-import {AuthService} from "./service/auth.service";
-import {ProfileComponent} from "./component/profile/profile.component";
-import {JournalComponent, LeafletResolver} from "./component/journal-component/journal.component";
-import {FriendsComponent} from "./component/friends-component/friends-component";
-import {PrivateArea} from "./component/private-area/private-area";
-import {MapboxGlDirective, MapResolver} from "./directive/mapbox-gl.directive";
-import {NoFoundComponent} from "./no-found.component";
-import {AllUserComponent} from "./component/all-user/all-user.component";
-import {StravaComponent} from "./component/strava-component/strava-component";
-import {StravaAuthComponent} from "./component/strava-component/strava-auth-component";
-import {UserService} from "./service/main.user.service";
-import {JJ} from "./app.module";
+import { AuthComponent } from './component/auth-component/auth.component';
+import { MapComponent } from './map.component';
+import { RegistrationComponent } from './component/registration/registration.component';
+import { DeviceComponent } from './component/device/device.component';
+import { AuthService } from './service/auth.service';
+import { ProfileComponent } from './component/profile/profile.component';
+import { JournalComponent, LeafletResolver } from './component/journal-component/journal.component';
+import { FriendsComponent } from './component/friends-component/friends-component';
+import { PrivateArea } from './component/private-area/private-area';
+import { NoFoundComponent } from './no-found.component';
+import { AllUserComponent } from './component/all-user/all-user.component';
+import { StravaComponent } from './component/strava-component/strava-component';
+import { StravaAuthComponent } from './component/strava-component/strava-auth-component';
+import { UserService } from './service/main.user.service';
 import { GtgbcComponent } from './component/gtgbc/gtgbc.component';
 
-const  appRouters: Routes = [
+const appRouters: Routes = [
     {
         path: '',
         redirectTo: 'auth/map',
@@ -31,35 +29,35 @@ const  appRouters: Routes = [
     {
         path: 'auth',
         component: AuthComponent,
-        resolve:  {
-            transactions : AuthService
+        resolve: {
+            transactions: AuthService
         },
-        children:[
+        children: [
 
             {
-                path:'map',
+                path: 'map',
                 component: MapComponent,
                 children: [
                     {
-                        path:'registration',
+                        path: 'registration',
                         component: RegistrationComponent
                     },
                     {
-                        path:'device',
+                        path: 'device',
                         component: DeviceComponent,
-                        canActivate:[AuthService]
+                        canActivate: [AuthService]
                     },
                     {
                         path: 'profile',
-                        component:ProfileComponent,
-                        canActivate:[AuthService],
+                        component: ProfileComponent,
+                        canActivate: [AuthService],
                     },
                     {
                         path: 'journal',
                         component: JournalComponent,
-                        canActivate:[AuthService],
-                        resolve:  {
-                            L : LeafletResolver
+                        canActivate: [AuthService],
+                        resolve: {
+                            L: LeafletResolver
                         },
                     },
                     {
@@ -67,7 +65,7 @@ const  appRouters: Routes = [
                         component: FriendsComponent,
                         children: [
                             {
-                                path:'all',
+                                path: 'all',
                                 component: AllUserComponent
                             }
 
@@ -76,16 +74,16 @@ const  appRouters: Routes = [
                     {
                         path: 'privatearea',
                         component: PrivateArea,
-                        canActivate:[UserService]
+                        canActivate: [UserService]
 
                     },
                     {
-                        path:'strava-invite',
+                        path: 'strava-invite',
                         component: StravaComponent,
-                       // canActivate:[UserService]
+                        // canActivate:[UserService]
                     },
                     {
-                        path:'strava-invite/:token',
+                        path: 'strava-invite/:token',
                         component: StravaAuthComponent
                         //canActivate:[UserService]
                     },
@@ -100,11 +98,11 @@ const  appRouters: Routes = [
                 ]
             }
         ]
-        
+
     },
 
     {
-        path:'404',
+        path: '404',
         component: NoFoundComponent
     },
     {
@@ -134,4 +132,12 @@ const  appRouters: Routes = [
 ];
 
 
-export const MyRouterModule: ModuleWithProviders = RouterModule.forRoot(appRouters, {useHash: true});
+//export const MyRouterModule: ModuleWithProviders = RouterModule.forRoot(appRouters, {useHash: true});
+
+
+@NgModule({
+    imports: [RouterModule.forRoot(appRouters, {useHash: true})],
+    exports: [RouterModule]
+})
+export class MyRouterModule {
+}

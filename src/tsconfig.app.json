@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig-ui.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "module": "commonjs",
+    "types": []
+  },
+  "exclude": [
+    "dist",
+    "src/test.ts",
+    "**/*.spec.ts",
+    "node_modules"
+  ]
+}

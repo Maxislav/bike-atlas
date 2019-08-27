@@ -8,7 +8,6 @@ import { MyMarkerService } from './service/my-marker.service';
 import { Marker } from './service/marker.service';
 import { MyMapMarker } from './service/my-marker.service';
 
-declare var module: { id: string };
 
 @Injectable()
 export class NavigationHistory {
@@ -25,12 +24,10 @@ export class NavigationHistory {
 
 
 @Component({
-    moduleId: module.id,
     selector: 'my-app',
     templateUrl: 'app.component.html',
-    // providers: [NavigationHistory, MenuService, TrackService],
     styleUrls: [
-        'css/app.component.css',
+        'css/app.component.less',
     ],
 
 })

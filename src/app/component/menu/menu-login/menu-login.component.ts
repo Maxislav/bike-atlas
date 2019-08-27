@@ -14,21 +14,19 @@ import {FriendsService} from "../../../service/friends.service";
 import {UserService} from "../../../service/main.user.service";
 import { User } from '../../../../types/global';
 //import {RouterLink} from "@angular/router-deprecated";
-declare const module: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'menu-login',
     //directives: [RouterLink],
     templateUrl: './menu-login.component.html',
-    styleUrls: ['./menu-login.css'],
+    styleUrls: ['./menu-login.less'],
      //providers: [MenuService]
 })
 export class MenuLoginComponent {
     private name: string;
     private pass: string;
     private socket;
-    private user: User;
+    public user: User;
 
     constructor(private router: Router,
                 private ms: MenuService,
@@ -57,7 +55,7 @@ export class MenuLoginComponent {
     }
 
 
-    onEnter(e) {
+    onEnter() {
         this.loginService
             .onEnter({
                 name: this.name,

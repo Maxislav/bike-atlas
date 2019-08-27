@@ -1,17 +1,15 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {  Subscription } from 'rxjs/Subscription';
 import {Device} from '../../../../../types/global';
-declare const module: any;
 @Component({
-    moduleId: module.id,
     selector: 'menu-athlete-item',
     templateUrl: './menu.athlete.item.component.html',
-    styleUrls: ['./menu.athlete.item.component.css'],
+    styleUrls: ['./menu.athlete.item.component.less'],
 })
 export class MenuAthleteItemComponent implements OnInit{
     speed: string;
     subscription: Subscription;
-    @Input() device: Device;
+    @Input() public device: Device;
     constructor(){
     }
 

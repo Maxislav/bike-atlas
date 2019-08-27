@@ -28,14 +28,12 @@ interface MyNode extends Node{
     scrollHeight: any
 }
 
-declare const module: any;
 
 @Component({
-    moduleId: module.id, 
     selector: 'chat-room',
     //template: '{{userId}}<textarea [(ngModel)]="myActiveMess"></textarea>'
     templateUrl: './chat-room.component.html',
-    styleUrls: ['./chat-room.component.css']
+    styleUrls: ['./chat-room.component.less']
 
 })
 export class ChatRoomComponent implements OnInit, AfterViewInit{

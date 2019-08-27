@@ -10,16 +10,14 @@ import {
 } from '@angular/core';
 // import { MyMarkerService } from '../../../service/my-marker.service';
 
-declare const module:any;
 
 @Component({
-    moduleId: module.id,
     selector: 'my-input-popup-component',
     template: '<input class="input" type="text" [(ngModel)]="title" ' +
     '(ngModelChange)="onChange()"' +
         '(focusout)="focusOut()"'+
     '/>',
-    styleUrls: ['./my-input-popup-component.css']
+    styleUrls: ['./my-input-popup-component.less']
 })
 export class MyInputPopupComponent implements OnInit, AfterViewInit{
 

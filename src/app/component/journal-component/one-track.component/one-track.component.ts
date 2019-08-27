@@ -5,13 +5,11 @@ import {JournalService} from "../../../service/journal.service";
 import {LocalStorage} from "../../../service/local-storage.service";
 import {TrackService} from "../../../service/track.service";
 import {UserService} from "../../../service/main.user.service";
-declare const module: any
 @Component({
     //noinspection TypeScriptUnresolvedVariable
     selector: 'one-track',
-    moduleId: module.id,
     templateUrl: './one-track.component.html',
-    styleUrls: ['./one-track.component.css'],
+    styleUrls: ['./one-track.component.less'],
 })
 export class OneTrack implements OnInit, AfterViewInit{
     L: any;
@@ -51,7 +49,7 @@ export class OneTrack implements OnInit, AfterViewInit{
             })
     }
     index: number;
-    @Input() track: {points:Array<any>, userId: number};
+    @Input() track: {points:Array<any>, userId: number, name: string};
     constructor(private el:ElementRef,
                 private Leaflet: LeafletResolver,
                 private ls:LocalStorage,

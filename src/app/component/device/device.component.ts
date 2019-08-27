@@ -29,9 +29,6 @@ export class HelpContainer {
     }
 }
 
-declare const module: {
-    id: any
-};
 
 
 @Pipe({
@@ -44,8 +41,6 @@ export class IsOwner implements PipeTransform {
     }
 
     transform(value, args?) {
-
-        // console.log('fds')
         return value.filter(item => {
             return item.ownerId == this.user.user.id;
         });
@@ -54,19 +49,18 @@ export class IsOwner implements PipeTransform {
 
 
 @Component({
-    moduleId: module.id,
     templateUrl: 'device.component.html',
     styleUrls: [
-        'device.component.css',
+        'device.component.less',
     ]
 })
 export class DeviceComponent implements AfterViewInit {
 
-    private device: Device;
-    private devices: Array<Device>;
+    public device: Device;
+    public devices: Array<Device>;
     public btnPreDel: { index: number };
-    private user: User;
-    private showHelp: boolean = false;
+    public user: User;
+    public showHelp: boolean = false;
 
     private inputList: Set<any> = new Set();
 
@@ -171,7 +165,7 @@ export class DeviceComponent implements AfterViewInit {
             el.addEventListener('change', ()=>{
                 const file = el.files[0];
                 const reader = new FileReader();
-                reader.onload = (event) => {
+                reader.onload = (event: any) => {
                     const the_url = event.target.result;
                     device.image =  this.crop(the_url);
                     this.onAddDeviceImage(device)

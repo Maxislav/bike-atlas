@@ -8,16 +8,17 @@ import { APP_INITIALIZER } from '@angular/core';
 import {Resolve} from "@angular/router";
 import {fadeInAnimation} from  './animation/animation'
 
-declare const module: any;
+//declare const module: any;
+
 @Component({
-    moduleId: module.id,
-    template: [
-        '<info-position>',
-        '</info-position>',
-        '<router-outlet></router-outlet>',
+    //moduleId: module.id,
+    template:
+        '<info-position>' +
+        '</info-position>' +
+        '<router-outlet></router-outlet>' +
         '<mapbox-gl> map loading...</mapbox-gl>'
-    ].join('') ,
-    styleUrls: ['./css/map.component.css'],
+    ,
+    styleUrls: ['./css/map.component.less'],
     providers:[],
     animations: [fadeInAnimation],
     host: { '[@fadeInAnimation]': '' }

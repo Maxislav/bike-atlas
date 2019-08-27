@@ -18,9 +18,8 @@ interface MyNode extends Node{
 }
 
 @Component({
-    moduleId: module.id,
     templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.css'],
+    styleUrls: ['./profile.component.less'],
 })
 export class ProfileComponent implements AfterViewInit{
 
@@ -29,8 +28,8 @@ export class ProfileComponent implements AfterViewInit{
     private inputEl: MyNode;
     private name: string;
     private socket: any;
-    private user: User;
-    private setting;
+    public user: User;
+    public setting;
     private oldPass: string;
     profileForm /*= new FormGroup({
         oldPass: new FormControl()
@@ -73,7 +72,7 @@ export class ProfileComponent implements AfterViewInit{
             console.log(inputEl.files);
             const file = inputEl.files[0];
             const reader = new FileReader();
-            reader.onload = (event) => {
+            reader.onload = (event: any) => {
                 const the_url = event.target.result;
                 //this.imageurl = the_url
                 this.crop(the_url)

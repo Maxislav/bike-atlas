@@ -67,10 +67,9 @@ const MENU: Item[] = [
 declare const module: any;
 
 @Component({
-    moduleId: module.id,
     selector: 'menu-track',
     templateUrl: './menu-track.html',
-    styleUrls: ['./menu-track.css'],
+    styleUrls: ['./menu-track.less'],
     // providers: [MenuService]
 })
 export class MenuTrackComponent {
@@ -97,7 +96,7 @@ export class MenuTrackComponent {
         this.onCloseMenuTrack.emit(false);
     }
     ngAfterViewInit() {
-        const onClickObservable: Observable<MouseEvent> = fromEvent(document.body, 'click');
+        const onClickObservable: Observable<Event> = fromEvent(document.body, 'click');
         setTimeout(() => {
             this.subscription = onClickObservable.subscribe(<PushSubscription>(e: MouseEvent) => {
                 this.onCloseMenuTrack.emit(false);

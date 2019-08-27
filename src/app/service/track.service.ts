@@ -2,8 +2,8 @@
  * Created by maxislav on 30.11.16.
  */
 
-import {Injectable, transition} from '@angular/core';
-import * as R from 'ramda';
+import {Injectable} from '@angular/core';
+import * as R from 'ramda/dist/ramda';
 import {Util} from './util';
 import {Io} from "./socket.oi.service";
 import {MapService} from "./map.service";
@@ -14,6 +14,7 @@ import * as dateformat from "dateformat/lib/dateformat.js";
 import {ToastService} from "../component/toast/toast.component";
 
 import {Resolve} from "@angular/router";
+import { Color } from '../util/get-color';
 //console.log(dateformat)
 const F = parseFloat;
 const I = parseInt;
@@ -244,11 +245,14 @@ export class TrackService implements Resolve<any> {
 
         worker = {
             postMessage: ()=>{
-                System.import('dist/app/util/get-color.js')
+
+                const data = new Color(points).getColors();
+                worker.onmessage({data})
+              /*  System.import('dist/app/util/get-color.js')
                     .then(({Color})=>{
                         const data = new Color(points).getColors();
                         worker.onmessage({data})
-                    })
+                    })*/
             },
             onmessage: null
         }

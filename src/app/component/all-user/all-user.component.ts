@@ -4,15 +4,13 @@ import {FriendsService} from "../../service/friends.service";
 import {ChatService} from "../../service/chat.service";
 import { User } from '../../../types/global';
 
-declare const module: any;
 @Component({
-    moduleId: module.id,
     templateUrl: './all-user.component.html',
-    styleUrls: ['./all-user.component.css'],
+    styleUrls: ['./all-user.component.less'],
 })
 
 export class AllUserComponent{
-    private allUsers;
+    public allUsers;
     private friends;
     private invites;
     private myInvites;

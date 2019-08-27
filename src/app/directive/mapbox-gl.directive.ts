@@ -4,11 +4,13 @@ import { Directive, ElementRef, Input, Renderer } from '@angular/core';
 import { MapService } from '../service/map.service';
 import { PositionSize } from '../service/position-size.service';
 import { LocalStorage } from '../service/local-storage.service';
-import * as mapboxgl from '../../../lib/mapbox-gl/mapbox-gl.js';
+import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl.js';
+
 import { Resolve } from '@angular/router';
 import { AuthService, Setting } from '../service/auth.service';
 import { UserService } from '../service/main.user.service';
 import { MapBoxGl, MapGl } from '../../types/global';
+//import '../../../lib/mapbox-gl/mapbox-gl.css'
 
 class MyMap extends mapboxgl.Map {
     onLoad: Promise<MyMap>;

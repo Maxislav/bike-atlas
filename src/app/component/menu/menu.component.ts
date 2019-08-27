@@ -18,17 +18,15 @@ import {ChatService} from "../../service/chat.service";
 import {ngIfAnimation} from '../../animation/animation'
 import { User } from '../../../types/global';
 
-declare var module: any;
 declare var document: any;
 declare const System: any;
 
 
 
 @Component({
-    moduleId: module.id,
     selector: 'menu',
     templateUrl: './menu.component.html',
-    styleUrls: ['./menu.component.css'],
+    styleUrls: ['./menu.component.less'],
     providers: [MenuTrackComponent, MenuService],
     animations: [ngIfAnimation]
 })
@@ -36,16 +34,16 @@ export class MenuComponent{
 
     public menuOpen: boolean;
     public userName: string;
-    private invites: Array<User>;
-    private user: User;
-    private weatherLayer: any;
-    private unViewedIds: Array<number>;
+    public invites: Array<User>;
+    public user: User;
+    public weatherLayer: any;
+    public unViewedIds: Array<number>;
 
-    private isShowMenuAthlete: boolean = false;
-    private isShowMenuTrack: boolean = false;
+    public isShowMenuAthlete: boolean = false;
+    public isShowMenuTrack: boolean = false;
 
 
-    constructor(private menuService:MenuService,
+    constructor(public menuService:MenuService,
                 private track:TrackService,
                 private authService:AuthService,
                 private router:Router,

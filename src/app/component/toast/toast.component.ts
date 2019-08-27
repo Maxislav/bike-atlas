@@ -54,13 +54,11 @@ export class ToastService{
 
 }
 
-declare const module: any;
 @Component({
-    moduleId: module.id,
     selector: 'toast-component',
     templateUrl: './toast-component.html',
     styleUrls: [
-        './toast.component.css',
+        './toast.component.less',
     ]
 })
 export class ToastComponent{

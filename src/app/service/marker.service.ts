@@ -8,15 +8,12 @@ import { distance } from '../util/distance';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import {
-    MapBoxGl,
     MapGl,
-    MapMarker,
-    Popup,
     User,
     DeviceData,
     MapArea as Area,
     MapAreaList as AreaList,
-    Feature
+    Feature, Popup, MapMarker, MapBoxGl
 } from '../../types/global';
 import { LngLat } from '../util/lngLat';
 
@@ -48,7 +45,7 @@ export class Marker {
     private popup: Popup;
     private iconMarker: MapMarker;
     private elapsed: string;
-    private status: string = 'white';
+    public status: string = 'white';
     private intervalUpdateMarker: number;
     private timer: Timer;
     private img: any;

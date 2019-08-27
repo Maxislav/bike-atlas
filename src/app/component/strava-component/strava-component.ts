@@ -10,8 +10,7 @@ import {Track} from "../../service/track.var";
 import {ToastService} from "../toast/toast.component";
 import {UserService} from "../../service/main.user.service";
 
-declare const module: any;
-declare const System: any;
+
 
 import {Aes} from '../../service/aes-cript';
 
@@ -25,9 +24,8 @@ interface Athlete{
 
 
 @Component({
-    moduleId: module.id,
     templateUrl: "./strava-component.html",
-    styleUrls: ['./strava-component.css'],
+    styleUrls: ['./strava-component.less'],
 })
 export class StravaComponent  implements OnChanges {
     
@@ -42,9 +40,9 @@ export class StravaComponent  implements OnChanges {
     private socket: any;
     private code: string;
     private myLocation: string;
-    private authInProgress: boolean;
-    private showHelp: boolean;
-    private athlete: Athlete = {
+    public authInProgress: boolean;
+    public showHelp: boolean;
+    public athlete: Athlete = {
         firstName: null,
         lastName: null,
         city: null,
@@ -54,7 +52,7 @@ export class StravaComponent  implements OnChanges {
     private authorization: string;
 
     
-    private docsFor: Array<Track>;
+    public docsFor: Array<Track>;
 
     constructor(private router: Router,
                 private io : Io,

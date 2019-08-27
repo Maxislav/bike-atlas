@@ -25,12 +25,10 @@ export class UsersContainer{
     }
 }
 
-declare const module: any;
 @Component({
     //noinspection TypeScriptUnresolvedVariable
-    moduleId: module.id,
     templateUrl: './friends-component.html',
-    styleUrls: ['./friends-component.css'],
+    styleUrls: ['./friends-component.less'],
 })
 export class FriendsComponent{
     public allUsers: Array<User>;

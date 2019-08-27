@@ -1,5 +1,0 @@
-
-<div [ngClass]="device.marker ? device.marker.status : null" class="status"><img [src]="device.marker ? device.marker.image : 'src/img/no-avatar.gif' "/></div>
-<div class="name">{{device.name}}</div>
-<div *ngIf="device.marker" class="passed"> {{device.marker.elapsed}}</div>
-<div *ngIf="device.marker" class="speed"> {{speed}} km/h</div>

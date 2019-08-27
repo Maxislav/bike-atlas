@@ -14,13 +14,11 @@ import { MyMapMarker } from '../../service/my-marker.service';
 import { MenuItem } from '../../shared-module/menu-list-component/menu-list-component';
 import { MyMarker } from '../../../types/global';
 
-declare var module: { id: string };
 
 @Component({
-    moduleId: module.id,
     selector: 'marker-list-component',
     templateUrl: './my-marker-list-component.html',
-    styleUrls: ['./my-marker-list-component.css']
+    styleUrls: ['./my-marker-list-component.less']
 })
 export class MyMarkerListComponent implements OnDestroy {
     active: boolean = false;
@@ -29,7 +27,7 @@ export class MyMarkerListComponent implements OnDestroy {
     menu: Array<MenuItem>;
 
     constructor(
-        private myMarkerService: MyMarkerService,
+        public myMarkerService: MyMarkerService,
         private mapService: MapService,
     ) {
         this.omMapClick = this.omMapClick.bind(this);

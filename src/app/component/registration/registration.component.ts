@@ -4,11 +4,9 @@ import {Md5} from "../../service/md5.service";
 import {ToastService} from "../toast/toast.component";
 import {Io} from "../../service/socket.oi.service";
 import {LoginService} from "../../service/login.service";
-declare  const module: any;
 @Component({
-    moduleId: module.id,
     templateUrl: './registration.component.html',
-    styleUrls: ['./registration.component.css'],
+    styleUrls: ['./registration.component.less'],
 })
 export class RegistrationComponent{
 

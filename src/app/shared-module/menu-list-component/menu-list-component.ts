@@ -1,6 +1,5 @@
 import { ApplicationRef, Component, HostListener, Input } from '@angular/core';
 
-declare const module: any;
 
 export interface MenuItem {
     text: string,
@@ -8,10 +7,9 @@ export interface MenuItem {
 }
 
 @Component({
-    moduleId: module.id,
     selector:'menu-list-component',
     templateUrl: './menu-list-component.html',
-    styleUrls: [ './menu-list-component.css']
+    styleUrls: [ './menu-list-component.less']
 })
 export class MenuListComponent {
 
