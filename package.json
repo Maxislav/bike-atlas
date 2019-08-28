@@ -8,6 +8,7 @@
     "server": "tsc --project tsconfig-be.json && node server/index.js",
     "server-dev": "concurrently \"npm run tsc-be:w\" \"npm run node-dev\" ",
     "lite": "lite-server",
+    "node-dev": "node-dev server/index.js",
     "tsc-be:w": "tsc -w --project tsconfig-be.json",
     "typings": "typings"
   },

@@ -335,9 +335,17 @@ export class Util {
                     return;
                 }
 
+                let base_station = [];
+                try {
+                    base_station = (rows[0].base_station && rows[0].base_station !== 'NULL') ? JSON.parse(rows[0].base_station) : [];
+                } catch (e) {
+                    console.error('error parse base_station -> ', rows[0]);
+                }
+
+
                 resolve({
                         ...rows[0],
-                        bs: rows[0].base_station ? JSON.parse(rows[0].base_station) : []
+                        bs: base_station
                     }
                 );
 

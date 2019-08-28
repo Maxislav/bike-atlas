@@ -32,19 +32,24 @@ create file server/mysql.config.json
 ```
 ## 1. command for tables create
 ```bash
-~$ node server/mysql-start-up.js
+~$ node ./server/mysql-start-up.js
 ```
 #### 1.1 if have error -> in MySQL Workbench
 ```
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'gliderman'
 ```
 
-## 2. compile, debug and build
+## 2. compile, debug
 ```
 npm start
 ```
 
-## 3. launching..
+## 3. launching server..
 ```bash
 ~$ node server/index.js
+```
+
+## 4. Build server..
+```bash
+~$ ng build --prod
 ```

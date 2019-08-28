@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs = require('fs');
-const parseString = require('xml2js').parseString;
+const fs = require("fs");
+const xml2js_1 = require("xml2js");
 class Robot {
     constructor(util) {
         this.util = util;
@@ -63,7 +63,7 @@ class Robot {
         return new Promise((resolve, reject) => {
             const positions = [];
             fs.readFile(__dirname + '/history-2016-12-06.gpx', (err, data) => {
-                parseString(data, { trim: true }, (err, result) => {
+                xml2js_1.parseString(data, { trim: true }, (err, result) => {
                     const track = result.gpx.trk[0].trkseg[0].trkpt;
                     track.forEach((item, i) => {
                         const position = {

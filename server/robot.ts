@@ -1,7 +1,7 @@
 import { Util } from './socket-data/util';
 
-const fs = require('fs');
-const parseString = require('xml2js').parseString;
+import * as fs from 'fs';
+import { parseString } from 'xml2js';
 
 
 export class Robot {
