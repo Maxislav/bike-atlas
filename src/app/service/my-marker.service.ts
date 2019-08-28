@@ -4,7 +4,7 @@ import { LngLat, MapMarker, MyMarker, Popup } from '../../types/global';
 import { MyInputPopupComponent } from '../component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
 import { Io } from '../service/socket.oi.service';
 import { ToastService } from '../component/toast/toast.component';
-
+import { environment} from '../../environments/environment'
 /*export interface MyMarker {
     id: number,
     image_id: number,
@@ -73,7 +73,7 @@ export class MyMarkerService {
         const {mapboxgl, map} = this.mapService;
         const icoContainer = document.createElement('div');
         const img = new Image();
-        img.src = 'img/my-marker.png';
+        img.src = environment.imgPrefix + 'img/my-marker.png';
         img.style.width = '100%';
         img.style.height = '100%';
         icoContainer.appendChild(img);

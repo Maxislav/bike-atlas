@@ -17,7 +17,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let dev of devices ;  let i = index " (click)="preDel($event, i)">
-              <td><img [src]="dev.image || 'img/speedway_4_logo.jpg' " (click)="onLoadImage(dev, i)" class="logo"/>
+              <td><img [src]="dev.image || imgPrefix + 'img/speedway_4_logo.jpg' " (click)="onLoadImage(dev, i)" class="logo"/>
                 <input type="file" [attr.id]="'input-img-'+i" name="files[]" multiple="" style="display: none"/>
               </td>
               <td>{{dev.name}}</td>

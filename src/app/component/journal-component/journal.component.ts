@@ -10,6 +10,7 @@ import { Point } from '../../service/track.var';
 import { UserService } from '../../service/main.user.service';
 import { Device } from '../../../types/global';
 import * as L from '../../../../lib/leaflet/leaflet-src.js';
+import {environment} from '../../../environments/environment';
 
 declare var System: any;
 
@@ -47,6 +48,7 @@ export class JournalComponent implements OnInit, OnDestroy {
     selectDate: Date;
     public deviceList: Array<Device>;
     public deviceSelected: Device = null;
+    public imgPrefix = environment.imgPrefix;
 
     ngOnInit(): void {
         this.el.nativeElement.getElementsByClassName('scroll')[0].style.maxHeight = window.innerHeight - 200 + 'px';

@@ -9,7 +9,7 @@ import { NavigationHistory } from '../../app.component';
 import { ToastService } from '../toast/toast.component';
 import { UserService } from '../../service/main.user.service';
 import { Device, User } from '../../../types/global';
-
+import {environment} from '../../../environments/environment';
 
 @Directive({
     selector: 'help-container',
@@ -61,6 +61,7 @@ export class DeviceComponent implements AfterViewInit {
     public btnPreDel: { index: number };
     public user: User;
     public showHelp: boolean = false;
+    public imgPrefix = environment.imgPrefix;
 
     private inputList: Set<any> = new Set();
 

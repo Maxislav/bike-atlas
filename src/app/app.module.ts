@@ -69,6 +69,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IsOwner } from './component/device/device.component';
 import { DashboardComponent } from './dasboard.component';
 import { LeafletMapDirective } from './directive/leaflet-map.directive';
+import { environment } from '../environments/environment';
 
 
 @Component({
@@ -95,8 +96,9 @@ declare global {
 }
 
 export function HttpLoaderFactory(http: HttpClient) {
-    return new TranslateHttpLoader(http, '/langs/', '.json');
+    return new TranslateHttpLoader(http, `${environment.imgPrefix}/langs/`, '.json');
 }
+
 /*
 
 

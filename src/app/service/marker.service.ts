@@ -16,6 +16,7 @@ import {
     Feature, Popup, MapMarker, MapBoxGl
 } from '../../types/global';
 import { LngLat } from '../util/lngLat';
+import { environment } from '../../environments/environment';
 
 
 export class Marker {
@@ -77,7 +78,7 @@ export class Marker {
         const img = this.img = new Image();
 
 
-        this.image = img.src = this.getDeviceImage(devData.device_key) || this.user.image || 'img/speedway_4_logo.jpg';
+        this.image = img.src = this.getDeviceImage(devData.device_key) || this.user.image || `${environment.imgPrefix}img/speedway_4_logo.jpg`;
         icoContainer.appendChild(img);
         this.icoContainer = icoContainer;
 

@@ -20,6 +20,7 @@
             "tsConfig": "src/tsconfig.app.json",
             "baseHref": "/bike-atlas/",
             "deployUrl": "http://178.62.44.54:8080/",
+
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -39,12 +40,16 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/environments/environment.less",
+                  "with": "src/environments/environment.prod.less"
                 }
               ],
               "optimization": true,
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": false,
-              "extractCss": true,
+              "extractCss": false,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,

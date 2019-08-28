@@ -1,4 +1,5 @@
 @import "constant";
+@import "../../environments/environment";
 
 body {
   color: @main-text-color;
@@ -222,9 +223,12 @@ my-app {
   border: 1px dotted blue;
 }
 
+//@url: "@{host-prefix}img/ico-z.png";
+
 .ico-z {
   width: 40px;
   height: 40px;
+  background: url("@{host-prefix}img/ico-z.png") no-repeat center;
   background-size: 100%;
   animation: ROTATE 2s infinite;
   opacity: 0.5;
