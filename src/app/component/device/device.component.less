@@ -11,9 +11,9 @@
 .content {
     position: absolute;
     background: rgba(255, 255, 255, 0.9);
-    min-width: 600px;
-    max-width: 600px;
-    margin-left: -300px;
+    min-width: 800px;
+    max-width: 800px;
+    margin-left: -400px;
     padding: 0;
     left: 50%;
     top: calc(~"100% +" 20px);
@@ -33,6 +33,15 @@
     padding: 3px; //border: ;
 }
 
+.ico{
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    width: 40px;
+    height: 40px;
+
+}
+.selected{
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
 .close {
     position: absolute;
     right: 0;
@@ -95,7 +104,10 @@ table {
 }
 
 .row {
-    margin: 0 -5px;
+    margin: 10px -5px;
+    .cell{
+	margin: 5px;
+    }
 }
 
 thead {
@@ -133,38 +145,6 @@ td, th {
     padding: 5px;
     font-size: 20px;
     font: 30px/15px bold;
-}
-
-help-container {
-    display: block;
-    overflow: auto;
-    font-size: 12px;
-    width: 100%;
-    * {
-	box-sizing: border-box;
-    }
-    table {
-	img {
-	    width: 120px;
-	    height: 200px;
-	}
-    }
-    img.ico {
-	width: 60px;
-	height: 60px;
-	float: left;
-	margin-right: 10px;
-    }
-
-    td:nth-child(3) {
-	width: 30%;
-    }
-
-    span {
-	white-space: nowrap;
-	margin: 05px;
-	color: dodgerblue;
-    }
 }
 
 .bnt-help {

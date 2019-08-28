@@ -1,15 +1,16 @@
 import {
     Component, Pipe, PipeTransform, TemplateRef, ViewContainerRef, Directive, ElementRef,
-    Renderer, AfterViewInit, ViewChildren, QueryList, ViewChild, ContentChild, ContentChildren
+    Renderer, AfterViewInit, ViewChildren, QueryList, ViewChild, ContentChild, ContentChildren, OnInit
 } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DeviceService } from '../../service/device.service';
 import { NavigationHistory } from '../../app.component';
 import { ToastService } from '../toast/toast.component';
 import { UserService } from '../../service/main.user.service';
 import { Device, User } from '../../../types/global';
 import {environment} from '../../../environments/environment';
+import { DeviceHelpComponent } from './device-help/device-help.component';
 
 function getOffset( el ) {
     var _x = 0;
@@ -43,9 +44,8 @@ export class HelpContainer implements AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.top =  getOffset(this.el.nativeElement).top + 50;
+        this.top =  getOffset(this.el.nativeElement).top + 180;
         this.renderer.setElementStyle(this.el.nativeElement, 'height', this.y - this.top + 'px');
-
     }
 }
 
@@ -74,7 +74,7 @@ export class IsOwner implements PipeTransform {
         'device.component.less',
     ]
 })
-export class DeviceComponent implements AfterViewInit {
+export class DeviceComponent implements AfterViewInit , OnInit{
 
     public device: Device;
     public devices: Array<Device>;
@@ -84,9 +84,14 @@ export class DeviceComponent implements AfterViewInit {
     public hostPrefix = environment.hostPrefix;
 
     private inputList: Set<any> = new Set();
+    public get deviceNameSelected(): string{
+        return this.deviceService.currentChildName
+    } ;
 
+    @ViewChild('ololo') rr: any
     constructor(private location: Location,
                 private router: Router,
+                private activatedRoute: ActivatedRoute,
                 private userService: UserService,
                 private deviceService: DeviceService,
                 private toast: ToastService,
@@ -106,7 +111,16 @@ export class DeviceComponent implements AfterViewInit {
         };
         this.devices = deviceService.devices;
         deviceService.updateDevices();
+
+/*
+        this.activatedRoute.data.subscribe((data: {device: string}) => {
+        })
+*/
+
     }
+
+
+
 
     ngOnChanges(a) {
         console.log('ngOnChanges->', a);
@@ -180,6 +194,13 @@ export class DeviceComponent implements AfterViewInit {
 
     }
 
+
+    navigateToHelp(deviceName: string){
+
+        this.router.navigate([deviceName], {relativeTo: this.activatedRoute});
+    }
+
+
     private initEl(el: any, device: Device){
         if(!this.inputList.has(el)){
             this.inputList.add(el);
@@ -242,17 +263,26 @@ export class DeviceComponent implements AfterViewInit {
     }
 
     onClose() {
-        if (this.lh.is) {
-            this.location.back();
-        } else {
-            this.router.navigate(['/auth/map']);
-        }
+
+        this.router.navigate(['/auth/map']);
+
     }
 
     ngAfterViewInit(): void {
 
+        this.rr
+       /* this.activatedRoute.firstChild.params.subscribe((data) => {
+            this.deviceNameSelected  = (data.device)
 
-         console.log( this.el.nativeElement.getElementsByTagName('input'))
+        })*/
+
+      //  this.deviceHelpComponent
+        //  console.log( this.el.nativeElement.getElementsByTagName('input'))
+    }
+
+    ngOnInit(): void {
+        this.activatedRoute.snapshot.data
+
     }
 
 }

@@ -52,38 +52,33 @@
       </div>
     </form>
     <div class="border-hidden"></div>
+    <div class="row flex vertical-center" (click)="navigateToHelp('gps-logger')" [ngClass]="{'selected': deviceNameSelected === 'gps-logger'}">
+      <div class="cell">
+        <img [src]="hostPrefix + 'img/help/ico.webp'" class="ico"/>
+      </div>
+      <div class="cell">
+
+        GPS-логгер (GPS Logger) ?
+      </div>
+    </div>
+    <div class="row flex vertical-center"  (click)="navigateToHelp('gl-520')"  [ngClass]="{'selected': deviceNameSelected === 'gl-520'}">
+      <div class="cell">
+        <img [src]="hostPrefix + 'img/GL520_.png'" class="ico"/>
+      </div>
+      <div class="cell">
+
+         GL-520, Gl-530 ?
+      </div>
+    </div>
+    <div class="row">
+      <router-outlet #ololo></router-outlet>
+    </div>
     <div class="row">
       <div>
         <div (click)="onShowHelp()" class="bnt-help">&#9660; ?</div>
       </div>
-      <help-container *ngIf="showHelp">
-        <div class="help">
-          <!--.row--><a href="https://play.google.com/store/apps/details?id=com.mendhak.gpslogger" target="_blank"><img [src]="hostPrefix + 'img/help/ico.webp'" class="ico"/></a><a href="https://play.google.com/store/apps/details?id=com.mendhak.gpslogger" target="_blank">GPS-логгер (GPS Logger)</a>
-          <table>
-            <tbody>
-              <tr>
-                <td>Настройка записи лога</td>
-                <td>Отправлять коордиты на сервер OpenGTS</td>
-                <td>
-                  <p>Сервер Имя хоста или IP<span> 178.62.44.54</span></p>
-                  <p>Порт<span>8080</span></p>
-                  <p> Способ связи<span>HTTP</span></p>
-                  <p>Путь на сервере<span>log</span></p>
-                </td>
-                <td>
-                  <p>Идентификатор<span> 12 цифр</span></p>
-                </td>
-              </tr>
-              <tr>
-                <td><img [src]="hostPrefix+ 'img/help/01.png'"/></td>
-                <td><img [src]="hostPrefix +'img/help/02.png'"/></td>
-                <td><img [src]="hostPrefix+'img/help/03.png'"/></td>
-                <td><img [src]="hostPrefix + 'img/help/04.png'"/></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </help-container>
+
+
     </div>
   </div>
 </div>

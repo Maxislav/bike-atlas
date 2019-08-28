@@ -70,6 +70,7 @@ import { IsOwner } from './component/device/device.component';
 import { DashboardComponent } from './dasboard.component';
 import { LeafletMapDirective } from './directive/leaflet-map.directive';
 import { environment } from '../environments/environment';
+import { DeviceHelpComponent } from './component/device/device-help/device-help.component';
 
 
 @Component({
@@ -149,6 +150,7 @@ export class PipeTranslateCompiler implements TranslateCompiler {
      */
     declarations: [
         JJ,
+        DeviceHelpComponent,
         IsOwner,
         LeafletMapDirective,
         DashboardComponent,

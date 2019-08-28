@@ -11,6 +11,7 @@ export class DeviceService {
 
     private _devices: Array<Device> = [];
     private socket: any;
+    public currentChildName: string;
 
     constructor(private io: Io,
                 private ls: LocalStorage,
@@ -79,5 +80,11 @@ export class DeviceService {
             this._devices.push(device)
         });
     }
+
+
+    setCurrentChildName(name){
+        this.currentChildName = name
+    }
+
 
 }

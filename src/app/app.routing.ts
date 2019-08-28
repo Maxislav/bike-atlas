@@ -18,6 +18,7 @@ import { StravaComponent } from './component/strava-component/strava-component';
 import { StravaAuthComponent } from './component/strava-component/strava-auth-component';
 import { UserService } from './service/main.user.service';
 import { GtgbcComponent } from './component/gtgbc/gtgbc.component';
+import { DeviceHelpComponent } from './component/device/device-help/device-help.component';
 
 const appRouters: Routes = [
     {
@@ -45,7 +46,13 @@ const appRouters: Routes = [
                     {
                         path: 'device',
                         component: DeviceComponent,
-                        canActivate: [AuthService]
+                        canActivate: [AuthService],
+                        children: [
+                            {
+                                path: ':device',
+                                component: DeviceHelpComponent
+                            }
+                        ]
                     },
                     {
                         path: 'profile',

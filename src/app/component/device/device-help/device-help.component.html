@@ -1,0 +1,49 @@
+<help-container >
+    <div *ngIf="deviceName==='gps-logger'">
+        <div class="help">
+            <!--.row--><a href="https://play.google.com/store/apps/details?id=com.mendhak.gpslogger" target="_blank"></a><a href="https://play.google.com/store/apps/details?id=com.mendhak.gpslogger" target="_blank">GPS-логгер (GPS Logger)</a>
+            <table>
+                <tbody>
+                <tr>
+                    <td>Настройка записи лога</td>
+                    <td>Отправлять коордиты на сервер OpenGTS</td>
+                    <td>
+                        <p>Сервер Имя хоста или IP<span> 178.62.44.54</span></p>
+                        <p>Порт<span>8080</span></p>
+                        <p> Способ связи<span>HTTP</span></p>
+                        <p>Путь на сервере<span>log</span></p>
+                    </td>
+                    <td>
+                        <p>Идентификатор<span> 12 цифр</span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td><img [src]="hostPrefix+ 'img/help/01.png'"/></td>
+                    <td><img [src]="hostPrefix +'img/help/02.png'"/></td>
+                    <td><img [src]="hostPrefix+'img/help/03.png'"/></td>
+                    <td><img [src]="hostPrefix + 'img/help/04.png'"/></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="deviceName==='gl-520'">
+
+        <div class="row">
+            Send couple of command for bind to this server (@Example use sim card 3mob mobile operator)
+        </div>
+        <div class="row">
+            <div class="cell">
+                AT+GTQSS=gl520,3g.utel.ua,,,1,,0,178.62.44.54,8090,0.0.0.0,0,+380660000000,0,0,0,,FFFF$
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="cell">
+                AT+GTGBC=gl520,,GL520,,,1B,0,5,1,1200,1,4,2,1,0,5,20,0,1,,,,0,11111111111111,0,0,0,1100,0,,0,FFFF$
+
+            </div>
+        </div>
+    </div>
+
+</help-container>
