@@ -11,21 +11,41 @@ import { UserService } from '../../service/main.user.service';
 import { Device, User } from '../../../types/global';
 import {environment} from '../../../environments/environment';
 
+function getOffset( el ) {
+    var _x = 0;
+    var _y = 0;
+    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+        _x += el.offsetLeft - el.scrollLeft;
+        _y += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
+    }
+    return { top: _y, left: _x };
+}
+
+
 @Directive({
     selector: 'help-container',
 })
-export class HelpContainer {
-    constructor(el: ElementRef, renderer: Renderer) {
+export class HelpContainer implements AfterViewInit {
+    private top = 0;
+    private y;
+    constructor(private el: ElementRef, private renderer: Renderer) {
 
         let w = window,
             d = document,
             e = d.documentElement,
             g = d.getElementsByTagName('body')[0],
-            x = w.innerWidth || e.clientWidth || g.clientWidth,
-            y = w.innerHeight || e.clientHeight || g.clientHeight;
+            x = w.innerWidth || e.clientWidth || g.clientWidth;
+            this.y = w.innerHeight || e.clientHeight || g.clientHeight;
 
 
-        renderer.setElementStyle(el.nativeElement, 'height', y - 300 + 'px');
+
+    }
+
+    ngAfterViewInit(): void {
+        this.top =  getOffset(this.el.nativeElement).top + 50;
+        this.renderer.setElementStyle(this.el.nativeElement, 'height', this.y - this.top + 'px');
+
     }
 }
 
