@@ -96,7 +96,7 @@ declare global {
 }
 
 export function HttpLoaderFactory(http: HttpClient) {
-    return new TranslateHttpLoader(http, `${environment.imgPrefix}/langs/`, '.json');
+    return new TranslateHttpLoader(http, `${environment.hostPrefix}/langs/`, '.json');
 }
 
 /*

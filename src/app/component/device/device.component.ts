@@ -61,7 +61,7 @@ export class DeviceComponent implements AfterViewInit {
     public btnPreDel: { index: number };
     public user: User;
     public showHelp: boolean = false;
-    public imgPrefix = environment.imgPrefix;
+    public hostPrefix = environment.hostPrefix;
 
     private inputList: Set<any> = new Set();
 

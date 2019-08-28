@@ -2,112 +2,112 @@
  * Created by maxislav on 30.11.16.
  */
 
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as R from 'ramda/dist/ramda';
-import {Util} from './util';
-import {Io} from "./socket.oi.service";
-import {MapService} from "./map.service";
-import {Track as Tr, Point} from "./track.var";
-import {distance} from '../util/distance';
+import { Util } from './util';
+import { Io } from './socket.oi.service';
+import { MapService } from './map.service';
+import { Track as Tr, Point } from './track.var';
+import { distance } from '../util/distance';
 
-import * as dateformat from "dateformat/lib/dateformat.js";
-import {ToastService} from "../component/toast/toast.component";
+import * as dateformat from 'dateformat/lib/dateformat.js';
+import { ToastService } from '../component/toast/toast.component';
 
-import {Resolve} from "@angular/router";
+import { Resolve } from '@angular/router';
 import { Color } from '../util/get-color';
 //console.log(dateformat)
 const F = parseFloat;
 const I = parseInt;
 declare var System: any;
 
-interface PopupEdit{
+interface PopupEdit {
     timer: number
     isShow: boolean,
     remove: Function,
     show: Function,
+
     timerUpdate(),
 
 }
 
 @Injectable()
 export class TrackService implements Resolve<any> {
-    resolve(){
+    resolve() {
         return undefined;
     }
 
-    layerIds:Array<String>;
+    layerIds: Array<String>;
 
-    private util:Util;
-    private _trackList:Array<Tr> = [];
-    private _map:any;
+    private util: Util;
+    private _trackList: Array<Tr> = [];
+    private _map: any;
     private arrayDelPoints: Array<number> = [];
     private socket: any;
-    private _popupHash: {[key: number]: PopupEdit} = {};
+    private _popupHash: { [key: number]: PopupEdit } = {};
 
-    constructor(private io:Io, private mapService:MapService,  private ts: ToastService) {
+    constructor(private io: Io, private mapService: MapService, private ts: ToastService) {
 
         this.layerIds = [];
         this._trackList = [];
         this.util = new Util();
 
 
-        const socket= this.socket = io.socket;
+        const socket = this.socket = io.socket;
 
-        socket.on('file', d=> {
+        socket.on('file', d => {
             let xmlStr = '';
             const unit8Array = new Uint8Array(d);
             unit8Array.forEach(unit => {
-                xmlStr += String.fromCharCode(unit)
+                xmlStr += String.fromCharCode(unit);
             });
             this.showGpxTrack(xmlStr, 'load');
         });
     }
 
-    showGpxTrack(xmlStr:string, src?: string) {
+    showGpxTrack(xmlStr: string, src?: string) {
         const track = [];
         const parser = new DOMParser();
-        const xmlDoc: Document = parser.parseFromString(xmlStr, "text/xml");
+        const xmlDoc: Document = parser.parseFromString(xmlStr, 'text/xml');
         const forEach = Array.prototype.forEach;
-        const arrTrkpt =[];
-        forEach.call(xmlDoc.getElementsByTagName('trkpt'), (item, i)=>{
+        const arrTrkpt = [];
+        forEach.call(xmlDoc.getElementsByTagName('trkpt'), (item, i) => {
             arrTrkpt.push(item);
         });
 
-        arrTrkpt.forEach((item, i)=> {
+        arrTrkpt.forEach((item, i) => {
             if (item.getAttribute('lon')) {
                 item.setAttribute('id', i);
                 const ele = item.getElementsByTagName('ele') ? item.getElementsByTagName('ele')[0] : null;
-                const point:Point = new Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')), ele ? F(ele.innerHTML) : null);
+                const point: Point = new Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')), ele ? F(ele.innerHTML) : null);
                 point.date = item.getElementsByTagName('time')[0].innerHTML;
                 point.id = i;
-                if(!item.getElementsByTagName('speed')[0] && 0<i ){
+                if (!item.getElementsByTagName('speed')[0] && 0 < i) {
 
                     const speed = document.createElement('speed');
-                    const point1:Point = new Point(F(arrTrkpt[i-1].getAttribute('lon')), F(arrTrkpt[i-1].getAttribute('lat')), ele ? F(ele.innerHTML) : null);
-                    const point2:Point = new Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')), ele ? F(ele.innerHTML) : null);
-                    const dist = distance(point1, point2)*1000;
-                    const t1 = new Date(arrTrkpt[i-1].getElementsByTagName('time')[0].innerHTML).getTime()/1000;
-                    const t2 = new Date(item.getElementsByTagName('time')[0].innerHTML).getTime()/1000;
-                    speed.innerHTML = dist/(t2-t1)+'';
-                    item.appendChild(speed)
+                    const point1: Point = new Point(F(arrTrkpt[i - 1].getAttribute('lon')), F(arrTrkpt[i - 1].getAttribute('lat')), ele ? F(ele.innerHTML) : null);
+                    const point2: Point = new Point(F(item.getAttribute('lon')), F(item.getAttribute('lat')), ele ? F(ele.innerHTML) : null);
+                    const dist = distance(point1, point2) * 1000;
+                    const t1 = new Date(arrTrkpt[i - 1].getElementsByTagName('time')[0].innerHTML).getTime() / 1000;
+                    const t2 = new Date(item.getElementsByTagName('time')[0].innerHTML).getTime() / 1000;
+                    speed.innerHTML = dist / (t2 - t1) + '';
+                    item.appendChild(speed);
                 }
 
-                point.speed = item.getElementsByTagName('speed')[0] ? F(item.getElementsByTagName('speed')[0].innerHTML)*3.6 : 0;
+                point.speed = item.getElementsByTagName('speed')[0] ? F(item.getElementsByTagName('speed')[0].innerHTML) * 3.6 : 0;
 
 
-
-                track.push(point)
+                track.push(point);
             }
         });
-        this.showTrack(track, xmlDoc)
+        this.showTrack(track, xmlDoc);
 
     }
 
-    setMap(map:any) {
-        this.map = map
+    setMap(map: any) {
+        this.map = map;
     }
 
-    showTrack(points:Array<Point>, xmlDoc?) {
+    showTrack(points: Array<Point>, xmlDoc?) {
         const $this = this;
         const coordinates = [];
         const trackList = this.trackList;
@@ -115,44 +115,44 @@ export class TrackService implements Resolve<any> {
         const map = this.mapService.map;
 
 
-        points.forEach((point)=> {
+        points.forEach((point) => {
             coordinates.push(point);
         });
 
 
-        let layerId:string = this.getLayerId('line-') + '';
+        let layerId: string = this.getLayerId('line-') + '';
 
         const data = {
-            "type": "Feature",
-            "properties": {},
-            "geometry": {
-                "type": "LineString",
-                "coordinates": points
+            'type': 'Feature',
+            'properties': {},
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': points
             }
         };
 
 
         map.addSource(layerId, {
-            "type": "geojson",
-            "data": data
+            'type': 'geojson',
+            'data': data
         });
 
         map.addLayer({
-            "id": layerId,
-            "type": "line",
-            "source": layerId,
-            "layout": {
-                "line-join": "round",
-                "line-cap": "round"
+            'id': layerId,
+            'type': 'line',
+            'source': layerId,
+            'layout': {
+                'line-join': 'round',
+                'line-cap': 'round'
             },
-            "paint": {
-                "line-color": color,
-                "line-width": 8,
-                "line-opacity": 0.8
+            'paint': {
+                'line-color': color,
+                'line-width': 8,
+                'line-opacity': 0.8
             }
         });
 
-        const updateLine = (points:Array<Point>) => {
+        const updateLine = (points: Array<Point>) => {
             data.geometry.coordinates = points;
             map.getSource(layerId).setData(data);
             tr.distance = this.util.distance(tr);
@@ -162,14 +162,14 @@ export class TrackService implements Resolve<any> {
         let srcPoints; //= this.addSrcPoints(points, xmlDoc, update);
         let isShowPonts = false;
 
-        let tr:Tr = {
+        let tr: Tr = {
             hide: function () {
                 map.removeLayer(layerId);
                 map.removeSource(layerId);
                 let index = R.findIndex(R.propEq('id', layerId))(trackList);
                 trackList.splice(index, 1);
-                console.log('delete track index', index)
-                srcPoints && srcPoints.remove()
+                console.log('delete track index', index);
+                srcPoints && srcPoints.remove();
             },
             showSrcPoint: () => {
                 if (!!srcPoints) {
@@ -181,7 +181,7 @@ export class TrackService implements Resolve<any> {
 
             },
             hideSrcPoint: () => {
-                srcPoints && srcPoints.remove()
+                srcPoints && srcPoints.remove();
             },
             update: updateLine,
             id: layerId,
@@ -201,108 +201,89 @@ export class TrackService implements Resolve<any> {
         trackList.push(tr);
         console.log(tr);
 
-        return tr
+        return tr;
     }
 
-    delPoints(trackId: string, points: Array<Point>){
-        console.log(trackId, points)
+    delPoints(trackId: string, points: Array<Point>) {
+        console.log(trackId, points);
     }
 
 
-
-
-
-    private static getData(points){
+    private static getData(points) {
         return {
-            "type": "FeatureCollection",
-            "features": (()=> {
+            'type': 'FeatureCollection',
+            'features': (() => {
                 const features = [];
-                points.forEach((item, i)=> {
+                points.forEach((item, i) => {
                     const f = {
                         properties: {
                             color: item.color,
                             point: item,
                             id: item.id,
                         },
-                        "type": "Feature",
-                        "geometry": {
-                            "type": "Point",
-                            "coordinates": item
+                        'type': 'Feature',
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': item
                         }
                     };
-                    features.push(f)
+                    features.push(f);
                 });
-                return features
+                return features;
             })()
         };
     }
 
-    private colorWorker(points:Array<Point>): Promise<any>{
+    private colorWorker(points: Array<Point>): Promise<any> {
 
         let worker;
 
 
-
         worker = {
-            postMessage: ()=>{
-
+            postMessage: () => {
                 const data = new Color(points).getColors();
-                worker.onmessage({data})
-              /*  System.import('dist/app/util/get-color.js')
-                    .then(({Color})=>{
-                        const data = new Color(points).getColors();
-                        worker.onmessage({data})
-                    })*/
+                worker.onmessage({data});
             },
             onmessage: null
-        }
-     /*
-        if(System.baseURL.match(/178/)){
+        };
 
-
-
-        }else {
-            worker = new Worker(System.baseURL+'dist/app/worker/color-speed.js');
-        }*/
-        return new Promise((resolve, reject)=>{
-            worker.postMessage([points]);
-            worker.onmessage = resolve
-
-        })
+        return new Promise((resolve, reject) => {
+            worker.onmessage = resolve;
+            worker.postMessage();
+        });
     }
 
 
-    addSrcPoints(points:Array<Point>, xmlDoc, updateLine: Function) {
+    addSrcPoints(points: Array<Point>, xmlDoc, updateLine: Function) {
         const map = this.mapService.map;
         const layerId = this.getLayerId('cluster-');
 
 
-
         let sourceData;
 
-        const updatePoints = (points:Array<Point>)=>{
+        const updatePoints = (points: Array<Point>) => {
             const data = TrackService.getData(points);
             map.getSource(layerId).setData(data);
-            updateLine(points)
+            updateLine(points);
         };
 
-        const delPoint = (id:number)=>{
+        const delPoint = (id: number) => {
             let index = R.findIndex(R.propEq('id', id))(points);
-            if(-1<index) points.splice(index, 1);
+            if (-1 < index) points.splice(index, 1);
 
             const find = Array.prototype.find;
-            if(xmlDoc){
-                const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item=> {
-                    return item.getAttribute('id') == id
+            if (xmlDoc) {
+                const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item => {
+                    return item.getAttribute('id') == id;
                 }));
                 trkpt.parentNode.removeChild(trkpt);
-            }else {
-                this.arrayDelPoints.push(id)
+            } else {
+                this.arrayDelPoints.push(id);
             }
             this.colorWorker(points)
-                .then(e=>{
+                .then(e => {
                     let colorPoints = e.data[0];
-                    updatePoints(colorPoints)
+                    updatePoints(colorPoints);
                 });
 
 
@@ -310,21 +291,21 @@ export class TrackService implements Resolve<any> {
             map.getSource(layerId).setData(sourceData);
         };
 
-        const mousemove = (e)=> {
+        const mousemove = (e) => {
             const features = map.queryRenderedFeatures(e.point, {
                 layers: [layerId],
             });
             if (features.length) {
                 const id = features[0].properties.id;
-                const p = points.find((item)=> {
-                    return item.id == id
+                const p = points.find((item) => {
+                    return item.id == id;
                 });
-                this._popupHash[id] = this._popupHash[id] || this.createPopupEdit(p, (e)=>{
-                    delPoint(id)
+                this._popupHash[id] = this._popupHash[id] || this.createPopupEdit(p, (e) => {
+                    delPoint(id);
                 });
-                if(this._popupHash[id].isShow){
+                if (this._popupHash[id].isShow) {
                     this._popupHash[id].timerUpdate();
-                }else {
+                } else {
                     this._popupHash[id].show();
                 }
 
@@ -332,106 +313,104 @@ export class TrackService implements Resolve<any> {
         };
 
         this.colorWorker(points)
-            .then(e=>{
+            .then(e => {
                 let colorPoints = e.data[0];
                 let stops = e.data[1];
                 sourceData = TrackService.getData(colorPoints);
                 map.addSource(layerId, {
-                    type: "geojson",
+                    type: 'geojson',
                     data: sourceData
                 });
                 map.addLayer({
                     id: layerId,
-                    type: "circle",
-                    "paint": {
-                        "circle-color": {
-                            "property": "color",
-                            "stops": stops,
-                            "type": "categorical"
+                    type: 'circle',
+                    'paint': {
+                        'circle-color': {
+                            'property': 'color',
+                            'stops': stops,
+                            'type': 'categorical'
                         },
-                        "circle-radius": 8
+                        'circle-radius': 8
                     },
                     layout: {},
                     source: layerId
                 });
 
-                map.on('mousemove', mousemove)
+                map.on('mousemove', mousemove);
 
                 map.on('click', mousemove);
             });
 
 
-
-
         return {
-            remove: ()=> {
+            remove: () => {
                 map.off('click', mousemove);
                 map.off('mousemove', mousemove);
                 map.removeLayer(layerId);
             },
             update: updatePoints
-        }
+        };
     }
 
-    createPopupEdit(point:Point, f:Function): PopupEdit {
+    createPopupEdit(point: Point, f: Function): PopupEdit {
         const map = this.mapService.map;
         const mapboxgl = this.mapService.mapboxgl;
         const div = document.createElement('div');
         div.setAttribute('class', 'info-point');
         const btn = document.createElement('button');
-        const content = `<div class="time">${dateformat(point.date, 'HH:MM:ss')}</div>`+
-                        `<div>${point.speed.toFixed(1)+'km/h'}</div>`;
+        const content = `<div class="time">${dateformat(point.date, 'HH:MM:ss')}</div>` +
+            `<div>${point.speed.toFixed(1) + 'km/h'}</div>`;
         div.innerHTML = content;
         btn.innerHTML = 'Удалить';
         div.appendChild(btn);
         const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: true})
             .setLngLat(new mapboxgl.LngLat(point.lng, point.lat))
             .setDOMContent(div);
-            //.addTo(map);
+        //.addTo(map);
 
-        const delClick = ()=>{
-            popup.remove()
+        const delClick = () => {
+            popup.remove();
             f();
         };
 
         btn.addEventListener('click', delClick);
 
-       /* setTimeout(()=>{
-            btn.removeEventListener('click', delClick)
-            popup.remove();
-        }, 5000)*/
+        /* setTimeout(()=>{
+             btn.removeEventListener('click', delClick)
+             popup.remove();
+         }, 5000)*/
 
         return {
             timer: null,
             isShow: false,
-            remove(){
-                btn.removeEventListener('click', delClick)
+            remove() {
+                btn.removeEventListener('click', delClick);
                 popup.remove();
                 this.isShow = false;
             },
-            show(){
+            show() {
                 popup.addTo(map);
                 this.timerUpdate();
                 this.isShow = true;
             },
-            timerUpdate(){
-                if(this.timer){
-                    clearTimeout(this.timer)
+            timerUpdate() {
+                if (this.timer) {
+                    clearTimeout(this.timer);
                 }
-                this.timer = setTimeout(()=>{
-                    this.remove()
+                this.timer = setTimeout(() => {
+                    this.remove();
                 }, 5000);
             }
-        }
+        };
 
     }
 
-    marker(point:Point) {
+    marker(point: Point) {
         const map = this.mapService.map;
         const mapboxgl = this.mapService.mapboxgl;
 
         const icoContainer = document.createElement('div');
-        icoContainer.classList.add("track-icon");
+        icoContainer.classList.add('track-icon');
         const icoEl = document.createElement('div');
         icoContainer.appendChild(icoEl);
 
@@ -448,26 +427,26 @@ export class TrackService implements Resolve<any> {
             _mapBearing: map.getBearing(),
             rotate: function () {
                 let angle = this.bearing - this._mapBearing;
-                icoEl.style.transform = "rotate(" + I(angle + '') + "deg)"
+                icoEl.style.transform = 'rotate(' + I(angle + '') + 'deg)';
             },
-            update: function (point:Point) {
+            update: function (point: Point) {
 
-                this.lng = point.lng
-                this.lat= point.lat
-                this.bearing= point.bearing
+                this.lng = point.lng;
+                this.lat = point.lat;
+                this.bearing = point.bearing;
 
                 if (point.bearing) {
                     this.rotate();
                 }
-                iconMarker.setLngLat([point.lng, point.lat])
+                iconMarker.setLngLat([point.lng, point.lat]);
             },
             remove: function () {
                 iconMarker.remove();
-                map.off('move', rotate)
+                map.off('move', rotate);
             }
         };
 
-        const rotate = ()=> {
+        const rotate = () => {
             const mapBearing = map.getBearing();
             if (marker._mapBearing != mapBearing) {
                 marker._mapBearing = mapBearing;
@@ -482,14 +461,14 @@ export class TrackService implements Resolve<any> {
     }
 
 
-    private getLayerId(prefix?:String) {
+    private getLayerId(prefix?: String) {
         prefix = prefix || '';
         const min = 0, max = 10000;
 
         const rand = prefix + Math.round(min + Math.random() * (max - min)).toLocaleString();
 
         if (-1 < this.layerIds.indexOf(rand)) {
-            return this.getLayerId(prefix)
+            return this.getLayerId(prefix);
         } else {
             this.layerIds.push(rand);
             return rand;
@@ -499,7 +478,7 @@ export class TrackService implements Resolve<any> {
     getRandom(min, max, int) {
         let rand = min + Math.random() * (max - min);
         if (int) {
-            rand = Math.round(rand) + ''
+            rand = Math.round(rand) + '';
         }
         return rand;
 
@@ -507,31 +486,31 @@ export class TrackService implements Resolve<any> {
 
     _getColor() {
         const I = parseInt;
-        const colors:Array<string> = [];
+        const colors: Array<string> = [];
 
 
         let c = ['0', '0', '0'];
         let k = I(this.getRandom(0, 2, true));
 
         c.forEach((r, i) => {
-            if(i!=k){
+            if (i != k) {
                 r = I(this.getRandom(0, 255, true)).toString(16);
-            }else{
-                r = (255).toString(16)
+            } else {
+                r = (255).toString(16);
             }
             if (r.length < 2) {
-                c[i] = '0' + r
+                c[i] = '0' + r;
             } else {
-                c[i] = r
+                c[i] = r;
             }
         });
 
 
-        return '#' + c.join('')
+        return '#' + c.join('');
     }
 
     saveChange() {
-        console.log(this.arrayDelPoints)
+        console.log(this.arrayDelPoints);
         if (this.arrayDelPoints.length) {
             this.socket.$emit('delPoints', this.arrayDelPoints)
                 .then((d) => {
@@ -540,53 +519,54 @@ export class TrackService implements Resolve<any> {
                         this.ts.show({
                             type: 'success',
                             text: 'Изменения сохранены'
-                        })
+                        });
                     }
-                    console.log(d)
+                    console.log(d);
                 });
 
-        }else{
+        } else {
             this.ts.show({
                 type: 'warning',
                 text: 'Лог не существует в базе или нет изменений'
-            })
+            });
         }
     }
 
-    downloadTrack(points: Array<Point>){
-       return this.socket.$emit('downloadTrack', this.formatBeforeSend(points))
-            .then(d=>{
-                console.log(d)
-                return d
-            })
-        
+    downloadTrack(points: Array<Point>) {
+        return this.socket.$emit('downloadTrack', this.formatBeforeSend(points))
+            .then(d => {
+                console.log(d);
+                return d;
+            });
+
     }
-    private formatBeforeSend(points){
-        return R.map(point=>{
+
+    private formatBeforeSend(points) {
+        return R.map(point => {
             return {
                 lng: point.lng,
                 lat: point.lat,
-                date:point.date,
+                date: point.date,
                 speed: point.speed
-            }
-        }, points)
+            };
+        }, points);
 
     }
-    
 
-    set map(value:any) {
+
+    set map(value: any) {
         this._map = value;
     }
 
-    get map():any {
+    get map(): any {
         return this._map;
     }
 
-    get trackList():Array<Tr> {
+    get trackList(): Array<Tr> {
         return this._trackList;
     }
 
-    set trackList(value:Array<Tr>) {
+    set trackList(value: Array<Tr>) {
         this._trackList = value;
     }
 
