@@ -6,13 +6,13 @@ import {
 import {hashgeneral} from "../../util/hash";
 import {Io} from "../../service/socket.oi.service";
 import {StravaService, StravaD} from "../../service/strava.service";
-import {Track} from "../../service/track.var";
 import {ToastService} from "../toast/toast.component";
 import {UserService} from "../../service/main.user.service";
 
 
 
 import {Aes} from '../../service/aes-cript';
+import { Track } from '../../service/track.service';
 
 
 interface Athlete{

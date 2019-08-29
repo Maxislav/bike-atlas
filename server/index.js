@@ -22,7 +22,7 @@ app.use(fileUpload());
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
-const server = http.Server(app);
+const server = new http.Server(app);
 server.listen(8081);
 socketData(server, app);
 app.get('/borisbolukbb', weather);

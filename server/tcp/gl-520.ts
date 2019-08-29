@@ -1,14 +1,15 @@
 import { Util } from '../socket-data/util';
-import { Server } from "net";
+import { Server } from 'net';
 import { SSocket } from '../socket-data';
 
-const {Gl520Parser} = require("./gl-520-parser");
-const net = require('net');
-const fs = require('fs');
-const path = require('path');
+import {Gl520Parser} from './gl-520-parser';
+import * as net from 'net';
+import * as  fs from 'fs';
+
+import * as path from 'path';
 const streams = [];
 const PORT = 8090;
-
+declare const __dirname: any;
 
 
 declare global {
@@ -24,11 +25,11 @@ const writeToFile = (str) => {
         fs.appendFile(path.resolve(__dirname, 'log-file.txt'), str, function (err) {
             if (err) {
                 console.log('Err write to file ->'.red, err);
-                return reject(err)
+                return reject(err);
             }
-            resolve()
+            resolve();
         });
-    })
+    });
 };
 
 
@@ -36,8 +37,9 @@ export class Gl520 {
     _ioServer: any;
     _util: Util;
     _server: Server;
-    socketsConnected:{[socket_id: number]: SSocket};
-    devices:  {[device_key: string]: Array<number>};
+    socketsConnected: { [socket_id: number]: SSocket };
+    devices: { [device_key: string]: Array<number> };
+
     constructor(_ioServer, util) {
         this._ioServer = _ioServer;
         this._util = util;
@@ -51,7 +53,7 @@ export class Gl520 {
         return this;
     }
 
-    onDisconnect(socket_id: number){
+    onDisconnect(socket_id: number) {
         for (let opt in this.devices) {
             let ids = this.devices[opt];
             let i = 0;
@@ -59,7 +61,7 @@ export class Gl520 {
                 if (ids[i] == socket_id) {
                     ids.splice(i, 1);
                 } else {
-                    i++
+                    i++;
                 }
             }
         }
@@ -92,7 +94,7 @@ export class Gl520 {
                     str = onStreamData.toString();
                 } catch (e) {
                     console.error(e);
-                    console.log('can\'t convert to string')
+                    console.log('can\'t convert to string');
                 }
                 if (str) {
                     writeToFile(new Date().toISOString().concat('\r\n', str, '\r\n'));
@@ -100,11 +102,12 @@ export class Gl520 {
                         .getData()
                         .then((resp) => {
 
-                            if(resp.result === 'ok'){
-                                resp.points.forEach(respData=> {
-                                    this._util.insertLog(respData)
+                            if (resp.result === 'ok') {
+                                resp.points.forEach(respData => {
+
+                                    this._util.insertLog({src:'',...respData})
                                         .catch(err => {
-                                            console.error('Err GL520 insertLog error ->', err)
+                                            console.error('Err GL520 insertLog error ->', err);
                                         });
 
                                     const device_id = respData.id;
@@ -114,9 +117,9 @@ export class Gl520 {
                                                 //emitedSockets.push(socket_id);
                                                 this.socketsConnected[socket_id] && this.socketsConnected[socket_id].emit('log', respData);
                                             }
-                                        })
+                                        });
                                     }
-                                })
+                                });
                             }
 
 
@@ -143,18 +146,18 @@ export class Gl520 {
                         })
                         .catch(err => {
                             console.error('err parse gl520 -> ', err);
-                        })
+                        });
 
                 }
                 console.log(str);
             });
             c.on('error', (err) => {
-                console.error(err)
-            })
+                console.error(err);
+            });
         });
 
         this._server.listen(PORT, () => {
-            console.log('GL520 server is started'.yellow, `on port:`, `${PORT}`.green)
+            console.log('GL520 server is started'.yellow, `on port:`, `${PORT}`.green);
         });
         return this;
     }
@@ -164,10 +167,10 @@ export class Gl520 {
             if (this._server) {
                 this._server.close(() => {
                     this._server = null;
-                    resolve()
-                })
+                    resolve();
+                });
             }
-        })
+        });
 
     }
 }

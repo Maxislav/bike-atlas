@@ -105,14 +105,17 @@ export class BaseStationLocation {
                             id: mc.cellId,
                             lng: null,
                             lat: null,
-                            range: null
+                            range: null,
+                            rxLevel: mc.rxLevel
+
                         })
                     }else {
                         resolve({
                             id: mc.cellId,
                             lng: Number(j.lon),
                             lat: Number(j.lat),
-                            range: Number(j.range)
+                            range: Number(j.range),
+                            rxLevel: mc.rxLevel
                         });
                     }
 

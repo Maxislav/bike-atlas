@@ -1,7 +1,7 @@
 
 import {Component, Input, OnInit} from "@angular/core";
-import {Track, Point} from "../../../service/track.var";
-import {TrackService} from "../../../service/track.service";
+import {Point} from "../../../service/track.var";
+import { Track, TrackService } from '../../../service/track.service';
 import {MapService} from "../../../service/map.service";
 import {Util} from "../../../service/util";
 import {ToastService} from "../../toast/toast.component";
@@ -40,7 +40,6 @@ export class OneItemTrackComponent implements OnInit{
         console.log(this.track);
         const arrSpeed = R.pluck('speed')(this.track.points);
         this.maxSpeed = Math.max.apply(null,arrSpeed)
-
         this.mapService.onLoad.then(map=>{
             this.map = map;
             this.mapEventInit()
@@ -205,8 +204,11 @@ export class OneItemTrackComponent implements OnInit{
     }
 
     hideTrack(){
-        this.stop &&  this.stop();
-        this.track.hide();
+        this.stop && this.stop();
+
+        this.trackService.removeTrack(this.track);
+        //this.track.remove();
+
     }
     saveChange(){
         if(this.track.xmlDoc){

@@ -80,24 +80,21 @@ export class Color {
 
     }
 
-    getColors() {
-        // points = e.data[0];
-
+    getColors(): any {
         const points = this.points;
-
-       // const result = R.sortBy(R.prop('speed'))(points);
         const max =    this._getSpeedMax();//    result[result.length - 1].speed;
-
         points.forEach(point => {
             point.color = getHexColor(point.speed, max);
         });
-
         const colors = new Set(points.map(item=>item.color));
         const resColors = [];
         Array.from(colors).forEach(item => {
             resColors.push([item, item]);
         });
-        return [points, resColors];
+        return {
+            points,
+            resColors
+        };
     }
 
     _getSpeedMax(){

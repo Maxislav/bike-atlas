@@ -2,7 +2,7 @@ import { Component, Injectable } from '@angular/core';
 
 import { Router, NavigationEnd } from '@angular/router';
 import { MenuService } from './service/menu.service';
-import { TrackService } from './service/track.service';
+import {Track, TrackService } from './service/track.service';
 import { Track as Tr } from './service/track.var';
 import { MyMarkerService } from './service/my-marker.service';
 import { Marker } from './service/marker.service';
@@ -33,7 +33,7 @@ export class NavigationHistory {
 })
 export class AppComponent {
     title = 'Tour of Heroes';
-    trackList: Array<Tr>;
+    trackList: Array<Track>;
     markerList: Array<MyMapMarker>;
     constructor(private router: Router,
                 nh: NavigationHistory,

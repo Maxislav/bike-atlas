@@ -15,9 +15,14 @@ import { ToastService } from '../component/toast/toast.component';
 
 import { Resolve } from '@angular/router';
 import { Color } from '../util/get-color';
+import { _throw } from 'rxjs-compat/observable/throw';
 //console.log(dateformat)
 const F = parseFloat;
 const I = parseInt;
+
+import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl.js';
+import { Subject } from 'rxjs/Subject';
+
 declare var System: any;
 
 interface PopupEdit {
@@ -27,8 +32,328 @@ interface PopupEdit {
     show: Function,
 
     timerUpdate(),
+}
+
+interface PointWithColor extends Point {
+    color: number;
+}
+
+function autobind() {
+    return (target, key, descriptor) => {
+        let fn = descriptor.value;
+        let definingProperty = false;
+        return {
+            configurable: true,
+            get() {
+                const boundFn = fn.bind(this);
+                Object.defineProperty(this, key, {
+                    configurable: true,
+                    get() {
+                        return boundFn;
+                    },
+                    set(value) {
+                        fn = value;
+                        delete this[key];
+                    }
+                });
+                definingProperty = false;
+                return boundFn;
+            },
+            set(value) {
+                fn = value;
+            }
+        };
+    };
 
 }
+
+function featureCollectionCreate(points: Array<PointWithColor>) {
+    return {
+        'type': 'FeatureCollection',
+        'features': (() => {
+            const features = [];
+            points.forEach((item, i) => {
+                const f = {
+                    properties: {
+                        color: item.color,
+                        point: item,
+                        id: item.id,
+                    },
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': item
+                    }
+                };
+                features.push(f);
+            });
+            return features;
+        })()
+    };
+}
+
+interface EditablePopup {
+    update(): EditablePopup
+
+    remove(): EditablePopup
+}
+
+class TrackSrcPoints {
+
+
+    private featureCollectionData;
+
+
+    private _popupHash: { [id: number]: EditablePopup } = {};
+
+    public delPointSubject: Subject<number>;
+
+    constructor(private points: Array<Point>, private  map, public id: string) {
+        this.delPointSubject =   new Subject<number>();
+        this.init();
+    }
+
+    private init() {
+        const {map, id, points} = this;
+        const data: { points: Array<PointWithColor>, resColors: Array<Array<string>> } = new Color(points).getColors();
+        let stops = data.resColors;
+        const p: Array<PointWithColor> = data.points;
+        this.featureCollectionData = featureCollectionCreate(p);
+        map.addSource(id, {
+            type: 'geojson',
+            data: featureCollectionCreate([])
+        });
+        map.addLayer({
+            id: id,
+            type: 'circle',
+            'paint': {
+                'circle-color': {
+                    'property': 'color',
+                    'stops': stops,
+                    'type': 'categorical'
+                },
+                'circle-radius': 8
+            },
+            layout: {},
+            source: id
+        });
+        map.on('mousemove', this.mouseMove);
+        map.on('click', this.mouseMove);
+    }
+
+    show() {
+        this.map.getSource(this.id).setData(this.featureCollectionData);
+    }
+
+    hide() {
+        this.map.getSource(this.id).setData(featureCollectionCreate([]));
+    }
+
+    remove() {
+        this.map.off('mousemove', this.mouseMove);
+        this.map.off('click', this.mouseMove);
+        this.map.removeLayer(this.id);
+        this.map.removeSource(this.id);
+    }
+
+    @autobind()
+    private mouseMove(e) {
+        const features = this.map.queryRenderedFeatures(e.point, {
+            layers: [this.id],
+        });
+        if (features.length) {
+            const id = features[0].properties.id;
+            const p = this.points.find((item) => {
+                return item.id == id;
+            });
+            console.log(p);
+            if (this._popupHash[id]) {
+                this._popupHash[id].update();
+            } else {
+                this._popupHash[id] = this.createPopupEdit(p, id);
+            }
+        }
+    }
+
+    createPopupEdit(point, id: number): EditablePopup {
+        const $this: TrackSrcPoints = this;
+        const map = this.map;
+        //const mapboxgl = this.mapService.mapboxgl;
+        const div = document.createElement('div');
+        div.setAttribute('class', 'info-point');
+        const btn = document.createElement('button');
+        const content = `<div class="time">${dateformat(point.date, 'HH:MM:ss')}</div>` +
+            `<div>${point.speed.toFixed(1) + 'km/h'}</div>`;
+        div.innerHTML = content;
+        btn.innerHTML = 'Удалить';
+        div.appendChild(btn);
+        const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
+            .setLngLat(new mapboxgl.LngLat(point.lng, point.lat))
+            .setDOMContent(div)
+            .addTo(map);
+
+        let time;
+        const editablePopup: EditablePopup = {
+            update() {
+                if (time) {
+                    clearTimeout(time);
+                }
+                time = setTimeout(() => {
+                    editablePopup.remove();
+                    delete $this._popupHash[id];
+                }, 5000);
+                return this;
+            },
+            remove() {
+                popup.remove();
+
+                return this;
+            }
+        };
+
+        editablePopup.update();
+
+        const delClick = () => {
+            editablePopup.remove();
+            this.remove();
+            const index = this.points.findIndex(item => item.id === id );
+            this.points.splice(index, 1);
+            this.init();
+            this.show();
+            this.delPointSubject.next(id)
+        };
+
+        btn.addEventListener('click', delClick);
+
+        return editablePopup;
+    }
+}
+
+
+export class Track {
+    private pontsVisible = false;
+
+    private _trackSrcPoints: TrackSrcPoints;
+    public xmlDoc;
+    public data: {
+        type: string,
+        properties: { [key: string]: any },
+        geometry: {
+            type: string,
+            coordinates: Array<Point>
+        }
+    };
+    public color: string;
+
+    constructor(public points: Array<Point>, private map, public id: string) {
+        this.color = this.getRandomColor();
+
+
+        this.data = {
+            'type': 'Feature',
+            'properties': {},
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': []
+            }
+        };
+
+        this.map.addSource(this.id, {
+            'type': 'geojson',
+            'data': this.data
+        });
+
+        this.map.addLayer({
+            'id': this.id,
+            'type': 'line',
+            'source': this.id,
+            'layout': {
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            'paint': {
+                'line-color': this.color,
+                'line-width': 8,
+                'line-opacity': 0.8
+            }
+        });
+    }
+
+    public show() {
+        this.data.geometry.coordinates = this.points;
+        this.map.getSource(this.id).setData(this.data);
+    }
+
+    public setTrackSrcPoints(trackSrcPoints: TrackSrcPoints): Track {
+        this._trackSrcPoints = trackSrcPoints;
+        return this;
+    }
+
+    public hide() {
+        this.data.geometry.coordinates = [];
+        this.map.getSource(this.id).setData(this.data);
+        this._trackSrcPoints.hide();
+    }
+
+    public showSrcPoint() {
+        if (this.pontsVisible) {
+            this._trackSrcPoints.hide();
+        } else {
+            this._trackSrcPoints.show();
+        }
+        this.pontsVisible = !this.pontsVisible;
+    }
+
+    removePoint(id: number){
+        const index = this.points.findIndex(item => item.id === id);
+        this.points.splice(index, 1);
+        this.show();
+    }
+
+    remove() {
+        this._trackSrcPoints.remove();
+        this.map.removeLayer(this.id);
+        this.map.removeSource(this.id);
+    }
+
+
+    setXmlDoc(xml): this {
+        this.xmlDoc = xml;
+        return this;
+    }
+
+    private getRandomColor() {
+        const I = parseInt;
+        const colors: Array<string> = [];
+        let c = ['0', '0', '0'];
+        let k = I(this.getRandom(0, 2, true));
+        c.forEach((r, i) => {
+            if (i != k) {
+                r = I(this.getRandom(0, 255, true)).toString(16);
+            } else {
+                r = (255).toString(16);
+            }
+            if (r.length < 2) {
+                c[i] = '0' + r;
+            } else {
+                c[i] = r;
+            }
+        });
+
+
+        return '#' + c.join('');
+    }
+
+    private getRandom(min, max, int) {
+        let rand = min + Math.random() * (max - min);
+        if (int) {
+            rand = Math.round(rand) + '';
+        }
+        return rand;
+
+    }
+}
+
 
 @Injectable()
 export class TrackService implements Resolve<any> {
@@ -39,7 +364,7 @@ export class TrackService implements Resolve<any> {
     layerIds: Array<String>;
 
     private util: Util;
-    private _trackList: Array<Tr> = [];
+    private _trackList: Array<Track> = [];
     private _map: any;
     private arrayDelPoints: Array<number> = [];
     private socket: any;
@@ -107,101 +432,30 @@ export class TrackService implements Resolve<any> {
         this.map = map;
     }
 
+    removeTrack(track: Track){
+        const index = this.trackList.findIndex(item => item === track);
+        track.remove();
+        this.trackList.splice(index, 1)
+
+    }
     showTrack(points: Array<Point>, xmlDoc?) {
-        const $this = this;
-        const coordinates = [];
-        const trackList = this.trackList;
-        const color = this._getColor();
-        const map = this.mapService.map;
-
-
-        points.forEach((point) => {
-            coordinates.push(point);
-        });
-
-
         let layerId: string = this.getLayerId('line-') + '';
+        const map = this.mapService.map;
+        const track = new Track(points, map, layerId);
 
-        const data = {
-            'type': 'Feature',
-            'properties': {},
-            'geometry': {
-                'type': 'LineString',
-                'coordinates': points
-            }
-        };
+        const trackSrcPoints: TrackSrcPoints = new TrackSrcPoints(points, map, this.getLayerId('cluster-') + '');
+        track.setTrackSrcPoints(trackSrcPoints);
+        track.show();
 
-
-        map.addSource(layerId, {
-            'type': 'geojson',
-            'data': data
-        });
-
-        map.addLayer({
-            'id': layerId,
-            'type': 'line',
-            'source': layerId,
-            'layout': {
-                'line-join': 'round',
-                'line-cap': 'round'
-            },
-            'paint': {
-                'line-color': color,
-                'line-width': 8,
-                'line-opacity': 0.8
+        trackSrcPoints.delPointSubject.subscribe({
+            next: (id) => {
+                track.removePoint(id);
+                this.arrayDelPoints.push(id);
             }
         });
 
-        const updateLine = (points: Array<Point>) => {
-            data.geometry.coordinates = points;
-            map.getSource(layerId).setData(data);
-            tr.distance = this.util.distance(tr);
+        this.trackList.push(track);
 
-        };
-
-        let srcPoints; //= this.addSrcPoints(points, xmlDoc, update);
-        let isShowPonts = false;
-
-        let tr: Tr = {
-            hide: function () {
-                map.removeLayer(layerId);
-                map.removeSource(layerId);
-                let index = R.findIndex(R.propEq('id', layerId))(trackList);
-                trackList.splice(index, 1);
-                console.log('delete track index', index);
-                srcPoints && srcPoints.remove();
-            },
-            showSrcPoint: () => {
-                if (!!srcPoints) {
-                    srcPoints.remove();
-                    srcPoints = null;
-                } else {
-                    srcPoints = this.addSrcPoints(points, xmlDoc, updateLine);
-                }
-
-            },
-            hideSrcPoint: () => {
-                srcPoints && srcPoints.remove();
-            },
-            update: updateLine,
-            id: layerId,
-            coordinates: coordinates,
-            points: points,
-            color: color,
-            distance: 0,
-            date: points[0].date,
-            xmlDoc: xmlDoc,
-
-        };
-
-        tr.distance = this.util.distance(tr);
-        this.util.bearing(tr.points);
-
-
-        trackList.push(tr);
-        console.log(tr);
-
-        return tr;
     }
 
     delPoints(trackId: string, points: Array<Point>) {
@@ -235,175 +489,16 @@ export class TrackService implements Resolve<any> {
     }
 
     private colorWorker(points: Array<Point>): Promise<any> {
-
-        let worker;
-
-
-        worker = {
-            postMessage: () => {
-                const data = new Color(points).getColors();
-                worker.onmessage({data});
-            },
-            onmessage: null
-        };
-
+        const data = new Color(points).getColors();
         return new Promise((resolve, reject) => {
-            worker.onmessage = resolve;
-            worker.postMessage();
+            resolve({data});
         });
-    }
-
-
-    addSrcPoints(points: Array<Point>, xmlDoc, updateLine: Function) {
-        const map = this.mapService.map;
-        const layerId = this.getLayerId('cluster-');
-
-
-        let sourceData;
-
-        const updatePoints = (points: Array<Point>) => {
-            const data = TrackService.getData(points);
-            map.getSource(layerId).setData(data);
-            updateLine(points);
-        };
-
-        const delPoint = (id: number) => {
-            let index = R.findIndex(R.propEq('id', id))(points);
-            if (-1 < index) points.splice(index, 1);
-
-            const find = Array.prototype.find;
-            if (xmlDoc) {
-                const trkpt = find.call(xmlDoc.getElementsByTagName('trkpt'), (item => {
-                    return item.getAttribute('id') == id;
-                }));
-                trkpt.parentNode.removeChild(trkpt);
-            } else {
-                this.arrayDelPoints.push(id);
-            }
-            this.colorWorker(points)
-                .then(e => {
-                    let colorPoints = e.data[0];
-                    updatePoints(colorPoints);
-                });
-
-
-            sourceData = TrackService.getData(points);
-            map.getSource(layerId).setData(sourceData);
-        };
-
-        const mousemove = (e) => {
-            const features = map.queryRenderedFeatures(e.point, {
-                layers: [layerId],
-            });
-            if (features.length) {
-                const id = features[0].properties.id;
-                const p = points.find((item) => {
-                    return item.id == id;
-                });
-                this._popupHash[id] = this._popupHash[id] || this.createPopupEdit(p, (e) => {
-                    delPoint(id);
-                });
-                if (this._popupHash[id].isShow) {
-                    this._popupHash[id].timerUpdate();
-                } else {
-                    this._popupHash[id].show();
-                }
-
-            }
-        };
-
-        this.colorWorker(points)
-            .then(e => {
-                let colorPoints = e.data[0];
-                let stops = e.data[1];
-                sourceData = TrackService.getData(colorPoints);
-                map.addSource(layerId, {
-                    type: 'geojson',
-                    data: sourceData
-                });
-                map.addLayer({
-                    id: layerId,
-                    type: 'circle',
-                    'paint': {
-                        'circle-color': {
-                            'property': 'color',
-                            'stops': stops,
-                            'type': 'categorical'
-                        },
-                        'circle-radius': 8
-                    },
-                    layout: {},
-                    source: layerId
-                });
-
-                map.on('mousemove', mousemove);
-
-                map.on('click', mousemove);
-            });
-
-
-        return {
-            remove: () => {
-                map.off('click', mousemove);
-                map.off('mousemove', mousemove);
-                map.removeLayer(layerId);
-            },
-            update: updatePoints
-        };
-    }
-
-    createPopupEdit(point: Point, f: Function): PopupEdit {
-        const map = this.mapService.map;
-        const mapboxgl = this.mapService.mapboxgl;
-        const div = document.createElement('div');
-        div.setAttribute('class', 'info-point');
-        const btn = document.createElement('button');
-        const content = `<div class="time">${dateformat(point.date, 'HH:MM:ss')}</div>` +
-            `<div>${point.speed.toFixed(1) + 'km/h'}</div>`;
-        div.innerHTML = content;
-        btn.innerHTML = 'Удалить';
-        div.appendChild(btn);
-        const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: true})
-            .setLngLat(new mapboxgl.LngLat(point.lng, point.lat))
-            .setDOMContent(div);
-        //.addTo(map);
-
-        const delClick = () => {
-            popup.remove();
-            f();
-        };
-
-        btn.addEventListener('click', delClick);
-
-        /* setTimeout(()=>{
-             btn.removeEventListener('click', delClick)
-             popup.remove();
-         }, 5000)*/
-
-        return {
-            timer: null,
-            isShow: false,
-            remove() {
-                btn.removeEventListener('click', delClick);
-                popup.remove();
-                this.isShow = false;
-            },
-            show() {
-                popup.addTo(map);
-                this.timerUpdate();
-                this.isShow = true;
-            },
-            timerUpdate() {
-                if (this.timer) {
-                    clearTimeout(this.timer);
-                }
-                this.timer = setTimeout(() => {
-                    this.remove();
-                }, 5000);
-            }
-        };
 
     }
+
+
+
+
 
     marker(point: Point) {
         const map = this.mapService.map;
@@ -562,11 +657,11 @@ export class TrackService implements Resolve<any> {
         return this._map;
     }
 
-    get trackList(): Array<Tr> {
+    get trackList(): Array<Track> {
         return this._trackList;
     }
 
-    set trackList(value: Array<Tr>) {
+    set trackList(value: Array<Track>) {
         this._trackList = value;
     }
 

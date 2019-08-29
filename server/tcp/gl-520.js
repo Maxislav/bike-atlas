@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { Gl520Parser } = require("./gl-520-parser");
-const net = require('net');
-const fs = require('fs');
-const path = require('path');
+const gl_520_parser_1 = require("./gl-520-parser");
+const net = require("net");
+const fs = require("fs");
+const path = require("path");
 const streams = [];
 const PORT = 8090;
 const writeToFile = (str) => {
@@ -62,7 +62,7 @@ class Gl520 {
             });
             c.on('data', (onStreamData) => {
                 let str = '';
-                const gl520Parser = new Gl520Parser();
+                const gl520Parser = new gl_520_parser_1.Gl520Parser();
                 try {
                     str = onStreamData.toString();
                 }
@@ -77,7 +77,7 @@ class Gl520 {
                         .then((resp) => {
                         if (resp.result === 'ok') {
                             resp.points.forEach(respData => {
-                                this._util.insertLog(respData)
+                                this._util.insertLog(Object.assign({ src: '' }, respData))
                                     .catch(err => {
                                     console.error('Err GL520 insertLog error ->', err);
                                 });

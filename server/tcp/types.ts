@@ -5,6 +5,7 @@ export interface BaseStationPoint {
     lat: number;
     id: number;
     range: number;
+    rxLevel: number;
 }
 
 
@@ -18,7 +19,7 @@ export interface Point {
     lat: number;
     type: 'POINT' | 'BS';
     date: Date;
-    bs?: Array<{lng: number, lat: number, range: number}>,
+    bs?: Array<{lng: number, lat: number, range: number, rxLevel: number}>
     accuracy?: number
 }
 
@@ -39,6 +40,7 @@ export interface MCell {
 export interface MACell {
     lac: number;
     cid: number;
+    rxLevel?: number;
 }
 
 
@@ -52,6 +54,7 @@ export interface MobileCell {
     mnc: number;
     lac: number;
     cellId: number;
+    rxLevel?: number;
 }
 
 export interface MobileCellWithDevice extends MobileCell{

@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
 import {Io} from "./socket.oi.service";
-import {Track} from "./track.var";
+
 import {pointsToXmlDoc, xml2string} from "../util/create-xml-doc";
+import { Track } from '../service/track.service';
 
 export interface StravaD {
     Authorization: string

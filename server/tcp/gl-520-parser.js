@@ -91,7 +91,8 @@ class Gl520Parser {
                             mnc: cell.mnc,
                             mcc: cell.mcc,
                             lac: cc.lac,
-                            cellId: cc.cid
+                            cellId: cc.cid,
+                            rxLevel: cc.rxLevel
                         };
                     });
                     return Promise.all(arr.map(mobileCell => {
@@ -125,7 +126,8 @@ class Gl520Parser {
             arrCell.push(Object.assign({}, countryNetworkCode, { cells: cells.map(c => {
                     return {
                         lac: c.lac,
-                        cid: c.cellId
+                        cid: c.cellId,
+                        rxLevel: c.rxLevel
                     };
                 }) }));
             const unList = cList.filter(c => {
@@ -170,21 +172,18 @@ class Gl520Parser {
             cellId: null
         };
         const arr = this.srcMsg.split(',');
-        let deviceId = null;
-        let date = null;
+        let stationsSrc;
+        let deviceId = this.getDeviceId();
+        let date = this.getDate();
         if (this.messageType === MessageType.GTLBS) {
-            date = this.strToDate(arr[arr.length - 2]);
-            const prefix = arr.splice(0, 12);
-            deviceId = prefix[10];
+            stationsSrc = arr.slice(12, arr.length - 2);
         }
         if (this.messageType === MessageType.GTGSM) {
-            date = this.strToDate(arr[arr.length - 2]);
-            const prefix = arr.splice(0, 4);
-            deviceId = prefix[2];
+            stationsSrc = arr.slice(4, arr.length - 2);
         }
         const res = [];
-        while (arr.length) {
-            res.push(arr.splice(0, 6));
+        while (stationsSrc.length) {
+            res.push(stationsSrc.splice(0, 6));
         }
         return res.filter(item => item[4]).map(item => {
             return {
@@ -192,6 +191,7 @@ class Gl520Parser {
                 mnc: parseInt(item[1], 10),
                 lac: parseInt(item[2], 16),
                 cellId: parseInt(item[3], 16),
+                rxLevel: parseInt(item[4]),
                 deviceId: deviceId,
                 date
             };
