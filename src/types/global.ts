@@ -89,10 +89,9 @@ export declare interface MapGl {
 }
 
 export interface Popup {
-    new(Object?): this
+    new(props?: Object)
 
     setLngLat(lngLat: number[] | LngLat): this
-
 
     setHTML(string): this
 

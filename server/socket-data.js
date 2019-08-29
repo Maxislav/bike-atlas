@@ -7,21 +7,21 @@ require("./colors");
 const io = require('socket.io');
 config.mysql['database'] = 'monitoring';
 //let connection = mysql.createConnection(config.mysql);
-const OnEnter = require('./socket-data/on-enter');
+const on_enter_1 = require("./socket-data/on-enter");
 const { OnAuth } = require('./socket-data/on-auth');
 const Device = require('./socket-data/device');
 const OnRegist = require('./socket-data/on-regist');
 const OnProfile = require('./socket-data/on-profile');
 const OnFriend = require('./socket-data/on-friends');
 const OnPrivateArea = require('./socket-data/on-private-area');
-const Chat = require('./chat');
+const chat_1 = require("./chat");
 const TrackFromTo = require('./socket-data/track-from-to');
 const OnChat = require('./socket-data/on-chat');
 //const Logger = require('./logger');
 const gps_logger_1 = require("./gps-logger/gps-logger");
 const gl_520_1 = require("./tcp/gl-520");
 const on_gtgbc_js_1 = require("./socket-data/on-gtgbc.js");
-const Util = require('./socket-data/util');
+const util_1 = require("./socket-data/util");
 const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
 const OnMyMarker = require('./socket-data/on-my-marker.js');
@@ -64,11 +64,11 @@ exports.SSocket = SSocket;
 class SocketData {
     constructor(server, app, connection) {
         this.connection = connection;
-        const util = new Util(connection);
+        const util = new util_1.Util(connection);
         const ioServer = io(server);
         const logger = new gps_logger_1.Logger(app, ioServer, util);
         this.gl520 = new gl_520_1.Gl520(ioServer, util).create();
-        const chat = new Chat(util);
+        const chat = new chat_1.Chat(util);
         ioServer.on('connection', (s) => {
             const socket = new SSocket(s);
             socket.$get('gettt', (req, res) => {
@@ -78,7 +78,7 @@ class SocketData {
             logger.sockets = ioServer.sockets.connected;
             chat.sockets = ioServer.sockets.connected;
             this.gl520.setSocketsConnected(ioServer.sockets.connected);
-            const onEnter = new OnEnter(socket, util, logger, chat);
+            const onEnter = new on_enter_1.OnEnter(socket, util, logger, chat);
             const onAuth = new OnAuth(socket, util, chat, logger, this.gl520);
             const device = new Device(socket, util, logger);
             const onRegist = new OnRegist(socket, util, logger);

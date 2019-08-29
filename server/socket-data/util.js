@@ -943,5 +943,4 @@ function getRandom(min, max, int) {
     }
     return rand;
 }
-module.exports = Util;
 //# sourceMappingURL=util.js.map

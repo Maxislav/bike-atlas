@@ -66,6 +66,15 @@ export class MyMarkerService {
 
     }
 
+    clearAll(){
+        let i = 0;
+        while (this.markerList.length){
+            const [marker] = this.markerList.splice(0,1);
+            marker.remove();
+            i++;
+        }
+    }
+
     createMarker(lngLat: LngLat, opts: {
         title: string,
         id: number
@@ -127,7 +136,7 @@ export class MyMarkerService {
             }
         };
         this.markerList.push(myMarker);
-        //console.log(myMarker);
+
 
     }
 

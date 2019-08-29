@@ -111,19 +111,6 @@ export class DeviceComponent implements AfterViewInit , OnInit{
         };
         this.devices = deviceService.devices;
         deviceService.updateDevices();
-
-/*
-        this.activatedRoute.data.subscribe((data: {device: string}) => {
-        })
-*/
-
-    }
-
-
-
-
-    ngOnChanges(a) {
-        console.log('ngOnChanges->', a);
     }
 
     onShowHelp() {

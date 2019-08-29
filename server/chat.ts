@@ -1,24 +1,28 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const R = require("ramda");
-class Chat {
-    constructor(util) {
-        this.util = util;
+import * as R from 'ramda';
+
+export class Chat {
+    private _sockets;
+    private user;
+
+    constructor(private util) {
         this._sockets = {};
         this.user = {};
     }
+
     onAuth(socketId, userId) {
         const util = this.util;
         this.user[userId] = this.user[userId] || [];
+
         if (!this.isExist(this.user[userId], socketId)) {
             this.user[userId].push(socketId);
         }
         console.log('chat user ids->', this.user);
         util.getUserNameById(userId)
             .then(name => {
-            console.log('chat auth ->', name, new Date());
-        });
+                console.log('chat auth ->', name, new Date());
+            });
     }
+
     onEnter(socketId, userId) {
         this.user[userId] = this.user[userId] || [];
         console.log('chat enter ->', userId);
@@ -26,35 +30,41 @@ class Chat {
             this.user[userId].push(socketId);
         }
     }
+
     onExit(socketId) {
         console.log('chat exit ->', socketId);
         const userId = this.clearSocket(socketId);
         if (userId) {
+
             this.util.chatLeave(userId, new Date());
+
             this.util.getUserById(userId)
                 .then(user => {
-                console.log('chat exit - >', user.name);
-            })
+                    console.log('chat exit - >', user.name);
+                })
                 .catch(err => {
-                console.error('Error getUserById ->', err);
-            });
+                    console.error('Error getUserById ->', err);
+                });
         }
     }
+
     onDisconnect(socketId) {
         this.util.getUserIdBySocketId(socketId)
             .then(userId => {
-            this.util.chatLeave(userId, new Date());
-            return this.util.getUserNameById(userId);
-        })
+                this.util.chatLeave(userId, new Date());
+                return this.util.getUserNameById(userId);
+            })
             .then(name => {
-            console.log('chat disconnect ->', name);
-        })
+                console.log('chat disconnect ->', name);
+            })
             .catch(err => {
-            console.error('Err chat disconnect ->', err);
-        });
+                console.error('Err chat disconnect ->', err);
+            });
         this.clearSocket(socketId);
     }
+
     clearSocket(socketId) {
+
         let userId = null;
         R.mapObjIndexed((item, key) => {
             const index = item.indexOf(socketId);
@@ -63,9 +73,13 @@ class Chat {
                 userId = key;
             }
         }, this.user);
+
         return userId;
+
     }
+
     sendUpdateInvite(inveteId) {
+
         if (this.user[inveteId]) {
             this.user[inveteId].forEach(socketId => [
                 this.sockets[socketId].emit('updateInvites', true)
@@ -74,6 +88,7 @@ class Chat {
         }
         return false;
     }
+
     sendUpdateFriends(friendId) {
         if (this.user[friendId]) {
             this.user[friendId].forEach(socketId => [
@@ -81,11 +96,16 @@ class Chat {
             ]);
             return true;
         }
+
     }
+
+
     onChatSend(d) {
+
         const toUserId = d.toUserId;
         const userId = d.fromUserId;
         const text = d.text;
+
         if (this.user[toUserId]) {
             this.user[toUserId].forEach(socketId => {
                 this.sockets[socketId].emit('onChat', {
@@ -97,15 +117,17 @@ class Chat {
             });
         }
     }
+
     set sockets(connected) {
         this._sockets = connected;
     }
+
     get sockets() {
         return this._sockets;
     }
+
     isExist(user, socketId) {
         return -1 < user.indexOf(socketId);
     }
 }
-exports.Chat = Chat;
-//# sourceMappingURL=chat.js.map
+

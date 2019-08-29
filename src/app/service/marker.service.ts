@@ -59,7 +59,7 @@ export class Marker {
     private baseStationPoints: { layerId: string, points: Array<{ lng: number, lat: number }>, remove: () => void };
 
 
-    //TODO creating and update user marker
+    /** @description creating and update user marker */
     constructor(devData: DeviceData, private user: User, private mapboxgl: MapBoxGl, private map: MapGl, private timerService: TimerService) {
 
         console.log(devData.type);

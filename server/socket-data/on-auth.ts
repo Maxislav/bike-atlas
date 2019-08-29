@@ -1,100 +1,7 @@
-
-const util = require('./util');
 import * as ProtoData from './proto-data';
 import { Deferred } from '../deferred';
 import { DeviceRow, LoggerRow, User  } from '../types';
-
-/*class LG implements LoggerRow {
-    alt: number;
-    azimuth: number;
-    date: Date = new Date(0);
-    device_key: string;
-    id: number;
-    lat: number;
-    lng: number;
-    speed: number;
-    src: string;
-    type: "POINT" | "BS";
-    constructor(row :LoggerRow ){
-        if(row){
-            Object.assign(this, row, {
-                lng: Number(row.lng),
-                lat: Number(row.lat)
-            })
-        }
-    }
-
-}*/
-/*
-class LastBsPosition implements LoggerBsRow {
-    lastGroup: Array<LoggerRow>;
-    lastGroupDate: number;
-    lng: number;
-    lat: number;
-    alt: number;
-    azimuth: number;
-    date: Date;
-    device_key: string;
-    id: number;
-    speed: number;
-    src: string;
-    type: 'POINT' | 'BS' = 'BS';
-    bs: Array<LoggerRow>;
-
-    constructor(private rows: Array<LoggerRow>) {
-        const arrGroup = this.groupByDate(rows);
-        this.lastGroup = [];
-        this.lastGroupDate = 0;
-        if (arrGroup.length) {
-            this.lastGroup = arrGroup[arrGroup.length - 1];
-
-        }
-        if (this.lastGroup.length) {
-            this.id = this.lastGroup[0].id;
-            this.date = new Date(this.lastGroup[this.lastGroup.length - 1].date);
-            this.lastGroupDate = this.date.getTime();
-            this.src = this.lastGroup.map(item => item.src).join(';');
-            this.bs = this.lastGroup;
-            this.lng = this.getRound(...this.lastGroup.map(item => Number(item.lng)));
-            this.lat = this.getRound(...this.lastGroup.map(item => Number(item.lat)));
-        }
-
-    }
-
-    private groupByDate(list) {
-        const s = new Set();
-        const idMap = {};
-
-
-        const resArr = [];
-        const _list = list.map(item => {
-            idMap[item.id] = item;
-            const dateInt = new Date(item.date).getTime();
-            s.add(dateInt);
-            return Object.assign({
-                dateInt
-            }, item);
-        });
-
-        const arr = Array.from(s).sort();
-        arr.forEach(dateInt => {
-            const group = _list.filter(it => it.dateInt === dateInt).map(item => idMap[item.id]);
-            resArr.push(group);
-        });
-
-        return resArr;
-
-    }
-
-    private getRound(...list: number[]) {
-        const reducer = (accumulator, currentValue) => accumulator + currentValue;
-        return list.reduce(reducer) / list.length;
-    }
-
-
-}*/
-
-class OnAuth extends ProtoData {
+export class OnAuth extends ProtoData {
 
 
     chat: any;
@@ -126,6 +33,10 @@ class OnAuth extends ProtoData {
             .getUserByHash(data.hash)
             .then(user => {
                 _user = user;
+                if(!user){
+                    return Promise.reject('User Unauthorized')
+                }
+
                 /**
                  * авторизация в чате
                  */
@@ -242,15 +153,10 @@ class OnAuth extends ProtoData {
                     result: 'ok',
                     user: user
                 });
-                /*this.socket.emit(eName, {
-                    result: 'ok',
-                    user: user
-                });*/
                 return deferred.promise;
             })
-
             .catch(err => {
-                console.log('err 3 -> ', err);
+                console.log('Catch 3 -> ', err);
                 res.end({
                     result: false,
                     message: err
@@ -291,7 +197,3 @@ class OnAuth extends ProtoData {
 
 
 }
-
-module.exports = {
-    OnAuth
-};

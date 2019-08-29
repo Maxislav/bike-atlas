@@ -1048,4 +1048,3 @@ function getRandom(min, max, int) {
     return rand;
 }
 
-module.exports = Util;

@@ -9,23 +9,25 @@ const io = require('socket.io');
 config.mysql['database'] = 'monitoring';
 //let connection = mysql.createConnection(config.mysql);
 
-const OnEnter = require('./socket-data/on-enter');
+import { OnEnter } from './socket-data/on-enter';
+
 const {OnAuth} = require('./socket-data/on-auth');
 const Device = require('./socket-data/device');
 const OnRegist = require('./socket-data/on-regist');
 const OnProfile = require('./socket-data/on-profile');
 const OnFriend = require('./socket-data/on-friends');
 const OnPrivateArea = require('./socket-data/on-private-area');
-const Chat = require('./chat');
+import {Chat} from './chat';
 const TrackFromTo = require('./socket-data/track-from-to');
 const OnChat = require('./socket-data/on-chat');
 //const Logger = require('./logger');
 
 import { Logger } from './gps-logger/gps-logger';
 import { Gl520 } from './tcp/gl-520';
-import  {OnGtgbc} from './socket-data/on-gtgbc.js';
+import { OnGtgbc } from './socket-data/on-gtgbc.js';
 
-const Util = require('./socket-data/util');
+import { Util } from './socket-data/util';
+
 const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
 const OnMyMarker = require('./socket-data/on-my-marker.js');
