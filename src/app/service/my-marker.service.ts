@@ -23,7 +23,9 @@ export interface MyMapMarker {
 
     remove(): void
 
-    click(): void
+    click(): void;
+
+    clear(): void
 }
 
 @Injectable()
@@ -70,7 +72,7 @@ export class MyMarkerService {
         let i = 0;
         while (this.markerList.length){
             const [marker] = this.markerList.splice(0,1);
-            marker.remove();
+            marker.clear();
             i++;
         }
     }
@@ -79,6 +81,7 @@ export class MyMarkerService {
         title: string,
         id: number
     }) {
+        const $this = this;
         const {mapboxgl, map} = this.mapService;
         const icoContainer = document.createElement('div');
         const img = new Image();
@@ -133,6 +136,10 @@ export class MyMarkerService {
                 this.markerList.splice(this.markerList.indexOf(myMarker), 1);
                 this.applicationRef.tick();
                 this.removeMarker(myMarker);
+            },
+            clear:() =>{
+                marker.remove();
+
             }
         };
         this.markerList.push(myMarker);

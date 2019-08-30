@@ -8,7 +8,6 @@ import {LocalStorage} from "../../../service/local-storage.service";
 import {AuthService} from "../../../service/auth.service";
 import {ToastService} from "../../toast/toast.component";
 import {DeviceService} from "../../../service/device.service";
-import {LoginService} from "../../../service/login.service";
 import {LogService} from "../../../service/log.service";
 import {FriendsService} from "../../../service/friends.service";
 import {UserService} from "../../../service/main.user.service";
@@ -36,9 +35,7 @@ export class MenuLoginComponent {
                 public as: AuthService,
                 private ds: DeviceService,
                 private ts: ToastService,
-                private logService: LogService,
                 private friend: FriendsService,
-                private loginService: LoginService,
             private userService: UserService
     ) {
         this.user = userService.user;
@@ -56,11 +53,16 @@ export class MenuLoginComponent {
 
 
     onEnter() {
-        this.loginService
+
+        this.as.onEnter({
+            name: this.name,
+            pass: this.md5.hash(this.pass)
+        })
+       /* this.loginService
             .onEnter({
                 name: this.name,
                 pass: this.md5.hash(this.pass)
-            });
+            });*/
     }
 
     goToProfile(){
@@ -69,7 +71,7 @@ export class MenuLoginComponent {
     }
 
     onExit(e) {
-        this.loginService.onExit(e);
+        this.as.onExit(e);
     }
     goToFriends(){
         this.ms.menuOpenLogin = false

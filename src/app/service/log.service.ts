@@ -93,7 +93,9 @@ export class LogService {
     }
 
     clearDevices() {
-
+        Object.keys(this.devices).forEach(deviceKey =>{
+            delete this.devices[deviceKey];
+        })
     }
 
     setOtherImage(ownerId, image) {

@@ -4,6 +4,7 @@ import {LocalStorage} from "./local-storage.service";
 import {FriendsService} from "./friends.service";
 import {UserService} from "./main.user.service";
 import { Device } from '../../types/global';
+import { LogService } from './log.service';
 //import {Device} from '../../global';
 
 @Injectable()
@@ -16,7 +17,8 @@ export class DeviceService {
     constructor(private io: Io,
                 private ls: LocalStorage,
                 private user: UserService,
-                private friend: FriendsService
+                private friend: FriendsService,
+                private logService: LogService
 
     ) {
         this.socket = io.socket;
@@ -61,6 +63,7 @@ export class DeviceService {
     }
     clearDevices(){
         this._devices.length = 0;
+        this.logService.clearDevices();
     }
 
     onAddDeviceImage(device: Device){

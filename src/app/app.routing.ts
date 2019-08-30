@@ -30,11 +30,8 @@ const appRouters: Routes = [
     {
         path: 'auth',
         component: AuthComponent,
-        resolve: {
-            transactions: AuthService
-        },
+        canActivate: [AuthService],
         children: [
-
             {
                 path: 'map',
                 component: MapComponent,
@@ -46,7 +43,6 @@ const appRouters: Routes = [
                     {
                         path: 'device',
                         component: DeviceComponent,
-                        canActivate: [AuthService],
                         children: [
                             {
                                 path: ':device',
@@ -57,12 +53,10 @@ const appRouters: Routes = [
                     {
                         path: 'profile',
                         component: ProfileComponent,
-                        canActivate: [AuthService],
                     },
                     {
                         path: 'journal',
                         component: JournalComponent,
-                        canActivate: [AuthService],
                         resolve: {
                             L: LeafletResolver
                         },
@@ -81,18 +75,15 @@ const appRouters: Routes = [
                     {
                         path: 'privatearea',
                         component: PrivateArea,
-                        canActivate: [UserService]
 
                     },
                     {
                         path: 'strava-invite',
                         component: StravaComponent,
-                        // canActivate:[UserService]
                     },
                     {
                         path: 'strava-invite/:token',
                         component: StravaAuthComponent
-                        //canActivate:[UserService]
                     },
                     {
                         path: 'gtgbc',

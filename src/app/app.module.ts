@@ -27,7 +27,6 @@ import { DeviceService } from './service/device.service';
 import { LogService } from './service/log.service';
 import { MarkerService } from './service/marker.service';
 import { MapService } from './service/map.service';
-import { LoginService } from './service/login.service';
 import { MenuAthleteComponent } from './component/menu/menu-athlete/menu.athlete.component';
 import { ProfileComponent } from './component/profile/profile.component';
 import { JournalComponent, LeafletResolver } from './component/journal-component/journal.component';
@@ -208,7 +207,6 @@ export class PipeTranslateCompiler implements TranslateCompiler {
         LogService,
         MapService,
         MarkerService,
-        LoginService,
         FriendsService,
         UserService,
         TimerService,

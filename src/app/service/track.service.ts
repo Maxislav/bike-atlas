@@ -23,41 +23,13 @@ import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl.js';
 import { Subject } from 'rxjs/Subject';
 import { MapGl, Popup } from '../../types/global';
 import { TElement } from '../util/at-element';
+import { autobind } from '../util/autobind';
 
 declare var System: any;
 
 
 interface PointWithColor extends Point {
     color: number;
-}
-
-function autobind() {
-    return (target, key, descriptor) => {
-        let fn = descriptor.value;
-        let definingProperty = false;
-        return {
-            configurable: true,
-            get() {
-                const boundFn = fn.bind(this);
-                Object.defineProperty(this, key, {
-                    configurable: true,
-                    get() {
-                        return boundFn;
-                    },
-                    set(value) {
-                        fn = value;
-                        delete this[key];
-                    }
-                });
-                definingProperty = false;
-                return boundFn;
-            },
-            set(value) {
-                fn = value;
-            }
-        };
-    };
-
 }
 
 function featureCollectionCreate(points: Array<PointWithColor>) {
