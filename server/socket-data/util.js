@@ -297,14 +297,19 @@ class Util {
                     reject(err);
                     return;
                 }
-                let base_station = [];
-                try {
-                    base_station = (rows[0].base_station && rows[0].base_station !== 'NULL') ? JSON.parse(rows[0].base_station) : [];
+                if (rows && rows.length) {
+                    let base_station = [];
+                    try {
+                        base_station = (rows[0].base_station && rows[0].base_station !== 'NULL') ? JSON.parse(rows[0].base_station) : [];
+                    }
+                    catch (e) {
+                        console.error('error parse base_station -> ', rows[0]);
+                    }
+                    resolve(Object.assign({}, rows[0], { bs: base_station }));
                 }
-                catch (e) {
-                    console.error('error parse base_station -> ', rows[0]);
+                else {
+                    resolve(null);
                 }
-                resolve(Object.assign({}, rows[0], { bs: base_station }));
             });
         });
     }

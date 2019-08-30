@@ -82,26 +82,27 @@ class OnAuth extends ProtoData {
                 util.clearHash(hash);
                 console.log('deviceKeys', deviceKeys);
                 Promise.all(deviceKeys.map(key => {
+                    this.logger.updateDevice(key, this.socket.id);
+                    this.gl520.updateDevice(key, this.socket.id);
                     return util.getLastPosition(key)
                         .then((row) => {
-                        //console.log('device key->', key)
-                        this.logger.updateDevice(key, this.socket.id);
-                        this.gl520.updateDevice(key, this.socket.id);
-                        const loggerRow = {
-                            alt: 0,
-                            azimuth: 0,
-                            date: row.date,
-                            device_key: key,
-                            id: row.id,
-                            lng: row.lng,
-                            lat: row.lat,
-                            speed: row.speed,
-                            src: row.src,
-                            type: row.type,
-                            bs: row.bs,
-                            accuracy: row.accuracy
-                        };
-                        this.socket.emit('log', loggerRow);
+                        if (row) {
+                            const loggerRow = {
+                                alt: 0,
+                                azimuth: 0,
+                                date: row.date,
+                                device_key: key,
+                                id: row.id,
+                                lng: row.lng,
+                                lat: row.lat,
+                                speed: row.speed,
+                                src: row.src,
+                                type: row.type,
+                                bs: row.bs,
+                                accuracy: row.accuracy
+                            };
+                            this.socket.emit('log', loggerRow);
+                        }
                     });
                 }))
                     .then((rows) => {
