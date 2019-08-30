@@ -542,31 +542,6 @@ export class TrackService implements Resolve<any> {
 
     }
 
-    _getColor() {
-        const I = parseInt;
-        const colors: Array<string> = [];
-
-
-        let c = ['0', '0', '0'];
-        let k = I(this.getRandom(0, 2, true));
-
-        c.forEach((r, i) => {
-            if (i != k) {
-                r = I(this.getRandom(0, 255, true)).toString(16);
-            } else {
-                r = (255).toString(16);
-            }
-            if (r.length < 2) {
-                c[i] = '0' + r;
-            } else {
-                c[i] = r;
-            }
-        });
-
-
-        return '#' + c.join('');
-    }
-
     saveChange() {
         console.log(this.arrayDelPoints);
         if (this.arrayDelPoints.length) {
