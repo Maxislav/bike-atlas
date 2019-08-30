@@ -44,19 +44,4 @@ export interface Coordinate extends Array<number>{
     
 }
 
-export  interface Track {
-    id: string;
-    showSrcPoint: Function;
-    date: Date | String,
-    hideSrcPoint: Function;
-    hide: Function;
-    update: Function;
-    coordinates: Array<Coordinate>;
-    points: Array<Point>,
-    color: String,
-    distance: number,
-    xmlDoc: Document,
-    src?: string
-}
-
 

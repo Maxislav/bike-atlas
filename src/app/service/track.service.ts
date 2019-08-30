@@ -7,7 +7,7 @@ import * as R from 'ramda/dist/ramda';
 import { Util } from './util';
 import { Io } from './socket.oi.service';
 import { MapService } from './map.service';
-import { Track as Tr, Point } from './track.var';
+import {  Point } from './track.var';
 import { distance } from '../util/distance';
 
 import * as dateformat from 'dateformat/lib/dateformat.js';
@@ -15,24 +15,17 @@ import { ToastService } from '../component/toast/toast.component';
 
 import { Resolve } from '@angular/router';
 import { Color } from '../util/get-color';
-import { _throw } from 'rxjs-compat/observable/throw';
-//console.log(dateformat)
 const F = parseFloat;
 const I = parseInt;
 
 import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl.js';
 import { Subject } from 'rxjs/Subject';
+import { MapGl, Popup } from '../../types/global';
+import { TElement } from '../util/at-element';
 
 declare var System: any;
 
-interface PopupEdit {
-    timer: number
-    isShow: boolean,
-    remove: Function,
-    show: Function,
 
-    timerUpdate(),
-}
 
 interface PointWithColor extends Point {
     color: number;
@@ -99,16 +92,11 @@ interface EditablePopup {
 }
 
 class TrackSrcPoints {
-
-
     private featureCollectionData;
-
-
     private _popupHash: { [id: number]: EditablePopup } = {};
-
     public delPointSubject: Subject<number>;
 
-    constructor(private points: Array<Point>, private  map, public id: string) {
+    constructor(private points: Array<Point>, private  map: MapGl, public id: string) {
         this.delPointSubject =   new Subject<number>();
         this.init();
     }
@@ -187,7 +175,7 @@ class TrackSrcPoints {
         div.innerHTML = content;
         btn.innerHTML = 'Удалить';
         div.appendChild(btn);
-        const popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
+        const popup: Popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
             .setLngLat(new mapboxgl.LngLat(point.lng, point.lat))
             .setDOMContent(div)
             .addTo(map);
@@ -317,7 +305,7 @@ export class Track {
     }
 
 
-    setXmlDoc(xml): this {
+    setXmlDoc(xml: TElement): this {
         this.xmlDoc = xml;
         return this;
     }
@@ -368,7 +356,6 @@ export class TrackService implements Resolve<any> {
     private _map: any;
     private arrayDelPoints: Array<number> = [];
     private socket: any;
-    private _popupHash: { [key: number]: PopupEdit } = {};
 
     constructor(private io: Io, private mapService: MapService, private ts: ToastService) {
 
@@ -393,7 +380,23 @@ export class TrackService implements Resolve<any> {
         const track = [];
         const parser = new DOMParser();
         const xmlDoc: Document = parser.parseFromString(xmlStr, 'text/xml');
+        const errorList = xmlDoc.getElementsByTagName('parsererror');
+
+        if(errorList && errorList.length){
+            Array.prototype.forEach.call(errorList, (item) => {
+                console.error( 'Error in showGpxTrack parser -> ',  item.textContent )
+                this.ts.show({
+                    type: 'error',
+                    text:   item.textContent
+                });
+            });
+            return null;
+        }
+
+
+
         const forEach = Array.prototype.forEach;
+
         const arrTrkpt = [];
         forEach.call(xmlDoc.getElementsByTagName('trkpt'), (item, i) => {
             arrTrkpt.push(item);
@@ -427,7 +430,6 @@ export class TrackService implements Resolve<any> {
         this.showTrack(track, xmlDoc);
 
     }
-
     setMap(map: any) {
         this.map = map;
     }
@@ -462,47 +464,8 @@ export class TrackService implements Resolve<any> {
         console.log(trackId, points);
     }
 
-
-    private static getData(points) {
-        return {
-            'type': 'FeatureCollection',
-            'features': (() => {
-                const features = [];
-                points.forEach((item, i) => {
-                    const f = {
-                        properties: {
-                            color: item.color,
-                            point: item,
-                            id: item.id,
-                        },
-                        'type': 'Feature',
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': item
-                        }
-                    };
-                    features.push(f);
-                });
-                return features;
-            })()
-        };
-    }
-
-    private colorWorker(points: Array<Point>): Promise<any> {
-        const data = new Color(points).getColors();
-        return new Promise((resolve, reject) => {
-            resolve({data});
-        });
-
-    }
-
-
-
-
-
     marker(point: Point) {
         const map = this.mapService.map;
-        const mapboxgl = this.mapService.mapboxgl;
 
         const icoContainer = document.createElement('div');
         icoContainer.classList.add('track-icon');
@@ -627,7 +590,8 @@ export class TrackService implements Resolve<any> {
         }
     }
 
-    downloadTrack(points: Array<Point>) {
+    downloadTrack(track: Track) {
+        const points: Array<Point> = track.points;
         return this.socket.$emit('downloadTrack', this.formatBeforeSend(points))
             .then(d => {
                 console.log(d);

@@ -3,7 +3,6 @@ import { Component, Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { MenuService } from './service/menu.service';
 import {Track, TrackService } from './service/track.service';
-import { Track as Tr } from './service/track.var';
 import { MyMarkerService } from './service/my-marker.service';
 import { Marker } from './service/marker.service';
 import { MyMapMarker } from './service/my-marker.service';

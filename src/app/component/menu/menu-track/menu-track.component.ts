@@ -4,12 +4,8 @@ import { Io } from '../../../service/socket.oi.service';
 import { TrackService } from '../../../service/track.service';
 import { Router } from '@angular/router';
 import { fromEvent } from 'rxjs/observable/fromEvent';
-//import * as ss from 'node_modules/socket.io-stream/socket.io-stream.js';
 import * as ss from 'socket.io-stream/socket.io-stream.js';
-import { Subscriber } from 'rxjs/Subscriber';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/src/Subscription';
-import { Observer } from 'rxjs/Observer';
 import { MyMarkerService } from '../../../service/my-marker.service';
 
 const log = console.log;
@@ -50,7 +46,7 @@ const MENU: Item[] = [
     },
     {
         value: 'load',
-        text: 'DOWNLOAD_GPX',
+        text: 'UPLOAD_GPX',
         enctype: 'multipart/form-data',
     },
     {

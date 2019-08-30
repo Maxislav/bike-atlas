@@ -1,55 +1,62 @@
-import { Component, Injectable} from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 
 
-export class Message{
+export class Message {
     type: string;
     className: string;
     text: string;
     translate: string | undefined;
-    constructor(type, className, text, translate?){
+
+    constructor(type, className, text, translate?) {
         this.type = type || 'default';
         this.className = type || 'default';
         this.text = text;
-        if(translate)  this.translate = translate;
+        if (translate) this.translate = translate;
     }
-    remove(){}
+
+    remove() {
+    }
 }
 
-interface  M{
-    type?: string;
+type MESSAGE_TYPE = 'danger' | 'error' | 'warning' | 'success'
+
+interface M {
+    type?: MESSAGE_TYPE;
     className?: string;
     text?: string;
     translate?: string;
-};
+}
+
 
 @Injectable()
-export class ToastService{
+export class ToastService {
     public messages: Array<Message>;
-    constructor(){
+
+    constructor() {
         this.messages = [];
     }
 
 
-    show(message: M){
-        const  mess: Message = new Message(message.type, message.className, message.text, message.translate);
+    show(message: M) {
+        const mess: Message = new Message(message.type, message.className, message.text, message.translate);
         //message.className = message.type || 'default';
 
         const res = {
-            remove:  () => {
+            remove: () => {
                 const index = this.messages.indexOf(mess);
-                if(-1<index){
-                    this.messages.splice(index, 1)    
+                if (-1 < index) {
+                    this.messages.splice(index, 1);
                 }
             }
         };
 
         mess.remove = res.remove;
         this.messages.push(mess);
-        
-        setTimeout(()=>{
+
+        setTimeout(() => {
             res.remove();
         }, 5000);
-        return res
+        return res;
     }
 
 }
@@ -61,10 +68,11 @@ export class ToastService{
         './toast.component.less',
     ]
 })
-export class ToastComponent{
+export class ToastComponent {
     public messages: Array<Message>;
     private cl: string;
-    constructor(private ts: ToastService){
+
+    constructor(private ts: ToastService) {
         this.messages = ts.messages;
     }
 

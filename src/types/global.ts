@@ -1,11 +1,11 @@
 import { Marker } from '../app/service/marker.service';
 
-interface Geometry{
+interface Geometry {
     type: 'Polygon' | 'LineString',
     coordinates: Array<Array<number>>
 }
 
-export interface Feature{
+export interface Feature {
     type: 'Feature';
     geometry: Geometry
 }
@@ -41,23 +41,30 @@ interface ModuleInterface {
 declare var module: ModuleInterface;
 
 export interface LngLat extends Array<number> {
-    new(lng: number, lat: number) : LngLat
+    new(lng: number, lat: number): LngLat
+
     lng: number,
     lat: number
 }
 
 export interface MapMarker {
     new(HTMLElement, options: Object)
+
     setLngLat(lngLat: Array<number> | LngLat): this
+
     getLngLat(): LngLat
 
-    addTo(map:any)
+    addTo(map: any)
+
     remove(): this
+
     togglePopup()
 }
 
 export declare interface MapGl {
     new(object): this
+
+    onLoad: Promise<this>
 
     addControl(any): this
 
@@ -83,9 +90,11 @@ export declare interface MapGl {
 
     getSource(string): any
 
-    onLoad: Promise<this>
+    on(string, callbackFn: (e?: any) => void): this
 
-    on(string, Function): this
+    off(string, callbackFn: (e?: any) => void): this;
+
+    queryRenderedFeatures(e, params): Array<any>
 }
 
 export interface Popup {
@@ -106,7 +115,7 @@ export interface MapBoxGl {
     Popup: Popup,
     Map: MapGl
     Marker: MapMarker;
-    LngLat:  LngLat
+    LngLat: LngLat
 }
 
 
@@ -137,14 +146,15 @@ export interface MyMarker {
     lng: number,
     lat: number,
     title: string
+
     remove(): void
 }
 
-export interface User{
+export interface User {
     id: number;
     name: string;
     image: string;
-    deviceKeys?:Array<string>;
+    deviceKeys?: Array<string>;
     setting?: any;
     devices?: Array<Device>;
     markers: Array<MyMarker>;
@@ -152,23 +162,23 @@ export interface User{
 }
 
 export interface DeviceData {
-    id:string;
-    alt:number;
-    name:string;
-    azimuth:number;
-    date:string;
-    lat:number,
-    lng:number,
-    speed:number,
-    src:string;
-    image?:string,
-    device_key?:string;
-    ownerId?:number;
+    id: string;
+    alt: number;
+    name: string;
+    azimuth: number;
+    date: string;
+    lat: number,
+    lng: number,
+    speed: number,
+    src: string;
+    image?: string,
+    device_key?: string;
+    ownerId?: number;
     type: 'POINT' | 'BS',
     bs?: Array<DeviceData>
 }
 
-export  interface MapArea{
+export interface MapArea {
     id?: number;
     lng: number;
     lat: number;
@@ -178,7 +188,7 @@ export  interface MapArea{
     remove: () => this;
 }
 
-export  interface MapAreaList {
+export interface MapAreaList {
     layerId: string,
     update: (data: any) => this;
     remove: () => this;

@@ -1,8 +1,9 @@
 /**
  * Created by maxislav on 01.12.16.
  */
-import { Point, Track } from './track.var';
+import { Point } from './track.var';
 import { LngLat } from '../util/lngLat';
+import { Track } from './track.service';
 
 export class Util{
   constructor(){
