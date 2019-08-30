@@ -7,7 +7,7 @@ import * as R from 'ramda/dist/ramda';
 import { Util } from './util';
 import { Io } from './socket.oi.service';
 import { MapService } from './map.service';
-import {  Point } from './track.var';
+import { Point } from './track.var';
 import { distance } from '../util/distance';
 
 import * as dateformat from 'dateformat/lib/dateformat.js';
@@ -15,6 +15,7 @@ import { ToastService } from '../component/toast/toast.component';
 
 import { Resolve } from '@angular/router';
 import { Color } from '../util/get-color';
+
 const F = parseFloat;
 const I = parseInt;
 
@@ -24,7 +25,6 @@ import { MapGl, Popup } from '../../types/global';
 import { TElement } from '../util/at-element';
 
 declare var System: any;
-
 
 
 interface PointWithColor extends Point {
@@ -97,7 +97,7 @@ class TrackSrcPoints {
     public delPointSubject: Subject<number>;
 
     constructor(private points: Array<Point>, private  map: MapGl, public id: string) {
-        this.delPointSubject =   new Subject<number>();
+        this.delPointSubject = new Subject<number>();
         this.init();
     }
 
@@ -204,11 +204,11 @@ class TrackSrcPoints {
         const delClick = () => {
             editablePopup.remove();
             this.remove();
-            const index = this.points.findIndex(item => item.id === id );
+            const index = this.points.findIndex(item => item.id === id);
             this.points.splice(index, 1);
             this.init();
             this.show();
-            this.delPointSubject.next(id)
+            this.delPointSubject.next(id);
         };
 
         btn.addEventListener('click', delClick);
@@ -220,9 +220,11 @@ class TrackSrcPoints {
 
 export class Track {
     private pontsVisible = false;
-
+    public distance: string = '';
+    public maxSpeed: string = '';
     private _trackSrcPoints: TrackSrcPoints;
     public xmlDoc;
+    public date: string | Date;
     public data: {
         type: string,
         properties: { [key: string]: any },
@@ -267,23 +269,26 @@ export class Track {
         });
     }
 
-    public show() {
+    show() {
         this.data.geometry.coordinates = this.points;
+        this.calcDistance();
+        this.calcMaxSpeed();
+        this.date = this.points[0].date
         this.map.getSource(this.id).setData(this.data);
     }
 
-    public setTrackSrcPoints(trackSrcPoints: TrackSrcPoints): Track {
+    setTrackSrcPoints(trackSrcPoints: TrackSrcPoints): Track {
         this._trackSrcPoints = trackSrcPoints;
         return this;
     }
 
-    public hide() {
+    hide() {
         this.data.geometry.coordinates = [];
         this.map.getSource(this.id).setData(this.data);
         this._trackSrcPoints.hide();
     }
 
-    public showSrcPoint() {
+    showSrcPoint() {
         if (this.pontsVisible) {
             this._trackSrcPoints.hide();
         } else {
@@ -292,7 +297,7 @@ export class Track {
         this.pontsVisible = !this.pontsVisible;
     }
 
-    removePoint(id: number){
+    removePoint(id: number) {
         const index = this.points.findIndex(item => item.id === id);
         this.points.splice(index, 1);
         this.show();
@@ -308,6 +313,21 @@ export class Track {
     setXmlDoc(xml: TElement): this {
         this.xmlDoc = xml;
         return this;
+    }
+
+    private calcMaxSpeed(){
+        this.maxSpeed = Math.max.apply(null, this.points.map(item => item.speed)).toFixed(2);
+    }
+
+    private calcDistance() {
+
+        const reducer = (prev, next, index) => {
+            const current = this.points[index ? index -1 : index];
+            const d = distance(current, next);
+            return prev + d;
+        };
+
+        this.distance = this.points.reduce(reducer, 0).toFixed(2);
     }
 
     private getRandomColor() {
@@ -382,17 +402,16 @@ export class TrackService implements Resolve<any> {
         const xmlDoc: Document = parser.parseFromString(xmlStr, 'text/xml');
         const errorList = xmlDoc.getElementsByTagName('parsererror');
 
-        if(errorList && errorList.length){
+        if (errorList && errorList.length) {
             Array.prototype.forEach.call(errorList, (item) => {
-                console.error( 'Error in showGpxTrack parser -> ',  item.textContent )
+                console.error('Error in showGpxTrack parser -> ', item.textContent);
                 this.ts.show({
                     type: 'error',
-                    text:   item.textContent
+                    text: item.textContent
                 });
             });
             return null;
         }
-
 
 
         const forEach = Array.prototype.forEach;
@@ -430,16 +449,18 @@ export class TrackService implements Resolve<any> {
         this.showTrack(track, xmlDoc);
 
     }
+
     setMap(map: any) {
         this.map = map;
     }
 
-    removeTrack(track: Track){
+    removeTrack(track: Track) {
         const index = this.trackList.findIndex(item => item === track);
         track.remove();
-        this.trackList.splice(index, 1)
+        this.trackList.splice(index, 1);
 
     }
+
     showTrack(points: Array<Point>, xmlDoc?) {
         let layerId: string = this.getLayerId('line-') + '';
         const map = this.mapService.map;
@@ -533,14 +554,6 @@ export class TrackService implements Resolve<any> {
         }
     }
 
-    getRandom(min, max, int) {
-        let rand = min + Math.random() * (max - min);
-        if (int) {
-            rand = Math.round(rand) + '';
-        }
-        return rand;
-
-    }
 
     saveChange() {
         console.log(this.arrayDelPoints);
