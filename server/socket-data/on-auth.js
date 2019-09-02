@@ -1,16 +1,24 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const ProtoData = require("./proto-data");
 const deferred_1 = require("../deferred");
+const autobind_1 = require("../util/autobind");
 class OnAuth extends ProtoData {
     constructor(socket, util, chat, logger, gl520) {
         super(socket, util);
         this.chat = chat;
         this.logger = logger;
         this.gl520 = gl520;
-        //this.socket.on('onAuth', this.onAuth.bind(this, 'onAuth'));
-        const onAuth = this.onAuth.bind(this);
-        this.socket.$get('onAuth', onAuth);
+        this.socket.$get('onAuth', this.onAuth);
     }
     onAuth(req, res) {
         const data = req.data;
@@ -75,45 +83,10 @@ class OnAuth extends ProtoData {
                     deviceKeys.push(device.device_key);
                 });
             });
-            const deferred = new deferred_1.Deferred();
-            const arrLastPosition = [];
-            const emitLastPosition = () => {
-                this.socket.removeListener(hash, emitLastPosition);
-                util.clearHash(hash);
-                console.log('deviceKeys', deviceKeys);
-                Promise.all(deviceKeys.map(key => {
-                    this.logger.updateDevice(key, this.socket.id);
-                    this.gl520.updateDevice(key, this.socket.id);
-                    return util.getLastPosition(key)
-                        .then((row) => {
-                        if (row) {
-                            const loggerRow = {
-                                alt: 0,
-                                azimuth: 0,
-                                date: row.date,
-                                device_key: key,
-                                id: row.id,
-                                lng: row.lng,
-                                lat: row.lat,
-                                speed: row.speed,
-                                src: row.src,
-                                type: row.type,
-                                bs: row.bs,
-                                accuracy: row.accuracy
-                            };
-                            this.socket.emit('log', loggerRow);
-                        }
-                    });
-                }))
-                    .then((rows) => {
-                    deferred.resolve(rows);
-                })
-                    .catch(err => {
-                    console.log('err 2 -> ', err);
-                    return err;
-                });
-            };
-            this.socket.on(hash, emitLastPosition);
+            deviceKeys.forEach(key => {
+                this.logger.updateDevice(key, this.socket.id);
+                this.gl520.updateDevice(key, this.socket.id);
+            });
             const user = {
                 id: _user.user_id,
                 name: _user.name,
@@ -128,7 +101,8 @@ class OnAuth extends ProtoData {
                 result: 'ok',
                 user: user
             });
-            return deferred.promise;
+            //this.emitLastPosition(deviceKeys);
+            return Promise.resolve(user);
         })
             .catch(err => {
             console.log('Catch 3 -> ', err);
@@ -137,6 +111,40 @@ class OnAuth extends ProtoData {
                 message: err
             });
         });
+    }
+    emitLastPosition(deviceKeys) {
+        const deferred = new deferred_1.Deferred();
+        console.log('deviceKeys', deviceKeys);
+        Promise.all(deviceKeys.map(key => {
+            return this.util.getLastPosition(key)
+                .then((row) => {
+                if (row) {
+                    const loggerRow = {
+                        alt: 0,
+                        azimuth: 0,
+                        date: row.date,
+                        device_key: key,
+                        id: row.id,
+                        lng: row.lng,
+                        lat: row.lat,
+                        speed: row.speed,
+                        src: row.src,
+                        type: row.type,
+                        bs: row.bs,
+                        accuracy: row.accuracy
+                    };
+                    this.socket.emit('log', loggerRow);
+                }
+            });
+        }))
+            .then((rows) => {
+            deferred.resolve(rows);
+        })
+            .catch(err => {
+            console.log('err 2 -> ', err);
+            return err;
+        });
+        return deferred.promise;
     }
     getRound(...list) {
         const reducer = (accumulator, currentValue) => accumulator + currentValue;
@@ -162,5 +170,11 @@ class OnAuth extends ProtoData {
         return resArr;
     }
 }
+__decorate([
+    autobind_1.autobind(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], OnAuth.prototype, "onAuth", null);
 exports.OnAuth = OnAuth;
 //# sourceMappingURL=on-auth.js.map

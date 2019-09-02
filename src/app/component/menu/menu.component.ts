@@ -11,12 +11,11 @@ import {TrackService} from "../../service/track.service";
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
 import {FriendsService} from "../../service/friends.service";
-import {UserService} from "../../service/main.user.service";
+import { User, UserService } from '../../service/main.user.service';
 import {ToastService} from "../toast/toast.component";
 import {MapService} from "../../service/map.service";
 import {ChatService} from "../../service/chat.service";
 import {ngIfAnimation} from '../../animation/animation'
-import { User } from '../../../types/global';
 
 declare var document: any;
 declare const System: any;
@@ -34,10 +33,10 @@ export class MenuComponent{
 
     public menuOpen: boolean;
     public userName: string;
-    public invites: Array<User>;
+    public invites: Array<User> = [];
     public user: User;
     public weatherLayer: any;
-    public unViewedIds: Array<number>;
+    public unViewedIds: Array<number> = [];
 
     public isShowMenuAthlete: boolean = false;
     public isShowMenuTrack: boolean = false;
@@ -54,9 +53,9 @@ export class MenuComponent{
                 private chatService:ChatService,
                 ) {
 
-        this.user = userService.user;
-        this.invites = friend.invites;
-        this.unViewedIds = chatService.unViewedIds
+        this.user = this.userService.getUser();
+        //this.invites = friend.invites;
+        //this.unViewedIds = chatService.unViewedIds
     }
 
     onOpen(){
@@ -75,6 +74,7 @@ export class MenuComponent{
     }
 
     onOpenAthlete(){
+/*
         if(!this.user.name && !this.userService.other.devices.length){
             this.toast.show({
                 type: 'warning',
@@ -82,8 +82,8 @@ export class MenuComponent{
             })
         }else {
             this.isShowMenuAthlete = true
-            //this.menuService.menuAthlete = !this.menuService.menuAthlete;
         }
+*/
     }
 
 
@@ -136,9 +136,10 @@ export class MenuComponent{
 
 
     goToProfile(){
-        if(this.userService.user && this.userService.user.name){
+        this.router.navigate(['/auth/map/profile']);
+       /* if(this.userService.user && this.userService.user.name){
             this.router.navigate(['/auth/map/profile']);
-        }
+        }*/
     }
     goToFriends(){
         this.router.navigate(['/auth/map/friends']);

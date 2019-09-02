@@ -1,16 +1,13 @@
 import { Component, AfterViewInit, Injectable, NgZone } from '@angular/core';
 import { Directive, ElementRef, Input, Renderer } from '@angular/core';
-//import any = jasmine.any;
 import { MapService } from '../service/map.service';
 import { PositionSize } from '../service/position-size.service';
 import { LocalStorage } from '../service/local-storage.service';
 import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl.js';
 
 import { Resolve } from '@angular/router';
-import { AuthService, Setting } from '../service/auth.service';
-import { UserService } from '../service/main.user.service';
+import { Setting, UserService } from '../service/main.user.service';
 import { MapBoxGl, MapGl } from '../../types/global';
-//import '../../../lib/mapbox-gl/mapbox-gl.css'
 
 class MyMap extends mapboxgl.Map {
     onLoad: Promise<MyMap>;
@@ -61,7 +58,7 @@ export class MapResolver implements Resolve<any> {
     }
 })
 export class MapboxGlDirective implements AfterViewInit {
-    private setting: Setting = {};
+    private setting: Setting;
 
     get mapboxgl(): MapBoxGl {
         return this._mapboxgl;
@@ -90,7 +87,7 @@ export class MapboxGlDirective implements AfterViewInit {
                 public ngZone: NgZone,
                 private mapResolver: MapResolver) {
 
-        this.setting = userService.user.setting || {};
+        this.setting = userService.getSetting() || new Setting();
         this.center = [30.5, 50.5];
         this.el = el;
         this.renderer = renderer;

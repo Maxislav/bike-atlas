@@ -8,9 +8,9 @@ import { OneTrack } from './one-track.component/one-track.component';
 import { JournalService } from '../../service/journal.service';
 import { Point } from '../../service/track.var';
 import { UserService } from '../../service/main.user.service';
-import { Device } from '../../../types/global';
 import * as L from '../../../../lib/leaflet/leaflet-src.js';
 import {environment} from '../../../environments/environment';
+import { Device, DeviceService } from '../../service/device.service';
 
 declare var System: any;
 
@@ -57,13 +57,12 @@ export class JournalComponent implements OnInit, OnDestroy {
 
     constructor(
         private location: Location,
-        public route: ActivatedRoute,
         private journalService: JournalService,
         private el: ElementRef,
-        private userService: UserService
+        private deviceService: DeviceService
     ) {
 
-        this.deviceList = userService.user.devices;
+        this.deviceList = deviceService.getDeviceList();
         console.log('deviceList -> ', this.deviceList);
         this.list = journalService.list;
         this.selectDate = null;//this.journalService.selectDate;

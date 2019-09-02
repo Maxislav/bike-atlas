@@ -7,16 +7,18 @@ import { TailClass } from './tail.class';
 import { distance } from '../util/distance';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl.js';
 import {
     MapGl,
-    User,
+
     DeviceData,
     MapArea as Area,
     MapAreaList as AreaList,
-    Feature, Popup, MapMarker, MapBoxGl
+    Feature, Popup, MapMarker
 } from '../../types/global';
 import { LngLat } from '../util/lngLat';
 import { environment } from '../../environments/environment';
+import { User, UserService } from './main.user.service';
 
 
 export class Marker {
@@ -47,7 +49,7 @@ export class Marker {
     private iconMarker: MapMarker;
     private elapsed: string;
     public status: string = 'white';
-    private intervalUpdateMarker: number;
+    private intervalUpdateMarker: number = 0;
     private timer: Timer;
     private img: any;
 
@@ -60,7 +62,7 @@ export class Marker {
 
 
     /** @description creating and update user marker */
-    constructor(devData: DeviceData, private user: User, private mapboxgl: MapBoxGl, private map: MapGl, private timerService: TimerService) {
+    constructor(devData: DeviceData, private user: User, private map: MapGl, private timerService: TimerService) {
 
         console.log(devData.type);
         devData.bs = devData.bs ? devData.bs.filter(p => p.lat && p.lng) : [];
@@ -73,27 +75,6 @@ export class Marker {
         this.speedSubject = this.speedBehaviorSubject.asObservable();
         this.timer = new Timer(devData.date);
         this.layerId = Marker.getNewLayer();
-        const icoContainer = document.createElement('div');
-        icoContainer.classList.add('user-icon');
-        const img = this.img = new Image();
-
-
-        this.image = img.src = this.getDeviceImage(devData.device_key) || this.user.image || `${environment.hostPrefix}img/speedway_4_logo.jpg`;
-        icoContainer.appendChild(img);
-        this.icoContainer = icoContainer;
-
-        this.popup = new mapboxgl.Popup({
-            closeOnClick: false, offset: {
-                'bottom': [0, -20],
-            }, closeButton: false
-        })
-            .setLngLat([devData.lng, devData.lat])
-            .setHTML('<div>' + devData.name + '</div>')
-            .addTo(map);
-
-        this.iconMarker = new mapboxgl.Marker(icoContainer, {offset: [0, 0]})
-            .setLngLat([devData.lng, devData.lat])
-            .addTo(map);
 
 
         this.elapsed = '...';
@@ -113,6 +94,40 @@ export class Marker {
 
     }
 
+
+    setIcoImage(srcStr: string): this{
+        const icoContainer = document.createElement('div');
+        icoContainer.classList.add('user-icon');
+        const img = this.img = new Image();
+
+
+        this.image = img.src = srcStr || this.user.image || `${environment.hostPrefix}img/speedway_4_logo.jpg`;
+        icoContainer.appendChild(img);
+        this.icoContainer = icoContainer;
+
+
+
+        this.iconMarker = new mapboxgl.Marker(icoContainer, {offset: [0, 0]})
+            .setLngLat([this.lng, this.lat])
+            .addTo(this.map);
+        return this;
+
+    }
+
+    setIcoName(name: string): this{
+        this.popup = new mapboxgl.Popup({
+            closeOnClick: false, offset: {
+                'bottom': [0, -20],
+            }, closeButton: false
+        })
+            .setLngLat([this.lng, this.lat])
+            .setHTML('<div>' + name + '</div>')
+            .addTo(this.map);
+        return this;
+    }
+
+/*
+
     private getDeviceImage(deviceKey: string): string {
         if (this.user.devices) {
             return this.user.devices.find(device => {
@@ -122,6 +137,7 @@ export class Marker {
         return null;
 
     }
+*/
 
     update(devData: DeviceData): Marker {
         devData.bs = devData.bs ? devData.bs.filter(p => p.lat && p.lng) : [];
@@ -458,10 +474,11 @@ export class Marker {
 
 @Injectable()
 export class MarkerService {
-    constructor(private mapService: MapService, private timer: TimerService) {
+    constructor(private mapService: MapService, private timer: TimerService, private userService: UserService) {
     }
 
-    marker(devData: DeviceData, user: User): Marker {
-        return new Marker(devData, user, this.mapService.mapboxgl, this.mapService.map, this.timer);
+    marker(devData: DeviceData): Marker {
+        const user: User = this.userService.getUser();
+        return new Marker(devData, user, this.mapService.map, this.timer);
     }
 }

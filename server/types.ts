@@ -1,9 +1,9 @@
 export interface DeviceRow {
-    'id': number,
-    'user_id': number,
-    'device_key': string,
-    'name': string,
-    'phone': string,
+    id: number,
+    user_id: number,
+    device_key: string,
+    name: string,
+    phone: string,
     image: string
 }
 

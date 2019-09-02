@@ -1,6 +1,7 @@
 import * as ProtoData from './proto-data';
 import { Deferred } from '../deferred';
 import { DeviceRow, LoggerRow, User  } from '../types';
+import { autobind } from '../util/autobind';
 export class OnAuth extends ProtoData {
 
 
@@ -15,13 +16,11 @@ export class OnAuth extends ProtoData {
         this.chat = chat;
         this.logger = logger;
         this.gl520 = gl520;
-        //this.socket.on('onAuth', this.onAuth.bind(this, 'onAuth'));
-
-        const onAuth = this.onAuth.bind(this);
-        this.socket.$get('onAuth', onAuth);
+        this.socket.$get('onAuth', this.onAuth);
     }
 
-    onAuth(req, res) {
+    @autobind()
+    onAuth(req, res): void {
         const data = req.data;
         if (!data) return;
         let _user;
@@ -90,52 +89,11 @@ export class OnAuth extends ProtoData {
                         deviceKeys.push(device.device_key);
                     });
                 });
+                deviceKeys.forEach(key => {
+                    this.logger.updateDevice(key, this.socket.id);
+                    this.gl520.updateDevice(key, this.socket.id);
+                });
 
-                const deferred: Deferred<Array<Promise<LoggerRow>>> = new Deferred();
-
-                const arrLastPosition: Array<Promise<LoggerRow>> = [];
-                const emitLastPosition = () => {
-                    this.socket.removeListener(hash, emitLastPosition);
-                    util.clearHash(hash);
-                    console.log('deviceKeys', deviceKeys);
-
-                    Promise.all(deviceKeys.map(key => {
-                        this.logger.updateDevice(key, this.socket.id);
-                        this.gl520.updateDevice(key, this.socket.id);
-                        return util.getLastPosition(key)
-                            .then((row: LoggerRow) => {
-
-                                if(row){
-                                    const loggerRow = {
-                                        alt: 0,
-                                        azimuth: 0,
-                                        date: row.date,
-                                        device_key: key,
-                                        id: row.id,
-                                        lng: row.lng,
-                                        lat: row.lat,
-                                        speed: row.speed,
-                                        src: row.src,
-                                        type: row.type,
-                                        bs: row.bs,
-                                        accuracy: row.accuracy
-                                    };
-                                    this.socket.emit('log', loggerRow);
-                                }
-
-                            });
-
-                    }))
-                        .then((rows) => {
-                            deferred.resolve(rows);
-                        })
-                        .catch(err => {
-                            console.log('err 2 -> ', err);
-                            return err;
-                        });
-
-                };
-                this.socket.on(hash, emitLastPosition);
 
 
                 const user: User = {
@@ -153,7 +111,8 @@ export class OnAuth extends ProtoData {
                     result: 'ok',
                     user: user
                 });
-                return deferred.promise;
+                //this.emitLastPosition(deviceKeys);
+                return Promise.resolve(user)
             })
             .catch(err => {
                 console.log('Catch 3 -> ', err);
@@ -162,6 +121,48 @@ export class OnAuth extends ProtoData {
                     message: err
                 });
             });
+    }
+
+
+    private emitLastPosition(deviceKeys: Array<string>) : Promise <Array<Promise<LoggerRow>>>{
+        const deferred: Deferred<Array<Promise<LoggerRow>>> = new Deferred();
+
+        console.log('deviceKeys', deviceKeys);
+
+        Promise.all(deviceKeys.map(key => {
+
+            return this.util.getLastPosition(key)
+                .then((row: LoggerRow) => {
+
+                    if(row){
+                        const loggerRow = {
+                            alt: 0,
+                            azimuth: 0,
+                            date: row.date,
+                            device_key: key,
+                            id: row.id,
+                            lng: row.lng,
+                            lat: row.lat,
+                            speed: row.speed,
+                            src: row.src,
+                            type: row.type,
+                            bs: row.bs,
+                            accuracy: row.accuracy
+                        };
+                        this.socket.emit('log', loggerRow);
+                    }
+
+                });
+
+        }))
+            .then((rows) => {
+                deferred.resolve(rows);
+            })
+            .catch(err => {
+                console.log('err 2 -> ', err);
+                return err;
+            });
+        return deferred.promise
     }
 
     private getRound(...list: number[]) {

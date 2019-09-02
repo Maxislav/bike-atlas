@@ -45,10 +45,10 @@ export class ProfileComponent implements AfterViewInit{
                 private fb: FormBuilder,
                 userService: UserService
     ){
-        this.user = userService.user;
-        this.setting = userService.user.setting;
+
         this.socket = io.socket;
 
+        this.setting = userService.getSetting();
         console.log(Validators.required)
 
         this.profileForm = this.fb.group({

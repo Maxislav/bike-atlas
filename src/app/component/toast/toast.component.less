@@ -13,16 +13,17 @@ div{
   padding: 10px 15px;
   background: white;
   box-shadow: @box-shadow;
+  text-shadow: 0 0 2px white;
   &.danger, &.error{
-    background: @danger-background;
+    background:fadeout( @danger-background, 30%);
     color: white;
     text-shadow: 0 0 2px black;
   }
   &.warning{
-    background: @warning-background;
+    background: fadeout( @warning-background, 30%);;
   }
   &.success{
-    background: @success-background;
+    background:fadeout( @success-background, 30%);
   }
 }
 

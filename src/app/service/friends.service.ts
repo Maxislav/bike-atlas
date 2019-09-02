@@ -164,7 +164,9 @@ export class FriendsService {
     }
 
     getAllUsers(){
-        this.socket.$emit('getAllUsers', {hash: this.ls.userKey, id: this.userService.user.id})
+
+
+        this.socket.$emit('getAllUsers', {hash: this.ls.userKey, id: this.userService.id})
             .then(d=>{
                 console.log(d)
                 if(d && d.result=='ok'){

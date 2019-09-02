@@ -1,123 +1,163 @@
-
-import {Injectable} from "@angular/core";
-import {Device, User} from  '../../types/global';
-import {CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot} from "@angular/router";
-import {Io} from "./socket.oi.service";
-import {ToastService} from "../component/toast/toast.component";
-import {Router} from "@angular/router";
-import {Deferred} from "../util/deferred";
-import {AuthService} from './auth.service';
+import { Injectable } from '@angular/core';
+import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { Io } from './socket.oi.service';
+import { ToastService } from '../component/toast/toast.component';
+import { Router } from '@angular/router';
+import { Deferred } from '../util/deferred';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 
+export class User {
+    public id: string = null;
+    public image: string = null;
+    public  name: string = null;
+    private _initialData = {};
+    constructor() {
+        Object.keys(this).forEach(key => {
+            if(key!=='_initialData'){
+                this._initialData[key] = this[key]
+            }
+        })
 
+    }
+
+
+
+    update(data: User){
+        Object.keys(this).forEach(key => {
+            if(key!=='_initialData'){
+                this[key] = data[key]
+            }
+        })
+    }
+
+    clear(){
+        Object.keys(this._initialData).forEach(key => {
+            if(key!=='_initialData'){
+                this[key] = this._initialData[key]
+            }
+        })
+    }
+}
+
+
+export class Setting {
+    hill: false;
+    map: string = '';
+    lock =  true;
+    constructor(){
+
+    }
+    update(s){
+        Object.keys(this).forEach(key => {
+            this[key] = s[key]
+        })
+    }
+}
 
 
 @Injectable()
-export class UserService implements CanActivate{
+export class UserService  {
 
-    
 
-    private _user: User;
-    private _friends: Array<User> = [];
-    private _other: User;
+    public id;
+    private readonly user: User =  new User();
+    private readonly setting: Setting = new Setting();
+    private friends: Array<User> = [];
     private socket: any;
-    private images: {[userId:number]: String} ={};
-    private deferImage: {[userId:number]: Deferred<string>} = {}
 
 
-    constructor(private io: Io, private toast:ToastService, private router: Router){
+    constructor(
+        private io: Io,
+        private toast: ToastService,
+        private router: Router
+    ) {
         this.socket = io.socket;
-        this._user = {
-            name: null,
-            id: null,
-            image: null,
-            markers: []
-        };
-        this._other = {
-            id: null,
-            name: null,
-            image: null,
-            devices: [],
-            markers: []
-        };
-        this.socket.on('getUserImage', this.onUserImage.bind(this));
     }
 
-    canActivate(route: ActivatedRouteSnapshot,state: RouterStateSnapshot,) {
-        console.log(route, state);
-        if(!this.user.id){
-            this.toast.show({
-                type: 'warning',
-                translate: 'NOT_LOGGED'
-            });
-            this.router.navigate(['/auth/map']);
-        }
 
-        return !!this.user.id;
-    }
-
-    onUserImage(data){
-        this.images[data.id] = data.image;
-        this.deferImage[data.id].resolve(data.image)
+    onUserImage(data) {
 
     }
+
+    getSetting(){
+        return this.setting;
+    }
+
+
     getUserImageById(id: number) {
-        if(!this.deferImage[id] ){
+    /*    if (!this.deferImage[id]) {
             this.deferImage[id] = new Deferred();
             this.socket.$emit('getUserImage', id);
         }
-        return this.deferImage[id].promise;
+        return this.deferImage[id].promise;*/
+    }
+    getUser(): User{
+        return this.user
     }
 
-    clearUser(){
-       for (let opt in this._user){
-           this._user[opt] = null
-       }
+    setUser(u: User){
+        this.user.update(u);
+        this.id = this.user.id;
     }
-    clearAll(){
-        this.user.devices.forEach(device=>{
-            if(device.marker){
-                device.marker.remove()
+
+    clearUser() {
+        this.user.clear();
+        this.id = null;
+    }
+
+    setSetting(s){
+        this.setting.update(s)
+    }
+
+
+
+
+
+    clearAll() {
+       /* this.user.devices.forEach(device => {
+            if (device.marker) {
+                device.marker.remove();
             }
         });
-        this.friends.forEach(friend=>{
-            friend.devices.forEach(device=>{
-                if(device.marker){
-                    device.marker.remove()
+        this.friends.forEach(friend => {
+            friend.devices.forEach(device => {
+                if (device.marker) {
+                    device.marker.remove();
                 }
-            })
+            });
         });
-        while (this.friends.length){
-            this.friends.shift()
+        while (this.friends.length) {
+            this.friends.shift();
         }
-        this.clearUser();
-    }
-    
-    createDeviceOther(device){
-        this._other.devices.push(device);
-        return device
+        this.clearUser();*/
     }
 
+    createDeviceOther(device) {
+       /* this._other.devices.push(device);
+        return device;*/
+    }
 
 
-    get other():User {
+  /*  get other(): User {
         return this._other;
     }
 
-    set other(value:User) {
+    set other(value: User) {
         this._other = value;
     }
-  
 
-    set friends(friends: Array<User>){
-        if(!friends) return;
+
+    set friends(friends: Array<User>) {
+        if (!friends) return;
         this._friends.length = 0;
-        friends.forEach(friend=>{
-            this._friends.push(friend)
-        })
+        friends.forEach(friend => {
+            this._friends.push(friend);
+        });
     }
-    get friends(){
-        return this._friends
+
+    get friends() {
+        return this._friends;
     }
 
     get user(): User {
@@ -126,19 +166,18 @@ export class UserService implements CanActivate{
 
     set user(value: User) {
         console.log('set user ->', value);
-        for(let opt in value){
-            this._user[opt] = value[opt]
+        for (let opt in value) {
+            this._user[opt] = value[opt];
         }
-    }
+    }*/
 
-    public resolve(){
-
-    }
-
-    public reject(){
+   /* public resolve() {
 
     }
 
+    public reject() {
+
+    }*/
 
 
 }

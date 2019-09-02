@@ -1,11 +1,8 @@
 
 import {Component, EventEmitter, Output} from "@angular/core";
-import {DeviceService} from "../../../service/device.service";
+import { Device, DeviceService } from '../../../service/device.service';
 import {MapService} from "../../../service/map.service";
-import {LogService} from "../../../service/log.service";
 import {UserService} from "../../../service/main.user.service";
-import {fromEvent} from 'rxjs/observable/fromEvent'
-import { Device } from '../../../../types/global';
 
 
 
@@ -22,9 +19,9 @@ export class MenuAthleteComponent{
 
     @Output() onCloseMenuAthlete:EventEmitter<boolean> = new EventEmitter()
 
-    constructor(   private user: UserService, private mapService: MapService){
-        this.userDevices = user.user.devices;
-        this.otherDevices = user.other.devices;
+    constructor(   private user: UserService, private mapService: MapService, private deviceService: DeviceService ){
+        this.userDevices = deviceService.getDeviceList();
+        this.otherDevices = [];
         this.onCloseMenu = this.onCloseMenu.bind(this, false)
 
     }
@@ -53,11 +50,11 @@ export class MenuAthleteComponent{
 
     get friendDevices():Array<Device> {
         const devices = [];
-        this.user.friends.forEach(friend=>{
+     /*   this.user.friends.forEach(friend=>{
            friend.devices.forEach(dev=>{
                devices.push(dev)
            })
-        });
+        });*/
         return devices;
     }
     ngOnDestroy(){

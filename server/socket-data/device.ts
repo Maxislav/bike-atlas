@@ -1,14 +1,15 @@
-import { DeviceRow } from '../types';
+import { DeviceRow, LoggerRow } from '../types';
 
-const util = require('./util');
-const ProtoData = require('./proto-data');
+import * as ProtoData from './proto-data';
+import { autobind } from '../util/autobind';
 
 class Device extends ProtoData {
-    logger: any;
-    constructor(private socket, private util, logger) {
+    constructor(private socket, private util, private logger) {
         super(socket, util);
-        this.logger = logger;
-        socket.on('getDevice', this.getDevice.bind(this));
+
+        this.socket.$get('onDevices', this.onDevices);
+        this.socket.on('emitLastPosition', this.emitLastPosition);
+        //socket.on('getDevice', this.getDevice.bind(this));
         socket.on('onAddDevice', this.onAddDevice.bind(this, 'onAddDevice'));
         socket.on('onDelDevice', this.onDelDevice.bind(this));
         const onAddDeviceImage = this.onAddDeviceImage.bind(this);
@@ -54,31 +55,64 @@ class Device extends ProtoData {
     }
 
 
-    /**
-     *
-     * @param {boolean} isLastPosition
-     * @returns {Promise<R>}
-     */
-    getDevice(isLastPosition) {
+    @autobind()
+    onDevices(req, res) {
         const util = this.util;
         return util.getUserIdBySocketId(this.socket.id)
             .then(user_id => {
-
                 return util.getDeviceByUserId(user_id)
-                    .then(rows => {
-                        this.socket.emit('getDevice', {
+                    .then((rows: Array<DeviceRow>) => {
+                        res.end({
                             result: 'ok',
                             devices: rows
                         });
+
                     });
             })
             .catch((err) => {
                 this.socket.emit('getDevice', {
-                    result: false
+                    result: false,
+                    error: err.toString()
                 });
                 console.error('error getDevice->', err);
             });
 
+    }
+
+    @autobind()
+    emitLastPosition(): void{
+        this.util.getUserIdBySocketId(this.socket.id)
+            .then(user_id => {
+                return this.util.getDeviceByUserId(user_id)
+                    .then((rows:Array<DeviceRow>) => {
+                        return Promise.all(rows.map(row => {
+                            return this.util.getLastPosition(row.device_key)
+                                .then((row: LoggerRow) => {
+                                    if(row){
+                                        const loggerRow = {
+                                            alt: 0,
+                                            azimuth: 0,
+                                            date: row.date,
+                                            device_key: row.device_key,
+                                            id: row.id,
+                                            lng: row.lng,
+                                            lat: row.lat,
+                                            speed: row.speed,
+                                            src: row.src,
+                                            type: row.type,
+                                            bs: row.bs,
+                                            accuracy: row.accuracy
+                                        };
+                                        this.socket.emit('log', loggerRow);
+                                    }
+                                    return Promise.resolve(row)
+                                })
+                        }))
+                    })
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     onAddDevice(eName, device) {

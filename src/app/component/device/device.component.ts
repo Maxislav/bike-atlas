@@ -4,11 +4,11 @@ import {
 } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DeviceService } from '../../service/device.service';
+import { Device, DeviceService } from '../../service/device.service';
 import { NavigationHistory } from '../../app.component';
 import { ToastService } from '../toast/toast.component';
 import { UserService } from '../../service/main.user.service';
-import { Device, User } from '../../../types/global';
+import { User } from '../../../types/global';
 import {environment} from '../../../environments/environment';
 import { DeviceHelpComponent } from './device-help/device-help.component';
 
@@ -56,13 +56,13 @@ export class HelpContainer implements AfterViewInit {
     pure: false
 })
 export class IsOwner implements PipeTransform {
-    constructor(private user: UserService) {
+    constructor(private userService: UserService) {
 
     }
 
     transform(value, args?) {
         return value.filter(item => {
-            return item.ownerId == this.user.user.id;
+            return item.ownerId == this.userService.id;
         });
     }
 }
@@ -88,7 +88,6 @@ export class DeviceComponent implements AfterViewInit , OnInit{
         return this.deviceService.currentChildName
     } ;
 
-    @ViewChild('ololo') rr: any
     constructor(private location: Location,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
@@ -98,19 +97,14 @@ export class DeviceComponent implements AfterViewInit , OnInit{
                 private lh: NavigationHistory,
                 private el: ElementRef) {
 
-        this.user = userService.user;
 
-        this.device = {
-            ownerId: -1,
-            name: '',
-            id: '',
-            image: ''
-        };
+        this.device = Device.create();
+
         this.btnPreDel = {
             index: -1
         };
-        this.devices = deviceService.devices;
-        deviceService.updateDevices();
+        this.devices = deviceService.getDeviceList();
+        // deviceService.updateDevices();
     }
 
     onShowHelp() {
@@ -164,12 +158,7 @@ export class DeviceComponent implements AfterViewInit , OnInit{
     }
 
     reset() {
-        this.device = {
-            ownerId: -1,
-            name: '',
-            id: '',
-            image: ''
-        };
+        this.device =  Device.create();
     }
 
 
@@ -257,7 +246,7 @@ export class DeviceComponent implements AfterViewInit , OnInit{
 
     ngAfterViewInit(): void {
 
-        this.rr
+        //this.rr
        /* this.activatedRoute.firstChild.params.subscribe((data) => {
             this.deviceNameSelected  = (data.device)
 

@@ -3,7 +3,7 @@ import { Io } from './socket.oi.service';
 import { LocalStorage } from './local-storage.service';
 import { ActivatedRouteSnapshot, CanActivate, Resolve, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { FriendsService } from './friends.service';
-import { UserService } from './main.user.service';
+import { Setting, UserService } from './main.user.service';
 import { ChatService } from './chat.service';
 import { ToastService } from '../component/toast/toast.component';
 import { Deferred } from '../util/deferred';
@@ -12,13 +12,8 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { autobind } from '../util/autobind';
 import { DeviceService } from './device.service';
+import { LogService } from './log.service';
 
-export interface Setting {
-    hill?: boolean;
-    id?: number;
-    map?: string;
-    lock?: boolean;
-}
 
 
 @Injectable()
@@ -27,7 +22,6 @@ export class AuthService implements CanActivate {
     private _userId: number;
     private _userName: string = null;
     private _userImage: string = null;
-    private _setting: Setting;
     public can: Subject<boolean> = new Subject();
 
     constructor(
@@ -39,28 +33,17 @@ export class AuthService implements CanActivate {
         private toast: ToastService,
         private myMarkerService: MyMarkerService,
         private  deviceService: DeviceService,
+        private logService: LogService,
         private router: Router
     ) {
         this.socket = io.socket;
-        this._setting = {};
         this.socket.on('connect', this.onConnect);
-        this.socket.on('disconnect', (d) => {
-            console.info('disconnect');
-            toast.show({
-                type: 'warning',
-                text: 'You are disconnected'
-            });
-        });
+        this.socket.on('disconnect', this.onDisconnect);
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         return this.can;
     }
-
-
-    /*  onAuth() {
-          return this.onConnect();
-      }*/
 
     onEnter({name, pass}) {
         return this.socket
@@ -90,19 +73,23 @@ export class AuthService implements CanActivate {
 
     @autobind()
     onAuth(){
-        console.info('connect');
+        console.info('onAuth');
         return this.socket.$get('onAuth', {
             hash: this.ls.userKey
         }).then((d) => {
             if (d.result == 'ok') {
-                this.userService.user = d.user;
-                this.userService.friends = d.user.friends;
-                this.socket.emit(d.user.hash);
-                this.friend.getInvites();
+                this.userService.setUser(d.user);
+                this.deviceService.onDevices()
+                    .then(() => {
+                      this.logService.emitLastPosition()
+                    })
+
+                //this.userService.friends = d.user.friends;
+               /* this.friend.getInvites();
                 this.chatService.getUnViewed(true);
-                this.myMarkerService.addMarkers(d.user.markers);
+                this.myMarkerService.addMarkers(d.user.markers);*/
             } else {
-                this.userName = null;
+                this.userService.clearUser();
             }
             this.can.next(true);
         });
@@ -110,10 +97,21 @@ export class AuthService implements CanActivate {
 
     @autobind()
     onConnect() {
+       this.toast.show({
+            type: 'success',
+            text: 'You\'r onair'
+        });
        this.onAuth()
 
     }
-
+    @autobind()
+    onDisconnect(){
+        console.info('disconnect');
+        this.toast.show({
+            type: 'warning',
+            text: 'You are disconnected'
+        });
+    }
 
     @autobind()
     onExit(e: Event) {
@@ -131,40 +129,6 @@ export class AuthService implements CanActivate {
             });
 
     }
-
-
-    get userName() {
-        return this._userName;
-    }
-
-    set userName(name) {
-        this._userName = name;
-    }
-
-    get setting(): Setting {
-        return this._setting;
-    }
-
-    set setting(value: Setting) {
-        this._setting = value;
-    }
-
-    get userImage(): string {
-        return this._userImage;
-    }
-
-    set userImage(value: string) {
-        this._userImage = value;
-    }
-
-    get userId(): number {
-        return this._userId;
-    }
-
-    set userId(value: number) {
-        this._userId = value;
-    }
-
 
 }
 

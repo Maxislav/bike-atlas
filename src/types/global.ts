@@ -156,9 +156,7 @@ export interface User {
     image: string;
     deviceKeys?: Array<string>;
     setting?: any;
-    devices?: Array<Device>;
     markers: Array<MyMarker>;
-
 }
 
 export interface DeviceData {

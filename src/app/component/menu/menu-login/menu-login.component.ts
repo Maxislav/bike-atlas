@@ -25,20 +25,17 @@ export class MenuLoginComponent {
     private name: string;
     private pass: string;
     private socket;
-    public user: User;
 
     constructor(private router: Router,
                 private ms: MenuService,
                 private  io: Io,
                 private md5: Md5,
                 private ls: LocalStorage,
-                public as: AuthService,
+                public authService: AuthService,
                 private ds: DeviceService,
                 private ts: ToastService,
                 private friend: FriendsService,
-            private userService: UserService
     ) {
-        this.user = userService.user;
         this.socket = io.socket;
     }
 
@@ -54,15 +51,11 @@ export class MenuLoginComponent {
 
     onEnter() {
 
-        this.as.onEnter({
+        this.authService.onEnter({
             name: this.name,
             pass: this.md5.hash(this.pass)
         })
-       /* this.loginService
-            .onEnter({
-                name: this.name,
-                pass: this.md5.hash(this.pass)
-            });*/
+
     }
 
     goToProfile(){
@@ -71,7 +64,7 @@ export class MenuLoginComponent {
     }
 
     onExit(e) {
-        this.as.onExit(e);
+        this.authService.onExit(e);
     }
     goToFriends(){
         this.ms.menuOpenLogin = false

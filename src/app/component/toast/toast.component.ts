@@ -77,6 +77,6 @@ export class ToastComponent {
     }
 
 
-};
+}
 
 

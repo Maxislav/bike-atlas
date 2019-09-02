@@ -43,10 +43,10 @@ export class OneTrack implements OnInit, AfterViewInit{
 
     }
     ngOnInit(): void {
-        this.userService.getUserImageById(this.track.userId)
+        /*this.userService.getUserImageById(this.track.userId)
             .then(image=>{
                 this.image = image;
-            })
+            })*/
     }
     index: number;
     @Input() track: {points:Array<any>, userId: number, name: string};

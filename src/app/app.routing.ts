@@ -16,7 +16,6 @@ import { NoFoundComponent } from './no-found.component';
 import { AllUserComponent } from './component/all-user/all-user.component';
 import { StravaComponent } from './component/strava-component/strava-component';
 import { StravaAuthComponent } from './component/strava-component/strava-auth-component';
-import { UserService } from './service/main.user.service';
 import { GtgbcComponent } from './component/gtgbc/gtgbc.component';
 import { DeviceHelpComponent } from './component/device/device-help/device-help.component';
 

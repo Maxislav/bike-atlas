@@ -3,8 +3,7 @@ import {Router} from "@angular/router";
 import {NavigationHistory} from "../../app.component";
 import {Location} from '@angular/common';
 import {PrivateAreaService} from "../../service/private.area.service";
-import {UserService} from "../../service/main.user.service";
-import {Setting} from "../../service/auth.service";
+import { Setting, UserService } from '../../service/main.user.service';
 import {distance} from "../../util/distance";
 @Component({
     //noinspection TypeScriptUnresolvedVariable
@@ -41,7 +40,7 @@ export class PrivateArea{
         };
         
         this.areas = areaService.areas;
-        this.setting = userService.user.setting;
+        this.setting = userService.getSetting();
         this.areaService.onLoadMap
             .then(map=>{
                 this.map = map;
