@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Io } from './socket.oi.service';
 import { LocalStorage } from './local-storage.service';
 import { FriendsService } from './friends.service';
-import { Marker } from './marker.service';
+import { Marker } from '../util/marker';
+import {DeviceLogData} from '../../types/global'
+//import { Marker } from './marker.service';
 
 
 
@@ -38,6 +40,10 @@ export class Device implements DeviceData {
 
     get marker(): Marker {
         return this._marker;
+    }
+
+    updateData(deviceLogData: DeviceLogData){
+
     }
 
 

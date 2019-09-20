@@ -9,6 +9,7 @@
     "removeComments": false,
     "rootDir": "./",
     "outDir": "dist/",
+    "baseUrl": "./",
     "typeRoots" : ["./src/@types"]
 
   },

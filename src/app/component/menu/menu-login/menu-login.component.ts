@@ -11,7 +11,6 @@ import {DeviceService} from "../../../service/device.service";
 import {LogService} from "../../../service/log.service";
 import {FriendsService} from "../../../service/friends.service";
 import {UserService} from "../../../service/main.user.service";
-import { User } from '../../../../types/global';
 //import {RouterLink} from "@angular/router-deprecated";
 
 @Component({

@@ -5,11 +5,10 @@ import {Router} from "@angular/router";
 import {NavigationHistory} from "../../app.component";
 import {Io} from "../../service/socket.oi.service";
 import {ToastService} from "../toast/toast.component";
-import {UserService} from "../../service/main.user.service";
+import { User, UserService } from '../../service/main.user.service';
 import {PrivateAreaService} from "../../service/private.area.service";
 import {hashgeneral} from "../../util/hash";
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { User } from '../../../types/global';
 
 declare const module: any;
 declare const System: any;

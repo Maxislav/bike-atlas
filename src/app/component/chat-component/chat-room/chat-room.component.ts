@@ -18,7 +18,7 @@ export interface Message{
 
 
 export interface Room{
-    id: number;
+    id: string;
     name: string
     messages: Array<Message>;
     isActive: boolean
@@ -38,7 +38,7 @@ interface MyNode extends Node{
 })
 export class ChatRoomComponent implements OnInit, AfterViewInit{
 
-    private id: number;
+    private id: string;
 
     @Input() room: Room;
     name: String;

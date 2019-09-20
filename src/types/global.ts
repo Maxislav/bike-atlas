@@ -150,16 +150,8 @@ export interface MyMarker {
     remove(): void
 }
 
-export interface User {
-    id: number;
-    name: string;
-    image: string;
-    deviceKeys?: Array<string>;
-    setting?: any;
-    markers: Array<MyMarker>;
-}
 
-export interface DeviceData {
+export interface DeviceLogData {
     id: string;
     alt: number;
     name: string;
@@ -173,7 +165,7 @@ export interface DeviceData {
     device_key?: string;
     ownerId?: number;
     type: 'POINT' | 'BS',
-    bs?: Array<DeviceData>
+    bs?: Array<{lng: number, lat: number, range: number, rxLevel}>,
 }
 
 export interface MapArea {

@@ -7,8 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Device, DeviceService } from '../../service/device.service';
 import { NavigationHistory } from '../../app.component';
 import { ToastService } from '../toast/toast.component';
-import { UserService } from '../../service/main.user.service';
-import { User } from '../../../types/global';
+import { User, UserService } from '../../service/main.user.service';
 import {environment} from '../../../environments/environment';
 import { DeviceHelpComponent } from './device-help/device-help.component';
 

@@ -6,7 +6,7 @@ import {ToastService} from "../toast/toast.component";
 import {Router, ActivatedRoute} from "@angular/router";
 import {ChatService} from "../../service/chat.service";
 import {NavigationHistory} from "../../app.component";
-import { User } from '../../../types/global';
+import { User } from 'src/app/service/main.user.service';
 
 
 @Directive({
@@ -43,10 +43,10 @@ export class FriendsComponent{
                 private router: Router,
                 private chatService: ChatService){
 
-        this.allUsers = friendsService.users;
-        this.invites = friendsService.invites;
-        this.friends = friendsService.friends;
-        this.myInvites = friendsService.myInvites;
+        //this.allUsers = friendsService.users;
+        //this.invites = friendsService.invites;
+        //this.friends = friendsService.friends;
+       // this.myInvites = friendsService.myInvites;
         friendsService.getFriends()
     }
 

@@ -4,7 +4,7 @@ import {Injectable} from "@angular/core";
 import {Room, Message} from "../component/chat-component/chat-room/chat-room.component";
 import {Io} from "./socket.oi.service";
 import {Deferred} from "../util/deferred";
-import { User } from '../../types/global';
+import { User } from 'src/app/service/main.user.service';
 
 interface ResMessage {
     userId: number
@@ -22,7 +22,7 @@ export class ChatService{
     roomsObj: {[id:number]:Room} = {};
     private socket;
     unViewedDefer: Deferred<any>;
-    private _unViewedIds: Array<number> = [];
+    private _unViewedIds: Array<string> = [];
     addChatUnViewed: Function;
 
     constructor(private io: Io){
@@ -31,7 +31,7 @@ export class ChatService{
         this.unViewedDefer = new Deferred()
     }
 
-    onChat(data: ResMessage){
+    onChat(data: any){
         console.log(data)
         this.putMessage(data.userId, {
             id: data.id,
@@ -42,17 +42,17 @@ export class ChatService{
         })
     }
 
-    get unViewedIds(): Array<number>{
+    get unViewedIds(): Array<string>{
         return this._unViewedIds
     }
-    set unViewedIds(ids: Array<number>){
+    set unViewedIds(ids: Array<string>){
         this._unViewedIds.length = 0;
         ids.forEach(id=>{
             this._unViewedIds.push(id)
         })
     }
     
-    resolveUnViewedIds(userId: number){
+    resolveUnViewedIds(userId: string){
         const index = this.unViewedIds.indexOf(userId)
         if(-1<index){
             this.unViewedIds.splice(index,1)
@@ -79,13 +79,13 @@ export class ChatService{
         return this.unViewedDefer.promise
     }
 
-    getMessages(roomId: number){
+    getMessages(roomId: string){
         if(!this.messages[roomId]){
             this.messages[roomId] = []
         }
         return this.messages[roomId]
     }
-    putMessage(roomId: number, message: Message){
+    putMessage(roomId: string, message: Message){
         if(!this.messages[roomId]){
             this.messages[roomId] = []
         }
@@ -112,7 +112,7 @@ export class ChatService{
         return this.socket.$emit('chatResolveUnViewed', ids)
     }
 
-    clearRoomMessage(roomId: number){
+    clearRoomMessage(roomId: string){
         this.messages[roomId].length = 0
     }
 
@@ -125,8 +125,9 @@ export class ChatService{
             this.roomsObj[user.id].isActive = true
         }else{
             const room = {
-                name: user.name,
                 id: user.id,
+                name: user.name,
+
                 isActive : true,
                 messages: this.getMessages(user.id)
             };
@@ -135,7 +136,7 @@ export class ChatService{
         }
 
     }
-    onSend(outId: number, message: Message): Promise<any>{
+    onSend(outId: string, message: Message): Promise<any>{
         return this.socket.$emit('onChatSend', {
             id: outId,
             text:message.text
@@ -152,7 +153,7 @@ export class ChatService{
          })
             
     }
-    closeRoom(id: number){
+    closeRoom(id: string){
         const index = this.rooms.indexOf(this.roomsObj[id]);
         if(-1<index){
             this.rooms.splice(index,1)
@@ -161,7 +162,7 @@ export class ChatService{
         }
     }
 
-    chatHistory(userId: number){
+    chatHistory(userId: string){
         this.socket.$emit('chatHistory', userId)
             .then(arr=>{
                 arr.forEach(mes=>{

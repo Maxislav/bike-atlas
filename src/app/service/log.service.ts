@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Io } from './socket.oi.service';
-import { Device, DeviceService } from './device.service';
+import { Device, DeviceData, DeviceService } from './device.service';
 import { MarkerService, Marker } from './marker.service';
 import { UserService } from './main.user.service';
 import { deepCopy } from '../util/deep-copy';
-import { DeviceData, User } from '../../types/global';
+import { DeviceLogData } from '../../types/global';
 import { autobind } from '../util/autobind';
 
 //import {MarkerService} from "./marker.service";
@@ -41,13 +41,16 @@ export class LogService {
 
         if (!devData) return;
         const device: Device = this.deviceService.getDeviceByDeviceKey(devData.device_key);
-        if (device && !this.devices[device.device_key]) {
+
+
+
+        /*if (device && !this.devices[device.device_key]) {
             this.devices[device.device_key] = device;
             const marker = this.markerService.marker(devData);
             marker.setIcoImage(device.image)
                 .setIcoName(device.name);
             device.setMarker(marker);
-        }
+        }*/
 
         /*let user: any;
         let device: Device = this.getDevice(this.user.user, devData);

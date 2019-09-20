@@ -11,7 +11,7 @@ import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl.js';
 import {
     MapGl,
 
-    DeviceData,
+
     MapArea as Area,
     MapAreaList as AreaList,
     Feature, Popup, MapMarker
@@ -19,6 +19,7 @@ import {
 import { LngLat } from '../util/lngLat';
 import { environment } from '../../environments/environment';
 import { User, UserService } from './main.user.service';
+import { DeviceData } from 'src/app/service/device.service';
 
 
 export class Marker {
@@ -62,7 +63,7 @@ export class Marker {
 
 
     /** @description creating and update user marker */
-    constructor(devData: DeviceData, private user: User, private map: MapGl, private timerService: TimerService) {
+    constructor(devData: any, private user: User, private map: MapGl, private timerService: TimerService) {
 
         console.log(devData.type);
         devData.bs = devData.bs ? devData.bs.filter(p => p.lat && p.lng) : [];
@@ -139,7 +140,7 @@ export class Marker {
     }
 */
 
-    update(devData: DeviceData): Marker {
+    update(devData: any): Marker {
         devData.bs = devData.bs ? devData.bs.filter(p => p.lat && p.lng) : [];
 
         const prevLngLat: Point = new Point(this.lng, this.lat);
