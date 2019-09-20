@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
+import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector } from '@angular/core';
 import { Io } from './socket.oi.service';
 import { LocalStorage } from './local-storage.service';
 import { FriendsService } from './friends.service';
 import { Marker } from '../util/marker';
-import {DeviceLogData} from '../../types/global'
+import { DeviceLogData, MapGl } from '../../types/global';
+import { LogData } from 'src/types/global';
+import { LngLat } from 'src/app/util/lngLat';
+import { DeviceIconComponent } from 'src/app/component/device-icon-component/device-icon-component';
+
 //import { Marker } from './marker.service';
-
-
 
 
 export interface DeviceData {
@@ -24,32 +26,71 @@ export class Device implements DeviceData {
     name: string = null;
     phone: string = null;
     image: string = null;
-    private _marker: Marker = null;
-    constructor(d: DeviceData) {
+    lngLat: LngLat;
+    private marker: Marker = null;
+    private iconEl: HTMLElement;
+
+
+    constructor(
+        d: DeviceData,
+        private map: MapGl,
+        private injector: Injector,
+        private applicationRef: ApplicationRef,
+        private componentFactoryResolver: ComponentFactoryResolver
+    ) {
         if (d) {
-            Object.keys(this).forEach(key => {
-                this[key] = d[key];
-            });
+            [
+                'id',
+                'user_id',
+                'device_key',
+                'string',
+                'phone',
+                'image',
+                'lng',
+                'lat'
+            ]
+                .forEach(key => {
+                    this[key] = d[key];
+                });
         }
+
+
+
+
     }
 
-    setMarker(marker: Marker): this {
-        this._marker = marker;
+    setIconEl(iconEl: HTMLElement) {
+
         return this;
     }
 
-    get marker(): Marker {
-        return this._marker;
+    onMarker(logData: LogData) {
+        this.lngLat = new LngLat(logData.lng, logData.lat);
+        if (!this.marker) {
+            this.markerCreate(logData);
+        } else {
+            this.marker
+                .setLngLat(this.lngLat);
+        }
     }
 
-    updateData(deviceLogData: DeviceLogData){
+    private markerCreate(logData: LogData) {
+        this.marker = new Marker(
+            this.map,
+            this.injector,
+            this.applicationRef,
+            this.componentFactoryResolver)
+            .setDevice(this)
+            .setImage(this.image)
+            .setLngLat(this.lngLat)
+            .setDate(logData.date)
+            .addToMap();
 
     }
 
-
-    static create(): Device {
-        return new Device(null);
-    }
+    /*static create(map: MapGl): Device {
+        return new Device(null, map);
+    }*/
 }
 
 
@@ -59,12 +100,20 @@ export class DeviceService {
     private readonly devices: Array<Device> = [];
     private socket: any;
     public currentChildName: string;
+    private map: MapGl;
 
-    constructor(private io: Io,
+    constructor(
+        private io: Io,
+        private injector: Injector,
+        private applicationRef: ApplicationRef,
+        private componentFactoryResolver: ComponentFactoryResolver
     ) {
         this.socket = io.socket;
-        //this.devices = user.user.devices;
+    }
 
+    setMapGl(map): DeviceService {
+        this.map = map;
+        return this;
     }
 
     getDeviceList() {
@@ -72,6 +121,17 @@ export class DeviceService {
     }
 
     getDeviceByDeviceKey(key: string): Device {
+        const device = this.devices.find(item => item.device_key === key);
+        if (!device) {
+            const d = new Device(
+                null,
+                this.map,
+                this.injector,
+                this.applicationRef,
+                this.componentFactoryResolver);
+            d.device_key = key;
+            this.devices.push(d);
+        }
         return this.devices.find(item => item.device_key === key);
     }
 
@@ -81,7 +141,15 @@ export class DeviceService {
                 if (d && d.result == 'ok') {
                     this.devices.length = 0;
                     d.devices.forEach(item => {
-                        const device = new Device(item);
+                        const device = new Device(
+                            item,
+                            this.map,
+                            this.injector,
+                            this.applicationRef,
+                            this.componentFactoryResolver
+                        );
+
+
                         this.devices.push(device);
                     });
                     return Promise.resolve(this.devices);

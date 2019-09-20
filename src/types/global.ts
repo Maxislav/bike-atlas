@@ -47,6 +47,22 @@ export interface LngLat extends Array<number> {
     lat: number
 }
 
+
+export interface LogData {
+    id: string;
+    device_key: string;
+    speed: number;
+    azimuth: number;
+    alt: number;
+    lng: number;
+    lat: number;
+    type: 'POINT' | 'BS';
+    date: string;
+    bs?: Array<{lng: number, lat: number, range: number, rxLevel}>,
+    accuracy?: number
+}
+
+
 export interface MapMarker {
     new(HTMLElement, options: Object)
 
@@ -94,7 +110,8 @@ export declare interface MapGl {
 
     off(string, callbackFn: (e?: any) => void): this;
 
-    queryRenderedFeatures(e, params): Array<any>
+    queryRenderedFeatures(e, params): Array<any>;
+    fitBounds(l1:any, l2: any)
 }
 
 export interface Popup {

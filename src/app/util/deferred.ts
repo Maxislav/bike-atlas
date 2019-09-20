@@ -20,14 +20,14 @@ export class Deferred<T> {
         this._resolveValue = value;
         if (this._resolve) this._resolve(value);
         this.status = 1;
-        return this;
+        return <Deferred<T>>this;
     }
 
     reject(value: T): Deferred<T> {
         this._rejectValue = value;
         this.status = 2;
         if (this._reject) this._reject(value);
-        return this;
+        return <Deferred<T>>this;
     }
 
 }

@@ -5,6 +5,7 @@ import { Injectable, ApplicationRef } from '@angular/core';
 import { SimpleChanges, OnChanges } from '@angular/core';
 import { LocalStorage } from '../service/local-storage.service';
 import { MapBoxGl, MapGl } from '../../types/global';
+import { Deferred } from 'src/app/util/deferred';
 
 
 @Injectable()
@@ -20,10 +21,10 @@ export class MapService {
     public foo: Function;
     public pitch: string;
     public bearing: string;
-    private _onLoad: Promise<any>;
     private _mapboxgl: MapBoxGl;
-    private _resolve: Function;
+    private onLoadDeferred: Deferred<MapGl>;
     socket: any;
+    public onLoad: Promise<MapGl>;
 
     // public ls: LocalStorage
     //private ref: ApplicationRef
@@ -34,9 +35,10 @@ export class MapService {
             load: []
         };
 
-        this._onLoad = new Promise((resolve, reject) => {
-            this._resolve = resolve;
-        });
+
+
+        this.onLoadDeferred = new Deferred<MapGl>();
+        this.onLoad = this.onLoadDeferred.promise;
 
     }
 
@@ -51,7 +53,7 @@ export class MapService {
             let LngLat = map.getCenter();
             this.lngMap = LngLat.lng.toFixed(4);
             this.latMap = LngLat.lat.toFixed(4);
-            this._resolve(map);
+            this.onLoadDeferred.resolve(this.map);
             this.ref.tick();
         });
 
@@ -100,9 +102,7 @@ export class MapService {
 
     }
 
-    get onLoad(): Promise<any> {
-        return this._onLoad;
-    }
+
 
     get mapboxgl(): MapBoxGl {
         return this._mapboxgl;

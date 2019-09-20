@@ -97,7 +97,7 @@ export class DeviceComponent implements AfterViewInit , OnInit{
                 private el: ElementRef) {
 
 
-        this.device = Device.create();
+        //this.device = Device.create();
 
         this.btnPreDel = {
             index: -1
@@ -157,7 +157,7 @@ export class DeviceComponent implements AfterViewInit , OnInit{
     }
 
     reset() {
-        this.device =  Device.create();
+        //this.device =  Device.create();
     }
 
 

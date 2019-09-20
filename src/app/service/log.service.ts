@@ -4,10 +4,11 @@ import { Device, DeviceData, DeviceService } from './device.service';
 import { MarkerService, Marker } from './marker.service';
 import { UserService } from './main.user.service';
 import { deepCopy } from '../util/deep-copy';
-import { DeviceLogData } from '../../types/global';
+import { DeviceLogData, LogData } from '../../types/global';
 import { autobind } from '../util/autobind';
 
 //import {MarkerService} from "./marker.service";
+
 
 
 @Injectable()
@@ -36,13 +37,13 @@ export class LogService {
 
 
     @autobind()
-    log(devData: DeviceData) {
-        console.log('log -> ', devData);
+    log(logData: LogData) {
+        console.log('log -> ', logData);
 
-        if (!devData) return;
-        const device: Device = this.deviceService.getDeviceByDeviceKey(devData.device_key);
+        if (!logData) return;
+        const device: Device = this.deviceService.getDeviceByDeviceKey(logData.device_key);
 
-
+        device.onMarker(logData)
 
         /*if (device && !this.devices[device.device_key]) {
             this.devices[device.device_key] = device;

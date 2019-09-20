@@ -13,7 +13,8 @@ import { Subject } from 'rxjs/Subject';
 import { autobind } from '../util/autobind';
 import { DeviceService } from './device.service';
 import { LogService } from './log.service';
-
+import { MapService } from 'src/app/service/map.service';
+import { MapGl } from 'src/types/global';
 
 
 @Injectable()
@@ -34,7 +35,8 @@ export class AuthService implements CanActivate {
         private myMarkerService: MyMarkerService,
         private  deviceService: DeviceService,
         private logService: LogService,
-        private router: Router
+        private router: Router,
+        private mapService: MapService
     ) {
         this.socket = io.socket;
         this.socket.on('connect', this.onConnect);
@@ -72,40 +74,50 @@ export class AuthService implements CanActivate {
     }
 
     @autobind()
-    onAuth(){
+    onAuth() {
         console.info('onAuth');
-        return this.socket.$get('onAuth', {
-            hash: this.ls.userKey
-        }).then((d) => {
-            if (d.result == 'ok') {
-                this.userService.setUser(d.user);
-                this.deviceService.onDevices()
-                    .then(() => {
-                      this.logService.emitLastPosition()
-                    })
+        return this.socket
+            .$get('onAuth', {
+                hash: this.ls.userKey
+            })
+            .then((d) => {
+                this.can.next(true);
 
-                //this.userService.friends = d.user.friends;
-               /* this.friend.getInvites();
-                this.chatService.getUnViewed(true);
-                this.myMarkerService.addMarkers(d.user.markers);*/
-            } else {
-                this.userService.clearUser();
-            }
-            this.can.next(true);
-        });
+                if (d.result == 'ok') {
+                    this.userService.setUser(d.user);
+                    //this.userService.friends = d.user.friends;
+                    /* this.friend.getInvites();
+                     this.chatService.getUnViewed(true);
+                     this.myMarkerService.addMarkers(d.user.markers);*/
+                } else {
+                    this.userService.clearUser();
+                }
+                return this.mapService.onLoad;
+
+
+            })
+            .then((map: MapGl) => {
+                this.deviceService
+                    .setMapGl(map)
+                    .onDevices()
+                    .then(() => {
+                        this.logService.emitLastPosition();
+                    });
+            });
     }
 
     @autobind()
     onConnect() {
-       this.toast.show({
+        this.toast.show({
             type: 'success',
             text: 'You\'r onair'
         });
-       this.onAuth()
+        this.onAuth();
 
     }
+
     @autobind()
-    onDisconnect(){
+    onDisconnect() {
         console.info('disconnect');
         this.toast.show({
             type: 'warning',

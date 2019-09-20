@@ -70,6 +70,7 @@ import { DashboardComponent } from './dasboard.component';
 import { LeafletMapDirective } from './directive/leaflet-map.directive';
 import { environment } from '../environments/environment';
 import { DeviceHelpComponent } from './component/device/device-help/device-help.component';
+import { DeviceIconComponent } from 'src/app/component/device-icon-component/device-icon-component';
 
 
 @Component({
@@ -183,7 +184,8 @@ export class PipeTranslateCompiler implements TranslateCompiler {
         FriendsComponent,
         PrivateArea,
         NoFoundComponent,
-        GtgbcComponent
+        GtgbcComponent,
+        DeviceIconComponent
     ],
 
     /** Сервисы */
@@ -219,7 +221,8 @@ export class PipeTranslateCompiler implements TranslateCompiler {
 
     ],
     entryComponents: [
-        MyInputPopupComponent
+        MyInputPopupComponent,
+        DeviceIconComponent
     ],
     bootstrap: [
         AppComponent
