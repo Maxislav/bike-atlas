@@ -8,6 +8,7 @@ import { DeviceIconComponent } from 'src/app/component/device-icon-component/dev
 import { ComponentRef } from '@angular/core/src/linker/component_factory';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
+import { LogData } from 'src/types/global';
 
 export class Marker {
 
@@ -25,8 +26,6 @@ export class Marker {
     src: string;
     image: string;
 
-    //private  icoContainer: HTMLElement;
-    private img: HTMLImageElement;
     private iconMarker: any;
     private deviceIconComponentEl: HTMLElement;
     private deviceIconComponentRef: ComponentRef<DeviceIconComponent>;
@@ -36,57 +35,79 @@ export class Marker {
         private injector: Injector,
         private applicationRef: ApplicationRef,
         private componentFactoryResolver: ComponentFactoryResolver
-
     ) {
-      /*  this.icoContainer = document.createElement('div');
-        this.icoContainer.classList.add('user-icon');
-        this.img = new Image();
-        this.icoContainer.appendChild(this.img);
-*/
-
-        //date = new BehaviorSubject("a");
-
         const factory = this.componentFactoryResolver.resolveComponentFactory(DeviceIconComponent);
-
         this.deviceIconComponentEl = document.createElement('device-icon-component');
-        this.deviceIconComponentRef = factory.create(this.injector, [], this.deviceIconComponentEl );
+        this.deviceIconComponentRef = factory.create(this.injector, [], this.deviceIconComponentEl);
         this.applicationRef.attachView(this.deviceIconComponentRef.hostView);
 
 
     }
 
+    setLogData(logData: LogData): this {
+        this.setLngLat(new LngLat(logData.lng, logData.lat))
+            .setDate(logData.date)
+            .setSpeed(logData.speed);
+        if(logData.name){
+            this.setName(logData.name)
+        }
+        this.deviceIconComponentRef.instance.logDataSubject.next(logData);
+        return this;
+    }
+
+    updateLodData(logData: LogData): this {
+        this.setLngLat(new LngLat(logData.lng, logData.lat))
+            .setDate(logData.date)
+            .setSpeed(logData.speed);
+        this.deviceIconComponentRef.instance.logDataSubject.next(logData);
+        return this;
+    }
+
 
     setDevice(device: Device): this {
         this.device = device;
-        this.name = device.name;
+        this.setName(device.name);
+        return this;
+    }
+
+    private setName(name: string): this {
+        this.name = name;
+        this.deviceIconComponentRef.instance.name = this.name;
         return this;
     }
 
 
-
-    setLngLat(lngLat: LngLat): this{
-        this.lng = lngLat.lng;
-        this.lat = lngLat.lat;
-        this.iconMarker.setLngLat([this.lng, this.lat]);
-        return this;
-    }
-
-    addToMap(): this{
+    addToMap(): this {
         this.iconMarker.addTo(this.map);
         return this;
     }
 
 
-    setImage(urlData: string): this{
-        this.deviceIconComponentRef.instance.src =  urlData || `${environment.hostPrefix}img/speedway_4_logo.jpg`;
+    setImage(urlData: string): this {
+        this.deviceIconComponentRef.instance.src = urlData || `${environment.hostPrefix}img/speedway_4_logo.jpg`;
         this.iconMarker = new mapboxgl.Marker(this.deviceIconComponentEl, {offset: [0, 0]});
         return this;
     }
 
-    setDate(date: string): this{
+    setDate(date: string): this {
         this.date = new Date(date);
-        this.deviceIconComponentRef.instance.dateSubject.next(this.date)
-        return this
+        return this;
+    }
+
+    setSpeed(speed: number): this {
+        this.speed = speed;
+        return this;
+    }
+
+    remove() {
+        this.iconMarker.remove();
+    }
+
+    private setLngLat(lngLat: LngLat): this {
+        this.lng = lngLat.lng;
+        this.lat = lngLat.lat;
+        this.iconMarker.setLngLat([this.lng, this.lat]);
+        return this;
     }
 
     static removeLayer(layerId: string) {

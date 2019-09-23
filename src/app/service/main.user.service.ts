@@ -114,6 +114,7 @@ export class UserService  {
 
 
 
+
     clearAll() {
        /* this.user.devices.forEach(device => {
             if (device.marker) {

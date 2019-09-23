@@ -58,6 +58,7 @@ export interface LogData {
     lat: number;
     type: 'POINT' | 'BS';
     date: string;
+    name?: string,
     bs?: Array<{lng: number, lat: number, range: number, rxLevel}>,
     accuracy?: number
 }

@@ -6,6 +6,11 @@ export class Timer{
     constructor(date?: string | Date){
         this.date = new Date(date)
     }
+
+    update(date: string | Date){
+        this.date = new Date(date)
+    }
+
     tick(date?: string | Date): number {
         const prevDate = this.date;
         this.date = new Date(date);

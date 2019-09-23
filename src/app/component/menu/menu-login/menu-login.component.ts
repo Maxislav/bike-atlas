@@ -10,7 +10,7 @@ import {ToastService} from "../../toast/toast.component";
 import {DeviceService} from "../../../service/device.service";
 import {LogService} from "../../../service/log.service";
 import {FriendsService} from "../../../service/friends.service";
-import {UserService} from "../../../service/main.user.service";
+import { User, UserService } from '../../../service/main.user.service';
 //import {RouterLink} from "@angular/router-deprecated";
 
 @Component({
@@ -24,19 +24,24 @@ export class MenuLoginComponent {
     private name: string;
     private pass: string;
     private socket;
+    public user: User;
 
     constructor(private router: Router,
                 private ms: MenuService,
                 private  io: Io,
                 private md5: Md5,
                 private ls: LocalStorage,
-                public authService: AuthService,
+                private authService: AuthService,
                 private ds: DeviceService,
                 private ts: ToastService,
+                private userService: UserService,
                 private friend: FriendsService,
     ) {
         this.socket = io.socket;
+        this.user = userService.getUser()
     }
+
+
 
     goToReg() {
         this.router.navigate(['/auth/map/registration']);

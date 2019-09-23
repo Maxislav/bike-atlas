@@ -29,7 +29,7 @@ export class AuthService implements CanActivate {
         private io: Io,
         private ls: LocalStorage,
         private friend: FriendsService,
-        private userService: UserService,
+        public userService: UserService,
         private chatService: ChatService,
         private toast: ToastService,
         private myMarkerService: MyMarkerService,
@@ -134,9 +134,9 @@ export class AuthService implements CanActivate {
             .then(d => {
                 if (d.result == 'ok') {
                     this.ls.userKey = null;
-                    this.userService.clearAll();
+                    this.userService.clearUser();
                     this.deviceService.clearDevices();
-                    this.myMarkerService.clearAll();
+                    //this.myMarkerService.clearAll();
                 }
             });
 

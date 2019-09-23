@@ -6,6 +6,7 @@ import { UserService } from './main.user.service';
 import { deepCopy } from '../util/deep-copy';
 import { DeviceLogData, LogData } from '../../types/global';
 import { autobind } from '../util/autobind';
+import { MapService } from 'src/app/service/map.service';
 
 //import {MarkerService} from "./marker.service";
 
@@ -18,10 +19,14 @@ export class LogService {
     constructor(
         io: Io,
         private markerService: MarkerService,
-        private deviceService: DeviceService
+        private deviceService: DeviceService,
+        private mapService: MapService
     ) {
         this.socket = io.socket;
-        this.socket.on('log', this.log);
+        mapService.onLoad
+            .then(()=>{
+                this.socket.on('log', this.log);
+            });
         this.devices = {};
 
         const a = {
@@ -38,7 +43,7 @@ export class LogService {
 
     @autobind()
     log(logData: LogData) {
-        console.log('log -> ', logData);
+        //console.log('log -> ', logData);
 
         if (!logData) return;
         const device: Device = this.deviceService.getDeviceByDeviceKey(logData.device_key);

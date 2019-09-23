@@ -47,7 +47,8 @@ export class Device implements DeviceData {
                 'phone',
                 'image',
                 'lng',
-                'lat'
+                'lat',
+                'name'
             ]
                 .forEach(key => {
                     this[key] = d[key];
@@ -69,8 +70,7 @@ export class Device implements DeviceData {
         if (!this.marker) {
             this.markerCreate(logData);
         } else {
-            this.marker
-                .setLngLat(this.lngLat);
+            this.marker.updateLodData(logData)
         }
     }
 
@@ -82,12 +82,17 @@ export class Device implements DeviceData {
             this.componentFactoryResolver)
             .setDevice(this)
             .setImage(this.image)
-            .setLngLat(this.lngLat)
-            .setDate(logData.date)
+            .setLogData(logData)
             .addToMap();
+
+
 
     }
 
+    remove(): this{
+        this.marker.remove();
+        return this;
+    }
     /*static create(map: MapGl): Device {
         return new Device(null, map);
     }*/
@@ -205,6 +210,10 @@ export class DeviceService {
     }
 
     clearDevices() {
+        this.devices.forEach(d=> {
+            d.remove()
+        });
+
         this.devices.length = 0;
     }
 
