@@ -18,18 +18,15 @@ class ColorSpeed {
     stop: string = '#7ddc74';
     rest: string = '#ffff00';
     dead: string = '#FFFFFF';
-
     DEAD_TIME = 12 * 3600 * 1000;
     MOVE_TIME = 60 * 1000;
-
     background: string;
-
-    constructor(){
+    constructor() {
         this.background = this.dead;
     }
 
     calculate(elapseTime: number): string {
-        return this.background = '#FFFFFF'
+        return this.background = '#FFFFFF';
     }
 }
 
@@ -61,43 +58,47 @@ export class DeviceIconComponent implements OnInit, OnDestroy {
 
     constructor() {
         this.color = new ColorSpeed();
-
-        this.logDataSubject.subscribe((logData: LogData) =>{
+        this.logDataSubject.subscribe((logData: LogData) => {
             this.markerDate = new Date(logData.date);
             const l = new LngLat(logData.lng, logData.lat).toString();
-            if(this.lngLat && this.lngLat !== l){
+            if (this.lngLat && this.lngLat !== l) {
                 this.isMove = true;
             }
             this.lngLat = l;
-            this.elapseTime =  new Date().getTime() - this.markerDate.getTime();
+            this.elapseTime = new Date().getTime() - this.markerDate.getTime();
         });
 
         this.intervalID = setInterval(() => {
             this.timerSubject.next(new Date());
-        },1000);
+        }, 1000);
 
         this.timerSubject.subscribe((date) => {
-           this.elapseTime = date.getTime() - this.markerDate.getTime();
+            this.elapseTime = date.getTime() - this.markerDate.getTime();
         });
 
         merge(this.logDataSubject, this.timerSubject).subscribe(val => {
-            if(this.elapseTime < this.color.MOVE_TIME && this.isMove){
-                this.color.background =  this.color.move
-            }else if(this.elapseTime < this.color.MOVE_TIME){
+            if (this.elapseTime < this.color.MOVE_TIME && this.isMove) {
+                this.color.background = this.color.move;
+            } else if (this.elapseTime < this.color.MOVE_TIME) {
                 this.color.background = this.color.stop;
-            }else if( this.color.DEAD_TIME < this.elapseTime){
-                this.color.background = this.color.dead
-            }else {
-                this.color.background = this.color.rest
+            } else if (this.color.DEAD_TIME < this.elapseTime) {
+                this.color.background = this.color.dead;
+            } else {
+
+                const c = Math.round(255*this.elapseTime/this.color.DEAD_TIME).toString(16);
+
+
+
+
+                this.color.background = String('#FFFF').concat(c.length<2 ? '0' + c: c);
             }
-        })
+        });
     }
 
 
     ngOnInit(): void {
 
     }
-
 
 
     ngOnDestroy(): void {

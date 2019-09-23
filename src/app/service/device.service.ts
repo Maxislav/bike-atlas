@@ -11,6 +11,8 @@ import { DeviceIconComponent } from 'src/app/component/device-icon-component/dev
 //import { Marker } from './marker.service';
 
 
+
+
 export interface DeviceData {
     id: string;
     name: string;
