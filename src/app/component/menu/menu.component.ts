@@ -74,6 +74,7 @@ export class MenuComponent{
     }
 
     onOpenAthlete(){
+        this.isShowMenuAthlete = true
 /*
         if(!this.user.name && !this.userService.other.devices.length){
             this.toast.show({

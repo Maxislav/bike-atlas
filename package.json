@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start-ui": "ng serve --deploy-url= --base-href=. --open",
+    "dev": "concurrently \"npm run start-ui\" \"npm run server-dev\" ",
     "build:brod": "ng build --prod",
     "start": "concurrently   \"npm run server-dev\" \"npm run tsc-be:w\"  \"npm run start-ui\" ",
     "server": "tsc --project tsconfig-be.json && node server/index.js",

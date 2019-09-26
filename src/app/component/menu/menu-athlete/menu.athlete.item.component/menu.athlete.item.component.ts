@@ -1,35 +1,35 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {  Subscription } from 'rxjs/Subscription';
-import {Device} from '../../../../../types/global';
+import { Device } from 'src/app/service/device.service';
+import { TimerService } from 'src/app/service/timer.service';
+import { environment } from 'src/environments/environment';
 @Component({
     selector: 'menu-athlete-item',
     templateUrl: './menu.athlete.item.component.html',
     styleUrls: ['./menu.athlete.item.component.less'],
 })
 export class MenuAthleteItemComponent implements OnInit{
-    speed: string;
     subscription: Subscription;
     @Input() public device: Device;
-    constructor(){
-    }
-
-    ngOnChanges(){
-        if(this.subscription && this.device.marker) {
-            this.subscription.unsubscribe()
-        }
-        if(this.device.marker){
-            this.subscription = this.device.marker.speedSubject.subscribe(value => {
-                this.speed = value.toFixed(1)
-            })
-        }
+    constructor(private timerService: TimerService){
     }
 
     ngOnInit(): void {
+    }
+
+    get speed(){
+        return this.device.speed.toFixed(1)
+    }
+
+    get elapsed(){
+        return this.timerService.elapse(this.device.date.toISOString())
+    }
+
+    get image(){
+        return this.device.image || `${environment.hostPrefix}img/speedway_4_logo.jpg`;
+    }
 
 
-    }
-    ngOnDestroy(){
-        if(this.subscription) this.subscription.unsubscribe()
-    }
+
 
 }

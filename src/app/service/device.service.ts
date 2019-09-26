@@ -7,10 +7,25 @@ import { DeviceLogData, MapGl } from '../../types/global';
 import { LogData } from 'src/types/global';
 import { LngLat } from 'src/app/util/lngLat';
 import { DeviceIconComponent } from 'src/app/component/device-icon-component/device-icon-component';
+import { distance } from 'src/app/util/distance';
 
 //import { Marker } from './marker.service';
 
 
+class ColorSpeed {
+    move: string = '#1E90FF';
+    stop: string = '#7ddc74';
+    rest: string = '#ffff00';
+    dead: string = '#FFFFFF';
+    DEAD_TIME = 12 * 3600 * 1000;
+    MOVE_TIME = 60 * 1000;
+  //  background: string;
+
+    constructor() {
+    //    this.background = this.dead;
+    }
+
+}
 
 
 export interface DeviceData {
@@ -29,9 +44,16 @@ export class Device implements DeviceData {
     phone: string = null;
     image: string = null;
     lngLat: LngLat;
+    speed: number = 0;
+    private lngLatStr: string;
     private marker: Marker = null;
-    private iconEl: HTMLElement;
-
+    private color: ColorSpeed;
+    public date: Date;
+    public elapseTime: number;
+    private isMove = false;
+    public background: string;
+    private timerId;
+    private dist: number = 0;
 
     constructor(
         d: DeviceData,
@@ -40,6 +62,14 @@ export class Device implements DeviceData {
         private applicationRef: ApplicationRef,
         private componentFactoryResolver: ComponentFactoryResolver
     ) {
+        this.color = new ColorSpeed();
+        this.background = this.color.dead;
+        this.timerId = setInterval(()=>{
+            this.calcColorTime();
+            this.elapseTime = new Date().getTime() - this.date.getTime();
+            this.marker.setIconColor(this.background);
+        }, 1000);
+
         if (d) {
             [
                 'id',
@@ -58,8 +88,6 @@ export class Device implements DeviceData {
         }
 
 
-
-
     }
 
     setIconEl(iconEl: HTMLElement) {
@@ -68,12 +96,34 @@ export class Device implements DeviceData {
     }
 
     onMarker(logData: LogData) {
-        this.lngLat = new LngLat(logData.lng, logData.lat);
+        let difTime = Infinity;
+        const date = new Date(logData.date);
+        if(this.date){
+            difTime = date.getTime() - this.date.getTime();
+        }
+        this.date = date;
+        this.elapseTime = new Date().getTime() - this.date.getTime();
+        const lngLat =  new LngLat(logData.lng, logData.lat);
+        if(this.lngLat && this.lngLat.toString() !== lngLat.toString()){
+            this.isMove = true;
+            const dist = distance([this.lngLat.lng, this.lngLat.lat], [lngLat.lng, lngLat.lat]);
+            this.speed = 3.6*1000*1000* dist/difTime;
+        }
+        this.lngLat = lngLat;
+        this.calcColorTime();
+
         if (!this.marker) {
             this.markerCreate(logData);
         } else {
-            this.marker.updateLodData(logData)
+            this.marker.updateLodData(logData);
         }
+        this.marker.setIconColor(this.background);
+        if(!this.name && logData.name){
+            this.name = logData.name;
+        }
+    }
+    private calcSpeed(){
+
     }
 
     private markerCreate(logData: LogData) {
@@ -88,13 +138,27 @@ export class Device implements DeviceData {
             .addToMap();
 
 
-
     }
 
-    remove(): this{
+    private calcColorTime() {
+        if (this.elapseTime < this.color.MOVE_TIME && this.isMove) {
+            this.background = this.color.move;
+        } else if (this.elapseTime < this.color.MOVE_TIME) {
+            this.background = this.color.stop;
+        } else if (this.color.DEAD_TIME < this.elapseTime) {
+            this.background = this.color.dead;
+        } else {
+            const c = Math.round(255 * this.elapseTime / this.color.DEAD_TIME).toString(16);
+            this.background = String('#FFFF').concat(c.length < 2 ? '0' + c : c);
+        }
+    }
+
+    remove(): this {
+        clearInterval(this.timerId);
         this.marker.remove();
         return this;
     }
+
     /*static create(map: MapGl): Device {
         return new Device(null, map);
     }*/
@@ -212,8 +276,8 @@ export class DeviceService {
     }
 
     clearDevices() {
-        this.devices.forEach(d=> {
-            d.remove()
+        this.devices.forEach(d => {
+            d.remove();
         });
 
         this.devices.length = 0;

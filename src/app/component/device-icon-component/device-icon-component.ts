@@ -13,26 +13,9 @@ import { el } from '@angular/platform-browser/testing/src/browser_util';
 import { LogData } from 'src/types/global';
 import { nearer } from 'q';
 
-class ColorSpeed {
-    move: string = '#1E90FF';
-    stop: string = '#7ddc74';
-    rest: string = '#ffff00';
-    dead: string = '#FFFFFF';
-    DEAD_TIME = 12 * 3600 * 1000;
-    MOVE_TIME = 60 * 1000;
-    background: string;
-    constructor() {
-        this.background = this.dead;
-    }
-
-    calculate(elapseTime: number): string {
-        return this.background = '#FFFFFF';
-    }
-}
-
 @Component({
     selector: 'device-icon-component',
-    template: '<div class="ico-container" ><img [ngStyle]="{\'background\': color.background}" [src]="src"/></div>',
+    template: '<div class="ico-container" ><img [ngStyle]="{\'background\': background}" [src]="src"/></div>',
     styleUrls: ['./device-icon-component.less']
 
 })
@@ -40,59 +23,16 @@ export class DeviceIconComponent implements OnInit, OnDestroy {
     private readonly TIME_LIMIT = 10 * 60 * 1000;
     public name: string;
     public src: string;
-    public color: ColorSpeed;
-    private timerSubject: Subject<Date> = new Subject<Date>();
-    private intervalID: any;
-    private timer: Timer = new Timer();
-    private markerDate: Date;
+    public background: string = 'white';
+    public colorSubject: Subject<string> = new Subject();
 
-    public logDataSubject: Subject<LogData> = new Subject<LogData>();
 
-    date: Date;
-    speed: number;
-    lngLat: string;
 
-    elapseTime: number;
-
-    isMove = false;
 
     constructor() {
-        this.color = new ColorSpeed();
-        this.logDataSubject.subscribe((logData: LogData) => {
-            this.markerDate = new Date(logData.date);
-            const l = new LngLat(logData.lng, logData.lat).toString();
-            if (this.lngLat && this.lngLat !== l) {
-                this.isMove = true;
-            }
-            this.lngLat = l;
-            this.elapseTime = new Date().getTime() - this.markerDate.getTime();
-        });
-
-        this.intervalID = setInterval(() => {
-            this.timerSubject.next(new Date());
-        }, 1000);
-
-        this.timerSubject.subscribe((date) => {
-            this.elapseTime = date.getTime() - this.markerDate.getTime();
-        });
-
-        merge(this.logDataSubject, this.timerSubject).subscribe(val => {
-            if (this.elapseTime < this.color.MOVE_TIME && this.isMove) {
-                this.color.background = this.color.move;
-            } else if (this.elapseTime < this.color.MOVE_TIME) {
-                this.color.background = this.color.stop;
-            } else if (this.color.DEAD_TIME < this.elapseTime) {
-                this.color.background = this.color.dead;
-            } else {
-
-                const c = Math.round(255*this.elapseTime/this.color.DEAD_TIME).toString(16);
-
-
-
-
-                this.color.background = String('#FFFF').concat(c.length<2 ? '0' + c: c);
-            }
-        });
+        this.colorSubject.subscribe((color)=>{
+           this.background = color
+        })
     }
 
 
@@ -102,6 +42,5 @@ export class DeviceIconComponent implements OnInit, OnDestroy {
 
 
     ngOnDestroy(): void {
-        clearInterval(this.intervalID);
     }
 }

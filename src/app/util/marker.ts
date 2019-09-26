@@ -41,7 +41,6 @@ export class Marker {
         this.deviceIconComponentRef = factory.create(this.injector, [], this.deviceIconComponentEl);
         this.applicationRef.attachView(this.deviceIconComponentRef.hostView);
 
-
     }
 
     setLogData(logData: LogData): this {
@@ -51,7 +50,6 @@ export class Marker {
         if(logData.name){
             this.setName(logData.name)
         }
-        this.deviceIconComponentRef.instance.logDataSubject.next(logData);
         return this;
     }
 
@@ -59,7 +57,6 @@ export class Marker {
         this.setLngLat(new LngLat(logData.lng, logData.lat))
             .setDate(logData.date)
             .setSpeed(logData.speed);
-        this.deviceIconComponentRef.instance.logDataSubject.next(logData);
         return this;
     }
 
@@ -101,6 +98,11 @@ export class Marker {
 
     remove() {
         this.iconMarker.remove();
+    }
+
+    setIconColor(color: string): this{
+        this.deviceIconComponentRef.instance.colorSubject.next(color);
+        return this;
     }
 
     private setLngLat(lngLat: LngLat): this {
