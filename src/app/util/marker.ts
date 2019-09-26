@@ -8,7 +8,7 @@ import { DeviceIconComponent } from 'src/app/component/device-icon-component/dev
 import { ComponentRef } from '@angular/core/src/linker/component_factory';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
-import { LogData } from 'src/types/global';
+import { LogData, Popup } from 'src/types/global';
 
 export class Marker {
 
@@ -25,6 +25,7 @@ export class Marker {
     speed: number;
     src: string;
     image: string;
+    popupName: Popup;
 
     private iconMarker: any;
     private deviceIconComponentEl: HTMLElement;
@@ -41,17 +42,26 @@ export class Marker {
         this.deviceIconComponentRef = factory.create(this.injector, [], this.deviceIconComponentEl);
         this.applicationRef.attachView(this.deviceIconComponentRef.hostView);
 
+        this.popupName = new mapboxgl.Popup({
+            closeOnClick: false, offset: {
+                'bottom': [0, -20],
+            }, closeButton: false
+        })
+         /*   .setLngLat(new LngLat(logData.lng, logData.lat))
+            .setDate(logData.date)
+            .setSpeed(logData.speed);*/
+
     }
 
-    setLogData(logData: LogData): this {
+
+    setLodData(logData: LogData): this {
         this.setLngLat(new LngLat(logData.lng, logData.lat))
             .setDate(logData.date)
             .setSpeed(logData.speed);
-        if(logData.name){
-            this.setName(logData.name)
-        }
         return this;
     }
+
+
 
     updateLodData(logData: LogData): this {
         this.setLngLat(new LngLat(logData.lng, logData.lat))
@@ -67,15 +77,25 @@ export class Marker {
         return this;
     }
 
-    private setName(name: string): this {
-        this.name = name;
-        this.deviceIconComponentRef.instance.name = this.name;
+    private popupNameUpdate(name: string): this{
+        this.popupName.setHTML('<div>' + name + '</div>');
+        return this;
+    }
+
+
+    setName(name: string): this {
+        if(name){
+            this.name = name;
+            this.deviceIconComponentRef.instance.name = this.name;
+            this.popupNameUpdate(name);
+        }
         return this;
     }
 
 
     addToMap(): this {
         this.iconMarker.addTo(this.map);
+        this.popupName.addTo(this.map)
         return this;
     }
 
@@ -109,6 +129,7 @@ export class Marker {
         this.lng = lngLat.lng;
         this.lat = lngLat.lat;
         this.iconMarker.setLngLat([this.lng, this.lat]);
+        this.popupName.setLngLat([this.lng, this.lat]);
         return this;
     }
 

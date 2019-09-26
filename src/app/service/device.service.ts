@@ -56,7 +56,7 @@ export class Device implements DeviceData {
     private dist: number = 0;
 
     constructor(
-        d: DeviceData,
+        deviceData: DeviceData,
         private map: MapGl,
         private injector: Injector,
         private applicationRef: ApplicationRef,
@@ -70,7 +70,7 @@ export class Device implements DeviceData {
             this.marker.setIconColor(this.background);
         }, 1000);
 
-        if (d) {
+        if (deviceData) {
             [
                 'id',
                 'user_id',
@@ -83,7 +83,7 @@ export class Device implements DeviceData {
                 'name'
             ]
                 .forEach(key => {
-                    this[key] = d[key];
+                    this[key] = deviceData[key];
                 });
         }
 
@@ -120,10 +120,8 @@ export class Device implements DeviceData {
         this.marker.setIconColor(this.background);
         if(!this.name && logData.name){
             this.name = logData.name;
+            this.marker.setName(this.name)
         }
-    }
-    private calcSpeed(){
-
     }
 
     private markerCreate(logData: LogData) {
@@ -134,9 +132,9 @@ export class Device implements DeviceData {
             this.componentFactoryResolver)
             .setDevice(this)
             .setImage(this.image)
-            .setLogData(logData)
+            .setName(this.name)
+            .setLodData(logData)
             .addToMap();
-
 
     }
 
