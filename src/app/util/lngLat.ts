@@ -23,4 +23,7 @@ export class LngLat extends Array {
     toString(): string {
         return this.join(";")
     }
+    toArray(): Array<number>{
+        return [this[0], this[1]]
+    }
 }

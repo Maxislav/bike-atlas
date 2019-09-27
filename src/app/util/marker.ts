@@ -12,7 +12,7 @@ import { LogData, Popup } from 'src/types/global';
 
 export class Marker {
 
-    static layerIds: Set<string>;
+    static layerIds: Set<string> = new Set();
     layerId: string;
     id: string = null;
     alt: number = null;
@@ -31,6 +31,10 @@ export class Marker {
     private deviceIconComponentEl: HTMLElement;
     private deviceIconComponentRef: ComponentRef<DeviceIconComponent>;
 
+    private tailLayerId: string;
+    tailData: any;
+    tailLngLat: Array<LngLat> = [];
+
     constructor(
         private map,
         private injector: Injector,
@@ -41,32 +45,101 @@ export class Marker {
         this.deviceIconComponentEl = document.createElement('device-icon-component');
         this.deviceIconComponentRef = factory.create(this.injector, [], this.deviceIconComponentEl);
         this.applicationRef.attachView(this.deviceIconComponentRef.hostView);
-
         this.popupName = new mapboxgl.Popup({
             closeOnClick: false, offset: {
                 'bottom': [0, -20],
             }, closeButton: false
+        });
+
+        this.tailLayerId = Marker.getNewLayer('tail-');
+
+        this.tailData = {
+            type: 'FeatureCollection',
+            features: []
+        };
+
+
+        map.addSource(this.tailLayerId, {
+            "type": "geojson",
+            "data": this.tailData,
+        });
+        map.addLayer({
+            id:   this.tailLayerId,
+            source: this.tailLayerId,
+            type: 'line',
+            "paint": {
+                "line-color": '#FF0000',
+                "line-opacity": {
+                    property: 'opacity',
+                    stops: (()=>{
+                       const a = [];
+
+                       for(let i = 0; i<10; i++){
+                           a.push([i, i/10])
+                       }
+                       return a
+                    })(),
+                },
+                "line-width": 8
+            },
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round"
+            },
         })
-         /*   .setLngLat(new LngLat(logData.lng, logData.lat))
-            .setDate(logData.date)
-            .setSpeed(logData.speed);*/
 
     }
 
+    private featureCreate(item: {opacity: number}, lngLat1: LngLat, lngLat2: LngLat){
+        return {
+            properties: {
+                opacity: item.opacity,
+                point: item,
+            },
+            'type': 'Feature',
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': [lngLat1.toArray(), lngLat2.toArray()]
+            }
+
+/*
+            'type': 'LineString',
+            'coordinates': [[center.lng, center.lat], [station.lng, station.lat]]*/
+        }
+    }
+
+    private tailUpdate(){
+        const arr = [];
+        while (10 < this.tailLngLat.length) {
+            this.tailLngLat.splice(0,1);
+        }
+
+        const start = 10 -  this.tailLngLat.length;
+        for(let i = 0 ; i <this.tailLngLat.length-1; i++){
+            arr.push(this.featureCreate({opacity: start + i}, this.tailLngLat[i], this.tailLngLat[i+1]))
+        }
+        this.tailData .features = arr;
+
+        this.map.getSource(this.tailLayerId).setData(this.tailData)
+    }
 
     setLodData(logData: LogData): this {
         this.setLngLat(new LngLat(logData.lng, logData.lat))
             .setDate(logData.date)
             .setSpeed(logData.speed);
+        this.tailLngLat.push(new LngLat(logData.lng, logData.lat));
+
         return this;
     }
-
-
 
     updateLodData(logData: LogData): this {
         this.setLngLat(new LngLat(logData.lng, logData.lat))
             .setDate(logData.date)
             .setSpeed(logData.speed);
+        this.tailLngLat.push(new LngLat(logData.lng, logData.lat));
+        if(1<this.tailLngLat.length){
+            this.tailUpdate()
+        }
         return this;
     }
 
@@ -118,6 +191,8 @@ export class Marker {
 
     remove() {
         this.iconMarker.remove();
+        this.popupName.remove();
+        this.map.removeLayer(this.tailLayerId)
     }
 
     setIconColor(color: string): this{

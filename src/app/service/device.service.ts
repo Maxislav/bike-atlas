@@ -14,7 +14,7 @@ import { distance } from 'src/app/util/distance';
 
 class ColorSpeed {
     move: string = '#1E90FF';
-    stop: string = '#7ddc74';
+    stop: string = '#06dc00';
     rest: string = '#ffff00';
     dead: string = '#FFFFFF';
     DEAD_TIME = 12 * 3600 * 1000;
