@@ -97,12 +97,14 @@ export class DeviceComponent implements AfterViewInit , OnInit{
                 private el: ElementRef) {
 
 
-        //this.device = Device.create();
+        this.user = userService.getUser();
+        this.device = deviceService.createDevice();
 
         this.btnPreDel = {
             index: -1
         };
         this.devices = deviceService.getDeviceList();
+
         // deviceService.updateDevices();
     }
 

@@ -116,7 +116,7 @@ export class Marker {
 
         const start = 10 -  this.tailLngLat.length;
         for(let i = 0 ; i <this.tailLngLat.length-1; i++){
-            arr.push(this.featureCreate({opacity: start + i}, this.tailLngLat[i], this.tailLngLat[i+1]))
+            arr.push(this.featureCreate({opacity: i+1}, this.tailLngLat[i], this.tailLngLat[i+1]))
         }
         this.tailData .features = arr;
 

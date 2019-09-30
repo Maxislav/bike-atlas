@@ -19,10 +19,11 @@ class ColorSpeed {
     dead: string = '#FFFFFF';
     DEAD_TIME = 12 * 3600 * 1000;
     MOVE_TIME = 60 * 1000;
-  //  background: string;
+
+    //  background: string;
 
     constructor() {
-    //    this.background = this.dead;
+        //    this.background = this.dead;
     }
 
 }
@@ -64,11 +65,7 @@ export class Device implements DeviceData {
     ) {
         this.color = new ColorSpeed();
         this.background = this.color.dead;
-        this.timerId = setInterval(()=>{
-            this.calcColorTime();
-            this.elapseTime = new Date().getTime() - this.date.getTime();
-            this.marker.setIconColor(this.background);
-        }, 1000);
+
 
         if (deviceData) {
             [
@@ -85,9 +82,18 @@ export class Device implements DeviceData {
                 .forEach(key => {
                     this[key] = deviceData[key];
                 });
+            //this.timerStart();
         }
 
 
+    }
+
+    private timerStart() {
+        this.timerId = setInterval(() => {
+            this.calcColorTime();
+            this.elapseTime = new Date().getTime() - this.date.getTime();
+            this.marker.setIconColor(this.background);
+        }, 1000);
     }
 
     setIconEl(iconEl: HTMLElement) {
@@ -98,16 +104,19 @@ export class Device implements DeviceData {
     onMarker(logData: LogData) {
         let difTime = Infinity;
         const date = new Date(logData.date);
-        if(this.date){
+        if (this.date) {
             difTime = date.getTime() - this.date.getTime();
+        }
+        if(!this.timerId){
+            this.timerStart()
         }
         this.date = date;
         this.elapseTime = new Date().getTime() - this.date.getTime();
-        const lngLat =  new LngLat(logData.lng, logData.lat);
-        if(this.lngLat && this.lngLat.toString() !== lngLat.toString()){
+        const lngLat = new LngLat(logData.lng, logData.lat);
+        if (this.lngLat && this.lngLat.toString() !== lngLat.toString()) {
             this.isMove = true;
             const dist = distance([this.lngLat.lng, this.lngLat.lat], [lngLat.lng, lngLat.lat]);
-            this.speed = 3.6*1000*1000* dist/difTime;
+            this.speed = 3.6 * 1000 * 1000 * dist / difTime;
         }
         this.lngLat = lngLat;
         this.calcColorTime();
@@ -118,9 +127,9 @@ export class Device implements DeviceData {
             this.marker.updateLodData(logData);
         }
         this.marker.setIconColor(this.background);
-        if(!this.name && logData.name){
+        if (!this.name && logData.name) {
             this.name = logData.name;
-            this.marker.setName(this.name)
+            this.marker.setName(this.name);
         }
     }
 
@@ -192,16 +201,22 @@ export class DeviceService {
     getDeviceByDeviceKey(key: string): Device {
         const device = this.devices.find(item => item.device_key === key);
         if (!device) {
-            const d = new Device(
-                null,
-                this.map,
-                this.injector,
-                this.applicationRef,
-                this.componentFactoryResolver);
-            d.device_key = key;
-            this.devices.push(d);
+            const device: Device = this.createDevice(key);
+            this.devices.push(device);
         }
         return this.devices.find(item => item.device_key === key);
+    }
+
+
+    createDevice(key: string = ''): Device {
+        const d = new Device(
+            null,
+            this.map,
+            this.injector,
+            this.applicationRef,
+            this.componentFactoryResolver);
+        d.device_key = key;
+        return d;
     }
 
     onDevices(): Promise<Array<Device>> {
