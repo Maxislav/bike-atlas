@@ -8,18 +8,21 @@ import { Device, DeviceService } from '../../service/device.service';
 import { NavigationHistory } from '../../app.component';
 import { ToastService } from '../toast/toast.component';
 import { User, UserService } from '../../service/main.user.service';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { DeviceHelpComponent } from './device-help/device-help.component';
+import { PopupButton, PopupInstance, PopupService } from 'src/app/modules/popup-module/popup.service';
+import { DeviceDelPopupComponent } from 'src/app/component/device/device-del-popup.component';
+import { autobind } from 'src/app/util/autobind';
 
-function getOffset( el ) {
+function getOffset(el) {
     var _x = 0;
     var _y = 0;
-    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+    while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
         _x += el.offsetLeft - el.scrollLeft;
         _y += el.offsetTop - el.scrollTop;
         el = el.offsetParent;
     }
-    return { top: _y, left: _x };
+    return {top: _y, left: _x};
 }
 
 
@@ -29,6 +32,7 @@ function getOffset( el ) {
 export class HelpContainer implements AfterViewInit {
     private top = 0;
     private y;
+
     constructor(private el: ElementRef, private renderer: Renderer) {
 
         let w = window,
@@ -36,18 +40,16 @@ export class HelpContainer implements AfterViewInit {
             e = d.documentElement,
             g = d.getElementsByTagName('body')[0],
             x = w.innerWidth || e.clientWidth || g.clientWidth;
-            this.y = w.innerHeight || e.clientHeight || g.clientHeight;
-
+        this.y = w.innerHeight || e.clientHeight || g.clientHeight;
 
 
     }
 
     ngAfterViewInit(): void {
-        this.top =  getOffset(this.el.nativeElement).top + 180;
+        this.top = getOffset(this.el.nativeElement).top + 180;
         this.renderer.setElementStyle(this.el.nativeElement, 'height', this.y - this.top + 'px');
     }
 }
-
 
 
 @Pipe({
@@ -67,13 +69,35 @@ export class IsOwner implements PipeTransform {
 }
 
 
+export class PopupDel implements PopupInstance, OnInit {
+    buttons: Array<PopupButton>;
+    component: any;
+    title: string;
+
+    constructor(private deviceComponent: DeviceComponent, component) {
+        const $this = this;
+        this.component = component;
+        this.buttons = [{
+            click: () => {
+                this.deviceComponent.onDelete();
+                return $this;
+            }
+        }];
+    }
+
+    ngOnInit(): void {
+    }
+
+}
+
+
 @Component({
     templateUrl: 'device.component.html',
     styleUrls: [
         'device.component.less',
     ]
 })
-export class DeviceComponent implements AfterViewInit , OnInit{
+export class DeviceComponent implements AfterViewInit, OnInit {
 
     public device: Device;
     public devices: Array<Device>;
@@ -83,8 +107,9 @@ export class DeviceComponent implements AfterViewInit , OnInit{
     public hostPrefix = environment.hostPrefix;
 
     private inputList: Set<any> = new Set();
-    public get deviceNameSelected(): string{
-        return this.deviceService.currentChildName
+
+    public get deviceNameSelected(): string {
+        return this.deviceService.currentChildName;
     } ;
 
     constructor(private location: Location,
@@ -94,7 +119,8 @@ export class DeviceComponent implements AfterViewInit , OnInit{
                 private deviceService: DeviceService,
                 private toast: ToastService,
                 private lh: NavigationHistory,
-                private el: ElementRef) {
+                private el: ElementRef,
+                private popupService: PopupService) {
 
 
         this.user = userService.getUser();
@@ -141,16 +167,42 @@ export class DeviceComponent implements AfterViewInit , OnInit{
             });
     }
 
-    onDel(e, device) {
-        this.deviceService.onDelDevice(device)
+
+    preDel2(e, device) {
+
+        //const popup = new PopupDel(this, DeviceDelPopupComponent);
+        this.popupService.show(DeviceDelPopupComponent, [
+            {
+                label: 'Cancel',
+                windowClass: 'cancel',
+                click: () => {
+                    return true;
+                }
+            },
+            {
+                label: 'Delete',
+                windowClass: 'primary',
+                click: () => {
+                    return true;
+                }
+            }
+        ]);
+        /*this.deviceService.onDelDevice(device)
             .then(d => {
                 console.log(d);
                 this.clearPredel();
-            });
+            });*/
+    }
+
+    @autobind()
+    onDelete() {
+
     }
 
     preDel(e, i) {
         e.stopPropagation();
+
+
         this.btnPreDel.index = i;
     }
 
@@ -164,43 +216,43 @@ export class DeviceComponent implements AfterViewInit , OnInit{
 
 
     onLoadImage(device: Device, i: number) {
-       const el: any = Array.from(this.el.nativeElement.getElementsByTagName('input')).find((item: {id: string}) => {
-            return item.id === 'input-img-'+i
+        const el: any = Array.from(this.el.nativeElement.getElementsByTagName('input')).find((item: { id: string }) => {
+            return item.id === 'input-img-' + i;
         });
-        this.initEl(el, device)
+        this.initEl(el, device);
 
     }
 
 
-    navigateToHelp(deviceName: string){
+    navigateToHelp(deviceName: string) {
 
         this.router.navigate([deviceName], {relativeTo: this.activatedRoute});
     }
 
 
-    private initEl(el: any, device: Device){
-        if(!this.inputList.has(el)){
+    private initEl(el: any, device: Device) {
+        if (!this.inputList.has(el)) {
             this.inputList.add(el);
-            el.addEventListener('change', ()=>{
+            el.addEventListener('change', () => {
                 const file = el.files[0];
                 const reader = new FileReader();
                 reader.onload = (event: any) => {
                     const the_url = event.target.result;
-                    device.image =  this.crop(the_url);
-                    this.onAddDeviceImage(device)
+                    device.image = this.crop(the_url);
+                    this.onAddDeviceImage(device);
 
                 };
                 reader.readAsDataURL(file);
             });
         }
-        el.click()
+        el.click();
     }
 
-    private onAddDeviceImage(device: Device){
+    private onAddDeviceImage(device: Device) {
         this.deviceService.onAddDeviceImage(device)
-            .then(d =>{
-                console.log(d)
-            })
+            .then(d => {
+                console.log(d);
+            });
     }
 
     private crop(base64) {
@@ -211,6 +263,7 @@ export class DeviceComponent implements AfterViewInit , OnInit{
         elCanvas.width = 100;
         elCanvas.height = 100;
         const context = elCanvas.getContext('2d');
+
         function drawClipped(context, myImage) {
             context.save();
             context.beginPath();
@@ -222,11 +275,12 @@ export class DeviceComponent implements AfterViewInit , OnInit{
             //$this.user.image =   elCanvas.toDataURL();
             //imageObj.parentElement.removeChild(imageObj)
         }
+
         imageObj.onload = function () {
             drawClipped(context, imageObj);
         };
         imageObj.src = base64;
-        return base64
+        return base64;
         //document.body.appendChild(imageObj)
     }
 
@@ -248,17 +302,17 @@ export class DeviceComponent implements AfterViewInit , OnInit{
     ngAfterViewInit(): void {
 
         //this.rr
-       /* this.activatedRoute.firstChild.params.subscribe((data) => {
-            this.deviceNameSelected  = (data.device)
+        /* this.activatedRoute.firstChild.params.subscribe((data) => {
+             this.deviceNameSelected  = (data.device)
 
-        })*/
+         })*/
 
-      //  this.deviceHelpComponent
+        //  this.deviceHelpComponent
         //  console.log( this.el.nativeElement.getElementsByTagName('input'))
     }
 
     ngOnInit(): void {
-        this.activatedRoute.snapshot.data
+        this.activatedRoute.snapshot.data;
 
     }
 

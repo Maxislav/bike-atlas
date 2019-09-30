@@ -71,6 +71,8 @@ import { LeafletMapDirective } from './directive/leaflet-map.directive';
 import { environment } from '../environments/environment';
 import { DeviceHelpComponent } from './component/device/device-help/device-help.component';
 import { DeviceIconComponent } from 'src/app/component/device-icon-component/device-icon-component';
+import { PopupModule } from 'src/app/modules/popup-module/popup.module';
+import { DeviceDelPopupComponent } from 'src/app/component/device/device-del-popup.component';
 
 
 @Component({
@@ -121,6 +123,7 @@ export class PipeTranslateCompiler implements TranslateCompiler {
 
 @NgModule({
     imports: [
+        PopupModule,
         BrowserModule,
         FormsModule,
         HttpClientModule,
@@ -185,7 +188,8 @@ export class PipeTranslateCompiler implements TranslateCompiler {
         PrivateArea,
         NoFoundComponent,
         GtgbcComponent,
-        DeviceIconComponent
+        DeviceIconComponent,
+        DeviceDelPopupComponent
     ],
 
     /** Сервисы */
@@ -222,7 +226,8 @@ export class PipeTranslateCompiler implements TranslateCompiler {
     ],
     entryComponents: [
         MyInputPopupComponent,
-        DeviceIconComponent
+        DeviceIconComponent,
+        DeviceDelPopupComponent
     ],
     bootstrap: [
         AppComponent
