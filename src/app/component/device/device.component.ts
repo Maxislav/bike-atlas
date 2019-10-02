@@ -78,9 +78,11 @@ export class PopupDel implements PopupInstance, OnInit {
         const $this = this;
         this.component = component;
         this.buttons = [{
+            label: 'Ok',
+            windowClass: 'sas',
             click: () => {
                 this.deviceComponent.onDelete();
-                return $this;
+                return true;
             }
         }];
     }
@@ -171,22 +173,29 @@ export class DeviceComponent implements AfterViewInit, OnInit {
     preDel2(e, device) {
 
         //const popup = new PopupDel(this, DeviceDelPopupComponent);
-        this.popupService.show(DeviceDelPopupComponent, [
+        this.popupService.show(
             {
-                label: 'Cancel',
-                windowClass: 'cancel',
-                click: () => {
-                    return true;
-                }
-            },
-            {
-                label: 'Delete',
-                windowClass: 'primary',
-                click: () => {
-                    return true;
-                }
-            }
-        ]);
+                body: DeviceDelPopupComponent,
+                initialState: {
+                    name: device.name
+                },
+                buttons: [
+                    {
+                        label: 'Cancel',
+                        windowClass: 'cancel',
+                        click: () => {
+                            return true;
+                        }
+                    },
+                    {
+                        label: 'Delete',
+                        windowClass: 'primary',
+                        click: () => {
+                            return true;
+                        }
+                    }
+                ]
+            });
         /*this.deviceService.onDelDevice(device)
             .then(d => {
                 console.log(d);

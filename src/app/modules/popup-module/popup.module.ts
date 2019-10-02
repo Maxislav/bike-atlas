@@ -1,5 +1,5 @@
 import { NgModule, OnInit } from '@angular/core';
-import { PopupService } from 'src/app/modules/popup-module/popup.service';
+import { PopupInitialState, PopupService } from 'src/app/modules/popup-module/popup.service';
 import { PopupContainerComponent } from 'src/app/modules/popup-module/popup-container.component';
 import { CommonModule } from '@angular/common';
 import { PopupItemComponent } from 'src/app/modules/popup-module/popup-item.component';
@@ -12,7 +12,8 @@ import { FormsModule } from '@angular/forms';
         PopupItemComponent
     ],
     providers: [
-        PopupService
+        PopupService,
+        PopupInitialState
     ],
     entryComponents: [
         PopupContainerComponent,
@@ -21,7 +22,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class PopupModule {
     constructor(popupService: PopupService){
-        //popupService.init();
+        popupService.init();
     }
 
 

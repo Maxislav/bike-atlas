@@ -1,5 +1,5 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
-import { PopupInstance, PopupService } from 'src/app/modules/popup-module/popup.service';
+import { PopupInstance, PopupInterface, PopupService } from 'src/app/modules/popup-module/popup.service';
 
 
 
@@ -20,7 +20,10 @@ export class PopupContainerComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        this.popupList = this.popupService.popupList
+        this.popupList = this.popupService.popupList;
+    }
+    onClose(popup: PopupInterface){
+        this.popupService.hide(popup)
     }
 
 }

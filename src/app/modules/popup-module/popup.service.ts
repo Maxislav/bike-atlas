@@ -23,7 +23,14 @@ export interface PopupInstance {
     component: any;
     buttons: Array<PopupButton>;
 
-}/*
+}
+
+@Injectable()
+export class PopupInitialState {
+    params: any
+}
+
+/*
 export class PopupInstance {
     title: string = '';
     component: any;
@@ -31,10 +38,17 @@ export class PopupInstance {
 }*/
 
 
+export interface PopupInterface {
+    body: any;
+    initialState: any,
+    buttons: Array<PopupButton>
+}
+
+
 @Injectable()
 export class PopupService {
 
-    public popupList: Array<{component: any; buttons: Array<PopupButton>}> = [];
+    public popupList: Array<PopupInterface> = [];
     popupContainerEl: HTMLElement;
     popupContainerRef: ComponentRef<PopupContainerComponent>;
     viewContainerRef: ViewContainerRef;
@@ -47,29 +61,45 @@ export class PopupService {
 
     }
 
-    init(viewContainerRef: ViewContainerRef) {
-        this.viewContainerRef = viewContainerRef;
-        //const appElement = this.injector.get(this.applicationRef.componentTypes)//.elementRef;
-        //console.log(appElement)
+    init() {
+
+       // this.containerCreate();
+
     }
 
     private containerCreate() {
         const factory = this.componentFactoryResolver.resolveComponentFactory(PopupContainerComponent);
         this.popupContainerEl = document.createElement('popup-container');
         this.popupContainerRef = factory.create(this.injector, [], this.popupContainerEl);
-        this.viewContainerRef.insert(this.popupContainerRef.hostView);
+        //this.viewContainerRef.insert(this.popupContainerRef.hostView);
         this.popupContainerRef.instance.ngIf = false;
+        document.body.appendChild(this.popupContainerEl);
+        this.applicationRef.attachView(this.popupContainerRef.hostView)
     }
 
-    show(component: any, buttons: Array<PopupButton> = []) {
+    show(params: PopupInterface) {
+
+        const {body, buttons, initialState} = params;
+
         if(this.popupList.length==0){
             this.containerCreate();
             this.popupContainerRef.instance.ngIf = true;
             this.popupContainerRef.instance.popupService = this;
         }
         this.popupList.push({
-            component,
+            body,
+            initialState,
             buttons
         })
+    }
+
+    hide(popup: PopupInterface){
+        const index = this.popupList.indexOf(popup);
+        this.popupList.splice(index, 1);
+
+        if(this.popupList.length<1){
+            this.applicationRef.detachView(this.popupContainerRef.hostView);
+            document.body.removeChild(this.popupContainerEl)
+        }
     }
 }

@@ -2,12 +2,11 @@
     <div class="title">
 
     </div>
-    <ng-container *ngComponentOutlet ="popup.component" ></ng-container>
+    <ng-container *ngComponentOutlet ="popup.body; injector: myInjector" ></ng-container>
 
     <div class="buttons-container">
-        <button>
-            Ok
+        <button  *ngFor="let button of popup.buttons" (click)="click(button)">
+            {{button.label}}
         </button>
-
     </div>
 </div>

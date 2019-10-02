@@ -40,8 +40,6 @@ export class AppComponent implements OnInit{
                 private menuService: MenuService,
                 private track: TrackService,
                 public myMarkerService: MyMarkerService,
-                private popupService: PopupService,
-                private viewContainerRef: ViewContainerRef
     ) {
         this.router.events.subscribe((e) => {
             if (e instanceof NavigationEnd) {
@@ -53,7 +51,5 @@ export class AppComponent implements OnInit{
     }
 
     ngOnInit(): void {
-
-        this.popupService.init(this.viewContainerRef)
     }
 }
