@@ -24,7 +24,4 @@ export class PopupModule {
     constructor(popupService: PopupService){
         popupService.init();
     }
-
-
 }
-

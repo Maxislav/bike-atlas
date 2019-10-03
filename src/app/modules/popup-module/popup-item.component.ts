@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    HostBinding,
+    HostListener,
+    Injector,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output, ViewChild, ViewChildren
+} from '@angular/core';
 import {
     PopupButton,
     PopupInitialState,
@@ -7,44 +17,66 @@ import {
     PopupService
 } from 'src/app/modules/popup-module/popup.service';
 import { printLine } from 'tslint/lib/verify/lines';
+import { fadeInAnimation } from 'src/app/animation/animation';
+import { popupItemAnimation } from 'src/app/modules/popup-module/popup-animation';
 
 @Component({
     selector: 'popup-item-component',
     templateUrl: './popup-item.component.html',
     styleUrls: [
         './popup-item.component.less'
-    ]
+    ],
+    animations: [popupItemAnimation]
 })
-export class PopupItemComponent implements OnInit {
+export class PopupItemComponent implements OnInit, OnDestroy {
     myInjector: Injector;
 
+    @HostBinding('@popupItemAnimation') fadeInAnimation = '';
+    @HostBinding('class') get classes(): string {
+        return this.popup.windowClass;
+    }
     @Input() popup: PopupInterface;
     @Output() onClose = new EventEmitter<PopupInterface>();
+    @Output() onMaskHide = new EventEmitter<PopupInterface>();
 
-    constructor(private injector: Injector) {
+
+    private isClose: boolean;
+    constructor(private injector: Injector, private popupService: PopupService) {
 
     }
-
+    @HostListener('@popupItemAnimation.done', ['$event'])
+    animationEnd(e){
+        if(e.toState ==='void'){
+              this.popupService.hideMask()
+        }
+    }
     ngOnInit(): void {
-        console.log(this.popup);
 
         this.myInjector =
             Injector.create({
                 providers: [
                     {
-                        provide: 'PopupInitialState',
+                        provide: 'popupInitialParams',
                         deps: [],
-                        useValue: this.popup.initialState
+                        useValue: this.popup.initialParams
                     }
                 ], parent: this.injector
             });
     }
 
     click(button: PopupButton) {
-        const isClose = button.click();
-        if (isClose) {
+        this.isClose = button.click();
+        if (this.isClose) {
             this.onClose.emit(this.popup);
         }
+    }
+
+    ngOnDestroy(): void {
+
+    }
+
+    forceClose(){
+        this.onClose.emit(this.popup);
     }
 
 }

@@ -1,11 +1,15 @@
 <div>
-    <div class="title">
+    <div class="title" >
+        <div  [textContent]="popup.title">
+
+        </div>
+        <div (click)="forceClose()" class="close">&times;</div>
 
     </div>
     <ng-container *ngComponentOutlet ="popup.body; injector: myInjector" ></ng-container>
 
     <div class="buttons-container">
-        <button  *ngFor="let button of popup.buttons" (click)="click(button)">
+        <button  *ngFor="let button of popup.buttons" (click)="click(button)" [class]="button.windowClass">
             {{button.label}}
         </button>
     </div>

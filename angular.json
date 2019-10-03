@@ -29,6 +29,7 @@
             ],
             "styles": [
               "src/app/css/index.less",
+              "src/app/css/popup-items.less",
               "src/lib/mapbox-gl/mapbox-gl.css",
               "src/lib/leaflet/leaflet.css"
             ],

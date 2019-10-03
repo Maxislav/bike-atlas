@@ -1,3 +1,3 @@
-<div class="mask">
-    <popup-item-component *ngFor="let popup of popupList" [popup]="popup" (onClose)="onClose($event)" ></popup-item-component>
+<div class="mask" *ngIf="isShowMask" @popupMaskInAnimation="" (@popupMaskInAnimation.done)="animationEnd($event)">
+    <popup-item-component *ngFor="let popup of popupList" [popup]="popup" (onClose)="onClose($event)"></popup-item-component>
 </div>

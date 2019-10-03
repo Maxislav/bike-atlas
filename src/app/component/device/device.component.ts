@@ -176,20 +176,22 @@ export class DeviceComponent implements AfterViewInit, OnInit {
         this.popupService.show(
             {
                 body: DeviceDelPopupComponent,
-                initialState: {
+                title: "Confirm",
+                windowClass: 'popup-del-device',
+                initialParams: {
                     name: device.name
                 },
                 buttons: [
                     {
                         label: 'Cancel',
-                        windowClass: 'cancel',
+                        windowClass: 'reject',
                         click: () => {
                             return true;
                         }
                     },
                     {
                         label: 'Delete',
-                        windowClass: 'primary',
+                        windowClass: 'resolve',
                         click: () => {
                             return true;
                         }

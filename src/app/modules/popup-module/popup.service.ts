@@ -40,7 +40,9 @@ export class PopupInstance {
 
 export interface PopupInterface {
     body: any;
-    initialState: any,
+    title: string,
+    initialParams: any,
+    windowClass: string,
     buttons: Array<PopupButton>
 }
 
@@ -51,7 +53,8 @@ export class PopupService {
     public popupList: Array<PopupInterface> = [];
     popupContainerEl: HTMLElement;
     popupContainerRef: ComponentRef<PopupContainerComponent>;
-    viewContainerRef: ViewContainerRef;
+
+    private popupListPrepare: Array<PopupInterface> = []
 
     constructor(
         private injector: Injector,
@@ -60,10 +63,7 @@ export class PopupService {
     ) {
 
     }
-
     init() {
-
-       // this.containerCreate();
 
     }
 
@@ -72,34 +72,54 @@ export class PopupService {
         this.popupContainerEl = document.createElement('popup-container');
         this.popupContainerRef = factory.create(this.injector, [], this.popupContainerEl);
         //this.viewContainerRef.insert(this.popupContainerRef.hostView);
-        this.popupContainerRef.instance.ngIf = false;
+        //this.popupContainerRef.instance.ngIf = false;
         document.body.appendChild(this.popupContainerEl);
         this.applicationRef.attachView(this.popupContainerRef.hostView)
     }
 
-    show(params: PopupInterface) {
+    show(popup: PopupInterface) {
 
-        const {body, buttons, initialState} = params;
-
+        this.popupListPrepare.push(popup);
         if(this.popupList.length==0){
             this.containerCreate();
-            this.popupContainerRef.instance.ngIf = true;
+            this.popupContainerRef.instance.isShowMask = true;
             this.popupContainerRef.instance.popupService = this;
+
+        }else {
+            this.animationShowEnd()
         }
-        this.popupList.push({
-            body,
-            initialState,
-            buttons
-        })
+
+
+        //this.popupList.push(popup)
     }
 
-    hide(popup: PopupInterface){
+   /* popupPush(popup: PopupInterface){
+        this.popupList.push(popup)
+    }*/
+
+    animationShowEnd(){
+        while (this.popupListPrepare.length){
+            const p = this.popupListPrepare.splice(0, 1)[0];
+            this.popupList.push(p)
+        }
+
+    }
+
+    remove(popup: PopupInterface){
         const index = this.popupList.indexOf(popup);
         this.popupList.splice(index, 1);
+    }
 
+    hideMask(){
         if(this.popupList.length<1){
-            this.applicationRef.detachView(this.popupContainerRef.hostView);
-            document.body.removeChild(this.popupContainerEl)
+            this.popupContainerRef.instance.isShowMask = false;
+            //this.applicationRef.detachView(this.popupContainerRef.hostView);
+            //document.body.removeChild(this.popupContainerEl)
         }
+    }
+
+    removeMask(){
+        this.applicationRef.detachView(this.popupContainerRef.hostView);
+        document.body.removeChild(this.popupContainerEl)
     }
 }

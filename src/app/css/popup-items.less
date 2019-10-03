@@ -1,0 +1,24 @@
+@import "constant";
+
+popup-item-component {
+    .buttons-container {
+	display: flex;
+	justify-content: flex-end;
+	button {
+	    display: block;
+	    &.resolve {
+		&:hover{
+		    background: fade(@success-background, 20%);
+		}
+	    }
+
+	    &.reject:hover {
+		background: fade(@warning-background, 20%)
+	    }
+	}
+    }
+}
+
+.popup-del-device {
+    width: 400px;
+}

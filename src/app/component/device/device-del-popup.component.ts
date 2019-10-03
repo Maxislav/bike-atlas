@@ -4,20 +4,21 @@ import { PopupInitialState } from 'src/app/modules/popup-module/popup.service';
 
 @Component({
     selector: 'device-del-popup-component',
-    template: '<div>Delete device {{name}}</div>'
+    template: '<div>Delete device {{name}}</div>',
+    styleUrls: [
+        './device-del-popup.component.less'
+    ]
 
 })
 export class DeviceDelPopupComponent implements OnInit{
     name: string;
 
-    @Input() dd: any
-    constructor(@Inject('PopupInitialState') popupInitialState: any ) {
-        this.name = popupInitialState.name
+    constructor(@Inject('popupInitialParams') popupInitialParams: any ) {
+        this.name = popupInitialParams.name
     }
 
     ngOnInit(): void {
 
-        console.log(this.dd)
     }
 }
 
