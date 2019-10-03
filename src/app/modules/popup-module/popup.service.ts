@@ -1,15 +1,11 @@
 import {
     ApplicationRef,
-    Component,
     ComponentFactoryResolver,
     Injectable,
     Injector,
-    ViewContainerRef
 } from '@angular/core';
-import { DeviceIconComponent } from 'src/app/component/device-icon-component/device-icon-component';
 import { ComponentRef } from '@angular/core/src/linker/component_factory';
 import { PopupContainerComponent } from 'src/app/modules/popup-module/popup-container.component';
-import { ComponentDef } from '@angular/core/src/render3';
 import { PopupItemComponent } from 'src/app/modules/popup-module/popup-item.component';
 
 
@@ -31,14 +27,6 @@ export interface PopupInstance {
 export class PopupInitialState {
     params: any;
 }
-
-/*
-export class PopupInstance {
-    title: string = '';
-    component: any;
-    buttons: Array<PopupButton> = [];
-}*/
-
 
 export interface PopupInterface {
     body: any;

@@ -1,18 +1,20 @@
 
 <div class="content">
+
   <form name="reg" (submit)="onSubmit($event)">
-    <label>Имя</label>
-    <input type="text" name="_name" [(ngModel)]="name"/>
-    <label>Пароль</label>
-    <input type="password" name="_pass" [(ngModel)]="pass1"/>
-    <label>Пароль</label>
-    <input type="password" name="_pass" [(ngModel)]="pass2"/>
-    <div class="button-container">
-      <div>
-        <button style="float: right" (click)="onOk($event)">Ok</button>
-        <button (click)="onCancel($event)">Cancel</button>
-      </div>
-      <div class="clear"></div>
+    <div class="modal-body">
+      <label>Имя</label>
+      <input type="text" name="_name" [(ngModel)]="name"/>
+      <label>Пароль</label>
+      <input type="password" name="_pass" [(ngModel)]="pass1"/>
+      <label>Пароль</label>
+      <input type="password" name="_pass" [(ngModel)]="pass2"/>
+    </div>
+
+    <div class="buttons-container">
+      <button class="reject" (click)="onCancel($event)">Cancel</button>
+
+      <button class="resolve" (click)="onOk($event)">Ok</button>
     </div>
   </form>
 </div>

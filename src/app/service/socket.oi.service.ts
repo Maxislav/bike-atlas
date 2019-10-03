@@ -55,7 +55,7 @@ class GetListener {
         const timeout = setTimeout(() => {
             delete this.hashMap[hash];
             this.delHash(hash);
-            deferred.reject('Error by timeout name->' + name);
+            deferred.reject('Error by timeout name-> ' + this.name);
         }, 10000);
 
         this.hashMap[hash] = {

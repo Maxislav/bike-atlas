@@ -72,7 +72,7 @@ class Device extends ProtoData {
                     });
             })
             .catch((err) => {
-                this.socket.emit('getDevice', {
+               res.end ({
                     result: false,
                     error: err.toString()
                 });

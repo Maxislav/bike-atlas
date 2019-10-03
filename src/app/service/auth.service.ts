@@ -97,20 +97,24 @@ export class AuthService implements CanActivate {
 
             })
             .then((map: MapGl) => {
-                this.deviceService
+                return this.deviceService
                     .setMapGl(map)
                     .onDevices()
                     .then(() => {
                         this.logService.emitLastPosition();
+                        return true
                     });
-            });
+            })
+            .catch(err => {
+                console.error(err)
+            })
     }
 
     @autobind()
     onConnect() {
         this.toast.show({
             type: 'success',
-            text: 'You\'r onair'
+            text: 'On Air ... '
         });
         this.onAuth();
 

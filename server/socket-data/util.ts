@@ -253,7 +253,7 @@ export class Util {
                 if (rows && rows.length) {
                     resolve(rows[0].user_id);
                 } else {
-                    reject(rows);
+                    reject('User is not authorized');
                 }
             });
         });

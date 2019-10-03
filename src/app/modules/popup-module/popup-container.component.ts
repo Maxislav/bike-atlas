@@ -1,5 +1,5 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
-import { PopupInstance, PopupInterface, PopupService } from 'src/app/modules/popup-module/popup.service';
+import { Component, OnInit } from '@angular/core';
+import { PopupInterface, PopupService } from 'src/app/modules/popup-module/popup.service';
 import { popupMaskInAnimation } from 'src/app/modules/popup-module/popup-animation';
 
 
@@ -12,11 +12,9 @@ import { popupMaskInAnimation } from 'src/app/modules/popup-module/popup-animati
     animations: [popupMaskInAnimation]
 })
 export class PopupContainerComponent implements OnInit {
-    //public visible: false
-    // @HostBinding('ngIf')
     isShowMask = false;
     popupList: Array<any> = [];
-    public popupService: PopupService;
+    popupService: PopupService;
 
     constructor() {
     }

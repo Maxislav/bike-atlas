@@ -6,13 +6,31 @@
   z-index: 5;
   width: 100%;
 }
+.buttons-container {
+  display: flex;
+  justify-content: flex-end;
+  button {
+    display: block;
+    &.resolve {
+      &:hover{
+        background: fade(@success-background, 20%);
+      }
+    }
+
+    &.reject:hover {
+      background: fade(@warning-background, 20%)
+    }
+  }
+}
 
 .content{
   background: rgba(255, 255, 255, 0.9);
   max-width: 400px;
   margin: 20px auto;
-  padding: 30px;
   box-shadow: @box-shadow;
+}
+.modal-body{
+  padding: 30px;
 }
 
 input{
@@ -39,6 +57,7 @@ label{
 
   }
 }
+/*
 button{
   padding: 8px 15px;
   margin-left: 8px;
@@ -53,3 +72,4 @@ button{
     box-shadow: none;
   }
 }
+*/

@@ -47,8 +47,8 @@ export class Device implements DeviceData {
     image: string = null;
     lngLat: LngLat;
     speed: number = 0;
+    marker: Marker = null;
     private lngLatStr: string;
-    private marker: Marker = null;
     private color: ColorSpeed;
     public date: Date;
     public elapseTime: number;

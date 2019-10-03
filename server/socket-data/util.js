@@ -225,7 +225,7 @@ class Util {
                     resolve(rows[0].user_id);
                 }
                 else {
-                    reject(rows);
+                    reject('User is not authorized');
                 }
             });
         });
