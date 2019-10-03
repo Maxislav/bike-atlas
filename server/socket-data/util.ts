@@ -284,7 +284,7 @@ export class Util {
             .then(user_id => {
                 return new Promise((resolve, reject) => {
                     this.connection.query('INSERT INTO `device` (`id`, `user_id`, `device_key`, `name` ,`phone`) VALUES (NULL, ?, ?, ?, ?)',
-                        [user_id, device.id, device.name, device.phone], (err, results) => {
+                        [user_id, device.device_key, device.name, device.phone], (err, results) => {
                             if (err) {
                                 reject(err);
                             }

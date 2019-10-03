@@ -4,7 +4,7 @@ import { PopupInitialState } from 'src/app/modules/popup-module/popup.service';
 
 @Component({
     selector: 'device-del-popup-component',
-    template: '<div>Delete device {{name}}</div>',
+    template: '<div>Delete device: {{name}}</div>',
     styleUrls: [
         './device-del-popup.component.less'
     ]

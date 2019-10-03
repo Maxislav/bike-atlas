@@ -3,7 +3,7 @@
         <div  [textContent]="popup.title">
 
         </div>
-        <div (click)="forceClose()" class="close">&times;</div>
+        <div (click)="close()" class="close">&times;</div>
 
     </div>
     <ng-container *ngComponentOutlet ="popup.body; injector: myInjector" ></ng-container>

@@ -10,12 +10,14 @@ import { DeviceIconComponent } from 'src/app/component/device-icon-component/dev
 import { ComponentRef } from '@angular/core/src/linker/component_factory';
 import { PopupContainerComponent } from 'src/app/modules/popup-module/popup-container.component';
 import { ComponentDef } from '@angular/core/src/render3';
+import { PopupItemComponent } from 'src/app/modules/popup-module/popup-item.component';
 
 
 export interface PopupButton {
     label: string,
     windowClass: string,
-    click(): boolean
+
+    click(popupItemComponent: PopupItemComponent): boolean
 }
 
 export interface PopupInstance {
@@ -27,7 +29,7 @@ export interface PopupInstance {
 
 @Injectable()
 export class PopupInitialState {
-    params: any
+    params: any;
 }
 
 /*
@@ -54,7 +56,7 @@ export class PopupService {
     popupContainerEl: HTMLElement;
     popupContainerRef: ComponentRef<PopupContainerComponent>;
 
-    private popupListPrepare: Array<PopupInterface> = []
+    private popupListPrepare: Array<PopupInterface> = [];
 
     constructor(
         private injector: Injector,
@@ -63,6 +65,7 @@ export class PopupService {
     ) {
 
     }
+
     init() {
 
     }
@@ -74,52 +77,52 @@ export class PopupService {
         //this.viewContainerRef.insert(this.popupContainerRef.hostView);
         //this.popupContainerRef.instance.ngIf = false;
         document.body.appendChild(this.popupContainerEl);
-        this.applicationRef.attachView(this.popupContainerRef.hostView)
+        this.applicationRef.attachView(this.popupContainerRef.hostView);
     }
 
-    show(popup: PopupInterface) {
+    show(popup: PopupInterface): void {
 
         this.popupListPrepare.push(popup);
-        if(this.popupList.length==0){
+        if (this.popupList.length == 0) {
             this.containerCreate();
             this.popupContainerRef.instance.isShowMask = true;
             this.popupContainerRef.instance.popupService = this;
 
-        }else {
-            this.animationShowEnd()
+        } else {
+            this.animationShowEnd();
         }
 
 
         //this.popupList.push(popup)
     }
 
-   /* popupPush(popup: PopupInterface){
-        this.popupList.push(popup)
-    }*/
+    /* popupPush(popup: PopupInterface){
+         this.popupList.push(popup)
+     }*/
 
-    animationShowEnd(){
-        while (this.popupListPrepare.length){
+    animationShowEnd() {
+        while (this.popupListPrepare.length) {
             const p = this.popupListPrepare.splice(0, 1)[0];
-            this.popupList.push(p)
+            this.popupList.push(p);
         }
 
     }
 
-    remove(popup: PopupInterface){
+    remove(popup: PopupInterface) {
         const index = this.popupList.indexOf(popup);
         this.popupList.splice(index, 1);
     }
 
-    hideMask(){
-        if(this.popupList.length<1){
+    hideMask() {
+        if (this.popupList.length < 1) {
             this.popupContainerRef.instance.isShowMask = false;
             //this.applicationRef.detachView(this.popupContainerRef.hostView);
             //document.body.removeChild(this.popupContainerEl)
         }
     }
 
-    removeMask(){
+    removeMask() {
         this.applicationRef.detachView(this.popupContainerRef.hostView);
-        document.body.removeChild(this.popupContainerEl)
+        document.body.removeChild(this.popupContainerEl);
     }
 }

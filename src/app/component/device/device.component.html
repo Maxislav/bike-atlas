@@ -36,7 +36,7 @@
                         </td>
                         <td>
                             <div class="relative">
-                                <input type="text" id="deviceId" [(ngModel)]="device.id" name="deviceId"
+                                <input type="text" id="deviceId" [(ngModel)]="device.device_key" name="deviceId"
                                        placeholder="88888888888" required="required" minlength="12"
                                        #deviceId="ngModel"/>
                                 <div *ngIf="deviceId.invalid &amp;&amp; (deviceId.dirty || deviceId.touched)"
@@ -56,6 +56,9 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
+            <div (click)="reset()">
+                reset
             </div>
         </form>
         <div class="border-hidden"></div>

@@ -13,6 +13,8 @@ import { DeviceHelpComponent } from './device-help/device-help.component';
 import { PopupButton, PopupInstance, PopupService } from 'src/app/modules/popup-module/popup.service';
 import { DeviceDelPopupComponent } from 'src/app/component/device/device-del-popup.component';
 import { autobind } from 'src/app/util/autobind';
+import { LogService } from 'src/app/service/log.service';
+import { PopupItemComponent } from 'src/app/modules/popup-module/popup-item.component';
 
 function getOffset(el) {
     var _x = 0;
@@ -122,7 +124,9 @@ export class DeviceComponent implements AfterViewInit, OnInit {
                 private toast: ToastService,
                 private lh: NavigationHistory,
                 private el: ElementRef,
-                private popupService: PopupService) {
+                private popupService: PopupService,
+                private logService: LogService
+    ) {
 
 
         this.user = userService.getUser();
@@ -145,10 +149,10 @@ export class DeviceComponent implements AfterViewInit, OnInit {
 
 
         this.device.name = this.device.name.replace(/^\s+/, '');
-        this.device.id = this.device.id.replace(/^\s+/, '');
+        this.device.device_key = this.device.device_key.replace(/^\s+/, '');
 
         console.log(this.device);
-        if (!this.device.name || !this.device.id) {
+        if (!this.device.name || !this.device.device_key) {
             this.toast.show({
                 type: 'warning',
                 text: 'Имя или Идентификатор не заполнено'
@@ -156,27 +160,43 @@ export class DeviceComponent implements AfterViewInit, OnInit {
             return;
         }
 
+
         this.deviceService.onAddDevice(this.device)
-            .then(d => {
-                if (d && d.result == 'ok') {
-                    this.reset();
-                } else if (d && d.result === false && d.message == 'device exist') {
+            .then((d) => {
+                if (d && d.error) {
+                    console.warn(d.error);
                     this.toast.show({
                         type: 'warning',
                         text: 'Устройство зарегистрированно на другого пользователя'
                     });
+
                 }
+                if (d && d.result == 'ok') {
+                    this.reset();
+                }
+
+
             });
+        /*.then(d => {
+            if (d && d.result == 'ok') {
+                this.reset();
+            } else if (d && d.result === false && d.message == 'device exist') {
+                this.toast.show({
+                    type: 'warning',
+                    text: 'Устройство зарегистрированно на другого пользователя'
+                });
+            }
+        });*/
     }
 
 
     preDel2(e, device) {
 
-        //const popup = new PopupDel(this, DeviceDelPopupComponent);
+
         this.popupService.show(
             {
                 body: DeviceDelPopupComponent,
-                title: "Confirm",
+                title: 'Confirm',
                 windowClass: 'popup-del-device',
                 initialParams: {
                     name: device.name
@@ -192,8 +212,16 @@ export class DeviceComponent implements AfterViewInit, OnInit {
                     {
                         label: 'Delete',
                         windowClass: 'resolve',
-                        click: () => {
-                            return true;
+                        click: (popupItemComponent: PopupItemComponent) => {
+                            /*  setTimeout(() => {
+                                  popupItemComponent.close()
+                              }, 300);*/
+                            this.deviceService.onDelDevice(device)
+                                .then((d) => {
+                                    popupItemComponent.close();
+                                });
+
+                            return false;
                         }
                     }
                 ]
@@ -222,7 +250,11 @@ export class DeviceComponent implements AfterViewInit, OnInit {
     }
 
     reset() {
-        //this.device =  Device.create();
+        this.device = this.deviceService.createDevice();
+        this.deviceService.updateDevices()
+            .then(() => {
+                this.logService.emitLastPosition();
+            });
     }
 
 
@@ -262,7 +294,13 @@ export class DeviceComponent implements AfterViewInit, OnInit {
     private onAddDeviceImage(device: Device) {
         this.deviceService.onAddDeviceImage(device)
             .then(d => {
-                console.log(d);
+
+                if (d && d.error) {
+                    this.toast.show({
+                        type: 'error',
+                        text: d.error
+                    });
+                }
             });
     }
 

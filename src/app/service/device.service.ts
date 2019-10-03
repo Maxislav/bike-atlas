@@ -8,6 +8,7 @@ import { LogData } from 'src/types/global';
 import { LngLat } from 'src/app/util/lngLat';
 import { DeviceIconComponent } from 'src/app/component/device-icon-component/device-icon-component';
 import { distance } from 'src/app/util/distance';
+import { LogService } from 'src/app/service/log.service';
 
 //import { Marker } from './marker.service';
 
@@ -62,6 +63,7 @@ export class Device implements DeviceData {
         private injector: Injector,
         private applicationRef: ApplicationRef,
         private componentFactoryResolver: ComponentFactoryResolver
+
     ) {
         this.color = new ColorSpeed();
         this.background = this.color.dead;
@@ -107,8 +109,8 @@ export class Device implements DeviceData {
         if (this.date) {
             difTime = date.getTime() - this.date.getTime();
         }
-        if(!this.timerId){
-            this.timerStart()
+        if (!this.timerId) {
+            this.timerStart();
         }
         this.date = date;
         this.elapseTime = new Date().getTime() - this.date.getTime();
@@ -162,8 +164,27 @@ export class Device implements DeviceData {
 
     remove(): this {
         clearInterval(this.timerId);
-        this.marker.remove();
+        this.marker && this.marker.remove();
         return this;
+    }
+
+
+    toJson() {
+        const device = {};
+        [
+            'id',
+            'user_id',
+            'device_key',
+            'string',
+            'phone',
+            'image',
+            'lng',
+            'lat',
+            'name'
+        ].map(key => {
+            device[key] = this[key];
+        });
+        return device;
     }
 
     /*static create(map: MapGl): Device {
@@ -184,7 +205,8 @@ export class DeviceService {
         private io: Io,
         private injector: Injector,
         private applicationRef: ApplicationRef,
-        private componentFactoryResolver: ComponentFactoryResolver
+        private componentFactoryResolver: ComponentFactoryResolver,
+
     ) {
         this.socket = io.socket;
     }
@@ -245,42 +267,25 @@ export class DeviceService {
     }
 
 
-    updateDevices() {
-        return this.socket.$get('getDevices')
-            .then(d => {
-                if (d && d.result == 'ok') {
-                    this.devices.length = 0;
-                    d.devices.forEach(item => {
-                        this.devices.push(item);
-                    });
-
-                } else {
-                    return Promise.reject(d.error);
-                }
-                console.log(d);
-                return this.devices;
-            })
-            .catch(err => {
-                console.log(err);
-            });
+    updateDevices():  Promise<Array<Device>> {
+        this.clearDevices();
+        return this.onDevices()
     }
 
     onAddDevice(device: Device): Promise<any> {
-        return this.socket.$emit('onAddDevice', device)
-            .then(d => {
-                if (d && d.result == 'ok') {
-                    this.updateDevices();
-                }
-                return d;
-            });
+        const dv = device.toJson();
+        return this.socket.$get('onAddDevice', dv)
     }
 
     onDelDevice(device: Device) {
-        return this.socket.$emit('onDelDevice', device)
+        const dv = device.toJson();
+
+        return this.socket.$get('onDelDevice', dv)
             .then(d => {
                 if (d.result == 'ok') {
                     let index = this.devices.indexOf(device);
                     if (-1 < index) {
+                        this.devices[index].remove();
                         this.devices.splice(index, 1);
                     }
                 }

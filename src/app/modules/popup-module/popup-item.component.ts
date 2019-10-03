@@ -65,7 +65,7 @@ export class PopupItemComponent implements OnInit, OnDestroy {
     }
 
     click(button: PopupButton) {
-        this.isClose = button.click();
+        this.isClose = button.click(this);
         if (this.isClose) {
             this.onClose.emit(this.popup);
         }
@@ -75,7 +75,7 @@ export class PopupItemComponent implements OnInit, OnDestroy {
 
     }
 
-    forceClose(){
+    close(){
         this.onClose.emit(this.popup);
     }
 

@@ -18,10 +18,10 @@ class Device extends ProtoData {
         this.util = util;
         this.logger = logger;
         this.socket.$get('onDevices', this.onDevices);
+        this.socket.$get('onAddDevice', this.onAddDevice);
+        this.socket.$get('onDelDevice', this.onDelDevice);
         this.socket.on('emitLastPosition', this.emitLastPosition);
-        //socket.on('getDevice', this.getDevice.bind(this));
-        socket.on('onAddDevice', this.onAddDevice.bind(this, 'onAddDevice'));
-        socket.on('onDelDevice', this.onDelDevice.bind(this));
+        //socket.on('onDelDevice', this.onDelDevice.bind(this));
         const onAddDeviceImage = this.onAddDeviceImage.bind(this);
         socket.$get('onAddDeviceImage', onAddDeviceImage);
     }
@@ -112,11 +112,16 @@ class Device extends ProtoData {
             console.log(err);
         });
     }
-    onAddDevice(eName, device) {
+    onAddDevice(req, res) {
+        const device = req.data;
         const util = this.util;
         util.getDeviceByKey(device.id)
             .then(rows => {
             if (rows && rows.length) {
+                res.end({
+                    result: false,
+                    error: 'Device exist'
+                });
                 return false;
             }
             else {
@@ -127,39 +132,33 @@ class Device extends ProtoData {
             if (d) {
                 return util.addDeviceBySocketId(this.socket.id, device)
                     .then(d => {
-                    this.socket.emit(eName, {
-                        result: 'ok'
+                    res.end({
+                        result: 'ok',
+                        error: null
                     });
                 });
             }
-            else {
-                this.socket.emit(eName, {
-                    result: false,
-                    message: 'device exist'
-                });
-                return null;
-            }
         })
             .catch(err => {
-            this.socket.emit(eName, {
-                result: false,
-                message: err
+            res.end({
+                error: err.toString()
             });
         });
     }
-    onDelDevice(device) {
+    onDelDevice(req, res) {
+        const device = req.data;
         console.log('onDelDevice->', device.device_key);
         const util = this.util;
         util.getUserIdBySocketId(this.socket.id)
             .then(user_id => {
             util.delDeviceByUserDeviceKey(user_id, device.device_key)
                 .then((d) => {
-                this.socket.emit('onDelDevice', {
+                res.end({
                     result: 'ok'
                 });
             })
                 .catch(err => {
-                this.socket.emit('onDelDevice', {
+                res.end({
                     result: false,
                     message: err
                 });
@@ -180,5 +179,17 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], Device.prototype, "emitLastPosition", null);
+__decorate([
+    autobind_1.autobind(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], Device.prototype, "onAddDevice", null);
+__decorate([
+    autobind_1.autobind(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], Device.prototype, "onDelDevice", null);
 module.exports = Device;
 //# sourceMappingURL=device.js.map
