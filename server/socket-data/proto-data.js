@@ -44,7 +44,6 @@ class ProtoData{
       }
       return res;
     }
-  
-   
+
 }
 module.exports = ProtoData;

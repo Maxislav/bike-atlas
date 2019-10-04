@@ -30,6 +30,7 @@ export class AuthService implements CanActivate {
         private ls: LocalStorage,
         private friend: FriendsService,
         public userService: UserService,
+        public friendsService: FriendsService,
         private chatService: ChatService,
         private toast: ToastService,
         private myMarkerService: MyMarkerService,
@@ -85,6 +86,9 @@ export class AuthService implements CanActivate {
 
                 if (d.result == 'ok') {
                     this.userService.setUser(d.user);
+                    this.friendsService.requestFriends();
+                    this.friendsService.requestInvites();
+
                     //this.userService.friends = d.user.friends;
                     /* this.friend.getInvites();
                      this.chatService.getUnViewed(true);

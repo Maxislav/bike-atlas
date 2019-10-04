@@ -6,7 +6,7 @@ import {ToastService} from "../toast/toast.component";
 import {Router, ActivatedRoute} from "@angular/router";
 import {ChatService} from "../../service/chat.service";
 import {NavigationHistory} from "../../app.component";
-import { User } from 'src/app/service/main.user.service';
+import { User, UserService } from 'src/app/service/main.user.service';
 
 
 @Directive({
@@ -36,26 +36,28 @@ export class FriendsComponent{
     public friends: Array<User>;
     private myInvites: Array<any>;
     constructor(private location: Location,
-                private friendsService: FriendsService,
                 private lh: NavigationHistory ,
                 private route: ActivatedRoute,
                 private toast: ToastService,
                 private router: Router,
+                private friendsService: FriendsService,
                 private chatService: ChatService){
 
         //this.allUsers = friendsService.users;
         //this.invites = friendsService.invites;
         //this.friends = friendsService.friends;
        // this.myInvites = friendsService.myInvites;
-        friendsService.getFriends()
+        //friendsService.getFriends()
+
+        this.friends = friendsService.friends;
     }
 
     onAccept(friend: User){
-        this.friendsService.onAcceptInvite(friend)
+        //this.friendsService.onAcceptInvite(friend)
     }
 
     onDelFriend(friend: User){
-        this.friendsService.onDelFriend(friend.id)
+       // this.friendsService.onDelFriend(friend.id)
     }
     onClose(){
         if(this.lh.is){
@@ -69,11 +71,11 @@ export class FriendsComponent{
     }
    
     onReject(user){
-        this.friendsService.onRejectInvite(user.id)
+       // this.friendsService.onRejectInvite(user.id)
     }
 
     onCancelInvite(user: User){
-        this.friendsService.onCancelInvite(user.id)
+       // this.friendsService.onCancelInvite(user.id)
     }
     startChat(user: User): void{
         this.chatService.onEnterRoom(user)

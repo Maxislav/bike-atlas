@@ -71,7 +71,7 @@ export class ChatRoomComponent implements OnInit, AfterViewInit{
         this.messages = this.room.messages;
         this.id = this.room.id;
         this.chatService.chatHistory(this.id)
-        this.friendService.unBindChatUnViewed(this.id)
+        //this.friendService.unBindChatUnViewed(this.id)
         this.chatService.resolveUnViewedIds(this.room.id)
     }
     ngAfterViewInit():void {

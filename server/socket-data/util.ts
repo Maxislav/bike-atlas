@@ -707,7 +707,7 @@ export class Util {
     getFriends(user_id) {
         return new Promise((resolve, reject) => {
             const query = 'SELECT user.id, image, name, setting.last_visit FROM `user` INNER JOIN `friends` ON friends.friend_id = user.id ' +
-                'INNER JOIN `setting` ON friends.friend_id = setting.user_id  AND friends.user_id = ?';
+                'INNER JOIN `setting` ON friends.friend_id = setting.user_id AND friends.user_id = ?';
             this.connection.query(query, [user_id], (err, rows) => {
                 if (err) {
                     reject(err);

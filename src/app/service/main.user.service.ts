@@ -3,26 +3,26 @@ import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angul
 import { Io } from './socket.oi.service';
 import { ToastService } from '../component/toast/toast.component';
 import { Router } from '@angular/router';
-import { Deferred } from '../util/deferred';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 
 export class User {
-    public id: string = null;
-    public image: string = null;
-    public  name: string = null;
+    id: string = null;
+    image: string = null;
+    name: string = null;
+    lastVisit: string = null;
     private _initialData = {};
-    constructor() {
+    constructor(user?: User) {
+
         Object.keys(this).forEach(key => {
             if(key!=='_initialData'){
-                this._initialData[key] = this[key]
+                if(user){
+                    this[key] = user[key]
+                }
+                this._initialData[key] = this[key];
             }
         })
 
     }
-
-
-
     update(data: User){
         Object.keys(this).forEach(key => {
             if(key!=='_initialData'){
@@ -37,6 +37,16 @@ export class User {
                 this[key] = this._initialData[key]
             }
         })
+    }
+
+    toJson(){
+        const d = {};
+        Object.keys(this).forEach(key => {
+            if(key!=='_initialData'){
+                d[key] = this[key]
+            }
+        });
+        return d;
     }
 }
 
@@ -59,11 +69,10 @@ export class Setting {
 @Injectable()
 export class UserService  {
 
-
-    public id;
+    // friends: Array<User> = [];
+    id;
     private readonly user: User =  new User();
     private readonly setting: Setting = new Setting();
-    private friends: Array<User> = [];
     private socket: any;
 
 
@@ -109,6 +118,9 @@ export class UserService  {
     setSetting(s){
         this.setting.update(s)
     }
+
+
+
 
 
 

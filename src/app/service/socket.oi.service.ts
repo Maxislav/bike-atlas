@@ -115,7 +115,7 @@ class SSocket {
         this.listenerHashMap = {};
     }
 
-    $get(name: string, data: any): Promise<any> {
+    $get<T>(name: string, data: any): Promise<any> {
         if (!this.getListenerHashMap[name]) {
             this.getListenerHashMap[name] = new GetListener(name, this);
         }
