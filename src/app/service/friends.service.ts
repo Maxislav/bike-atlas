@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Io } from './socket.oi.service';
+import { Io, SSocket } from './socket.oi.service';
 import { Marker } from './marker.service';
 import { LocalStorage } from './local-storage.service';
 import { User, UserService } from './main.user.service';
@@ -34,7 +34,7 @@ export class FriendsService {
         userInvite: []
     };
 
-    private socket: any;
+    private socket: SSocket;
 
 
     constructor(
@@ -93,9 +93,9 @@ export class FriendsService {
 
     }
 
-    sendInvite(user: User){
+    sendInvite(user: User): Promise<any>{
         this.inviteMap.myInvite.push(user);
-        return this.socket.$get<{result: string}>('onInvite' , user.toJson())
+        return this.socket.$get<any>('onInvite' , user.toJson())
     }
 
     onCancelInvite(user: User){

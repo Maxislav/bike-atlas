@@ -46,6 +46,12 @@ export interface LngLat extends Array<number> {
     lng: number,
     lat: number
 }
+export interface BaseStation {
+    lng: number;
+    lat: number;
+    range: number;
+    rxLevel: number;
+}
 
 
 export interface LogData {
@@ -58,8 +64,8 @@ export interface LogData {
     lat: number;
     type: 'POINT' | 'BS';
     date: string;
-    name?: string,
-    bs?: Array<{lng: number, lat: number, range: number, rxLevel}>,
+    name: string,
+    bs?: Array<BaseStation>,
     accuracy?: number
 }
 

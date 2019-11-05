@@ -1,4 +1,3 @@
-import { User } from '../service/main.user.service';
 import { LngLat } from '../util/lngLat';
 import { Device } from 'src/app/service/device.service';
 import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl.js';
@@ -6,13 +5,12 @@ import { environment } from 'src/environments/environment';
 import { ApplicationRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { DeviceIconComponent } from 'src/app/component/device-icon-component/device-icon-component';
 import { ComponentRef } from '@angular/core/src/linker/component_factory';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
-import { LogData, Popup } from 'src/types/global';
+import { BaseStation, LogData, Popup } from 'src/types/global';
 
 export class Marker {
 
     static layerIds: Set<string> = new Set();
+    private static color: string = 'rgba(129, 150, 253, 0.7)';
     layerId: string;
     id: string = null;
     alt: number = null;
@@ -28,12 +26,28 @@ export class Marker {
     popupName: Popup;
 
     private iconMarker: any;
-    private deviceIconComponentEl: HTMLElement;
+    private readonly deviceIconComponentEl: HTMLElement;
     private deviceIconComponentRef: ComponentRef<DeviceIconComponent>;
 
-    private tailLayerId: string;
-    tailData: any;
+    private readonly tailLayerId: string;
+    tailData: {
+        type: 'FeatureCollection',
+        features: Array<any>
+    };
     tailLngLat: Array<LngLat> = [];
+
+    private readonly basePointLayerId: string;
+    private readonly basePointData: {
+        type: 'FeatureCollection',
+        features: Array<any>
+    };
+
+
+    private baseLineLayerId: string;
+    private readonly baseLineData: {
+        type: 'FeatureCollection',
+        features: Array<any>
+    };
 
     constructor(
         private map,
@@ -53,44 +67,90 @@ export class Marker {
 
         this.tailLayerId = Marker.getNewLayer('tail-');
 
+
         this.tailData = {
             type: 'FeatureCollection',
             features: []
         };
 
-
         map.addSource(this.tailLayerId, {
-            "type": "geojson",
-            "data": this.tailData,
+            'type': 'geojson',
+            'data': this.tailData,
         });
         map.addLayer({
-            id:   this.tailLayerId,
+            id: this.tailLayerId,
             source: this.tailLayerId,
             type: 'line',
-            "paint": {
-                "line-color": '#FF0000',
-                "line-opacity": {
+            'paint': {
+                'line-color': '#FF0000',
+                'line-opacity': {
                     property: 'opacity',
-                    stops: (()=>{
-                       const a = [];
+                    stops: (() => {
+                        const a = [];
 
-                       for(let i = 0; i<10; i++){
-                           a.push([i, i/10])
-                       }
-                       return a
+                        for (let i = 0; i < 10; i++) {
+                            a.push([i, i / 10]);
+                        }
+                        return a;
                     })(),
                 },
-                "line-width": 8
+                'line-width': 8
             },
-            "layout": {
-                "line-join": "round",
-                "line-cap": "round"
+            'layout': {
+                'line-join': 'round',
+                'line-cap': 'round'
             },
-        })
+        });
+
+        this.basePointLayerId = Marker.getNewLayer('base-point-');
+        this.basePointData = {
+            type: 'FeatureCollection',
+            features: []
+        };
+        map.addSource(this.basePointLayerId, {
+            'type': 'geojson',
+            'data': this.basePointData,
+        });
+        map.addLayer({
+            id: this.basePointLayerId,
+            source: this.basePointLayerId,
+            type: 'circle',
+            'paint': {
+                'circle-color': {
+                    'property': 'color',
+                    'stops': [['superColor', Marker.color]],
+                    'type': 'categorical'
+                },
+                'circle-radius': 8
+            },
+            layout: {},
+        });
+
+        this.baseLineLayerId = Marker.getNewLayer('base-line-');
+        this.baseLineData = {
+            type: 'FeatureCollection',
+            features: []
+        };
+        map.addSource(this.baseLineLayerId, {
+            'type': 'geojson',
+            'data': this.baseLineData,
+        });
+        map.addLayer({
+            id: this.baseLineLayerId,
+            source: this.baseLineLayerId,
+            type: 'line',
+            'paint': {
+                'line-color':Marker.color,
+                'line-width': 2
+            },
+
+        });
+
+
 
     }
 
-    private featureCreate(item: {opacity: number}, lngLat1: LngLat, lngLat2: LngLat){
+    private featureCreate(item: { opacity: number }, lngLat1: LngLat, lngLat2: LngLat) {
         return {
             properties: {
                 opacity: item.opacity,
@@ -101,35 +161,22 @@ export class Marker {
                 'type': 'LineString',
                 'coordinates': [lngLat1.toArray(), lngLat2.toArray()]
             }
-
-/*
-            'type': 'LineString',
-            'coordinates': [[center.lng, center.lat], [station.lng, station.lat]]*/
-        }
+        };
     }
 
-    private tailUpdate(){
+    private tailUpdate() {
         const arr = [];
         while (10 < this.tailLngLat.length) {
-            this.tailLngLat.splice(0,1);
+            this.tailLngLat.splice(0, 1);
         }
 
-        const start = 10 -  this.tailLngLat.length;
-        for(let i = 0 ; i <this.tailLngLat.length-1; i++){
-            arr.push(this.featureCreate({opacity: i+1}, this.tailLngLat[i], this.tailLngLat[i+1]))
+        const start = 10 - this.tailLngLat.length;
+        for (let i = 0; i < this.tailLngLat.length - 1; i++) {
+            arr.push(this.featureCreate({opacity: i + 1}, this.tailLngLat[i], this.tailLngLat[i + 1]));
         }
-        this.tailData .features = arr;
+        this.tailData.features = arr;
 
-        this.map.getSource(this.tailLayerId).setData(this.tailData)
-    }
-
-    setLodData(logData: LogData): this {
-        this.setLngLat(new LngLat(logData.lng, logData.lat))
-            .setDate(logData.date)
-            .setSpeed(logData.speed);
-        this.tailLngLat.push(new LngLat(logData.lng, logData.lat));
-
-        return this;
+        this.map.getSource(this.tailLayerId).setData(this.tailData);
     }
 
     updateLodData(logData: LogData): this {
@@ -137,27 +184,29 @@ export class Marker {
             .setDate(logData.date)
             .setSpeed(logData.speed);
         this.tailLngLat.push(new LngLat(logData.lng, logData.lat));
-        if(1<this.tailLngLat.length){
-            this.tailUpdate()
+        if (1 < this.tailLngLat.length) {
+            this.tailUpdate();
         }
         return this;
     }
 
-
+    /** 1*/
     setDevice(device: Device): this {
         this.device = device;
         this.setName(device.name);
         return this;
     }
 
-    private popupNameUpdate(name: string): this{
-        this.popupName.setHTML('<div>' + name + '</div>');
+    /** 2 */
+    setImage(urlData: string): this {
+        this.deviceIconComponentRef.instance.src = urlData || `${environment.hostPrefix}img/speedway_4_logo.jpg`;
+        this.iconMarker = new mapboxgl.Marker(this.deviceIconComponentEl, {offset: [0, 0]});
         return this;
     }
 
-
+    /** 3 */
     setName(name: string): this {
-        if(name){
+        if (name) {
             this.name = name;
             this.deviceIconComponentRef.instance.name = this.name;
             this.popupNameUpdate(name);
@@ -165,19 +214,28 @@ export class Marker {
         return this;
     }
 
+    /** 4 */
+    setLogData(logData: LogData): this {
+        this.setLngLat(new LngLat(logData.lng, logData.lat))
+            .setDate(logData.date)
+            .setSpeed(logData.speed);
 
+        if (logData.type === 'BS') {
+            this.baseStationCreate(new LngLat(logData.lng, logData.lat), logData.bs);
+        }
+
+        this.tailLngLat.push(new LngLat(logData.lng, logData.lat));
+
+        return this;
+    }
+
+    /** 5 */
     addToMap(): this {
         this.iconMarker.addTo(this.map);
-        this.popupName.addTo(this.map)
+        this.popupName.addTo(this.map);
         return this;
     }
 
-
-    setImage(urlData: string): this {
-        this.deviceIconComponentRef.instance.src = urlData || `${environment.hostPrefix}img/speedway_4_logo.jpg`;
-        this.iconMarker = new mapboxgl.Marker(this.deviceIconComponentEl, {offset: [0, 0]});
-        return this;
-    }
 
     setDate(date: string): this {
         this.date = new Date(date);
@@ -192,11 +250,52 @@ export class Marker {
     remove() {
         this.iconMarker.remove();
         this.popupName.remove();
-        this.map.removeLayer(this.tailLayerId)
+        this.map.removeLayer(this.tailLayerId);
     }
 
-    setIconColor(color: string): this{
+    setIconColor(color: string): this {
         this.deviceIconComponentRef.instance.colorSubject.next(color);
+        return this;
+    }
+
+    private baseStationCreate(lngLat: LngLat, bs: Array<BaseStation>) {
+        this.basePointData.features = bs.map(baseStation => {
+            return {
+                properties: {
+                    color: 'superColor',
+                },
+                'type': 'Feature',
+                'geometry': {
+                    'type': 'Point',
+                    'coordinates': [baseStation.lng, baseStation.lat]
+                }
+            };
+        });
+        this.map
+            .getSource(this.basePointLayerId)
+            .setData(this.basePointData);
+
+
+        this.baseLineData.features = bs.map(baseStation => {
+            return {
+                properties: {
+                    color: 'superColor',
+                },
+                'type': 'Feature',
+                'geometry': {
+                    'type': 'LineString',
+                    'coordinates': [lngLat.toArray(),[baseStation.lng, baseStation.lat]]
+                }
+            };
+        });
+        this.map
+            .getSource(this.baseLineLayerId)
+            .setData(this.baseLineData);
+
+    }
+
+    private popupNameUpdate(name: string): this {
+        this.popupName.setHTML('<div>' + name + '</div>');
         return this;
     }
 

@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 let app, ioServer;
-const dateFormat = require('dateformat');
+//const dateFormat = require('dateformat');
 //const util = require('./socket-data/util');
-const http = require("http");
+//import * as http from 'http';
 const distance_1 = require("../distance");
 const robot_1 = require("../robot");
+const IS_ROBOT = false;
 class Logger {
     /** @namespace this.connection */
     // $GPRMC,074624,A,5005.91360,N,3033.15540,E,13.386224,222.130005,290718,,*1E wrong  -> 50.98559952
@@ -19,7 +20,9 @@ class Logger {
         ioServer = _ioServer;
         this.util = util;
         //this.connection = connection;
-        this.robot = new robot_1.Robot(util);
+        if (IS_ROBOT) {
+            this.robot = new robot_1.Robot(util);
+        }
         this._sockets = [];
         this.devices = {};
         app.get('/log*', this.onLog.bind(this));
@@ -179,14 +182,15 @@ class Logger {
     }
     set sockets(connected) {
         this._sockets = connected;
-        this.robot.sockets = connected;
+        if (IS_ROBOT) {
+            this.robot.sockets = connected;
+        }
     }
     get sockets() {
         return this._sockets;
     }
 }
 exports.Logger = Logger;
-;
 function minToDec(src) {
     let lng = src.split('');
     let comaIndex = lng.indexOf('.');

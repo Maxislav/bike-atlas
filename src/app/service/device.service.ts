@@ -144,7 +144,7 @@ export class Device implements DeviceData {
             .setDevice(this)
             .setImage(this.image)
             .setName(this.name)
-            .setLodData(logData)
+            .setLogData(logData)
             .addToMap();
 
     }

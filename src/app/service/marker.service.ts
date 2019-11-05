@@ -70,29 +70,21 @@ export class Marker {
         Object.keys(devData).forEach(key => {
             this[key] = devData[key];
         });
-
-
         this.speedBehaviorSubject = new BehaviorSubject<number>(0);
         this.speedSubject = this.speedBehaviorSubject.asObservable();
         this.timer = new Timer(devData.date);
         this.layerId = Marker.getNewLayer();
-
-
         this.elapsed = '...';
-
         this.tail = new TailClass(this.layerId, this.map);
-
-        this.intervalUpdateMarker = setInterval(() => {
+        this.intervalUpdateMarker = <number>setInterval(() => {
             this.updateMarker();
         }, 1000);
-
         if (devData.type === 'BS') {
             this.map.onLoad
                 .then(m => {
                     this.createStations(devData.bs);
                 });
         }
-
     }
 
 

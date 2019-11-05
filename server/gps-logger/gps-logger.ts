@@ -1,10 +1,10 @@
 import { Util } from '../socket-data/util';
 
 let app, ioServer;
-const dateFormat = require('dateformat');
+//const dateFormat = require('dateformat');
 //const util = require('./socket-data/util');
-const http = require("http");
-import {distance} from '../distance';
+//import * as http from 'http';
+import { distance } from '../distance';
 import { SSocket } from '../socket-data';
 import { Robot } from '../robot';
 
@@ -25,12 +25,15 @@ interface GprmcData {
 
 }
 
+const IS_ROBOT = false;
+
 export class Logger {
 
     util: Util;
     robot: Robot;
-    _sockets:  {[socket_id: number]: SSocket};
-    devices:  {[device_key: string]: Array<number>};
+    _sockets: { [socket_id: number]: SSocket };
+    devices: { [device_key: string]: Array<number> };
+
     /** @namespace this.connection */
 // $GPRMC,074624,A,5005.91360,N,3033.15540,E,13.386224,222.130005,290718,,*1E wrong  -> 50.98559952
 // $GPRMC,074553,A,5006.02390,N,3033.30500,E,16.895118,220.089996,290718,,*1A   -> 50.10039902
@@ -46,10 +49,12 @@ export class Logger {
         //this.connection = connection;
 
 
-        this.robot = new Robot(util);
+        if (IS_ROBOT) {
+            this.robot = new Robot(util);
+        }
         this._sockets = [];
         this.devices = {};
-        app.get('/log*', this.onLog.bind(this))
+        app.get('/log*', this.onLog.bind(this));
     }
 
     onLog(req, res, next) {
@@ -62,9 +67,9 @@ export class Logger {
 
         let checkSum;
         try {
-            checkSum = req.query.gprmc.match(/\*.+$/)[0]
+            checkSum = req.query.gprmc.match(/\*.+$/)[0];
         } catch (err) {
-            console.error(err)
+            console.error(err);
         }
 
         if (checkSum) {
@@ -72,11 +77,11 @@ export class Logger {
             checkSum = checkSum.replace(/\*/, '');
             res.end(checkSum);
             try {
-                data = this.parseGprmc(req.query.gprmc, req.url, req.query.id)
+                data = this.parseGprmc(req.query.gprmc, req.url, req.query.id);
 
 
             } catch (err) {
-                console.error('Error parse', err)
+                console.error('Error parse', err);
             }
 
         } else {
@@ -86,10 +91,10 @@ export class Logger {
         if (data) {
 
 
-                util.insertLog(data)
-                    .catch(err => {
-                        console.error('insertLog error ->', err)
-                    })
+            util.insertLog(data)
+                .catch(err => {
+                    console.error('insertLog error ->', err);
+                });
         }
 
         console.log('onLog ->', data);
@@ -102,9 +107,9 @@ export class Logger {
                     emitedSockets.push(socket_id);
                     this.sockets[socket_id] && this.sockets[socket_id].emit('log', data);
                 }
-            })
+            });
         }
-        this.emitUnlockUser(emitedSockets, data)
+        this.emitUnlockUser(emitedSockets, data);
 
     }
 
@@ -121,21 +126,21 @@ export class Logger {
                     _name = rows[0].name;
                     return util.getUserSettingByUserId(_userId)
                         .then(setting => {
-                            return setting
-                        })
+                            return setting;
+                        });
                 }
                 return null;
             })
             .then(setting => {
-                console.log('setting ->', setting)
+                console.log('setting ->', setting);
                 if (setting && setting.lock == 0) {
                     _setting = setting;
-                    return util.getPrivateArea(_userId)
+                    return util.getPrivateArea(_userId);
                 }
-                return false
+                return false;
             })
             .then(areas => {
-                console.log('areas->', areas)
+                console.log('areas->', areas);
                 if (areas) {
                     const isInPrivate = distance.isInPrivate(areas, device);
 
@@ -146,7 +151,7 @@ export class Logger {
                             if (emitUnlockUser.indexOf(socket_id) == -1) {
                                 device.ownerId = _userId;
                                 device.name = _name;
-                                this.sockets[socket_id].emit('log', device)
+                                this.sockets[socket_id].emit('log', device);
                             }
                         }
                     }
@@ -155,8 +160,8 @@ export class Logger {
 
             })
             .catch(err => {
-                console.error('Error emitUnlockUser->', err)
-            })
+                console.error('Error emitUnlockUser->', err);
+            });
 
     }
 
@@ -173,7 +178,7 @@ export class Logger {
                 if (ids[i] == id) {
                     ids.splice(i, 1);
                 } else {
-                    i++
+                    i++;
                 }
             }
         }
@@ -184,30 +189,30 @@ export class Logger {
 
 
     //$GPRMC,030853,A,5026.98660,N,3024.51060,E,2.798506,109.540001, 15 09 63   ,,*20
-    private  parseGprmc(gprmc: string, reqUrl: string, id: string): GprmcData {
+    private parseGprmc(gprmc: string, reqUrl: string, id: string): GprmcData {
         const arrData = gprmc.split(',');
         const timeStamp = arrData[1];
         const dateStamp = arrData[9];
         let lat, lng, azimuth, speed, date;
         const src = reqUrl.replace(/^\/?log\?/, '');
         let year = Number(String('20').concat(dateStamp[4], dateStamp[5]));
-        if(new Date().getFullYear() < year){
-            year = new Date().getFullYear()
+        if (new Date().getFullYear() < year) {
+            year = new Date().getFullYear();
         }
-        if(id === '222222222222'){
+        if (id === '222222222222') {
             date = new Date(
                 year,
                 Number('' + dateStamp[2] + dateStamp[3]) - 4, //month
                 Number('' + dateStamp[0] + dateStamp[1]) - 9, //day
-                Number( '' + timeStamp[0] + timeStamp[1]) + 6, //hour
+                Number('' + timeStamp[0] + timeStamp[1]) + 6, //hour
                 Number('' + timeStamp[2] + timeStamp[3]) + 30, //min
-                Number('' + timeStamp[4] + timeStamp[5]) , //sec
+                Number('' + timeStamp[4] + timeStamp[5]), //sec
             );
             lat = arrData[4] === 'N' ? minToDec(arrData[3]) : '-' + minToDec(arrData[3]);
             lng = arrData[6] === 'E' ? minToDec(arrData[5]) : '-' + minToDec(arrData[5]);
             azimuth = parseFloat(Number(arrData[8]).toFixed(2));
             speed = parseFloat(arrData[7]) * 1.852;
-        }else{
+        } else {
             date = new Date(
                 year,
                 parseFloat('' + dateStamp[2] + dateStamp[3]) - 1,
@@ -223,7 +228,6 @@ export class Logger {
         }
 
 
-
         return {
             date,
             alt: 0,
@@ -237,20 +241,21 @@ export class Logger {
             type: 'POINT',
             bs: [],
             accuracy: 0
-        }
+        };
     }
 
     set sockets(connected) {
         this._sockets = connected;
-        this.robot.sockets = connected;
+        if (IS_ROBOT) {
+            this.robot.sockets = connected;
+        }
     }
 
     get sockets() {
         return this._sockets;
     }
+}
 
-
-};
 
 function minToDec(src) {
     let lng = src.split('');

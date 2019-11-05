@@ -100,7 +100,7 @@ class GetListener {
 }
 
 
-class SSocket {
+export class SSocket {
     emit: Function;
     $decrypt: Function;
     on: (name: string, callback: Function) => {};
@@ -127,7 +127,7 @@ class SSocket {
         return new Promise((resolve, reject) => {
             this.listenerHashMap[name] = this.listenerHashMap[name] || new Listener(name, this);
             this.listenerHashMap[name].resolve = resolve;
-            this.listenerHashMap[name].timeout = setTimeout(() => {
+            this.listenerHashMap[name].timeout = <number>setTimeout(() => {
                 reject('Error by timeout name->' + name);
             }, 30000);
             this.emit(name, data);
