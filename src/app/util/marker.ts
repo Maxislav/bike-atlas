@@ -150,34 +150,7 @@ export class Marker {
 
     }
 
-    private featureCreate(item: { opacity: number }, lngLat1: LngLat, lngLat2: LngLat) {
-        return {
-            properties: {
-                opacity: item.opacity,
-                point: item,
-            },
-            'type': 'Feature',
-            'geometry': {
-                'type': 'LineString',
-                'coordinates': [lngLat1.toArray(), lngLat2.toArray()]
-            }
-        };
-    }
 
-    private tailUpdate() {
-        const arr = [];
-        while (10 < this.tailLngLat.length) {
-            this.tailLngLat.splice(0, 1);
-        }
-
-        const start = 10 - this.tailLngLat.length;
-        for (let i = 0; i < this.tailLngLat.length - 1; i++) {
-            arr.push(this.featureCreate({opacity: i + 1}, this.tailLngLat[i], this.tailLngLat[i + 1]));
-        }
-        this.tailData.features = arr;
-
-        this.map.getSource(this.tailLayerId).setData(this.tailData);
-    }
 
     updateLodData(logData: LogData): this {
         this.setLngLat(new LngLat(logData.lng, logData.lat))
@@ -251,6 +224,8 @@ export class Marker {
         this.iconMarker.remove();
         this.popupName.remove();
         this.map.removeLayer(this.tailLayerId);
+        this.map.removeLayer(this.baseLineLayerId);
+        this.map.removeLayer(this.basePointLayerId);
     }
 
     setIconColor(color: string): this {
@@ -305,6 +280,34 @@ export class Marker {
         this.iconMarker.setLngLat([this.lng, this.lat]);
         this.popupName.setLngLat([this.lng, this.lat]);
         return this;
+    }
+    private featureCreate(item: { opacity: number }, lngLat1: LngLat, lngLat2: LngLat) {
+        return {
+            properties: {
+                opacity: item.opacity,
+                point: item,
+            },
+            'type': 'Feature',
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': [lngLat1.toArray(), lngLat2.toArray()]
+            }
+        };
+    }
+
+    private tailUpdate() {
+        const arr = [];
+        while (10 < this.tailLngLat.length) {
+            this.tailLngLat.splice(0, 1);
+        }
+
+        const start = 10 - this.tailLngLat.length;
+        for (let i = 0; i < this.tailLngLat.length - 1; i++) {
+            arr.push(this.featureCreate({opacity: i + 1}, this.tailLngLat[i], this.tailLngLat[i + 1]));
+        }
+        this.tailData.features = arr;
+
+        this.map.getSource(this.tailLayerId).setData(this.tailData);
     }
 
     static removeLayer(layerId: string) {
