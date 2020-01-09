@@ -208,3 +208,8 @@ export interface MapAreaList {
     remove: () => this;
 }
 
+export interface Accuracy {
+    layerId: string,
+    update: (data: any) => this;
+    remove: () => this;
+}

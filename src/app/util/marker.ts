@@ -42,12 +42,18 @@ export class Marker {
         features: Array<any>
     };
 
-
     private baseLineLayerId: string;
     private readonly baseLineData: {
         type: 'FeatureCollection',
         features: Array<any>
     };
+
+    private accuracyLayerId: string;
+    private readonly accuracyData: {
+        type: 'FeatureCollection',
+        features: Array<any>
+    };
+
 
     constructor(
         private map,
@@ -72,7 +78,6 @@ export class Marker {
             type: 'FeatureCollection',
             features: []
         };
-
         map.addSource(this.tailLayerId, {
             'type': 'geojson',
             'data': this.tailData,
@@ -146,6 +151,28 @@ export class Marker {
 
         });
 
+        this.accuracyLayerId = Marker.getNewLayer('accuracy-area-');
+        this.accuracyData = {
+            type: 'FeatureCollection',
+            features: []
+        };
+
+        map.addSource(this.accuracyLayerId, {
+            'type': 'geojson',
+            'data': this.accuracyData,
+        });
+
+        map.addLayer({
+            id: this.accuracyLayerId,
+            source: this.accuracyLayerId,
+            type: 'line',
+            'paint': {
+                'line-color':Marker.color,
+                'line-width': 2
+            },
+
+        });
+
 
 
     }
@@ -194,7 +221,9 @@ export class Marker {
             .setSpeed(logData.speed);
 
         if (logData.type === 'BS') {
-            this.baseStationCreate(new LngLat(logData.lng, logData.lat), logData.bs);
+            const center = new LngLat(logData.lng, logData.lat);
+            this.baseStationCreate(center, logData.bs);
+            this.createAccuracy(center, logData.accuracy/1000);
         }
 
         this.tailLngLat.push(new LngLat(logData.lng, logData.lat));
@@ -226,11 +255,48 @@ export class Marker {
         this.map.removeLayer(this.tailLayerId);
         this.map.removeLayer(this.baseLineLayerId);
         this.map.removeLayer(this.basePointLayerId);
+        this.map.removeLayer(this.accuracyLayerId);
     }
 
     setIconColor(color: string): this {
         this.deviceIconComponentRef.instance.colorSubject.next(color);
         return this;
+    }
+
+    private createAccuracy(center: LngLat, radius: number, points: number = 64){
+        const coords = {
+            latitude: center[1],
+            longitude: center[0]
+        };
+
+        const km = radius;
+
+        const ret = [];
+        let distanceX = km / (111.320 * Math.cos(coords.latitude * Math.PI / 180));
+        let distanceY = km / 110.574;
+
+        let theta, x, y;
+        for (let i = 0; i < points; i++) {
+            theta = (i / points) * (2 * Math.PI);
+            x = distanceX * Math.cos(theta);
+            y = distanceY * Math.sin(theta);
+            ret.push([coords.longitude + x, coords.latitude + y]);
+        }
+        ret.push(ret[0]);
+
+        const feature = {
+            'type': 'Feature',
+            'geometry': {
+                'type': 'Polygon',
+                'coordinates': [ret]
+            }
+        };
+
+        this.accuracyData.features = [feature];
+        this.map
+            .getSource(this.accuracyLayerId)
+            .setData(this.accuracyData);
+
     }
 
     private baseStationCreate(lngLat: LngLat, bs: Array<BaseStation>) {

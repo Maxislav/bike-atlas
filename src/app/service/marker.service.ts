@@ -57,6 +57,8 @@ export class Marker {
 
     private areaList: AreaList;
 
+    private accuracyArea: any;
+
     private baseStationLayerId: string;
 
     private baseStationPoints: { layerId: string, points: Array<{ lng: number, lat: number }>, remove: () => void };
