@@ -31,7 +31,7 @@ export class MyInputPopupComponent implements OnInit, AfterViewInit{
     }
 
     ngOnInit(): void {
-        console.log('init')
+        // console.log('init')
     }
 
     ngAfterViewInit(): void {

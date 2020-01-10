@@ -88,6 +88,7 @@ export class AuthService implements CanActivate {
                     this.userService.setUser(d.user);
                     this.friendsService.requestFriends();
                     this.friendsService.requestInvites();
+                    this.myMarkerService.requestMarkers();
 
                     //this.userService.friends = d.user.friends;
                     /* this.friend.getInvites();
@@ -144,7 +145,7 @@ export class AuthService implements CanActivate {
                     this.ls.userKey = null;
                     this.userService.clearUser();
                     this.deviceService.clearDevices();
-                    //this.myMarkerService.clearAll();
+                    this.myMarkerService.clearAll();
                 }
             });
 

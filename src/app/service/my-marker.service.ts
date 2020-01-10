@@ -5,6 +5,9 @@ import { MyInputPopupComponent } from '../component/my-marker-list-component/my-
 import { Io } from '../service/socket.oi.service';
 import { ToastService } from '../component/toast/toast.component';
 import { environment} from '../../environments/environment'
+import { PopupService } from 'src/app/modules/popup-module/popup.service';
+import { MyPopupDelMyMarker } from 'src/app/component/my-marker-list-component/my-popup-del-my-marker/my-popup-del-my-marker';
+import { PopupItemComponent } from 'src/app/modules/popup-module/popup-item.component';
 /*export interface MyMarker {
     id: number,
     image_id: number,
@@ -41,7 +44,8 @@ export class MyMarkerService {
         private injector: Injector,
         private applicationRef: ApplicationRef,
         private componentFactoryResolver: ComponentFactoryResolver,
-        private toast: ToastService
+        private toast: ToastService,
+        private popupService: PopupService
     ) {
         this.markerList = [];
         this.socket = io.socket;
@@ -55,13 +59,27 @@ export class MyMarkerService {
         this.isShow = false;
     }
 
+    requestMarkers(){
+        const {LngLat} = this.mapService.mapboxgl;
+        this.socket.$get('getMarkerList', null)
+            .then((markers) => {
+                console.log(markers)
+
+                markers.forEach(m => {
+                    const mr = this.createMarker(new LngLat(m.lng, m.lat), m);
+                    this.markerList.push(mr)
+                })
+            })
+    }
+
     addMarkers(markers: Array<MyMarker>) {
         this.mapService.onLoad
             .then(() => {
                 const {LngLat} = this.mapService.mapboxgl;
                 markers.forEach(m => {
                     if (!this.markerList.find(({id}) => id === m.id)) {
-                        this.createMarker(new LngLat(m.lng, m.lat), m);
+                        const mr = this.createMarker(new LngLat(m.lng, m.lat), m);
+                        this.markerList.push(mr)
                     }
                 });
             });
@@ -77,10 +95,19 @@ export class MyMarkerService {
         }
     }
 
+
+    createByClick(lngLat: LngLat, opts: {
+        title: string,
+        id: number
+    }){
+        const mr = this.createMarker(lngLat, opts);
+        this.markerList.push(mr);
+    }
+
     createMarker(lngLat: LngLat, opts: {
         title: string,
         id: number
-    }) {
+    }): MyMapMarker {
         const $this = this;
         const {mapboxgl, map} = this.mapService;
         const icoContainer = document.createElement('div');
@@ -129,20 +156,56 @@ export class MyMarkerService {
                     });
             },
             remove: () => {
-                marker.remove();
+
+                this.popupService.show({
+                    body: MyPopupDelMyMarker,
+                    title: 'Confirm',
+                    windowClass: 'popup-del-device',
+                    initialParams: {
+                        name: inputPopupRef.instance.title
+                    },
+                    buttons: [
+                        {
+                            label: 'Cancel',
+                            windowClass: 'reject',
+                            click: () => {
+                                return true;
+                            }
+                        },
+                        {
+                            label: 'Delete',
+                            windowClass: 'resolve',
+                            click: (popupItemComponent: PopupItemComponent) => {
+                                //return true;
+                                marker.remove();
+                                popup.remove();
+                                this.applicationRef.detachView(inputPopupRef.hostView);
+                                inputPopupRef.destroy();
+                                this.markerList.splice(this.markerList.indexOf(myMarker), 1);
+                                this.applicationRef.tick();
+                                this.removeMarker(myMarker);
+                                popupItemComponent.close();
+                                return false;
+                            }
+                        }
+                    ]
+                })
+
+               /* marker.remove();
                 popup.remove();
                 this.applicationRef.detachView(inputPopupRef.hostView);
                 inputPopupRef.destroy();
                 this.markerList.splice(this.markerList.indexOf(myMarker), 1);
                 this.applicationRef.tick();
-                this.removeMarker(myMarker);
+                this.removeMarker(myMarker);*/
             },
             clear:() =>{
                 marker.remove();
 
             }
         };
-        this.markerList.push(myMarker);
+        return myMarker;
+       // this.markerList.push(myMarker);
 
 
     }

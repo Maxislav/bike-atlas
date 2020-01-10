@@ -60,7 +60,7 @@ export class MyMarkerListComponent implements OnDestroy {
     private omMapClick(e) {
         this.mapService.map.off('click', this.omMapClick);
         this.active = false;
-        this.myMarkerService.createMarker(e.lngLat,
+        this.myMarkerService.createByClick(e.lngLat,
             {
                 title: '',
                 id: null

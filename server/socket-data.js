@@ -24,7 +24,7 @@ const on_gtgbc_js_1 = require("./socket-data/on-gtgbc.js");
 const util_1 = require("./socket-data/util");
 const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
-const OnMyMarker = require('./socket-data/on-my-marker.js');
+const on_my_marker_js_1 = require("./socket-data/on-my-marker.js");
 let connection, server, app;
 let resolveExport;
 let promiseExport = new Promise((resolve, reject) => {
@@ -89,7 +89,7 @@ class SocketData {
             const onChat = new OnChat(socket, util, chat);
             const onStrava = new OnStrava(socket, util);
             const onImportKml = new OnImportKml(socket, util);
-            const onMyMarker = new OnMyMarker(socket, util);
+            const onMyMarker = new on_my_marker_js_1.OnMyMarker(socket, util);
             const onGtgbc = new on_gtgbc_js_1.OnGtgbc(socket, util);
             socket.on('disconnect', () => {
                 this.gl520.onDisconnect(socket.id);

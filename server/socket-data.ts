@@ -17,7 +17,8 @@ const OnRegist = require('./socket-data/on-regist');
 const OnProfile = require('./socket-data/on-profile');
 const OnFriend = require('./socket-data/on-friends');
 const OnPrivateArea = require('./socket-data/on-private-area');
-import {Chat} from './chat';
+import { Chat } from './chat';
+
 const TrackFromTo = require('./socket-data/track-from-to');
 const OnChat = require('./socket-data/on-chat');
 //const Logger = require('./logger');
@@ -30,7 +31,7 @@ import { Util } from './socket-data/util';
 
 const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
-const OnMyMarker = require('./socket-data/on-my-marker.js');
+import { OnMyMarker } from './socket-data/on-my-marker.js';
 
 let connection, server, app;
 let resolveExport;

@@ -73,6 +73,7 @@ import { DeviceHelpComponent } from './component/device/device-help/device-help.
 import { DeviceIconComponent } from 'src/app/component/device-icon-component/device-icon-component';
 import { PopupModule } from 'src/app/modules/popup-module/popup.module';
 import { DeviceDelPopupComponent } from 'src/app/component/device/device-del-popup.component';
+import { MyPopupDelMyMarker } from 'src/app/component/my-marker-list-component/my-popup-del-my-marker/my-popup-del-my-marker';
 
 
 @Component({
@@ -153,6 +154,7 @@ export class PipeTranslateCompiler implements TranslateCompiler {
      */
     declarations: [
         JJ,
+        MyPopupDelMyMarker,
         DeviceHelpComponent,
         IsOwner,
         LeafletMapDirective,
@@ -227,7 +229,8 @@ export class PipeTranslateCompiler implements TranslateCompiler {
     entryComponents: [
         MyInputPopupComponent,
         DeviceIconComponent,
-        DeviceDelPopupComponent
+        DeviceDelPopupComponent,
+        MyPopupDelMyMarker
     ],
     bootstrap: [
         AppComponent
