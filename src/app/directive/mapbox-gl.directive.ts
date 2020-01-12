@@ -3,7 +3,7 @@ import { Directive, ElementRef, Input, Renderer } from '@angular/core';
 import { MapService } from '../service/map.service';
 import { PositionSize } from '../service/position-size.service';
 import { LocalStorage } from '../service/local-storage.service';
-import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl.js';
+import * as mapboxgl from '../../../lib/mapbox-gl/mapbox-gl.js';
 
 import { Resolve } from '@angular/router';
 import { Setting, UserService } from '../service/main.user.service';

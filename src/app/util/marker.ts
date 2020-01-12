@@ -1,6 +1,6 @@
 import { LngLat } from '../util/lngLat';
 import { Device } from 'src/app/service/device.service';
-import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl.js';
+import * as mapboxgl from '../../../lib/mapbox-gl/mapbox-gl.js';
 import { environment } from 'src/environments/environment';
 import { ApplicationRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { DeviceIconComponent } from 'src/app/component/device-icon-component/device-icon-component';
@@ -8,7 +8,6 @@ import { ComponentRef } from '@angular/core/src/linker/component_factory';
 import { BaseStation, LogData, Popup } from 'src/types/global';
 
 export class Marker {
-
     static layerIds: Set<string> = new Set();
     private static color: string = 'rgba(129, 150, 253, 0.7)';
     layerId: string;

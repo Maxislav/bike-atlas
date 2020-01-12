@@ -56,6 +56,7 @@ class Device extends ProtoData {
             response.end({
                 error: err.toString()
             });
+            console.error(err);
         });
     }
     onDevices(req, res) {

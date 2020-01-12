@@ -19,7 +19,7 @@ import { Color } from '../util/get-color';
 const F = parseFloat;
 const I = parseInt;
 
-import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl.js';
+import * as mapboxgl from '../../../lib/mapbox-gl/mapbox-gl.js';
 import { Subject } from 'rxjs/Subject';
 import { MapGl, Popup } from '../../types/global';
 import { TElement } from '../util/at-element';

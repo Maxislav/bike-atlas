@@ -45,12 +45,15 @@
     "form-data": "^2.1.2",
     "i": "^0.3.6",
     "jimp": "^0.2.27",
+    "less-loader": "^5.0.0",
     "livereload": "^0.7.0",
     "mapbox-gl": "^0.35.0",
     "merge-stream": "^1.0.1",
+    "mini-css-extract-plugin": "^0.9.0",
     "mysql": "^2.16.0",
     "ng2-translate": "^5.0.0",
     "npm": "^6.3.0",
+    "postcss-loader": "^3.0.0",
     "ramda": "^0.22.1",
     "reflect-metadata": "^0.1.6",
     "rxjs": "~6.3.3",
@@ -61,6 +64,7 @@
     "systemjs": "^0.19.40",
     "systemjs-plugin-css": "^0.1.32",
     "tslib": "^1.9.0",
+    "webpack-dev-server": "^3.10.1",
     "xml2js": "^0.4.17",
     "xmlbuilder": "^8.2.2",
     "zone.js": "~0.8.26"
@@ -109,6 +113,7 @@
     "tslint": "~5.11.0",
     "typescript": "~3.2.2",
     "typings": "^1.0.4",
+    "webpack": "^4.41.5",
     "yadda": "^0.17.10"
   }
 }

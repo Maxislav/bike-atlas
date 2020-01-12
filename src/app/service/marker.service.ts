@@ -7,7 +7,7 @@ import { TailClass } from './tail.class';
 import { distance } from '../util/distance';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl.js';
+import * as mapboxgl from '../../../lib/mapbox-gl/mapbox-gl.js';
 import {
     MapGl,
 
