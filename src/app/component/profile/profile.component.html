@@ -25,6 +25,33 @@
       </div>
       <div class="border-hidden"></div>
     </div>
+    <form #nameForm="ngForm">
+      <div ngModelGroup="name" [ngClass]="{e: name.invalid}">
+        <input type="text" name="name" [(ngModel)]="model.name" required #name="ngModel">
+
+      </div>
+
+    </form>
+    <form  [formGroup]="passForm">
+      <div  >
+        <input type="text" formControlName="currentPass">
+
+      </div>
+      <div>
+        <input type="text" formControlName="newPass">
+
+      </div>
+      <div>
+        <input type="text" formControlName="repeatNewPass">
+
+      </div>
+
+    </form>
+    <div>{{passForm.value|json}}</div>
+    <div> {{passForm.get('repeatNewPass').getError('invalidPassword')}}</div>
+    <div class="row.border">
+
+    </div>
     <!--.row.border
     //form([formGroup]='profileForm')
         input(formControlName="oldPass")

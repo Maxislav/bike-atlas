@@ -74,6 +74,7 @@ import { DeviceIconComponent } from 'src/app/component/device-icon-component/dev
 import { PopupModule } from 'src/app/modules/popup-module/popup.module';
 import { DeviceDelPopupComponent } from 'src/app/component/device/device-del-popup.component';
 import { MyPopupDelMyMarker } from 'src/app/component/my-marker-list-component/my-popup-del-my-marker/my-popup-del-my-marker';
+import { OneUserComponent } from './component/all-user/one-user/one-user.component';
 
 
 @Component({
@@ -191,7 +192,8 @@ export class PipeTranslateCompiler implements TranslateCompiler {
         NoFoundComponent,
         GtgbcComponent,
         DeviceIconComponent,
-        DeviceDelPopupComponent
+        DeviceDelPopupComponent,
+        OneUserComponent
     ],
 
     /** Сервисы */

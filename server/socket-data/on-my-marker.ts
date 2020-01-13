@@ -34,7 +34,7 @@ export class OnMyMarker extends ProtoData {
             .then(user_id => {
                 return this.util.saveMyMarker(user_id, data)
             })
-            .then(res => {
+            .then((res: any) => {
                 this.socket.emit(eName, {...data, ...{id: res.insertId}})
             })
             .catch(err=>{

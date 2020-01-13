@@ -22,6 +22,7 @@
   "exclude": [
     "src",
     "dist",
+    "lib",
     "@angular",
     "**/node_modules/*",
     "./node_modules/*",

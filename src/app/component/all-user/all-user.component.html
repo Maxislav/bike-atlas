@@ -10,7 +10,7 @@
         </div>
       </td>
       <td>
-        <div class="name">{{user.name}}</div>
+        <div class="name pointer" (click)="onUserClick(user)">{{user.name}}</div>
         <div class="last-visit">Last visit {{user.lastVisit | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
       </td>
       <td>

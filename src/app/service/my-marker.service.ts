@@ -8,15 +8,7 @@ import { environment} from '../../environments/environment'
 import { PopupService } from 'src/app/modules/popup-module/popup.service';
 import { MyPopupDelMyMarker } from 'src/app/component/my-marker-list-component/my-popup-del-my-marker/my-popup-del-my-marker';
 import { PopupItemComponent } from 'src/app/modules/popup-module/popup-item.component';
-/*export interface MyMarker {
-    id: number,
-    image_id: number,
-    user_id: number,
-    lng: number,
-    lat: number,
-    title: string,
 
-}*/
 
 export interface MyMapMarker {
     id: number,

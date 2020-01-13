@@ -11,7 +11,10 @@
     "outDir": "dist/",
     "baseUrl": "./",
     "typeRoots" : ["./src/@types"],
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "@lib/*": ["./lib/*"]
+    }
 
   },
   "filesGlob": [
@@ -28,5 +31,6 @@
     "./node_modules/*",
     "node_modules",
     "server"
-  ]
+  ],
+
 }

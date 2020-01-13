@@ -18,6 +18,7 @@ import { StravaComponent } from './component/strava-component/strava-component';
 import { StravaAuthComponent } from './component/strava-component/strava-auth-component';
 import { GtgbcComponent } from './component/gtgbc/gtgbc.component';
 import { DeviceHelpComponent } from './component/device/device-help/device-help.component';
+import { OneUserComponent } from 'src/app/component/all-user/one-user/one-user.component';
 
 const appRouters: Routes = [
     {
@@ -67,6 +68,10 @@ const appRouters: Routes = [
                             {
                                 path: 'all',
                                 component: AllUserComponent
+                            },
+                            {
+                                path: ':id',
+                                component: OneUserComponent
                             }
 
                         ]

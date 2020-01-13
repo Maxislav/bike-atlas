@@ -3,7 +3,7 @@ import { Directive, ElementRef, Input, Renderer } from '@angular/core';
 import { MapService } from '../service/map.service';
 import { PositionSize } from '../service/position-size.service';
 import { LocalStorage } from '../service/local-storage.service';
-import * as mapboxgl from '../../../lib/mapbox-gl/mapbox-gl.js';
+import * as mapboxgl from '@lib/mapbox-gl/mapbox-gl.js';
 
 import { Resolve } from '@angular/router';
 import { Setting, UserService } from '../service/main.user.service';
@@ -11,8 +11,10 @@ import { MapBoxGl, MapGl } from '../../types/global';
 
 class MyMap extends mapboxgl.Map {
     onLoad: Promise<MyMap>;
-    on: (name: string, callback: () => void) => void;
-    addControl: (any) => void;
+
+    // noinspection JSAnnotator
+    //on(type: string, listener: (ev: any) => void): this;
+    //addControl: (any) => void;
     constructor(...args) {
         super(...args);
         this.onLoad = new Promise((resoleve) => {
@@ -22,6 +24,14 @@ class MyMap extends mapboxgl.Map {
         });
 
     }
+    // noinspection JSAnnotator
+    on(type: string, listener: (ev: any) => void){
+        return super.on(type,listener)
+    }
+    addControl(...args){
+        return super.addControl(...args)
+    }
+
 }
 
 declare var L: any;

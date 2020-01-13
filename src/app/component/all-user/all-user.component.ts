@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FriendsService } from '../../service/friends.service';
 import { ChatService } from '../../service/chat.service';
 import { User } from '../../service/main.user.service';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './all-user.component.html',
@@ -15,7 +16,8 @@ export class AllUserComponent {
 
     constructor(
         private friendsService: FriendsService,
-        private chatService: ChatService
+        private chatService: ChatService,
+        private router: Router
     ) {
         // this.allUsers = friendsService.users;
         this.friends = friendsService.friends;
@@ -59,6 +61,10 @@ export class AllUserComponent {
         }
 
         return false;
+    }
+
+    onUserClick(user: User){
+        this.router.navigate(['/auth/map/friends/', user.id]);
     }
 
     startChat(user: User): void {
