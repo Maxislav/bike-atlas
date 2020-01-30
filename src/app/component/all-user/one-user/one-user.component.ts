@@ -24,10 +24,6 @@ export class OneUserComponent implements OnInit {
             .subscribe((_id) => {
                this.id = _id
             })
-
-
-
-
     }
 
     ngOnInit() {

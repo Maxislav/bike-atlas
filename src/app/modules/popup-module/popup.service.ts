@@ -62,8 +62,6 @@ export class PopupService {
         const factory = this.componentFactoryResolver.resolveComponentFactory(PopupContainerComponent);
         this.popupContainerEl = document.createElement('popup-container');
         this.popupContainerRef = factory.create(this.injector, [], this.popupContainerEl);
-        //this.viewContainerRef.insert(this.popupContainerRef.hostView);
-        //this.popupContainerRef.instance.ngIf = false;
         document.body.appendChild(this.popupContainerEl);
         this.applicationRef.attachView(this.popupContainerRef.hostView);
     }

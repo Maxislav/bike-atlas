@@ -25,30 +25,42 @@
       </div>
       <div class="border-hidden"></div>
     </div>
-    <form #nameForm="ngForm">
+   <!-- <form #nameForm="ngForm">
       <div ngModelGroup="name" [ngClass]="{e: name.invalid}">
         <input type="text" name="name" [(ngModel)]="model.name" required #name="ngModel">
 
       </div>
 
+    </form>-->
+    <form  [formGroup]="passForm" name="passForm" autocomplete="off">
+      <div  [ngClass]="{'has-error': passForm.get('currentPass').getError('invalidPassword')}">
+        <label>Current pass</label>
+        <input type="password" formControlName="currentPass" name="_oldPass">
+      </div>
+      <div [ngClass]="{'has-error': passForm.get('newPass').getError('invalidPassword')}">
+        <label>New pass</label>
+        <input type="password" formControlName="newPass" name="_newPass"   autocomplete="off"
+               autocorrect="off"
+               autocapitalize="none"
+               spellcheck="false">
+      </div>
+      <div  [ngClass]="{'has-error': passForm.get('repeatNewPass').getError('invalidPassword')}">
+        <label>Repeat</label>
+        <input type="password" autocomplete="off" formControlName="repeatNewPass" name="_repeatPass">
+      </div>
     </form>
-    <form  [formGroup]="passForm">
-      <div  >
-        <input type="text" formControlName="currentPass">
-
+    <div class="border-hidden">
+      <div class="row">
+        <button style="float: right" (click)="onChangePass()" class="primary">{{'ON_SAVE'| translate}}</button>
       </div>
-      <div>
-        <input type="text" formControlName="newPass">
+    </div>
+    <div class="row error">
+      {{passForm.get('repeatNewPass').getError('invalidPassword')}}
+    </div>
 
-      </div>
-      <div>
-        <input type="text" formControlName="repeatNewPass">
 
-      </div>
-
-    </form>
-    <div>{{passForm.value|json}}</div>
-    <div> {{passForm.get('repeatNewPass').getError('invalidPassword')}}</div>
+    <!--<div>{{passForm.value|json}}</div>-->
+    <!--<div> {{passForm.get('repeatNewPass').getError('invalidPassword')}}</div>-->
     <div class="row.border">
 
     </div>

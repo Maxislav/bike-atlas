@@ -39,8 +39,19 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     passForm: FormGroup;
     profileForm;
 
+    passFormValue: {
+        currentPass: string;
+        newPass: string;
+        repeatNewPass: string;
+    } = {
+        currentPass: null,
+        newPass: null,
+        repeatNewPass: null
+    };
+
     @ViewChild('nameForm') nameForm: any;
-    model: {name: string } = {name: null};
+    model: { name: string } = {name: null};
+
     /*= new FormGroup({
            oldPass: new FormControl()
        })*/
@@ -165,35 +176,58 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
     ngOnInit(): void {
         this.passForm = this.fb.group({
-            'currentPass': [null, [Validators.required]],
-            'newPass': [null, [Validators.required]],
-            'repeatNewPass': [null, [Validators.required, this.passValidator]]
+            'currentPass': [null, [this.passValidator.bind(this, 'currentPass')]],
+            'newPass': [null, [this.passValidator.bind(this, 'newPass')]],
+            'repeatNewPass': [null, [this.passValidator.bind(this, 'repeatNewPass')]]
         }, null);
 
         // this.passForm
+
+        this.passForm.valueChanges.subscribe(value => {
+            console.log(value);
+        });
+
         merge(
             this.passForm.get('currentPass').valueChanges,
             this.passForm.get('newPass').valueChanges,
             this.passForm.get('repeatNewPass').valueChanges
         ).subscribe(val => {
-            console.log(val);
-            console.log(this.passForm);
+            // console.log(val);
+            // console.log(this.passForm.value);
         });
 
-        console.log(this.nameForm)
+        console.log(this.nameForm);
     }
 
-    passValidator(control: FormControl): ValidationErrors {
+    onChangePass() {
 
-        control.value;
+    }
 
-        // console.log(control.value)
-        if (!control.value || control.value.length < 3) {
-            return {invalidPassword: 'Пароль не прошел валидацию'};
+    private passValidator(eName: string, control: FormControl): ValidationErrors {
 
+        this.passFormValue[eName] = control.value;
+        switch (eName){
+            case 'currentPass': {
+                if (!control.value || control.value.length < 3) {
+                    return {invalidPassword: 'Length should be more then 3 char length '};
+                }
+                return null;
+            }
+            case 'newPass':
+            case 'repeatNewPass':{
+                if (!control.value || control.value.length < 3) {
+                    return {invalidPassword: 'Length should be more then 3 char length '};
+                }
+                if (this.passFormValue.newPass !== this.passFormValue.repeatNewPass) {
+                    return {invalidPassword: 'Old and New pass does not match'};
+                }
+                this.passForm.get('newPass').setErrors(null);
+                this.passForm.get('repeatNewPass').setErrors(null);
+                return null;
+            }
         }
-        return null;
 
+        return null;
 
     }
 
