@@ -51,7 +51,7 @@
     </form>
     <div class="border-hidden">
       <div class="row">
-        <button style="float: right" (click)="onChangePass()" class="primary">{{'ON_SAVE'| translate}}</button>
+        <button style="float: right" (click)="onChangePass()" [disabled]="passForm?.invalid" class="primary">{{'ON_SAVE'| translate}}</button>
       </div>
     </div>
     <div class="row error">

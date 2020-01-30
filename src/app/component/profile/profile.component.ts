@@ -193,10 +193,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
             this.passForm.get('repeatNewPass').valueChanges
         ).subscribe(val => {
             // console.log(val);
-            // console.log(this.passForm.value);
+             console.log(this.passForm);
         });
 
-        console.log(this.nameForm);
+        //console.log();
     }
 
     onChangePass() {
@@ -204,7 +204,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     }
 
     private passValidator(eName: string, control: FormControl): ValidationErrors {
-
         this.passFormValue[eName] = control.value;
         switch (eName){
             case 'currentPass': {
@@ -226,9 +225,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
                 return null;
             }
         }
-
         return null;
-
     }
 
 }
