@@ -11,9 +11,10 @@ config.mysql['database'] = 'monitoring';
 
 import { OnEnter } from './socket-data/on-enter';
 
-const {OnAuth} = require('./socket-data/on-auth');
+import { OnAuth } from './socket-data/on-auth';
 const Device = require('./socket-data/device');
-const OnRegist = require('./socket-data/on-regist');
+import { OnRegist } from './socket-data/on-regist';
+
 const OnProfile = require('./socket-data/on-profile');
 const OnFriend = require('./socket-data/on-friends');
 const OnPrivateArea = require('./socket-data/on-private-area');

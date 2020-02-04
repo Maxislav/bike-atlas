@@ -14,6 +14,7 @@ import { Observable } from 'rxjs/src/internal/Observable';
 import { subscribeTo } from 'rxjs/internal-compatibility';
 import { zip } from 'rxjs';
 import { merge } from 'rxjs';
+import { PassFormIs } from 'src/app/api/profile.service';
 
 declare const module: any;
 declare const System: any;
@@ -21,6 +22,8 @@ declare const System: any;
 interface MyNode extends Node {
     click: Function
 }
+
+
 
 @Component({
     templateUrl: './profile.component.html',
@@ -39,11 +42,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     passForm: FormGroup;
     profileForm;
 
-    passFormValue: {
-        currentPass: string;
-        newPass: string;
-        repeatNewPass: string;
-    } = {
+    passFormValue: PassFormIs = {
         currentPass: null,
         newPass: null,
         repeatNewPass: null
@@ -200,7 +199,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     }
 
     onChangePass() {
-
+        console.log(this.passForm.value)
     }
 
     private passValidator(eName: string, control: FormControl): ValidationErrors {
