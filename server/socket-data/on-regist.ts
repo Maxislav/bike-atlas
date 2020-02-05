@@ -1,18 +1,19 @@
 import * as ProtoData from './proto-data';
 import { autobind } from '../util/autobind';
 import { Util } from '../socket-data/util';
+import { Logger } from '../gps-logger/gps-logger';
 
+
+interface PassFormIs {
+    currentPass: string;
+    newPass: string;
+    repeatNewPass: string;
+}
 
 export class OnRegist extends ProtoData {
-    logger;
-    util: Util;
-
-
-    constructor(private socket, private util, private logger) {
+    constructor(private socket, private util: Util, private logger: Logger) {
         super(socket, util);
-
         socket.on('onRegist', this.onRegist.bind(this));
-
         this.socket.$get('updatePass', this.updatePass);
     }
 
@@ -39,13 +40,43 @@ export class OnRegist extends ProtoData {
     }
 
     @autobind()
-    updatePass(req, res){
-        res.end({
-            result: 'ok',
-            data: req.data
-        })
+    updatePass(req: {
+        data: PassFormIs
+    }, res) {
+        this.util.getUserIdBySocketId(this.socket.id)
+            .then((user_id) => {
+                return this.util.getUserById(user_id);
+            })
+            .then(user => {
+                if (req.data.currentPass === user.pass) {
+                    return this.util.updatePassword(user.id, req.data.newPass, this.socket.id )
+                        .then((rows) => {
+                            res.end({
+                                result: 'ok',
+                                error: null,
+                                data: rows
+                            });
+                        })
+
+                } else {
+                    res.end({
+                        result: 'CURRENT_PASS_NOT_MATCH',
+                        error: 'Current password does not match',
+                    });
+                }
+            })
+            .catch((err) => {
+                res.end({
+                    result: 'FAIL',
+                    error: err.toString()
+                })
+            });
+
     }
 
 
+    private updatePassSql() {
+
+    }
 }
 

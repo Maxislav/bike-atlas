@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/src/internal/Observable';
 import { subscribeTo } from 'rxjs/internal-compatibility';
 import { zip } from 'rxjs';
 import { merge } from 'rxjs';
-import { PassFormIs } from 'src/app/api/profile.service';
+import { PassFormIs, ProfileService } from 'src/app/api/profile.service';
 
 declare const module: any;
 declare const System: any;
@@ -22,7 +22,6 @@ declare const System: any;
 interface MyNode extends Node {
     click: Function
 }
-
 
 
 @Component({
@@ -63,7 +62,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
                 private toast: ToastService,
                 private areaService: PrivateAreaService,
                 private fb: FormBuilder,
-                private userService: UserService
+                private userService: UserService,
+                private profileService: ProfileService
     ) {
 
         this.socket = io.socket;
@@ -192,19 +192,33 @@ export class ProfileComponent implements OnInit, AfterViewInit {
             this.passForm.get('repeatNewPass').valueChanges
         ).subscribe(val => {
             // console.log(val);
-             console.log(this.passForm);
+            console.log(this.passForm);
         });
 
         //console.log();
     }
 
     onChangePass() {
-        console.log(this.passForm.value)
+        this.profileService.updatePass(this.passForm.value)
+            .then((res) => {
+                if (res && !res.error) {
+                    this.toast.show({
+                        type: 'success',
+                        text: 'Password successful changed'
+                    });
+                } else if (res && res.result === 'CURRENT_PASS_NOT_MATCH') {
+                    this.toast.show({
+                        type: 'warning',
+                        text: res.error
+                    });
+
+                }
+            });
     }
 
     private passValidator(eName: string, control: FormControl): ValidationErrors {
         this.passFormValue[eName] = control.value;
-        switch (eName){
+        switch (eName) {
             case 'currentPass': {
                 if (!control.value || control.value.length < 3) {
                     return {invalidPassword: 'Length should be more then 3 char length '};
@@ -212,7 +226,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
                 return null;
             }
             case 'newPass':
-            case 'repeatNewPass':{
+            case 'repeatNewPass': {
                 if (!control.value || control.value.length < 3) {
                     return {invalidPassword: 'Length should be more then 3 char length '};
                 }

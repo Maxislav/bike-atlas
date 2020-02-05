@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const dateFormat = require('dateformat');
 const hashKeys = [];
 class Util {
     constructor(connection) {
@@ -33,6 +32,36 @@ class Util {
                     return;
                 }
                 resolve(rows[0]);
+            });
+        })
+            .catch(err => {
+            console.error(err);
+            return err;
+        });
+    }
+    updatePassword(user_id, pass, socket_id) {
+        return new Promise((resolve, reject) => {
+            this.connection.query('UPDATE `user` SET pass = ? WHERE user.id = ?', [pass, user_id], (err, rows) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(rows);
+            });
+        })
+            .then((rows) => {
+            return this.clearOtherHash(user_id, socket_id)
+                .then(() => {
+                return rows;
+            });
+        });
+    }
+    clearOtherHash(user_id, socket_id) {
+        return new Promise((resolve, reject) => {
+            this.connection.query('DELETE FROM `hash` WHERE `user_id`=? AND `socket_id` !=?', [user_id, socket_id], (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(result);
             });
         });
     }

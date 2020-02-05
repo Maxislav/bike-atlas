@@ -1,6 +1,7 @@
 import { LoggerRow, DeviceRow, SettingRow, PointWithSrc } from '../types';
 
-const dateFormat = require('dateformat');
+import * as dateFormat from 'dateformat';
+
 const hashKeys = [];
 
 
@@ -33,7 +34,13 @@ export class Util {
         });
     }
 
-    getUserById(id) {
+    getUserById(id): Promise<{
+        id: number
+        name: string
+        pass: string
+        image: string
+        opt: string
+    }> {
         return new Promise((resolve, reject) => {
             this.connection.query('SELECT * FROM `user` WHERE `id`=?', [id], (err, rows) => {
                 if (err) {
@@ -42,8 +49,43 @@ export class Util {
                 }
                 resolve(rows[0]);
             });
-        });
+        })
+            .catch(err => {
+                console.error(err);
+                return err;
+            });
 
+    }
+
+    updatePassword(user_id: number, pass: string, socket_id: string) {
+        return new Promise((resolve, reject) => {
+            this.connection.query('UPDATE `user` SET pass = ? WHERE user.id = ?', [pass, user_id], (err, rows) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(rows);
+            });
+        })
+            .then((rows) => {
+                return this.clearOtherHash(user_id, socket_id)
+                    .then(() => {
+                        return rows
+                    })
+
+            })
+
+
+    }
+
+    clearOtherHash(user_id: number, socket_id: string) {
+        return new Promise((resolve, reject) => {
+            this.connection.query('DELETE FROM `hash` WHERE `user_id`=? AND `socket_id` !=?', [user_id, socket_id], (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(result);
+            });
+        });
     }
 
     /**
@@ -243,7 +285,7 @@ export class Util {
     }
 
 
-    getUserIdBySocketId(socket_id) {
+    getUserIdBySocketId(socket_id): Promise<number> {
         return new Promise((resolve, reject) => {
             this.connection.query('SELECT * FROM `hash` WHERE `socket_id`=?', [socket_id], (err, rows) => {
                 if (err) {
@@ -335,7 +377,7 @@ export class Util {
                     return;
                 }
 
-                if(rows && rows.length){
+                if (rows && rows.length) {
                     let base_station = [];
                     try {
                         base_station = (rows[0].base_station && rows[0].base_station !== 'NULL') ? JSON.parse(rows[0].base_station) : [];
@@ -350,9 +392,8 @@ export class Util {
                         }
                     );
                 } else {
-                    resolve(null)
+                    resolve(null);
                 }
-
 
 
             });

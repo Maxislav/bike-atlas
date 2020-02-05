@@ -41,10 +41,36 @@ class OnRegist extends ProtoData {
         });
     }
     updatePass(req, res) {
-        res.end({
-            result: 'ok',
-            data: req.data
+        this.util.getUserIdBySocketId(this.socket.id)
+            .then((user_id) => {
+            return this.util.getUserById(user_id);
+        })
+            .then(user => {
+            if (req.data.currentPass === user.pass) {
+                return this.util.updatePassword(user.id, req.data.newPass, this.socket.id)
+                    .then((rows) => {
+                    res.end({
+                        result: 'ok',
+                        error: null,
+                        data: rows
+                    });
+                });
+            }
+            else {
+                res.end({
+                    result: 'CURRENT_PASS_NOT_MATCH',
+                    error: 'Current password does not match',
+                });
+            }
+        })
+            .catch((err) => {
+            res.end({
+                result: 'FAIL',
+                error: err.toString()
+            });
         });
+    }
+    updatePassSql() {
     }
 }
 __decorate([
