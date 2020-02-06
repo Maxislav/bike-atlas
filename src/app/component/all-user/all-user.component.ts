@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FriendsService } from '../../service/friends.service';
+import { FriendsService } from '../../api/friends.service';
 import { ChatService } from '../../service/chat.service';
 import { User } from '../../service/main.user.service';
 import { Router } from '@angular/router';
@@ -21,12 +21,15 @@ export class AllUserComponent {
     ) {
         // this.allUsers = friendsService.users;
         this.friends = friendsService.friends;
-        this.allUsers = friendsService.allUsers;
+        //this.allUsers = friendsService.allUsers;
         // this.invites = friendsService.invites;
         //this.myInvites = friendsService.myInvites;
         //friendsService.getAllUsers();
 
-        this.friendsService.requestAllUsers();
+        this.friendsService.requestAllUsers()
+            .then(userList => {
+                this.allUsers = userList
+            });
 
     }
 

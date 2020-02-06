@@ -4,7 +4,7 @@
 import {Component, Input, OnInit, AfterViewInit, ElementRef} from "@angular/core";
 import {deepCopy} from "../../../util/deep-copy";
 import {ChatService} from "../../../service/chat.service";
-import {FriendsService} from "../../../service/friends.service";
+import {FriendsService} from "../../../api/friends.service";
 
 
 

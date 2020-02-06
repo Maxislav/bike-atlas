@@ -1,7 +1,7 @@
 import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector } from '@angular/core';
 import { Io } from './socket.oi.service';
 import { LocalStorage } from './local-storage.service';
-import { FriendsService } from './friends.service';
+import { FriendsService } from '../api/friends.service';
 import { Marker } from '../util/marker';
 import { DeviceLogData, MapGl } from '../../types/global';
 import { LogData } from 'src/types/global';

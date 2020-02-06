@@ -13,10 +13,10 @@ interface PassFormIs {
 export class OnRegist extends ProtoData {
     constructor(private socket, private util: Util, private logger: Logger) {
         super(socket, util);
-        socket.on('onRegist', this.onRegist.bind(this));
+        socket.on('onRegist', this.onRegist);
         this.socket.$get('updatePass', this.updatePass);
     }
-
+    @autobind()
     onRegist(d) {
 
         this.util.onRegist(d)

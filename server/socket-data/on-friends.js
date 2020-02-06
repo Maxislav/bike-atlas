@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const autobind_1 = require("../util/autobind");
-const R = require('ramda');
+const R = require("ramda");
 const ProtoData = require("./proto-data");
 class OnFriend extends ProtoData {
     constructor(socket, util, logger, chat) {
@@ -20,6 +20,7 @@ class OnFriend extends ProtoData {
         this.socket.$get('getFriends', this.getFriends);
         this.socket.$get('getAllUsers', this.getAllUsers);
         this.socket.$get('getInvites', this.getInvites);
+        this.socket.$get('requestUserById', this.requestUserById);
         // this.socket.on('getInvites', this.getInvites.bind(this));
         this.socket.on('onInvite', this.onInvite.bind(this));
         this.socket.on('onAcceptInvite', this.onAcceptInvite.bind(this));
@@ -134,6 +135,18 @@ class OnFriend extends ProtoData {
                   });
                   console.error('error getAllUsers -> ', err);
               });*/
+    }
+    requestUserById(req, res) {
+        const id = req.data.id;
+        this.util.getUserById(id)
+            .then(u => {
+            const user = Object.assign({}, u);
+            delete user.pass;
+            res.end({
+                result: 'ok',
+                user
+            });
+        });
     }
     onDelFriend(friend_id) {
         this.util.getUserIdBySocketId(this.socket.id)
@@ -256,6 +269,12 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
+], OnFriend.prototype, "requestUserById", null);
+__decorate([
+    autobind_1.autobind(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
 ], OnFriend.prototype, "getInvites", null);
-module.exports = OnFriend;
+exports.OnFriend = OnFriend;
 //# sourceMappingURL=on-friends.js.map

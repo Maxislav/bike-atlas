@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Io } from './socket.oi.service';
 import { LocalStorage } from './local-storage.service';
 import { ActivatedRouteSnapshot, CanActivate, Resolve, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { FriendsService } from './friends.service';
+import { FriendsService } from '../api/friends.service';
 import { Setting, UserService } from './main.user.service';
 import { ChatService } from './chat.service';
 import { ToastService } from '../component/toast/toast.component';

@@ -12,7 +12,7 @@ const on_auth_1 = require("./socket-data/on-auth");
 const Device = require('./socket-data/device');
 const on_regist_1 = require("./socket-data/on-regist");
 const OnProfile = require('./socket-data/on-profile');
-const OnFriend = require('./socket-data/on-friends');
+const on_friends_1 = require("./socket-data/on-friends");
 const OnPrivateArea = require('./socket-data/on-private-area');
 const chat_1 = require("./chat");
 const TrackFromTo = require('./socket-data/track-from-to');
@@ -83,7 +83,7 @@ class SocketData {
             const device = new Device(socket, util, logger);
             const onRegist = new on_regist_1.OnRegist(socket, util, logger);
             const onProfile = new OnProfile(socket, util, logger);
-            const onFriend = new OnFriend(socket, util, logger, chat);
+            const onFriend = new on_friends_1.OnFriend(socket, util, logger, chat);
             const onPrivateArea = new OnPrivateArea(socket, util);
             const trackFromTo = new TrackFromTo(socket, util);
             const onChat = new OnChat(socket, util, chat);

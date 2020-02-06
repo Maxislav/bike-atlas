@@ -16,7 +16,7 @@ const Device = require('./socket-data/device');
 import { OnRegist } from './socket-data/on-regist';
 
 const OnProfile = require('./socket-data/on-profile');
-const OnFriend = require('./socket-data/on-friends');
+import {OnFriend } from './socket-data/on-friends';
 const OnPrivateArea = require('./socket-data/on-private-area');
 import { Chat } from './chat';
 

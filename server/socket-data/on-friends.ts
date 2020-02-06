@@ -1,9 +1,9 @@
 import { autobind } from '../util/autobind';
 
-const R = require('ramda');
+import * as R from 'ramda';
 import * as ProtoData from './proto-data';
 
-class OnFriend extends ProtoData {
+export class OnFriend extends ProtoData {
     private socket;
     private util;
     private logger;
@@ -18,6 +18,7 @@ class OnFriend extends ProtoData {
         this.socket.$get('getFriends', this.getFriends);
         this.socket.$get('getAllUsers', this.getAllUsers);
         this.socket.$get('getInvites', this.getInvites);
+        this.socket.$get('requestUserById', this.requestUserById);
 
 
         // this.socket.on('getInvites', this.getInvites.bind(this));
@@ -162,6 +163,20 @@ class OnFriend extends ProtoData {
 
     }
 
+    @autobind()
+    requestUserById(req, res){
+        const id = req.data.id;
+        this.util.getUserById(id)
+            .then(u => {
+                const user = {...u}
+                delete user.pass;
+                res.end({
+                    result: 'ok',
+                    user
+                })
+            })
+    }
+
     onDelFriend(friend_id) {
         this.util.getUserIdBySocketId(this.socket.id)
             .then(user_id => {
@@ -281,4 +296,3 @@ class OnFriend extends ProtoData {
 
 }
 
-module.exports = OnFriend;

@@ -1,7 +1,7 @@
 
 import {Component, Directive, ElementRef, Renderer} from "@angular/core";
 import {Location} from '@angular/common';
-import {FriendsService} from "../../service/friends.service";
+import {FriendsService} from "../../api/friends.service";
 import {ToastService} from "../toast/toast.component";
 import {Router, ActivatedRoute} from "@angular/router";
 import {ChatService} from "../../service/chat.service";
@@ -42,13 +42,6 @@ export class FriendsComponent{
                 private router: Router,
                 private friendsService: FriendsService,
                 private chatService: ChatService){
-
-        //this.allUsers = friendsService.users;
-        //this.invites = friendsService.invites;
-        //this.friends = friendsService.friends;
-       // this.myInvites = friendsService.myInvites;
-        //friendsService.getFriends()
-
         this.friends = friendsService.friends;
     }
 

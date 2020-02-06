@@ -31,7 +31,6 @@ import { MenuAthleteComponent } from './component/menu/menu-athlete/menu.athlete
 import { ProfileComponent } from './component/profile/profile.component';
 import { JournalComponent, LeafletResolver } from './component/journal-component/journal.component';
 import { FriendsComponent, UsersContainer } from './component/friends-component/friends-component';
-import { FriendsService } from './service/friends.service';
 import { UserService } from './service/main.user.service';
 import { TimerService } from './service/timer.service';
 import { PrivateArea } from './component/private-area/private-area';
@@ -76,6 +75,7 @@ import { DeviceDelPopupComponent } from 'src/app/component/device/device-del-pop
 import { MyPopupDelMyMarker } from 'src/app/component/my-marker-list-component/my-popup-del-my-marker/my-popup-del-my-marker';
 import { OneUserComponent } from './component/all-user/one-user/one-user.component';
 import { ProfileService } from 'src/app/api/profile.service';
+import { FriendsService } from 'src/app/api/friends.service';
 
 
 @Component({

@@ -10,7 +10,7 @@ import {MenuService} from "../../service/menu.service";
 import {TrackService} from "../../service/track.service";
 import {AuthService} from "../../service/auth.service";
 import {Router} from "@angular/router";
-import {FriendsService} from "../../service/friends.service";
+import {FriendsService} from "../../api/friends.service";
 import { User, UserService } from '../../service/main.user.service';
 import {ToastService} from "../toast/toast.component";
 import {MapService} from "../../service/map.service";

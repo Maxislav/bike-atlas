@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Io, SSocket } from './socket.oi.service';
-import { Marker } from './marker.service';
-import { LocalStorage } from './local-storage.service';
-import { User, UserService } from './main.user.service';
-import { ChatService } from './chat.service';
+import { Io, SSocket } from '../service/socket.oi.service';
+import { Marker } from '../service/marker.service';
+import { LocalStorage } from '../service/local-storage.service';
+import { User, UserService } from '../service/main.user.service';
+import { ChatService } from '../service/chat.service';
 import { Message } from '../component/chat-component/chat-room/chat-room.component';
 
 
@@ -15,7 +15,6 @@ export interface UserWithChat extends User {
 export interface Friends extends Array<User> {
     promise: Promise<User>
 }
-
 
 
 export interface InviteInterface {
@@ -30,7 +29,7 @@ export class FriendsService {
     friends: Array<User> = [];
     allUsers: Array<User> = [];
     inviteMap: InviteInterface = {
-        myInvite: [] ,
+        myInvite: [],
         userInvite: []
     };
 
@@ -57,7 +56,7 @@ export class FriendsService {
         return this.socket.$get('getFriends', {})
             .then(d => {
                 console.log(d);
-                return this
+                return this;
             })
             .catch(err => {
                 console.error(err);
@@ -66,40 +65,50 @@ export class FriendsService {
 
     }
 
-    requestAllUsers(): Promise<this> {
+    requestAllUsers(): Promise<Array<User>> {
         return this.socket.$get('getAllUsers', {})
             .then(d => {
                 console.log(d);
-                if(d && d.result =='ok'){
-                    this.allUsers.length = 0;
-                    d.users.forEach(user => {
-                        const u = new User(user);
-                        this.allUsers.push(u)
-                    })
+                if (d && d.result == 'ok') {
+                    /* this.allUsers.length = 0;
+                     d.users.forEach(user => {
+                         const u = new User(user);
+                         this.allUsers.push(u)
+                     })*/
+                    return d.users.map(user => {
+                        return new User(user);
+                    });
                 }
-                return this;
+                return [];
             });
     }
 
-    requestInvites(): Promise<this>{
+    requestInvites(): Promise<this> {
         return this.socket.$get('getInvites', {})
-            .then(d =>{
+            .then(d => {
 
-                console.log(d)
+                console.log(d);
 
-                return this
+                return this;
             })
+            .catch(err => {
+                console.error(err);
+            });
 
 
     }
 
-    sendInvite(user: User): Promise<any>{
+    requestUserById(id: number): Promise<{result: string, user:User}> {
+        return this.socket.$get('requestUserById', {id});
+    }
+
+    sendInvite(user: User): Promise<any> {
         this.inviteMap.myInvite.push(user);
-        return this.socket.$get<any>('onInvite' , user.toJson())
+        return this.socket.$get<any>('onInvite', user.toJson());
     }
 
-    onCancelInvite(user: User){
-        const index =  this.inviteMap.myInvite.findIndex(u => u.id === user.id);
+    onCancelInvite(user: User) {
+        const index = this.inviteMap.myInvite.findIndex(u => u.id === user.id);
         this.inviteMap.myInvite.splice(index, 1);
     }
 
