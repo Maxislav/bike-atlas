@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Io, SSocket } from '../service/socket.oi.service';
-import { Marker } from '../service/marker.service';
-import { LocalStorage } from '../service/local-storage.service';
-import { User, UserService } from '../service/main.user.service';
-import { ChatService } from '../service/chat.service';
-import { Message } from '../component/chat-component/chat-room/chat-room.component';
+import {Injectable} from '@angular/core';
+import {Io, SSocket} from '../service/socket.oi.service';
+import {Marker} from '../service/marker.service';
+import {LocalStorage} from '../service/local-storage.service';
+import {User, UserService} from '../service/main.user.service';
+import {ChatService} from '../service/chat.service';
+import {Message} from '../component/chat-component/chat-room/chat-room.component';
 
 
 export interface UserWithChat extends User {
@@ -67,7 +67,7 @@ export class FriendsService {
 
     requestAllUsers(): Promise<Array<User>> {
         return this.socket.$get('getAllUsers', {})
-            .then(d => {
+            .then((d: any) => {
                 console.log(d);
                 if (d && d.result == 'ok') {
                     /* this.allUsers.length = 0;
@@ -83,22 +83,22 @@ export class FriendsService {
             });
     }
 
-    requestInvites(): Promise<this> {
-        return this.socket.$get('getInvites', {})
-            .then(d => {
+    requestInvites<T>(): Promise<this> {
+        return <Promise<any>> this.socket.$get('getInvites', {})
+            .then((d: any) => {
 
-                console.log(d);
-
-                return this;
+                return  Promise.resolve(this) ;
             })
             .catch(err => {
                 console.error(err);
+                return err
             });
+
 
 
     }
 
-    requestUserById(id: number): Promise<{result: string, user:User}> {
+    requestUserById(id: number): Promise<{ result: string, user: User }> {
         return this.socket.$get('requestUserById', {id});
     }
 

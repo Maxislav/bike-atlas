@@ -49,7 +49,7 @@ class GetListener {
         this.delHash(hash);
     }
 
-    emit(data: any) {
+    emit<T>(data: any): Promise<T> {
         const hash = this.getHash();
         const deferred = new Deferred();
         const timeout = setTimeout(() => {
@@ -115,7 +115,7 @@ export class SSocket {
         this.listenerHashMap = {};
     }
 
-    $get<T>(name: string, data: any): Promise<any> {
+    $get<T>(name: string, data: any): Promise<T> {
         if (!this.getListenerHashMap[name]) {
             this.getListenerHashMap[name] = new GetListener(name, this);
         }
