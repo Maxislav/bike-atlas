@@ -52,11 +52,11 @@ export class FriendsService {
          chatService.addChatUnViewed = this.addChatUnViewed.bind(this);*/
     }
 
-    requestFriends(): Promise<this> {
-        return this.socket.$get('getFriends', {})
+    requestFriends(): Promise<FriendsService> {
+        return this.socket.$get<FriendsService>('getFriends', {})
             .then(d => {
                 console.log(d);
-                return this;
+                return <FriendsService>this;
             })
             .catch(err => {
                 console.error(err);
@@ -87,7 +87,7 @@ export class FriendsService {
         return <Promise<any>> this.socket.$get('getInvites', {})
             .then((d: any) => {
 
-                return  Promise.resolve(this) ;
+                return  <FriendsService>this;
             })
             .catch(err => {
                 console.error(err);
