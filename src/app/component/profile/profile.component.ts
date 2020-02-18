@@ -7,12 +7,7 @@ import { Io } from '../../service/socket.oi.service';
 import { ToastService } from '../toast/toast.component';
 import { User, UserService } from '../../service/main.user.service';
 import { PrivateAreaService } from '../../service/private.area.service';
-import { hashgeneral } from '../../util/hash';
-import { FormControl, FormGroup, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
-import { concat } from 'rxjs';
-import { Observable } from 'rxjs/src/internal/Observable';
-import { subscribeTo } from 'rxjs/internal-compatibility';
-import { zip } from 'rxjs';
+import { FormControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
 import { merge } from 'rxjs';
 import { PassFormIs, ProfileService } from 'src/app/api/profile.service';
 
@@ -47,7 +42,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         repeatNewPass: null
     };
 
-    @ViewChild('nameForm') nameForm: any;
+    //@ViewChild('nameForm') nameForm: any;
     model: { name: string } = {name: null};
 
     /*= new FormGroup({

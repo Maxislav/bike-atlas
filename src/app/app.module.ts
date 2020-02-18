@@ -76,6 +76,7 @@ import { MyPopupDelMyMarker } from 'src/app/component/my-marker-list-component/m
 import { OneUserComponent } from './component/all-user/one-user/one-user.component';
 import { ProfileService } from 'src/app/api/profile.service';
 import { FriendsService } from 'src/app/api/friends.service';
+import {RegistrationService} from "./api/registration.service";
 
 
 @Component({
@@ -156,6 +157,7 @@ export class PipeTranslateCompiler implements TranslateCompiler {
      */
     declarations: [
         JJ,
+
         MyPopupDelMyMarker,
         DeviceHelpComponent,
         IsOwner,
@@ -199,6 +201,7 @@ export class PipeTranslateCompiler implements TranslateCompiler {
 
     /** Сервисы */
     providers: [
+        RegistrationService,
         HttpClient,
         ProfileService,
         //ConnectionBackend,

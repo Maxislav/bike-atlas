@@ -19,6 +19,14 @@ class OnRegist extends ProtoData {
         this.logger = logger;
         socket.on('onRegist', this.onRegist);
         this.socket.$get('updatePass', this.updatePass);
+        this.socket.$get('onRegister', this.onRegister);
+    }
+    onRegister(req, res) {
+        console.log(req.data);
+        res.end({
+            result: 'ok',
+            error: null
+        });
     }
     onRegist(d) {
         this.util.onRegist(d)
@@ -73,6 +81,12 @@ class OnRegist extends ProtoData {
     updatePassSql() {
     }
 }
+__decorate([
+    autobind_1.autobind(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], OnRegist.prototype, "onRegister", null);
 __decorate([
     autobind_1.autobind(),
     __metadata("design:type", Function),

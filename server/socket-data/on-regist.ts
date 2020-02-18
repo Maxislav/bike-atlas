@@ -1,8 +1,14 @@
 import * as ProtoData from './proto-data';
-import { autobind } from '../util/autobind';
-import { Util } from '../socket-data/util';
-import { Logger } from '../gps-logger/gps-logger';
+import {autobind} from '../util/autobind';
+import {Util} from '../socket-data/util';
+import {Logger} from '../gps-logger/gps-logger';
 
+
+interface RegistrationFormIs {
+    name: string;
+    pass: string;
+    repeatPass: string
+}
 
 interface PassFormIs {
     currentPass: string;
@@ -15,7 +21,19 @@ export class OnRegist extends ProtoData {
         super(socket, util);
         socket.on('onRegist', this.onRegist);
         this.socket.$get('updatePass', this.updatePass);
+        this.socket.$get('onRegister', this.onRegister);
     }
+
+
+    @autobind()
+    onRegister(req: { data: RegistrationFormIs }, res: any) {
+        console.log(req.data);
+        res.end({
+            result: 'ok',
+            error: null
+        })
+    }
+
     @autobind()
     onRegist(d) {
 
@@ -49,7 +67,7 @@ export class OnRegist extends ProtoData {
             })
             .then(user => {
                 if (req.data.currentPass === user.pass) {
-                    return this.util.updatePassword(user.id, req.data.newPass, this.socket.id )
+                    return this.util.updatePassword(user.id, req.data.newPass, this.socket.id)
                         .then((rows) => {
                             res.end({
                                 result: 'ok',

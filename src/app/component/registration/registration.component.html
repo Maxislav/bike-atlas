@@ -1,20 +1,25 @@
-
 <div class="content">
 
-  <form name="reg" (submit)="onSubmit($event)">
-    <div class="modal-body">
-      <label>Имя</label>
-      <input type="text" name="_name" [(ngModel)]="name"/>
-      <label>Пароль</label>
-      <input type="password" name="_pass" [(ngModel)]="pass1"/>
-      <label>Пароль</label>
-      <input type="password" name="_pass" [(ngModel)]="pass2"/>
-    </div>
+    <form [formGroup]="registerForm" name="registerForm" autocomplete="off">
+        <div class="modal-body">
+            <div [ngClass]="{'has-error': hasError('name')}">
+                <label>Имя</label>
+                <input type="text" formControlName="name" name="_name"/>
+            </div>
+            <div [ngClass]="{'has-error': hasError('pass')}">
+                <label>Пароль</label>
+                <input type="password" formControlName="pass" name="_pass"/>
+            </div>
+            <div [ngClass]="{'has-error': hasError('repeatPass')}">
+                <label>Пароль</label>
+                <input type="password" formControlName="repeatPass" name="_pass"/>
+            </div>
+        </div>
 
-    <div class="buttons-container">
-      <button class="reject" (click)="onCancel($event)">Cancel</button>
+        <div class="buttons-container">
+            <button class="reject" (click)="onCancel($event)">Cancel</button>
 
-      <button class="resolve" (click)="onOk($event)">Ok</button>
-    </div>
-  </form>
+            <button class="resolve" (click)="onOk($event)">Ok</button>
+        </div>
+    </form>
 </div>
