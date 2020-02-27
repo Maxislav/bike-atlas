@@ -1,8 +1,9 @@
-import { Component, Injectable } from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 
+type MESSAGE_TYPE = 'danger' | 'error' | 'warning' | 'success'
 
-export class Message {
-    type: string;
+export class Message implements M {
+    type: MESSAGE_TYPE;
     className: string;
     text: string;
     translate: string | undefined;
@@ -18,12 +19,11 @@ export class Message {
     }
 }
 
-type MESSAGE_TYPE = 'danger' | 'error' | 'warning' | 'success'
 
 interface M {
+    text: string;
     type?: MESSAGE_TYPE;
     className?: string;
-    text?: string;
     translate?: string;
 }
 
@@ -37,8 +37,8 @@ export class ToastService {
     }
 
 
-    show(message: M) {
-        const mess: Message = new Message(message.type, message.className, message.text, message.translate);
+    show(options: M) {
+        const mess: Message = new Message(options.type, options.className, options.text, options.translate);
         //message.className = message.type || 'default';
 
         const res = {

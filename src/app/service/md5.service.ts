@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
+
 @Injectable()
 export class Md5 {
-    hash(string) {	// Calculate the md5 hash of a string
+    hash(string: string): string {	// Calculate the md5 hash of a string
         function RotateLeft(lValue, iShiftBits) {
             return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
         }
@@ -106,12 +107,10 @@ export class Md5 {
 
                 if (c < 128) {
                     utftext += String.fromCharCode(c);
-                }
-                else if ((c > 127) && (c < 2048)) {
+                } else if ((c > 127) && (c < 2048)) {
                     utftext += String.fromCharCode((c >> 6) | 192);
                     utftext += String.fromCharCode((c & 63) | 128);
-                }
-                else {
+                } else {
                     utftext += String.fromCharCode((c >> 12) | 224);
                     utftext += String.fromCharCode(((c >> 6) & 63) | 128);
                     utftext += String.fromCharCode((c & 63) | 128);

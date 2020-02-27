@@ -53,8 +53,8 @@ export class MenuLoginComponent {
     }
 
 
-    onEnter() {
-
+    onEnter(e: MouseEvent) {
+        e.preventDefault();
         this.authService.onEnter({
             name: this.name,
             pass: this.md5.hash(this.pass)

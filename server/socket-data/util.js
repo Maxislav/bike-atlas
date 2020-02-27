@@ -359,7 +359,7 @@ class Util {
             .then((rows) => {
             if (rows.length) {
                 return Promise.resolve({
-                    result: false,
+                    result: 'error',
                     message: 'User exist'
                 });
             }
@@ -369,7 +369,7 @@ class Util {
                     return this.addSettingUser(result.insertId)
                         .then((result) => {
                         return Promise.resolve({
-                            result: 'ok',
+                            result: 'success',
                             message: null
                         });
                     });

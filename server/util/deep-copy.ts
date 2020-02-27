@@ -1,4 +1,4 @@
-export const deepCopy = (oldObj: any) =>{
+export const deepCopy = <T>(oldObj: any) =>{
     var newObj = oldObj;
     if (oldObj && typeof oldObj === "object") {
         newObj = Object.prototype.toString.call(oldObj) === "[object Array]" ? [] : {};
@@ -6,5 +6,5 @@ export const deepCopy = (oldObj: any) =>{
             newObj[i] = this.deepCopy(oldObj[i]);
         }
     }
-    return newObj;
+    return <T>newObj;
 };

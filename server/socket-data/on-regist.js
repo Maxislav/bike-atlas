@@ -23,10 +23,33 @@ class OnRegist extends ProtoData {
     }
     onRegister(req, res) {
         console.log(req.data);
-        res.end({
-            result: 'ok',
-            error: null
+        const d = req.data;
+        this.util.onRegist(d)
+            .then(d => {
+            if (d && d.result == 'ok') {
+                res.end({
+                    result: 'success',
+                    error: null
+                });
+            }
+            else {
+                res.end(d);
+            }
+        }, err => {
+            console.error(err);
+        })
+            .catch((err) => {
+            console.error('Cache onRegist', err);
+            res.end({
+                result: false,
+                error: err.toString()
+            });
+            //this.socket.emit('onRegist', {result: false, status: 500, message: err});
         });
+        /* res.end({
+             result: 'ok',
+             error: null
+         })*/
     }
     onRegist(d) {
         this.util.onRegist(d)

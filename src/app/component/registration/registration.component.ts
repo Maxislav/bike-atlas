@@ -1,11 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
-import {Md5} from "../../service/md5.service";
+//import {Md5} from "../../service/md5.service";
 import {ToastService} from "../toast/toast.component";
 import {Io} from "../../service/socket.oi.service";
 import {AuthService} from '../../service/auth.service';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors} from "@angular/forms";
 import {RegistrationFormIs, RegistrationService} from "../../api/registration.service";
+import {Md5} from '../../service/md5.service';
+import {deepCopy} from '../../util/deep-copy';
+import {Router} from '@angular/router';
+
 
 // import {LoginService} from "../../service/login.service";
 @Component({
@@ -19,17 +23,19 @@ export class RegistrationComponent implements OnInit {
     registerForm: FormGroup;
 
     registrationFormValue: RegistrationFormIs = {
-            name: null,
-            pass: null,
-            repeatPass: null
+        name: null,
+        pass: null,
+        repeatPass: null
     };
 
     constructor(private location: Location,
                 private md5: Md5,
                 private fb: FormBuilder,
+                private router: Router,
                 private ts: ToastService,
-                private registrationService: RegistrationService
-                ) {
+                private registrationService: RegistrationService,
+                private authService: AuthService
+    ) {
     }
 
     ngOnInit(): void {
@@ -66,8 +72,9 @@ export class RegistrationComponent implements OnInit {
         }
     }
 
-    hasError(groupName: string): boolean{
-       return  !!this.registerForm.get(groupName).getError('invalidPassword')
+    hasError(groupName: string): boolean {
+        return !!this.registerForm.get(groupName).getError('invalidPassword')
+            || !!this.registerForm.get(groupName).getError('invalidUser')
     }
 
     onCancel(e) {
@@ -76,16 +83,48 @@ export class RegistrationComponent implements OnInit {
     }
 
 
-
     onOk(e) {
         e.preventDefault();
-        this.registrationService.onRegister(this.registerForm.value)
+        if (!this.registerForm.valid) {
+            return this.ts.show({
+                type: 'warning',
+                text: 'Form invalid'
+            })
+        }
+
+        const d: RegistrationFormIs = <RegistrationFormIs>deepCopy(this.registerForm.value);
+        delete d.repeatPass;
+        const reqData: {pass: string, name: string} = d;
+        reqData.pass = this.md5.hash(reqData.pass);
+
+        this.registrationService.onRegister(reqData)
             .then(data => {
-                console.log(data)
+               // console.log(data)
+                switch (data.result) {
+                    case 'success': {
+                        this.ts.show({
+                            type: 'success',
+                            text: 'Registration success'
+                        });
+                        this.authService.onEnter(d);
+                        this.router.navigate(['/auth/map']);
+                        break;
+
+                    }
+                    default: {
+                        this.registerForm.get('name').setErrors({invalidUser: 'User exist'});
+                        this.ts.show({
+                            type: 'error',
+                            text: data.message
+                        });
+                    }
+                }
+            })
+            .catch(err => {
+                console.log(err)
             })
 
     }
-
 
 
 }
