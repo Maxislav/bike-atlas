@@ -53,14 +53,15 @@ export class MenuLoginComponent {
     }
 
 
-    onEnter(e: MouseEvent) {
-        e.preventDefault();
+    onEnter(e?: MouseEvent) {
+        e && e.preventDefault();
         this.authService.onEnter({
             name: this.name,
             pass: this.md5.hash(this.pass)
         })
 
     }
+
 
     goToProfile(){
         this.router.navigate(['/auth/map/profile']);
