@@ -3,30 +3,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 process.env.TZ = 'UTC';
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 require("./colors");
-const path = require('path');
-const express = require('express');
-const port = 8080;
+const path = require("path");
+const express = require("express");
 const kmlData = require('./kml-data');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const tileProxy = require('./tile-proxy');
-const socketData = require('./socket-data');
+const socket_data_1 = require("./socket-data");
 const weather = require("./weather");
 const { sendFile } = require('./send-file');
-const gtgbc = require('./gtgbc');
+const gtgbc_1 = require("./gtgbc");
 const http = require("http");
+const PORT = 8080;
 const dirname = path.join(__dirname, '../', 'dist');
 const app = express();
 app.use(fileUpload());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
-// parse application/json
 app.use(bodyParser.json());
 const server = new http.Server(app);
 server.listen(8081);
-socketData(server, app);
+socket_data_1.ssocketData(server, app);
 app.get('/borisbolukbb', weather);
-app.get('/gtgbc*', gtgbc);
+app.get('/gtgbc*', gtgbc_1.gtgbc);
 /**
  * tiler proxy
  */
@@ -76,5 +75,5 @@ app.use((req, res, next) => {
         res.sendFile(dirname + '/index.html');
     }
 });
-app.listen(port, () => console.log('started at ' + port));
+app.listen(PORT, () => console.log('started at ' + PORT));
 //# sourceMappingURL=index.js.map

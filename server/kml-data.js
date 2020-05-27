@@ -40,13 +40,6 @@ module.exports = function (req, res, next) {
 
 };
 
-
-
-
-
-
-
-
 function xmlBuild(track) {
   var xml = builder.create('gpx');
 
@@ -65,11 +58,6 @@ function xmlBuild(track) {
 
   return Promise.resolve(xml);
 
-  /* fs.writeFile('message.xml', xml, (err) => {
-   if (err) throw err;
-   console.log('It\'s saved!');
-   });*/
-  //console.log(xml);
 }
 
 function fillXmlData(trkseg, track) {

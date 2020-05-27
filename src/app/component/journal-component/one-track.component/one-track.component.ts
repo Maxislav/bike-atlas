@@ -37,12 +37,13 @@ export class OneTrack implements OnInit, AfterViewInit{
         this.track.points.forEach(point=>{
             latlngs.push([point.lat, point.lng])
         });
-        this.trackDate = new Date(this.track.points[0].date);
+
         const polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
         map.fitBounds(polyline.getBounds());
 
     }
     ngOnInit(): void {
+        this.trackDate = new Date(this.track.points[0].date);
         /*this.userService.getUserImageById(this.track.userId)
             .then(image=>{
                 this.image = image;

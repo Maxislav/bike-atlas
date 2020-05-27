@@ -1,4 +1,4 @@
-import { Deferred } from './deferred';
+import {Deferred} from './deferred';
 
 const socketStream = require('socket.io-stream');
 const mysql = require('mysql');
@@ -9,30 +9,32 @@ const io = require('socket.io');
 config.mysql['database'] = 'monitoring';
 //let connection = mysql.createConnection(config.mysql);
 
-import { OnEnter } from './socket-data/on-enter';
+import {OnEnter} from './socket-data/on-enter';
 
-import { OnAuth } from './socket-data/on-auth';
+import {OnAuth} from './socket-data/on-auth';
+
 const Device = require('./socket-data/device');
-import { OnRegist } from './socket-data/on-regist';
+import {OnRegist} from './socket-data/on-regist';
 
 const OnProfile = require('./socket-data/on-profile');
-import {OnFriend } from './socket-data/on-friends';
+import {OnFriend} from './socket-data/on-friends';
+
 const OnPrivateArea = require('./socket-data/on-private-area');
-import { Chat } from './chat';
+import {Chat} from './chat';
 
 const TrackFromTo = require('./socket-data/track-from-to');
 const OnChat = require('./socket-data/on-chat');
 //const Logger = require('./logger');
 
-import { Logger } from './gps-logger/gps-logger';
-import { Gl520 } from './tcp/gl-520';
-import { OnGtgbc } from './socket-data/on-gtgbc.js';
+import {Logger} from './gps-logger/gps-logger';
+import {Gl520} from './tcp/gl-520';
+import {OnGtgbc} from './socket-data/on-gtgbc.js';
 
-import { Util } from './socket-data/util';
+import {Util} from './socket-data/util';
 
 const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
-import { OnMyMarker } from './socket-data/on-my-marker.js';
+import {OnMyMarker} from './socket-data/on-my-marker.js';
 
 let connection, server, app;
 let resolveExport;
@@ -183,7 +185,6 @@ const connectionConnect = () => {
     });
     connection.connect((err) => {
         if (err) throw err;
-        //console.log('MySql connected as id ->'.yellow  +  ` ${connection.threadId}`);
         console.log('MySql connected as id '.yellow + '->' + ` ${connection.threadId}`.green);
         promiseExport
             .then(d => {
@@ -202,7 +203,7 @@ const connectionConnect = () => {
 connectionConnect();
 
 
-module.exports = (server, app) => {
+export function ssocketData(server, app) {
     //server = _server; app = _app;
     resolveExport({server, app});
 

@@ -3,21 +3,20 @@ declare const __dirname: string;
 process.env.TZ = 'UTC';
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 import './colors';
+import * as path from 'path';
+import * as express from 'express';
 
-const path = require('path');
-const express = require('express');
-const port = 8080;
 const kmlData = require('./kml-data');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const tileProxy = require('./tile-proxy');
-const socketData = require('./socket-data');
+import {ssocketData} from './socket-data';
 import * as weather from './weather';
 const {sendFile} = require('./send-file');
-const gtgbc = require('./gtgbc');
+import {gtgbc} from './gtgbc';
 import * as http from 'http';
 
-
+const PORT = 8080;
 
 const dirname =  path.join(__dirname, '../', 'dist');
 
@@ -28,14 +27,11 @@ app.use(fileUpload());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// parse application/json
 app.use(bodyParser.json())
-
-
 
 const server = new http.Server(app);
 server.listen(8081);
-socketData(server, app);
+ssocketData(server, app);
 
 
 app.get('/borisbolukbb', weather);
@@ -48,7 +44,6 @@ app.get('/gtgbc*', gtgbc);
 app.get('/server*',(req, res, next)=>{
   res.setStatus = 500;
   res.send('<h4 style="color: darkred; padding: 10px; text-align: center">Permission denied</h4>');
-
 } );
 app.get('*/hills/:z/:x/:y', tileProxy);
 
@@ -101,4 +96,4 @@ app.use((req, res, next)=>{
 });
 
 
-app.listen(port,()=>console.log('started at '+port));
+app.listen(PORT,()=>console.log('started at '+PORT));

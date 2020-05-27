@@ -137,7 +137,6 @@ const connectionConnect = () => {
     connection.connect((err) => {
         if (err)
             throw err;
-        //console.log('MySql connected as id ->'.yellow  +  ` ${connection.threadId}`);
         console.log('MySql connected as id '.yellow + '->' + ` ${connection.threadId}`.green);
         promiseExport
             .then(d => {
@@ -153,10 +152,12 @@ const connectionConnect = () => {
     });
 };
 connectionConnect();
-module.exports = (server, app) => {
+function ssocketData(server, app) {
     //server = _server; app = _app;
     resolveExport({ server, app });
     // socketData =   new SocketData(server, app, connection)
     //INSERT INTO `user` (`id`, `name`, `pass`, `opt`) VALUES (NULL, 'max', 'eeew', NULL);
-};
+}
+exports.ssocketData = ssocketData;
+;
 //# sourceMappingURL=socket-data.js.map
