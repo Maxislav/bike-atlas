@@ -27,8 +27,10 @@ const OnImportKml = require('./socket-data/on-impork-kml');
 const on_my_marker_js_1 = require("./socket-data/on-my-marker.js");
 let connection, server, app;
 let resolveExport;
+let rejectExport;
 let promiseExport = new Promise((resolve, reject) => {
     resolveExport = resolve;
+    rejectExport = reject;
 });
 let socketData;
 // declare const Callback: (req: {hash: string, data: any}, res: {end: (data: any)=> void}) => void
@@ -135,8 +137,9 @@ const connectionConnect = () => {
         console.log('connected connect ->');
     });
     connection.connect((err) => {
-        if (err)
-            throw err;
+        if (err) {
+            return console.error(err);
+        }
         console.log('MySql connected as id '.yellow + '->' + ` ${connection.threadId}`.green);
         promiseExport
             .then(d => {
@@ -153,11 +156,7 @@ const connectionConnect = () => {
 };
 connectionConnect();
 function ssocketData(server, app) {
-    //server = _server; app = _app;
     resolveExport({ server, app });
-    // socketData =   new SocketData(server, app, connection)
-    //INSERT INTO `user` (`id`, `name`, `pass`, `opt`) VALUES (NULL, 'max', 'eeew', NULL);
 }
 exports.ssocketData = ssocketData;
-;
 //# sourceMappingURL=socket-data.js.map

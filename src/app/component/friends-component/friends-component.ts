@@ -2,11 +2,11 @@
 import {Component, Directive, ElementRef, Renderer} from "@angular/core";
 import {Location} from '@angular/common';
 import {FriendsService} from "../../api/friends.service";
-import {ToastService} from "../toast/toast.component";
 import {Router, ActivatedRoute} from "@angular/router";
 import {ChatService} from "../../service/chat.service";
 import {NavigationHistory} from "../../app.component";
 import { User, UserService } from 'src/app/service/main.user.service';
+import {ToastService} from '../../shared-module/toast-module/toast.service';
 
 
 @Directive({

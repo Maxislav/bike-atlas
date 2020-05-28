@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {MapService} from "./map.service";
 import {Io} from "./socket.oi.service";
-import {ToastService} from "../component/toast/toast.component";
 import {MapArea as Area} from "../../types/global";
+import {ToastService} from '../shared-module/toast-module/toast.service';
 /*
 export  interface Area{
     id?: number;

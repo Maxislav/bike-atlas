@@ -6,7 +6,6 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Device, DeviceService } from '../../service/device.service';
 import { NavigationHistory } from '../../app.component';
-import { ToastService } from '../toast/toast.component';
 import { User, UserService } from '../../service/main.user.service';
 import { environment } from '../../../environments/environment';
 import { DeviceHelpComponent } from './device-help/device-help.component';
@@ -15,6 +14,7 @@ import { DeviceDelPopupComponent } from 'src/app/component/device/device-del-pop
 import { autobind } from 'src/app/util/autobind';
 import { LogService } from 'src/app/service/log.service';
 import { PopupItemComponent } from 'src/app/modules/popup-module/popup-item.component';
+import {ToastService} from '../../shared-module/toast-module/toast.service';
 
 function getOffset(el) {
     var _x = 0;

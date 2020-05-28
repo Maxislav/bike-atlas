@@ -6,11 +6,11 @@ import {Io} from "../../../service/socket.oi.service";
 import {Md5} from "../../../service/md5.service";
 import {LocalStorage} from "../../../service/local-storage.service";
 import {AuthService} from "../../../service/auth.service";
-import {ToastService} from "../../toast/toast.component";
 import {DeviceService} from "../../../service/device.service";
 import {LogService} from "../../../service/log.service";
 import {FriendsService} from "../../../api/friends.service";
 import { User, UserService } from '../../../service/main.user.service';
+import {ToastService} from '../../../shared-module/toast-module/toast.service';
 //import {RouterLink} from "@angular/router-deprecated";
 
 @Component({

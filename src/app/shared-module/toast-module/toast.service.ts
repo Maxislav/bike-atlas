@@ -1,4 +1,4 @@
-import {Component, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 
 type MESSAGE_TYPE = 'danger' | 'error' | 'warning' | 'success'
 
@@ -27,7 +27,6 @@ interface M {
     translate?: string;
 }
 
-
 @Injectable()
 export class ToastService {
     public messages: Array<Message>;
@@ -39,8 +38,6 @@ export class ToastService {
 
     show(options: M) {
         const mess: Message = new Message(options.type, options.className, options.text, options.translate);
-        //message.className = message.type || 'default';
-
         const res = {
             remove: () => {
                 const index = this.messages.indexOf(mess);
@@ -60,23 +57,3 @@ export class ToastService {
     }
 
 }
-
-@Component({
-    selector: 'toast-component',
-    templateUrl: './toast-component.html',
-    styleUrls: [
-        './toast.component.less',
-    ]
-})
-export class ToastComponent {
-    public messages: Array<Message>;
-    private cl: string;
-
-    constructor(private ts: ToastService) {
-        this.messages = ts.messages;
-    }
-
-
-}
-
-

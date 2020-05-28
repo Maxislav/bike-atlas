@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ToastService } from 'src/app/component/toast/toast.component';
 import { Io, SSocket } from 'src/app/service/socket.oi.service';
 import { Md5 } from 'src/app/service/md5.service';
+import {ToastService} from '../shared-module/toast-module/toast.service';
 
 export interface PassFormIs {
     currentPass: string;

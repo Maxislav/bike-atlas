@@ -3,11 +3,11 @@ import { MapService } from '../service/map.service';
 import { LngLat, MapMarker, MyMarker, Popup } from '../../types/global';
 import { MyInputPopupComponent } from '../component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
 import { Io } from '../service/socket.oi.service';
-import { ToastService } from '../component/toast/toast.component';
 import { environment} from '../../environments/environment'
 import { PopupService } from 'src/app/modules/popup-module/popup.service';
 import { MyPopupDelMyMarker } from 'src/app/component/my-marker-list-component/my-popup-del-my-marker/my-popup-del-my-marker';
 import { PopupItemComponent } from 'src/app/modules/popup-module/popup-item.component';
+import {ToastService} from '../shared-module/toast-module/toast.service';
 
 
 export interface MyMapMarker {

@@ -5,7 +5,6 @@ import { ActivatedRouteSnapshot, CanActivate, Resolve, Router, RouterStateSnapsh
 import { FriendsService } from '../api/friends.service';
 import { Setting, UserService } from './main.user.service';
 import { ChatService } from './chat.service';
-import { ToastService } from '../component/toast/toast.component';
 import { Deferred } from '../util/deferred';
 import { MyMarkerService } from '../service/my-marker.service';
 import { Observable } from 'rxjs/Observable';
@@ -15,6 +14,7 @@ import { DeviceService } from './device.service';
 import { LogService } from './log.service';
 import { MapService } from 'src/app/service/map.service';
 import { MapGl } from 'src/types/global';
+import {ToastService} from '../shared-module/toast-module/toast.service';
 
 
 @Injectable()

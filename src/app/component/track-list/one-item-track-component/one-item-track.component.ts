@@ -3,7 +3,6 @@ import { Point } from '../../../service/track.var';
 import { Track, TrackService } from '../../../service/track.service';
 import { MapService } from '../../../service/map.service';
 import { Util } from '../../../service/util';
-import { ToastService } from '../../toast/toast.component';
 import { StravaService } from '../../../service/strava.service';
 import { Router } from '@angular/router';
 import * as R from 'ramda';
@@ -11,6 +10,7 @@ import { MapArea as Area } from '../../../../types/global';
 import { distance } from '../../../util/distance';
 import * as dateformat from 'dateformat/lib/dateformat.js';
 import { TElement } from '../../../util/at-element';
+import {ToastService} from '../../../shared-module/toast-module/toast.service';
 
 
 @Component({

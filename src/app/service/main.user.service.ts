@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Io } from './socket.oi.service';
-import { ToastService } from '../component/toast/toast.component';
 import { Router } from '@angular/router';
+import {ToastService} from '../shared-module/toast-module/toast.service';
 
 
 export class User {

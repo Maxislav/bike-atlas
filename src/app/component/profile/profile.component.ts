@@ -4,12 +4,12 @@ import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
 import { NavigationHistory } from '../../app.component';
 import { Io } from '../../service/socket.oi.service';
-import { ToastService } from '../toast/toast.component';
 import { User, UserService } from '../../service/main.user.service';
 import { PrivateAreaService } from '../../service/private.area.service';
 import { FormControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
 import { merge } from 'rxjs';
 import { PassFormIs, ProfileService } from 'src/app/api/profile.service';
+import {ToastService} from '../../shared-module/toast-module/toast.service';
 
 declare const module: any;
 declare const System: any;

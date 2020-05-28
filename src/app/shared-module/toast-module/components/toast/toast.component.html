@@ -1,0 +1,3 @@
+<div *ngFor="let item of messages" [ngClass]="item.className" (click)="item.remove()"  @forToastAnimation="" class="my-animation">
+  {{item.translate ? (item.translate | translate) : item.text}}
+</div>

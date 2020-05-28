@@ -38,8 +38,10 @@ import {OnMyMarker} from './socket-data/on-my-marker.js';
 
 let connection, server, app;
 let resolveExport;
+let rejectExport;
 let promiseExport: Promise<{ server: any, app: any }> = new Promise((resolve, reject) => {
     resolveExport = resolve;
+    rejectExport = reject;
 });
 let socketData;
 
@@ -162,7 +164,6 @@ class SocketData {
 
 }
 
-
 const connectionConnect = () => {
     connection = mysql.createConnection(config.mysql);
     connection.on('error', (err) => {
@@ -184,7 +185,9 @@ const connectionConnect = () => {
 
     });
     connection.connect((err) => {
-        if (err) throw err;
+        if (err) {
+            return console.error(err);
+        }
         console.log('MySql connected as id '.yellow + '->' + ` ${connection.threadId}`.green);
         promiseExport
             .then(d => {
@@ -198,17 +201,10 @@ const connectionConnect = () => {
 
             });
     });
-
 };
 connectionConnect();
 
 
 export function ssocketData(server, app) {
-    //server = _server; app = _app;
     resolveExport({server, app});
-
-    // socketData =   new SocketData(server, app, connection)
-
-
-    //INSERT INTO `user` (`id`, `name`, `pass`, `opt`) VALUES (NULL, 'max', 'eeew', NULL);
-};
+}

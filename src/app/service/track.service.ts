@@ -11,7 +11,6 @@ import { Point } from './track.var';
 import { distance } from '../util/distance';
 
 import * as dateformat from 'dateformat/lib/dateformat.js';
-import { ToastService } from '../component/toast/toast.component';
 
 import { Resolve } from '@angular/router';
 import { Color } from '../util/get-color';
@@ -24,6 +23,7 @@ import { Subject } from 'rxjs/Subject';
 import { MapGl, Popup } from '../../types/global';
 import { TElement } from '../util/at-element';
 import { autobind } from '../util/autobind';
+import {ToastService} from '../shared-module/toast-module/toast.service';
 
 declare var System: any;
 

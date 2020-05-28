@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 //import {Md5} from "../../service/md5.service";
-import {ToastService} from "../toast/toast.component";
 import {Io} from "../../service/socket.oi.service";
 import {AuthService} from '../../service/auth.service';
 import {FormBuilder, FormControl, FormGroup, ValidationErrors} from "@angular/forms";
@@ -9,6 +8,7 @@ import {RegistrationFormIs, RegistrationService} from "../../api/registration.se
 import {Md5} from '../../service/md5.service';
 import {deepCopy} from '../../util/deep-copy';
 import {Router} from '@angular/router';
+import {ToastService} from '../../shared-module/toast-module/toast.service';
 
 
 // import {LoginService} from "../../service/login.service";
