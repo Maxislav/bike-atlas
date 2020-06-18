@@ -46,8 +46,6 @@ export class LogService {
         //console.log('log -> ', logData);
 
         if (!logData) return;
-        logData.lng = Number(logData.lng);
-        logData.lat = Number(logData.lat);
         const device: Device = this.deviceService.getDeviceByDeviceKey(logData.device_key);
         device.onMarker(logData)
 

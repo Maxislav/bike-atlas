@@ -237,8 +237,8 @@ export class Logger {
         return {
             date,
             alt: 0,
-            lng,
-            lat,
+            lng: Number(lng),
+            lat: Number(lat),
             azimuth: azimuth || 0,
             speed,
             src,
