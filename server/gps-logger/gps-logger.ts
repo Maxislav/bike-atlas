@@ -27,6 +27,12 @@ interface GprmcData {
 
 const IS_ROBOT = false;
 
+/**
+ * @example
+ * /log?id=862614000171302&dev=862614000171302&acct=862614000171302&batt=0&code=0xF020&alt=0.0&gprmc=$GPRMC,111925,A,5023.32022,N,3029.64240,E,0.000000,0.000000,170620,,*29
+ *
+ */
+
 export class Logger {
 
     util: Util;

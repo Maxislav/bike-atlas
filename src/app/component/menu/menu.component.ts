@@ -16,6 +16,7 @@ import {MapService} from "../../service/map.service";
 import {ChatService} from "../../service/chat.service";
 import {ngIfAnimation} from '../../animation/animation'
 import {ToastService} from '../../shared-module/toast-module/toast.service';
+import {environment} from '../../../environments/environment';
 
 declare var document: any;
 declare const System: any;
@@ -40,6 +41,7 @@ export class MenuComponent{
 
     public isShowMenuAthlete: boolean = false;
     public isShowMenuTrack: boolean = false;
+    public hostPrefix =  environment.hostPrefix;
 
 
     constructor(public menuService:MenuService,

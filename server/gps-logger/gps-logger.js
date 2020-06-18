@@ -7,6 +7,11 @@ let app, ioServer;
 const distance_1 = require("../distance");
 const robot_1 = require("../robot");
 const IS_ROBOT = false;
+/**
+ * @example
+ * /log?id=862614000171302&dev=862614000171302&acct=862614000171302&batt=0&code=0xF020&alt=0.0&gprmc=$GPRMC,111925,A,5023.32022,N,3029.64240,E,0.000000,0.000000,170620,,*29
+ *
+ */
 class Logger {
     /** @namespace this.connection */
     // $GPRMC,074624,A,5005.91360,N,3033.15540,E,13.386224,222.130005,290718,,*1E wrong  -> 50.98559952

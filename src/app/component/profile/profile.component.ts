@@ -10,6 +10,7 @@ import { FormControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/
 import { merge } from 'rxjs';
 import { PassFormIs, ProfileService } from 'src/app/api/profile.service';
 import {ToastService} from '../../shared-module/toast-module/toast.service';
+import {environment} from '../../../environments/environment';
 
 declare const module: any;
 declare const System: any;
@@ -35,6 +36,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     private oldPass: string;
     passForm: FormGroup;
     profileForm;
+    hostPrefix =  environment.hostPrefix;
 
     passFormValue: PassFormIs = {
         currentPass: null,
