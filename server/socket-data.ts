@@ -52,6 +52,9 @@ declare global {
         green: string;
     }
 }
+interface Res {
+    end: (data: any) => void;
+};
 
 // declare const Callback: (req: {hash: string, data: any}, res: {end: (data: any)=> void}) => void
 
@@ -68,7 +71,7 @@ export class SSocket {
         this.emit = s.emit.bind(s);
     }
 
-    $get(name: string, callback: (req: { hash: string, data: any }, res: { end: (data: any) => void }) => void) {
+    $get(name: string, callback: (req: { hash: string, data: any }, res: Res) => void) {
         if (SSocket.listenerHashMap[name]) {
             throw new Error('Name space is used before');
         }

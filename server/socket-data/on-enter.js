@@ -1,7 +1,17 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const hashKeys = [];
 const ProtoData = require("./proto-data");
+const autobind_1 = require("../util/autobind");
 function getRandom(min, max, int) {
     var rand = min + Math.random() * (max - min);
     if (int) {
@@ -15,10 +25,12 @@ class OnEnter extends ProtoData {
         this.logger = logger;
         this.chat = chat;
         this.setHashKeys();
-        socket.on('onEnter', this.onEnter.bind(this));
+        // socket.on('onEnter', this.onEnter.bind(this));
+        this.socket.$get('onEnter', this.onEnter);
         socket.on('onExit', this.onExit.bind(this));
     }
-    onEnter(data) {
+    onEnter(req, res) {
+        const { data } = req;
         this.util.getUserByName(data.name)
             .then(rows => {
             if (rows.length) {
@@ -26,7 +38,7 @@ class OnEnter extends ProtoData {
                     this.setHash(rows[0].id)
                         .then(hash => {
                         const user = rows[0] || {};
-                        this.socket.emit('onEnter', {
+                        res.end({
                             result: 'ok',
                             hash: hash,
                             user: {
@@ -42,7 +54,7 @@ class OnEnter extends ProtoData {
                     });
                 }
                 else {
-                    this.socket.emit('onEnter', {
+                    res.end({
                         result: false,
                         message: 'user or password incorrect'
                     });
@@ -123,5 +135,11 @@ class OnEnter extends ProtoData {
         });
     }
 }
+__decorate([
+    autobind_1.autobind(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], OnEnter.prototype, "onEnter", null);
 exports.OnEnter = OnEnter;
 //# sourceMappingURL=on-enter.js.map

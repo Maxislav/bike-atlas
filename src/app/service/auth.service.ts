@@ -50,7 +50,7 @@ export class AuthService implements CanActivate {
 
     onEnter({name, pass}) {
         return this.socket
-            .$emit('onEnter', {
+            .$get('onEnter', {
                 name: name,
                 pass: pass
             })

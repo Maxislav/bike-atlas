@@ -1,10 +1,11 @@
 /**
  * Created by maxislav on 29.12.16.
  */
-import { Chat } from '../chat';
+import {Chat} from '../chat';
 
 const hashKeys = [];
 import * as ProtoData from './proto-data';
+import {autobind} from '../util/autobind';
 
 function getRandom(min, max, int) {
     var rand = min + Math.random() * (max - min);
@@ -28,12 +29,15 @@ export class OnEnter extends ProtoData {
         this.logger = logger;
         this.chat = chat;
         this.setHashKeys();
-        socket.on('onEnter', this.onEnter.bind(this));
+        // socket.on('onEnter', this.onEnter.bind(this));
+        this.socket.$get('onEnter', this.onEnter);
+
         socket.on('onExit', this.onExit.bind(this));
     }
 
-    onEnter(data) {
-
+    @autobind()
+    onEnter(req, res) {
+        const {data} = req;
         this.util.getUserByName(data.name)
             .then(rows => {
                 if (rows.length) {
@@ -41,7 +45,8 @@ export class OnEnter extends ProtoData {
                         this.setHash(rows[0].id)
                             .then(hash => {
                                 const user = rows[0] || {};
-                                this.socket.emit('onEnter', {
+
+                                res.end({
                                     result: 'ok',
                                     hash: hash,
                                     user: {
@@ -49,18 +54,20 @@ export class OnEnter extends ProtoData {
                                         name: user.name,
                                         image: user.image
                                     }
-
                                 });
+
                                 this.chat.onEnter(this.socket.id, user.id);
                             })
                             .catch(err => {
                                 console.error(err);
                             });
                     } else {
-                        this.socket.emit('onEnter', {
-                            result: false,
-                            message: 'user or password incorrect'
-                        });
+                        res.end(
+                            {
+                                result: false,
+                                message: 'user or password incorrect'
+                            }
+                        )
                     }
 
                 } else {

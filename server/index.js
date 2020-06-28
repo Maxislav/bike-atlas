@@ -30,7 +30,7 @@ app.get('/gtgbc*', gtgbc_1.gtgbc);
  * tiler proxy
  */
 app.get('/server*', (req, res, next) => {
-    res.setStatus = 500;
+    res.sendStatus(500);
     res.send('<h4 style="color: darkred; padding: 10px; text-align: center">Permission denied</h4>');
 });
 app.get('*/hills/:z/:x/:y', tileProxy);

@@ -1,16 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Io } from './socket.oi.service';
-import { Device, DeviceData, DeviceService } from './device.service';
-import { MarkerService, Marker } from './marker.service';
-import { UserService } from './main.user.service';
-import { deepCopy } from '../util/deep-copy';
-import { DeviceLogData, LogData } from '../../types/global';
+import { Device, DeviceService } from './device.service';
+import { MarkerService } from './marker.service';
+import { LogData } from '../../types/global';
 import { autobind } from '../util/autobind';
 import { MapService } from 'src/app/service/map.service';
-
-//import {MarkerService} from "./marker.service";
-
-
 
 @Injectable()
 export class LogService {

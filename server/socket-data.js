@@ -33,6 +33,7 @@ let promiseExport = new Promise((resolve, reject) => {
     rejectExport = reject;
 });
 let socketData;
+;
 // declare const Callback: (req: {hash: string, data: any}, res: {end: (data: any)=> void}) => void
 class SSocket {
     constructor(s) {
