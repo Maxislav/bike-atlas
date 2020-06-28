@@ -54,6 +54,7 @@ class OnEnter extends ProtoData {
                     });
                 }
                 else {
+                    console.error(JSON.stringify(rows, null, 4));
                     res.end({
                         result: false,
                         message: 'user or password incorrect'
