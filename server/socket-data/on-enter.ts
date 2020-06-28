@@ -62,7 +62,7 @@ export class OnEnter extends ProtoData {
                                 console.error(err);
                             });
                     } else {
-                        console.error(JSON.stringify(rows, null, 4));
+                        console.error(rows[0].pass);
                         res.end(
                             {
                                 result: false,

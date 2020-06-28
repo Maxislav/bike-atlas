@@ -49,6 +49,7 @@ export class AuthService implements CanActivate {
     }
 
     onEnter({name, pass}) {
+       console.log(name, pass);
         return this.socket
             .$get('onEnter', {
                 name: name,
