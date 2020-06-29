@@ -537,6 +537,24 @@ class Util {
             });
         });
     }
+    getRequests(user_id) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT invite_user_id, image, name from `user` INNER JOIN `invite` ON invite.invite_user_id = user.id AND invite.user_id=? ';
+            this.connection.query(query, [user_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows.map(item => {
+                    return {
+                        id: item.invite_user_id,
+                        image: item.image,
+                        name: item.name
+                    };
+                }));
+            });
+        });
+    }
     getOwnerDevice(device_key) {
         return new Promise((resolve, reject) => {
             const query = 'SELECT user.id, device.name from `user` INNER JOIN `device` ON device.user_id = user.id AND device_key=? ';

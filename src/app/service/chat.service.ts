@@ -22,7 +22,7 @@ export class ChatService{
     roomsObj: {[id:number]:Room} = {};
     private socket;
     unViewedDefer: Deferred<any>;
-    private _unViewedIds: Array<string> = [];
+    private _unViewedIds: Array<number> = [];
     addChatUnViewed: Function;
 
     constructor(private io: Io){
@@ -42,17 +42,17 @@ export class ChatService{
         })
     }
 
-    get unViewedIds(): Array<string>{
+    get unViewedIds(): Array<number>{
         return this._unViewedIds
     }
-    set unViewedIds(ids: Array<string>){
+    set unViewedIds(ids: Array<number>){
         this._unViewedIds.length = 0;
         ids.forEach(id=>{
             this._unViewedIds.push(id)
         })
     }
     
-    resolveUnViewedIds(userId: string){
+    resolveUnViewedIds(userId: number){
         const index = this.unViewedIds.indexOf(userId)
         if(-1<index){
             this.unViewedIds.splice(index,1)
@@ -67,8 +67,11 @@ export class ChatService{
             }
             this.socket.$emit('chatUnViewed')
                 .then((d:{[id: number]: Array<number>})=>{
-                    console.log('chatUnViewed->',d);
-                    const ids = [];
+                    // console.log('chatUnViewed->',d);
+                    const ids: number[] = [];
+                   /* Object.keys(d).forEach(key => {
+                        ids.push(parseFloat(key))
+                    })*/
                     for(let key in d){
                         ids.push(parseFloat(key))
                     }
@@ -79,13 +82,13 @@ export class ChatService{
         return this.unViewedDefer.promise
     }
 
-    getMessages(roomId: string){
+    getMessages(roomId: number){
         if(!this.messages[roomId]){
             this.messages[roomId] = []
         }
         return this.messages[roomId]
     }
-    putMessage(roomId: string, message: Message){
+    putMessage(roomId: number, message: Message){
         if(!this.messages[roomId]){
             this.messages[roomId] = []
         }
@@ -112,7 +115,7 @@ export class ChatService{
         return this.socket.$emit('chatResolveUnViewed', ids)
     }
 
-    clearRoomMessage(roomId: string){
+    clearRoomMessage(roomId: number){
         this.messages[roomId].length = 0
     }
 
@@ -136,7 +139,7 @@ export class ChatService{
         }
 
     }
-    onSend(outId: string, message: Message): Promise<any>{
+    onSend(outId: number, message: Message): Promise<any>{
         return this.socket.$emit('onChatSend', {
             id: outId,
             text:message.text
@@ -153,7 +156,7 @@ export class ChatService{
          })
             
     }
-    closeRoom(id: string){
+    closeRoom(id: number){
         const index = this.rooms.indexOf(this.roomsObj[id]);
         if(-1<index){
             this.rooms.splice(index,1)
@@ -162,7 +165,7 @@ export class ChatService{
         }
     }
 
-    chatHistory(userId: string){
+    chatHistory(userId: number){
         this.socket.$emit('chatHistory', userId)
             .then(arr=>{
                 arr.forEach(mes=>{

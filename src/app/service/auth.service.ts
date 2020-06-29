@@ -20,9 +20,6 @@ import {ToastService} from '../shared-module/toast-module/toast.service';
 @Injectable()
 export class AuthService implements CanActivate {
     socket: any;
-    private _userId: number;
-    private _userName: string = null;
-    private _userImage: string = null;
     public can: Subject<boolean> = new Subject();
 
     constructor(
@@ -49,7 +46,7 @@ export class AuthService implements CanActivate {
     }
 
     onEnter({name, pass}) {
-       console.log(name, pass);
+       console.log('name pass', name, pass);
         return this.socket
             .$get('onEnter', {
                 name: name,
@@ -60,7 +57,6 @@ export class AuthService implements CanActivate {
 
     @autobind()
     private setHashName(d) {
-        console.log(d);
         switch (d.result) {
             case 'ok':
                 this.ls.userKey = d.hash;
@@ -77,7 +73,6 @@ export class AuthService implements CanActivate {
 
     @autobind()
     onAuth() {
-        console.info('onAuth');
         return this.socket
             .$get('onAuth', {
                 hash: this.ls.userKey
@@ -89,12 +84,8 @@ export class AuthService implements CanActivate {
                     this.userService.setUser(d.user);
                     this.friendsService.requestFriends();
                     this.friendsService.requestInvites();
+                    this.friendsService.requestRequests();
                     this.myMarkerService.requestMarkers();
-
-                    //this.userService.friends = d.user.friends;
-                    /* this.friend.getInvites();
-                     this.chatService.getUnViewed(true);
-                     this.myMarkerService.addMarkers(d.user.markers);*/
                 } else {
                     this.userService.clearUser();
                 }

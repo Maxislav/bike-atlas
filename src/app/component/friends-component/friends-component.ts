@@ -73,7 +73,4 @@ export class FriendsComponent{
     startChat(user: User): void{
         this.chatService.onEnterRoom(user)
     }
-
-    
-
 }

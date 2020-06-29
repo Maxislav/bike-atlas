@@ -1,4 +1,4 @@
-import { LoggerRow, DeviceRow, SettingRow, PointWithSrc } from '../types';
+import {LoggerRow, DeviceRow, SettingRow, PointWithSrc} from '../types';
 
 import * as dateFormat from 'dateformat';
 
@@ -610,6 +610,25 @@ export class Util {
                     return;
                 }
                 resolve(rows);
+            });
+        });
+    }
+
+    getRequests(user_id: number) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT invite_user_id, image, name from `user` INNER JOIN `invite` ON invite.invite_user_id = user.id AND invite.user_id=? ';
+            this.connection.query(query, [user_id], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows.map(item => {
+                    return {
+                        id: item.invite_user_id,
+                        image: item.image,
+                        name: item.name
+                    }
+                }));
             });
         });
     }

@@ -22,35 +22,39 @@ export class OnFriend extends ProtoData {
 
 
         // this.socket.on('getInvites', this.getInvites.bind(this));
-        this.socket.on('onInvite', this.onInvite.bind(this));
+        this.socket.$get('onInvite', this.onInvite);
+        this.socket.$get('getRequests', this.getRequests);
+        this.socket.$get('onCancelInvite', this.onCancelInvite);
+
         this.socket.on('onAcceptInvite', this.onAcceptInvite.bind(this));
         this.socket.on('onDelFriend', this.onDelFriend.bind(this));
         this.socket.on('onRejectInvite', this.onRejectInvite.bind(this));
         this.socket.on('getUserImage', this.getUserImage.bind(this, 'getUserImage'));
-        this.socket.on('onCancelInvite', this.onCancelInvite.bind(this, 'onCancelInvite'));
+        //this.socket.on('onCancelInvite', this.onCancelInvite.bind(this, 'onCancelInvite'));
     }
 
-    onCancelInvite(eName, enemy_id) {
+    @autobind()
+    onCancelInvite(req, res){
+        const enemy_id =  req.data.id;
         return this.util.getUserIdBySocketId(this.socket.id)
             .then(user_id => {
                 return this.util.onCancelInvite(user_id, enemy_id);
             })
             .then(d => {
-                this.socket.emit(eName, {
+                res.end( {
                     result: 'ok'
                 });
             })
             .catch(err => {
-                this.socket.emit(eName, {
+                res.end({
                     result: false,
                     message: err
                 });
 
                 console.error('error onCancelInvite -> ', err);
             });
-
-
     }
+
 
     getUserImage(eName, user_id) {
         return this.util.getUserImageById(user_id)
@@ -201,6 +205,19 @@ export class OnFriend extends ProtoData {
             });
 
     }
+    @autobind()
+    getRequests(req, res): void {
+        this.util.getUserIdBySocketId(this.socket.id)
+            .then(user_id => {
+                return this.util.getRequests(user_id)
+            })
+            .then(rows => {
+                res.end({
+                    result:'ok',
+                    data: rows
+                } );
+            })
+    }
 
     @autobind()
     getInvites(req, res) {
@@ -208,13 +225,9 @@ export class OnFriend extends ProtoData {
             .then(user_id => {
                 return this.util.getInvites(user_id)
                     .then(rows => {
-                       /* rows.forEach(item => {
-                            item.id = item.user_id;
-                            delete item.user_id;
-                        });*/
                         res.end({
                             result:'ok',
-                            invites: rows
+                            data: rows
                         } );
                     });
 
@@ -267,10 +280,35 @@ export class OnFriend extends ProtoData {
             });
 
     }
+    @autobind()
+    onInvite(req, res) {
+        const inviteId = req.data.id;
 
-
-    onInvite({inviteId}) {
         this.util.getUserIdBySocketId(this.socket.id)
+            .then(user_id => {
+                return this.util.onInviteFromToId(user_id, inviteId)
+                    .then((d) => {
+                        res.end({
+                            result: 'ok'
+                        });
+                        return inviteId;
+                    });
+
+            })
+            .then(inviteId => {
+                this.chat.sendUpdateInvite(inviteId);
+            })
+            .catch(err => {
+                this.socket.end( {
+                    result: false,
+                    message: err
+                });
+                console.error('error onInvite -> ', err);
+            });
+    }
+
+    _onInvite({inviteId}) {
+        /*this.util.getUserIdBySocketId(this.socket.id)
             .then(user_id => {
                 return this.util.onInviteFromToId(user_id, inviteId)
                     .then((d) => {
@@ -290,7 +328,7 @@ export class OnFriend extends ProtoData {
                     message: err
                 });
                 console.error('error onInvite -> ', err);
-            });
+            });*/
 
     }
 

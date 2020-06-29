@@ -18,8 +18,8 @@ export interface Friends extends Array<User> {
 
 
 export interface InviteInterface {
-    myInvite: Array<User>;
-    userInvite: Array<User>;
+    myInvite: Set<number>;
+    userInvite: Set<number>;
 }
 
 @Injectable()
@@ -28,9 +28,10 @@ export class FriendsService {
 
     friends: Array<User> = [];
     allUsers: Array<User> = [];
+    //public inviteId = new Set<number>();
     inviteMap: InviteInterface = {
-        myInvite: [],
-        userInvite: []
+        myInvite: new Set<number>(),
+        userInvite: new Set<number>()
     };
 
     private socket: SSocket;
@@ -70,11 +71,6 @@ export class FriendsService {
             .then((d: any) => {
                 console.log(d);
                 if (d && d.result == 'ok') {
-                    /* this.allUsers.length = 0;
-                     d.users.forEach(user => {
-                         const u = new User(user);
-                         this.allUsers.push(u)
-                     })*/
                     return d.users.map(user => {
                         return new User(user);
                     });
@@ -83,33 +79,57 @@ export class FriendsService {
             });
     }
 
-    requestInvites<T>(): Promise<this> {
-        return <Promise<any>> this.socket.$get('getInvites', {})
+    requestInvites(): void {
+        this.socket.$get('getInvites', {})
             .then((d: any) => {
+                console.log('invites', d)
+                d.data.forEach(user => {
+                    this.inviteMap.userInvite.add(user.id);
+                })
 
-                return  <FriendsService>this;
             })
             .catch(err => {
                 console.error(err);
-                return err
             });
+    }
 
-
-
+    requestRequests() : void {
+        this.socket.$get('getRequests', {})
+            .then((d: any) => {
+                console.log('my requests', d);
+                if(d.result ==='ok' && Array.isArray(d.data)){
+                    d.data.forEach(item => {
+                        this.inviteMap.myInvite.add(item.id);
+                       // this.inviteId.add(item.id)
+                    })
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
     }
 
     requestUserById(id: number): Promise<{ result: string, user: User }> {
         return this.socket.$get('requestUserById', {id});
     }
 
-    sendInvite(user: User): Promise<any> {
-        this.inviteMap.myInvite.push(user);
-        return this.socket.$get<any>('onInvite', user.toJson());
+    sendInvite(user: User): void {
+        this.socket.$get('onInvite', {
+            id: user.id
+        }).then(d => {
+            this.inviteMap.myInvite.add(user.id);
+        })
     }
 
-    onCancelInvite(user: User) {
-        const index = this.inviteMap.myInvite.findIndex(u => u.id === user.id);
-        this.inviteMap.myInvite.splice(index, 1);
+    onCancelInvite(user: User): void {
+        this.inviteMap.myInvite.delete(user.id);
+        this.socket.$get('onCancelInvite', {
+            id: user.id
+        }).then(d => {
+            console.log(d)
+           // this.inviteMap.myInvite.push(user);
+        })
+        // this.inviteMap.myInvite.splice(index, 1);
     }
 
     /* getFriends() {

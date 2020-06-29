@@ -15,7 +15,7 @@
     <td class="fill-space"></td>
     <td (click)="goToFriends()" class="bell">
       <div *ngIf="unViewedIds.length" class="un-viewed-ids">{{unViewedIds.length}}</div>
-      <div *ngIf="invites.length" class="num">{{invites.length}}</div>
+      <div *ngIf="friendsService.inviteMap.userInvite.size" class="num">{{friendsService.inviteMap.userInvite.size}}</div>
     </td>
     <td class="icoUser"><img [src]="user.image || hostPrefix + 'img/no-avatar.gif'" (click)="goToProfile()"/></td>
     <td (click)="onOpenLogin()" class="button enter">{{user.name || ('SIGN_IN' | translate)}}</td>

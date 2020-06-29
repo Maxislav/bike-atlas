@@ -6,7 +6,7 @@ import {ToastService} from '../shared-module/toast-module/toast.service';
 
 
 export class User {
-    id: string = null;
+    id: number = null;
     image: string = null;
     name: string = null;
     lastVisit: string = null;
@@ -95,11 +95,7 @@ export class UserService  {
 
 
     getUserImageById(id: number) {
-    /*    if (!this.deferImage[id]) {
-            this.deferImage[id] = new Deferred();
-            this.socket.$emit('getUserImage', id);
-        }
-        return this.deferImage[id].promise;*/
+
     }
     getUser(): User{
         return this.user

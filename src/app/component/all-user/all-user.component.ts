@@ -48,9 +48,7 @@ export class AllUserComponent {
 
 
     isInviteActive(user: User) {
-        return this.friendsService.inviteMap.myInvite.some(u => {
-            return u.id === user.id;
-        });
+        return this.friendsService.inviteMap.myInvite.has(user.id);
     }
 
     isFriend(user: User) {

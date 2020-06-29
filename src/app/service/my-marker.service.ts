@@ -1,12 +1,12 @@
-import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector } from '@angular/core';
-import { MapService } from '../service/map.service';
-import { LngLat, MapMarker, MyMarker, Popup } from '../../types/global';
-import { MyInputPopupComponent } from '../component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
-import { Io } from '../service/socket.oi.service';
-import { environment} from '../../environments/environment'
-import { PopupService } from 'src/app/modules/popup-module/popup.service';
-import { MyPopupDelMyMarker } from 'src/app/component/my-marker-list-component/my-popup-del-my-marker/my-popup-del-my-marker';
-import { PopupItemComponent } from 'src/app/modules/popup-module/popup-item.component';
+import {ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector} from '@angular/core';
+import {MapService} from '../service/map.service';
+import {LngLat, MapMarker, MyMarker, Popup} from '../../types/global';
+import {MyInputPopupComponent} from '../component/my-marker-list-component/my-input-popup-component/my-input-popup-component';
+import {Io} from '../service/socket.oi.service';
+import {environment} from '../../environments/environment'
+import {PopupService} from 'src/app/modules/popup-module/popup.service';
+import {MyPopupDelMyMarker} from 'src/app/component/my-marker-list-component/my-popup-del-my-marker/my-popup-del-my-marker';
+import {PopupItemComponent} from 'src/app/modules/popup-module/popup-item.component';
 import {ToastService} from '../shared-module/toast-module/toast.service';
 
 
@@ -51,12 +51,11 @@ export class MyMarkerService {
         this.isShow = false;
     }
 
-    requestMarkers(){
+    requestMarkers(): void {
         const {LngLat} = this.mapService.mapboxgl;
         this.socket.$get('getMarkerList', null)
             .then((markers) => {
-                console.log(markers)
-
+                console.log(markers);
                 markers.forEach(m => {
                     const mr = this.createMarker(new LngLat(m.lng, m.lat), m);
                     this.markerList.push(mr)
@@ -78,10 +77,10 @@ export class MyMarkerService {
 
     }
 
-    clearAll(){
+    clearAll() {
         let i = 0;
-        while (this.markerList.length){
-            const [marker] = this.markerList.splice(0,1);
+        while (this.markerList.length) {
+            const [marker] = this.markerList.splice(0, 1);
             marker.clear();
             i++;
         }
@@ -91,7 +90,7 @@ export class MyMarkerService {
     createByClick(lngLat: LngLat, opts: {
         title: string,
         id: number
-    }){
+    }) {
         const mr = this.createMarker(lngLat, opts);
         this.markerList.push(mr);
     }
@@ -112,7 +111,7 @@ export class MyMarkerService {
         icoContainer.style.height = '40px';
 
         const inputContainer = document.createElement('div');
-       // inputContainer.style.padding = '15px';
+        // inputContainer.style.padding = '15px';
         // inputContainer.style.background = 'white';
 
         const popup = new mapboxgl.Popup({
@@ -183,21 +182,21 @@ export class MyMarkerService {
                     ]
                 })
 
-               /* marker.remove();
-                popup.remove();
-                this.applicationRef.detachView(inputPopupRef.hostView);
-                inputPopupRef.destroy();
-                this.markerList.splice(this.markerList.indexOf(myMarker), 1);
-                this.applicationRef.tick();
-                this.removeMarker(myMarker);*/
+                /* marker.remove();
+                 popup.remove();
+                 this.applicationRef.detachView(inputPopupRef.hostView);
+                 inputPopupRef.destroy();
+                 this.markerList.splice(this.markerList.indexOf(myMarker), 1);
+                 this.applicationRef.tick();
+                 this.removeMarker(myMarker);*/
             },
-            clear:() =>{
+            clear: () => {
                 marker.remove();
 
             }
         };
         return myMarker;
-       // this.markerList.push(myMarker);
+        // this.markerList.push(myMarker);
 
 
     }
