@@ -1,0 +1,16 @@
+<div class="level-container" *ngIf="visible$ | async">
+    <div>
+        <div class="image-square">
+            <div class="contact">
+
+            </div>
+            <div class="level" [ngStyle]="{'width': styleWidth$ | async, 'background-color': styleColor$| async}">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="text">
+        {{text$ | async}}
+    </div>
+</div>

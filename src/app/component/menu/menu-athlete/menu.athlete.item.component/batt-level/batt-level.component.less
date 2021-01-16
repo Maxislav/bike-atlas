@@ -1,0 +1,33 @@
+:host {
+    font-size: 12px;
+    text-align: right;
+}
+.image-square{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 20px;
+    height: 12px;
+    border: 1px solid gray;
+    .contact{
+        margin-left: -4px;
+        width: 3px;
+        height: 6px;
+        border: 1px solid gray;
+    }
+    .level{
+        height: 100%;
+        width: 20%;
+        background: red;
+    }
+}
+
+.level-container{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0 -5px;
+    &>*{
+        padding: 2px 5px;
+    }
+}

@@ -100,7 +100,8 @@ class Device extends ProtoData {
                                 src: row.src,
                                 type: row.type,
                                 bs: row.bs,
-                                accuracy: row.accuracy
+                                accuracy: row.accuracy,
+                                batt: row.batt
                             };
                             this.socket.emit('log', loggerRow);
                         }

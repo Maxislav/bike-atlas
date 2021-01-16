@@ -1,5 +1,11 @@
-
-<div  class="status" [ngStyle]="{'background': device.background}"><img   [src]="image"/></div>
-<div class="name">{{device.name}}</div>
-<div *ngIf="device.marker" class="passed"> {{elapsed}}</div>
-<div *ngIf="device.marker" class="speed"> {{speed}} km/h</div>
+<div class="inner-row">
+    <div class="inner-cell">
+        <div  class="status" [ngStyle]="{'background': device.background}"><img   [src]="image"/></div>
+    </div>
+    <div class="inner-cell">
+        <div class="name">{{device.name}}</div>
+        <div *ngIf="device.marker" class="passed"> {{elapsed}}</div>
+        <div *ngIf="device.marker" class="speed"> {{speed}} km/h</div>
+        <ats-batt-level [level]="batt"></ats-batt-level>
+    </div>
+</div>

@@ -17,6 +17,10 @@ export class MenuAthleteItemComponent implements OnInit{
     ngOnInit(): void {
     }
 
+    get batt(): number {
+        return this.device.marker?.batt
+    }
+
     get speed(){
         return this.device.speed.toFixed(1)
     }

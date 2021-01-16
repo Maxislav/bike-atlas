@@ -37,7 +37,7 @@ export class LogService {
 
     @autobind()
     log(logData: LogData) {
-        //console.log('log -> ', logData);
+        console.log('log -> ', logData);
 
         if (!logData) return;
         const device: Device = this.deviceService.getDeviceByDeviceKey(logData.device_key);

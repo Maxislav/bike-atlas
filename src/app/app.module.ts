@@ -74,6 +74,7 @@ import {ProfileService} from 'src/app/api/profile.service';
 import {FriendsService} from 'src/app/api/friends.service';
 import {RegistrationService} from "./api/registration.service";
 import {TranslateModule} from '@ngx-translate/core';
+import { BattLevelComponent } from './component/menu/menu-athlete/menu.athlete.item.component/batt-level/batt-level.component';
 
 
 @Component({
@@ -189,7 +190,8 @@ export class PipeTranslateCompiler implements TranslateCompiler {
         GtgbcComponent,
         DeviceIconComponent,
         DeviceDelPopupComponent,
-        OneUserComponent
+        OneUserComponent,
+        BattLevelComponent
     ],
 
     /** Сервисы */

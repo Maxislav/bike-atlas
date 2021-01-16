@@ -18,6 +18,15 @@ const writeToFile = (str) => {
         });
     });
 };
+class ClassPointWithSrc {
+    constructor(data) {
+        this.batt = 0;
+        this.src = '';
+        Object.keys(data).forEach(key => {
+            this[key] = data[key];
+        });
+    }
+}
 class Gl520 {
     constructor(_ioServer, util) {
         this._ioServer = _ioServer;
@@ -77,8 +86,9 @@ class Gl520 {
                         .getData()
                         .then((resp) => {
                         if (resp.result === 'ok') {
-                            resp.points.forEach(respData => {
-                                this._util.insertLog(Object.assign({ src: '' }, respData))
+                            resp.points.forEach((respData) => {
+                                const pointWithSrc = new ClassPointWithSrc(respData); //  Object.assign({}, {src: ''}, {respData}) // {...respData, src: ''}
+                                this._util.insertLog(pointWithSrc)
                                     .catch(err => {
                                     console.error('Err GL520 insertLog error ->', err);
                                 });

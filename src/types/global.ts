@@ -66,7 +66,8 @@ export interface LogData {
     date: string;
     name: string,
     bs?: Array<BaseStation>,
-    accuracy?: number
+    accuracy?: number,
+    batt: number,
 }
 
 

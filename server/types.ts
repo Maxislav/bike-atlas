@@ -19,7 +19,8 @@ export interface Point {
     type: 'POINT' | 'BS';
     date: Date;
     bs?: Array<{lng: number, lat: number, range: number, rxLevel}>,
-    accuracy?: number
+    accuracy?: number,
+    batt: number,
 }
 
 export interface PointWithSrc extends Point{
@@ -40,6 +41,7 @@ export interface LoggerRow {
     type: 'POINT' | 'BS',
     accuracy: number,
     bs: Array<{lng: number, lat: number, range: number, rxLevel: number}>
+    batt: number
 }
 /*
 

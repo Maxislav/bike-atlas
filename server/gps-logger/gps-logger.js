@@ -49,7 +49,7 @@ class Logger {
             checkSum = checkSum.replace(/\*/, '');
             res.end(checkSum);
             try {
-                data = this.parseGprmc(req.query.gprmc, req.url, req.query.id);
+                data = this.parseGprmc(req.query.gprmc, req.url, req.query.id, Number(req.query.batt || 0));
             }
             catch (err) {
                 console.error('Error parse', err);
@@ -143,7 +143,7 @@ class Logger {
     }
     // $GPRMC,153946,A,5023.31220,N,3029.63150,E,0.000000,0.000000,030117,,*2A
     //$GPRMC,030853,A,5026.98660,N,3024.51060,E,2.798506,109.540001, 15 09 63   ,,*20
-    parseGprmc(gprmc, reqUrl, id) {
+    parseGprmc(gprmc, reqUrl, id, batt) {
         const arrData = gprmc.split(',');
         const timeStamp = arrData[1];
         const dateStamp = arrData[9];
@@ -183,7 +183,8 @@ class Logger {
             device_key: id,
             type: 'POINT',
             bs: [],
-            accuracy: 0
+            accuracy: 0,
+            batt
         };
     }
     set sockets(connected) {

@@ -353,9 +353,9 @@ export class Util {
      */
     insertLog(data: PointWithSrc) {
         return new Promise((resolve, reject) => {
-            this.connection.query('INSERT INTO `logger` (`id`, `device_key`, `lng`, `lat`, `alt`, `accuracy`,`base_station`, `speed`, `azimuth`, `date`, `type`, `src`) VALUES (' +
-                'NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)',
-                [data.id, data.lng, data.lat, data.alt,
+            this.connection.query('INSERT INTO `logger` (`id`, `device_key`, `lng`, `lat`, `alt`, `batt` ,`accuracy`,`base_station`, `speed`, `azimuth`, `date`, `type`, `src`) VALUES (' +
+                'NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [data.id, data.lng, data.lat, data.alt, data.batt || 0,
                     Number.isNaN(data.accuracy) ? '0.0' : data.accuracy.toFixed(2),
                     JSON.stringify(data.bs), data.speed, data.azimuth, data.date, data.type, data.src], (err, result) => {
 

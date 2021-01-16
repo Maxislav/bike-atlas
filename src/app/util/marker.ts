@@ -22,6 +22,7 @@ export class Marker {
     src: string;
     image: string;
     popupName: Popup;
+    batt: number;
 
     private iconMarker: any;
     private readonly deviceIconComponentEl: HTMLElement;
@@ -180,7 +181,8 @@ export class Marker {
     updateLodData(logData: LogData): this {
         this.setLngLat(new LngLat(logData.lng, logData.lat))
             .setDate(logData.date)
-            .setSpeed(logData.speed);
+            .setSpeed(logData.speed)
+            .setBatt(logData.batt)
         this.tailLngLat.push(new LngLat(logData.lng, logData.lat));
         if (1 < this.tailLngLat.length) {
             this.tailUpdate();
@@ -216,7 +218,8 @@ export class Marker {
     setLogData(logData: LogData): this {
         this.setLngLat(new LngLat(logData.lng, logData.lat))
             .setDate(logData.date)
-            .setSpeed(logData.speed);
+            .setSpeed(logData.speed)
+            .setBatt(logData.batt)
 
         if (logData.type === 'BS') {
             const center = new LngLat(logData.lng, logData.lat);
@@ -247,6 +250,10 @@ export class Marker {
         return this;
     }
 
+    setBatt(batt: number): this {
+        this.batt = Number(batt);
+        return this;
+    }
     remove() {
         this.iconMarker.remove();
         this.popupName.remove();

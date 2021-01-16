@@ -7,6 +7,8 @@ import * as net from 'net';
 import * as  fs from 'fs';
 
 import * as path from 'path';
+import {PointWithSrc} from '../types';
+import {Point} from './types';
 const streams = [];
 const PORT = 8090;
 declare const __dirname: any;
@@ -31,6 +33,26 @@ const writeToFile = (str) => {
         });
     });
 };
+
+class ClassPointWithSrc implements PointWithSrc{
+    alt: number;
+    azimuth: number;
+    batt = 0;
+    date: Date;
+    device_key: string | number;
+    id: string | number;
+    lat: number;
+    lng: number;
+    speed: number;
+    src = '';
+    type: "POINT" | "BS";
+    constructor(data: Point) {
+        Object.keys(data).forEach(key => {
+            this[key] = data[key]
+        })
+    }
+
+}
 
 
 export class Gl520 {
@@ -103,9 +125,9 @@ export class Gl520 {
                         .then((resp) => {
 
                             if (resp.result === 'ok') {
-                                resp.points.forEach(respData => {
-
-                                    this._util.insertLog({src:'',...respData})
+                                resp.points.forEach((respData) => {
+                                     const pointWithSrc: PointWithSrc = new ClassPointWithSrc(respData); //  Object.assign({}, {src: ''}, {respData}) // {...respData, src: ''}
+                                    this._util.insertLog(pointWithSrc)
                                         .catch(err => {
                                             console.error('Err GL520 insertLog error ->', err);
                                         });
