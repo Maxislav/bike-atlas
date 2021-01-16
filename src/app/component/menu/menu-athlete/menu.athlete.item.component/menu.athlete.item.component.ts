@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {  Subscription } from 'rxjs/Subscription';
+import {  Subscription } from 'rxjs';
 import { Device } from 'src/app/service/device.service';
 import { TimerService } from 'src/app/service/timer.service';
 import { environment } from 'src/environments/environment';

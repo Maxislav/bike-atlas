@@ -1,6 +1,6 @@
 import {
-    Component, Pipe, PipeTransform, TemplateRef, ViewContainerRef, Directive, ElementRef,
-    Renderer, AfterViewInit, ViewChildren, QueryList, ViewChild, ContentChild, ContentChildren, OnInit
+    Component, Pipe, PipeTransform, Directive, ElementRef,
+    AfterViewInit, OnInit
 } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +8,6 @@ import { Device, DeviceService } from '../../service/device.service';
 import { NavigationHistory } from '../../app.component';
 import { User, UserService } from '../../service/main.user.service';
 import { environment } from '../../../environments/environment';
-import { DeviceHelpComponent } from './device-help/device-help.component';
 import { PopupButton, PopupInstance, PopupService } from 'src/app/modules/popup-module/popup.service';
 import { DeviceDelPopupComponent } from 'src/app/component/device/device-del-popup.component';
 import { autobind } from 'src/app/util/autobind';
@@ -35,7 +34,7 @@ export class HelpContainer implements AfterViewInit {
     private top = 0;
     private y;
 
-    constructor(private el: ElementRef, private renderer: Renderer) {
+    constructor(private el: ElementRef) {
 
         let w = window,
             d = document,
@@ -49,7 +48,8 @@ export class HelpContainer implements AfterViewInit {
 
     ngAfterViewInit(): void {
         this.top = getOffset(this.el.nativeElement).top + 180;
-        this.renderer.setElementStyle(this.el.nativeElement, 'height', this.y - this.top + 'px');
+        this.el.nativeElement.style.height = this.y - this.top + 'px';
+        // this.renderer.setElementStyle(this.el.nativeElement, 'height', this.y - this.top + 'px');
     }
 }
 
@@ -70,29 +70,6 @@ export class IsOwner implements PipeTransform {
     }
 }
 
-
-export class PopupDel implements PopupInstance, OnInit {
-    buttons: Array<PopupButton>;
-    component: any;
-    title: string;
-
-    constructor(private deviceComponent: DeviceComponent, component) {
-        const $this = this;
-        this.component = component;
-        this.buttons = [{
-            label: 'Ok',
-            windowClass: 'sas',
-            click: () => {
-                this.deviceComponent.onDelete();
-                return true;
-            }
-        }];
-    }
-
-    ngOnInit(): void {
-    }
-
-}
 
 
 @Component({

@@ -3,7 +3,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import * as R from 'ramda/dist/ramda';
+import * as R from 'ramda';
 import { Util } from './util';
 import { Io } from './socket.oi.service';
 import { MapService } from './map.service';
@@ -19,7 +19,7 @@ const F = parseFloat;
 const I = parseInt;
 
 import * as mapboxgl from '../../../lib/mapbox-gl/mapbox-gl.js';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { MapGl, Popup } from '../../types/global';
 import { TElement } from '../util/at-element';
 import { autobind } from '../util/autobind';

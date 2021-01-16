@@ -1,6 +1,8 @@
+/*
 'use strict';
 importScripts('./get-color.js', '../../../node_modules/ramda/dist/ramda.min.js');
 declare const R:any;
+declare const getHexColor:any;
 
 onmessage = (e)=>{
 
@@ -28,3 +30,4 @@ onmessage = (e)=>{
     postMessage([points, resColors], null);
     close()
 };
+*/

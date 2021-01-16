@@ -5,8 +5,6 @@ import { elapsedStatus } from '../util/elapsed-status';
 import { Point } from './track.var';
 import { TailClass } from './tail.class';
 import { distance } from '../util/distance';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
 import * as mapboxgl from '../../../lib/mapbox-gl/mapbox-gl.js';
 import {
     MapGl,
@@ -20,6 +18,7 @@ import { LngLat } from '../util/lngLat';
 import { environment } from '../../environments/environment';
 import { User, UserService } from './main.user.service';
 import { DeviceData } from 'src/app/service/device.service';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 
 export class Marker {

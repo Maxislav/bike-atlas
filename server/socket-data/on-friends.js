@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.OnFriend = void 0;
 const autobind_1 = require("../util/autobind");
 const R = require("ramda");
 const ProtoData = require("./proto-data");
@@ -67,7 +68,7 @@ class OnFriend extends ProtoData {
             .then(user_id => {
             return this.util.getInvites(user_id)
                 .then((rows) => {
-                const enemy = R.find(item => {
+                const enemy = R.find((item) => {
                     return item.user_id == enemy_id;
                 })(rows);
                 if (enemy) {

@@ -20,7 +20,6 @@
             "tsConfig": "src/tsconfig.app.json",
             "baseHref": "/bike-atlas/",
             "deployUrl": "http://178.62.44.54:8080/",
-
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -119,7 +118,9 @@
         }
       }
     }
-
   },
-  "defaultProject": "example"
+  "defaultProject": "example",
+  "cli": {
+    "analytics": "29099972-295a-4c48-ab93-04016830cdcd"
+  }
 }

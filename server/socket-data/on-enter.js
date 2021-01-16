@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.OnEnter = void 0;
 const hashKeys = [];
 const ProtoData = require("./proto-data");
 const autobind_1 = require("../util/autobind");

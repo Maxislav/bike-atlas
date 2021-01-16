@@ -3,10 +3,9 @@ import { MenuService } from '../../../service/menu.service';
 import { Io } from '../../../service/socket.oi.service';
 import { TrackService } from '../../../service/track.service';
 import { Router } from '@angular/router';
-import { fromEvent } from 'rxjs/observable/fromEvent';
 import * as ss from 'socket.io-stream/socket.io-stream.js';
-import { Observable } from 'rxjs/Observable';
 import { MyMarkerService } from '../../../service/my-marker.service';
+import {fromEvent, Observable} from 'rxjs';
 
 const log = console.log;
 

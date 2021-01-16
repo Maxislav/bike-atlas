@@ -66,7 +66,7 @@ export class Chat {
     clearSocket(socketId) {
 
         let userId = null;
-        R.mapObjIndexed((item, key) => {
+        R.mapObjIndexed((item: Array<any>, key) => {
             const index = item.indexOf(socketId);
             if (-1 < index) {
                 item.splice(index, 1);

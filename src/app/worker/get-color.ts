@@ -1,3 +1,4 @@
+/*
 const f = parseFloat;
 
 function  fc (color, hue) {
@@ -66,3 +67,4 @@ const  getRgbColor2 = (speed, limit, hue) =>{
 function   getHexColor (speed, limit, hue?: number)  {
     return rgbToHex.apply(this, getRgbColor2(speed, limit, hue))
 }
+*/

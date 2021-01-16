@@ -41,7 +41,7 @@ export class Util {
         image: string
         opt: string
     }> {
-        return new Promise((resolve, reject) => {
+        return new Promise<any>((resolve, reject) => {
             this.connection.query('SELECT * FROM `user` WHERE `id`=?', [id], (err, rows) => {
                 if (err) {
                     reject(err);

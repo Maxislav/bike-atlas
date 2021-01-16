@@ -3,7 +3,7 @@
  */
 
 import {Component, AfterViewInit} from '@angular/core';
-import { Directive, ElementRef, Input, Renderer } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 import {MapService} from "../service/map.service";
 import {PositionSize} from "../service/position-size.service";
 
@@ -23,7 +23,6 @@ class MyEl extends HTMLElement{
     selector: 'leaflet-map',
 })
 export class LeafletMapDirective implements AfterViewInit {
-    renderer:Renderer;
     el:ElementRef;
     nativeElement:any;
     map: any;
@@ -83,23 +82,27 @@ export class LeafletMapDirective implements AfterViewInit {
 
 
 
-    constructor(el: ElementRef, renderer: Renderer, mapService: MapService, positionSiz: PositionSize) {
+    constructor(el: ElementRef, mapService: MapService, positionSiz: PositionSize) {
         
         
         this.el = el;
-        this.renderer = renderer;
         this.mapService = mapService;
+        const re = {
+            setElementStyle: (el, key, value) => {
+                el.style[key] = value
+            }
+        }
 
-        renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'rgba(200,200,200, 1)');
-        renderer.setElementStyle(el.nativeElement, 'color', 'white');
-        renderer.setElementStyle(el.nativeElement, 'width', '512px');
-        renderer.setElementStyle(el.nativeElement, 'height', '512px');
+       re.setElementStyle(el.nativeElement, 'backgroundColor', 'rgba(200,200,200, 1)');
+       re.setElementStyle(el.nativeElement, 'color', 'white');
+       re.setElementStyle(el.nativeElement, 'width', '512px');
+       re.setElementStyle(el.nativeElement, 'height', '512px');
 
 
 
 
 
-        renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'gray');
+        re.setElementStyle(el.nativeElement, 'backgroundColor', 'gray');
 
 
 

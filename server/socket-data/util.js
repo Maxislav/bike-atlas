@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Util = void 0;
 const hashKeys = [];
 class Util {
     constructor(connection) {
@@ -334,7 +335,7 @@ class Util {
                     catch (e) {
                         console.error('error parse base_station -> ', rows[0]);
                     }
-                    resolve(Object.assign({}, rows[0], { bs: base_station }));
+                    resolve(Object.assign(Object.assign({}, rows[0]), { bs: base_station }));
                 }
                 else {
                     resolve(null);

@@ -76,7 +76,7 @@ export class OnFriend extends ProtoData {
             .then(user_id => {
                 return this.util.getInvites(user_id)
                     .then((rows) => {
-                        const enemy = R.find(item => {
+                        const enemy = R.find((item: any) => {
                             return item.user_id == enemy_id;
                         })(rows);
 

@@ -48,7 +48,7 @@ export class MenuComponent{
                 private track:TrackService,
                 private authService:AuthService,
                 private router:Router,
-                private friendsService:FriendsService,
+                public friendsService:FriendsService,
                 private userService:UserService,
                 private mapService:MapService,
                 private toast:ToastService,

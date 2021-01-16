@@ -7,14 +7,13 @@ import { Setting, UserService } from './main.user.service';
 import { ChatService } from './chat.service';
 import { Deferred } from '../util/deferred';
 import { MyMarkerService } from '../service/my-marker.service';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { autobind } from '../util/autobind';
 import { DeviceService } from './device.service';
 import { LogService } from './log.service';
 import { MapService } from 'src/app/service/map.service';
 import { MapGl } from 'src/types/global';
 import {ToastService} from '../shared-module/toast-module/toast.service';
+import {Observable, Subject} from 'rxjs';
 
 
 @Injectable()

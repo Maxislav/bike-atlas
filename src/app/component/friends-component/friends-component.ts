@@ -1,5 +1,5 @@
 
-import {Component, Directive, ElementRef, Renderer} from "@angular/core";
+import {Component, Directive, ElementRef} from "@angular/core";
 import {Location} from '@angular/common';
 import {FriendsService} from "../../api/friends.service";
 import {Router, ActivatedRoute} from "@angular/router";
@@ -13,7 +13,7 @@ import {ToastService} from '../../shared-module/toast-module/toast.service';
     selector: 'users-container',
 })
 export class UsersContainer{
-    constructor(el: ElementRef, renderer: Renderer){
+    constructor(el: ElementRef){
 
         let w = window,
             d = document,
@@ -21,7 +21,8 @@ export class UsersContainer{
             g = d.getElementsByTagName('body')[0],
             x = w.innerWidth || e.clientWidth || g.clientWidth,
             y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-        renderer.setElementStyle(el.nativeElement, 'max-height', y-160+'px');
+        el.nativeElement.style.maxHeight =  y-160+'px'
+        // renderer.setElementStyle(el.nativeElement, 'max-height', y-160+'px');
     }
 }
 

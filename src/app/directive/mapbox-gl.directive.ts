@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, Injectable, NgZone } from '@angular/core';
-import { Directive, ElementRef, Input, Renderer } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 import { MapService } from '../service/map.service';
 import { PositionSize } from '../service/position-size.service';
 import { LocalStorage } from '../service/local-storage.service';
@@ -78,7 +78,6 @@ export class MapboxGlDirective implements AfterViewInit {
         this._mapboxgl = value;
     }
 
-    renderer: Renderer;
     el: ElementRef;
     nativeElement: any;
     map: MyMap;
@@ -89,7 +88,6 @@ export class MapboxGlDirective implements AfterViewInit {
     private layers: Array<{}>;
 
     constructor(el: ElementRef,
-                renderer: Renderer,
                 mapService: MapService,
                 positionSiz: PositionSize,
                 private ls: LocalStorage,
@@ -100,7 +98,6 @@ export class MapboxGlDirective implements AfterViewInit {
         this.setting = userService.getSetting() || new Setting();
         this.center = [30.5, 50.5];
         this.el = el;
-        this.renderer = renderer;
         this.mapService = mapService;
         this.mapService.mapboxgl = mapboxgl;
 
@@ -159,13 +156,19 @@ export class MapboxGlDirective implements AfterViewInit {
             //this.layers.push(layers.hill);
         }
 
-        renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'rgba(200,200,200, 1)');
+        const re = {
+            setElementStyle: (el, key, value) => {
+                el.style[key] = value
+            }
+        }
+
+        re.setElementStyle(el.nativeElement, 'backgroundColor', 'rgba(200,200,200, 1)');
         //renderer.setElementStyle(el.nativeElement, 'color', 'white');
         // renderer.setElementStyle(el.nativeElement, 'width', '100%');
         //renderer.setElementStyle(el.nativeElement, 'height', '100%');
 
 
-        renderer.setElementStyle(el.nativeElement, 'backgroundColor', '#dbd6cf');
+        re.setElementStyle(el.nativeElement, 'backgroundColor', '#dbd6cf');
 
 
     }

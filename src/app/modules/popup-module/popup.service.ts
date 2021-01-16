@@ -1,10 +1,9 @@
 import {
     ApplicationRef,
-    ComponentFactoryResolver,
+    ComponentFactoryResolver, ComponentRef,
     Injectable,
     Injector,
 } from '@angular/core';
-import { ComponentRef } from '@angular/core/src/linker/component_factory';
 import { PopupContainerComponent } from 'src/app/modules/popup-module/popup-container.component';
 import { PopupItemComponent } from 'src/app/modules/popup-module/popup-item.component';
 

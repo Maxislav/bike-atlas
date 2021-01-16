@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Logger = void 0;
 let app, ioServer;
 //const dateFormat = require('dateformat');
 //const util = require('./socket-data/util');

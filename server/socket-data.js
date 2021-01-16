@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ssocketData = exports.SSocket = void 0;
 const socketStream = require('socket.io-stream');
 const mysql = require('mysql');
 const config = require('./mysql.config.json');
@@ -62,8 +63,8 @@ class SSocket {
         SSocket.listenerHashMap[name] = this.on(name, receive);
     }
 }
-SSocket.listenerHashMap = {};
 exports.SSocket = SSocket;
+SSocket.listenerHashMap = {};
 class SocketData {
     constructor(server, app, connection) {
         this.connection = connection;

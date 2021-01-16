@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as io from 'socket.io-client/dist/socket.io.js';
+import * as io from 'socket.io-client';
 import { Aes } from './aes-cript';
 import { Deferred } from '../util/deferred';
 
