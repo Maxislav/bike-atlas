@@ -60,7 +60,7 @@ class Gl520 {
     }
     create() {
         this._server = net.createServer((c) => {
-            console.log('connect', new Date().toISOString());
+            console.log('connect', dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss'));
             streams.push(c);
             dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss');
             writeToFile(dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss').concat('\r\n', 'connect', '\r\n'));
