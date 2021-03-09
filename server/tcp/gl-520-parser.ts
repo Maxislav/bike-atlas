@@ -118,7 +118,7 @@ export class Gl520Parser {
 
             const deviceId = this.getDeviceId();
             const date = this.getDate();
-            Promise.all(group.map(cell => {
+            Promise.all(group.map((cell: MobileCellArray) => {
                 return this.baseStationLocation.getAverageLatLng(cell)
                     .then((c: { lat: number, lng: number, accuracy: number }) => {
                         const arr = cell.cells.map(cc => {

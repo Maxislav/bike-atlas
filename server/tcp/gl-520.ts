@@ -10,6 +10,8 @@ import * as path from 'path';
 import {PointWithSrc} from '../types';
 import {Point} from './types';
 const streams = [];
+
+import * as dateformat from 'dateformat/lib/dateformat.js';
 const PORT = 8090;
 declare const __dirname: any;
 
@@ -100,10 +102,11 @@ export class Gl520 {
         this._server = net.createServer((c) => {
             console.log('connect', new Date().toISOString());
             streams.push(c);
-            writeToFile(new Date().toISOString().concat('\r\n', 'connect', '\r\n'));
+            dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss');
+            writeToFile(dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss').concat('\r\n', 'connect', '\r\n'));
             c.on('end', () => {
                 console.log('client disconnected');
-                writeToFile(new Date().toISOString().concat('\r\n', 'disconnected', '\r\n'));
+                writeToFile(dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss').concat('\r\n', 'disconnected', '\r\n'));
                 const index = streams.indexOf(c);
                 if (-1 < index) {
                     streams.splice(index, 1);
@@ -119,7 +122,7 @@ export class Gl520 {
                     console.log('can\'t convert to string');
                 }
                 if (str) {
-                    writeToFile(new Date().toISOString().concat('\r\n', str, '\r\n'));
+                    writeToFile(dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss').concat('\r\n', str, '\r\n'));
                     gl520Parser.setSrcData(str)
                         .getData()
                         .then((resp) => {
