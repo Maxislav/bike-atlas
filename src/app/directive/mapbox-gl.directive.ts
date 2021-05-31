@@ -1,13 +1,26 @@
-import { Component, AfterViewInit, Injectable, NgZone } from '@angular/core';
-import { Directive, ElementRef, Input } from '@angular/core';
-import { MapService } from '../service/map.service';
-import { PositionSize } from '../service/position-size.service';
-import { LocalStorage } from '../service/local-storage.service';
+import {Component, AfterViewInit, Injectable, NgZone} from '@angular/core';
+import {Directive, ElementRef, Input} from '@angular/core';
+import {MapService} from '../service/map.service';
+import {PositionSize} from '../service/position-size.service';
+import {LocalStorage} from '../service/local-storage.service';
 import * as mapboxgl from '@lib/mapbox-gl/mapbox-gl.js';
 
-import { Resolve } from '@angular/router';
-import { Setting, UserService } from '../service/main.user.service';
-import { MapBoxGl, MapGl } from '../../types/global';
+import * as dateFormat from 'dateformat/lib/dateformat.js';
+
+import {Resolve} from '@angular/router';
+import {Setting, UserService} from '../service/main.user.service';
+import {MapBoxGl, MapGl} from '../../types/global';
+
+const getMin = (date: number): string => {
+    let m = new Date(date).getMinutes();
+    while (m % 10) {
+        m -= 1
+    }
+    if (m < 10) {
+        return `0${m}`
+    }
+    return `${m}`;
+};
 
 class MyMap extends mapboxgl.Map {
     onLoad: Promise<MyMap>;
@@ -24,12 +37,22 @@ class MyMap extends mapboxgl.Map {
         });
 
     }
+
     // noinspection JSAnnotator
-    on(type: string, listener: (ev: any) => void){
-        return super.on(type,listener)
+    on(type: string, listener: (ev: any) => void) {
+        return super.on(type, listener)
     }
-    addControl(...args){
+
+    addControl(...args) {
         return super.addControl(...args)
+    }
+
+    addSource(...args) {
+        return super.addSource(...args)
+    }
+
+    addLayer(...args) {
+        return super.addLayer(...args)
     }
 
 }
@@ -128,11 +151,11 @@ export class MapboxGlDirective implements AfterViewInit {
         };
 
         const layers = {
-           /* 'osm': {
-                'id': 'osm',
-                'source': 'osm',
-                'type': 'raster'
-            },*/
+            /* 'osm': {
+                 'id': 'osm',
+                 'source': 'osm',
+                 'type': 'raster'
+             },*/
             'ggl': {
                 'id': 'google-default',
                 'source': 'google-default',
@@ -207,15 +230,36 @@ export class MapboxGlDirective implements AfterViewInit {
 
 
             this.map.on('load', () => {
+                let d = new Date();
+                // const offset = (count - 1) * 10 * 60 * 1000 + 10 * 60 * 1000;
+                const date = d.getTime() + d.getTimezoneOffset() * 60 * 1000 - 2 * 10 * 60 * 1000 + 10 * 60 * 1000;
+                const day = dateFormat(date, 'yyyy-mm-dd').concat('T').concat(dateFormat(date, 'HH')).concat(':', getMin(date));
                 this.mapResolver.onLoad(this.map);
-               /* this.map.addSource('hill',
-                    {
-                        'type': 'raster',
-                        'tiles': [
-                            System.baseURL + 'hills/{z}/{x}/{y}.png'
-                        ],
-                        'tileSize': 256
-                    });*/
+                this.map.addSource('openrain', {
+                    'type': 'raster',
+                    'tiles': [
+                        `https://c.sat.owm.io/maps/2.0/radar/{z}/{x}/{y}?appid=9de243494c0b295cca9337e1e96b00e2&day=${day}`
+                    ],
+                    'tileSize': 256
+                })
+                this.map.addLayer({
+                    'id': 'openrain',
+                    'type': 'raster',
+                    'minzoom': 4,
+                    'maxzoom': 15,
+                    'source': 'openrain',
+                    "paint": {
+                        "raster-opacity": 0.5
+                    }
+                })
+                /* this.map.addSource('hill',
+                     {
+                         'type': 'raster',
+                         'tiles': [
+                             System.baseURL + 'hills/{z}/{x}/{y}.png'
+                         ],
+                         'tileSize': 256
+                     });*/
 
                 /*this.map.addLayer({
                     'id': 'urban-areas-fill',
