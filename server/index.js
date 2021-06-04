@@ -16,12 +16,12 @@ const gtgbc_1 = require("./gtgbc");
 const PORT = 8080;
 const dirname = path.join(__dirname, '../', 'dist');
 const app = express();
+const ioServer = require('socket.io')(8081);
+socket_data_1.ssocketData(ioServer, app);
 app.use(fileUpload());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-const ioServer = require('socket.io')(8081);
-socket_data_1.ssocketData(ioServer, app);
 app.get('/borisbolukbb', weather);
 app.get('/gtgbc*', gtgbc_1.gtgbc);
 /**
