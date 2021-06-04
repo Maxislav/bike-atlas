@@ -104,7 +104,7 @@ class SocketData {
             cors: {
                 origin: "http://maxislav.github.io",
                 methods: ["GET", "POST"],
-                allowedHeaders: ["my-custom-header"],
+                allowedHeaders: ["Access-Control-Allow-Credentials: true"],
                 credentials: true
             }
         });

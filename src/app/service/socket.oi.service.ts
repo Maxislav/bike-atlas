@@ -110,7 +110,7 @@ export class SSocket {
 
     getListenerHashMap: { [name: string]: GetListener } = {};
 
-    constructor(uri: string) {
+    constructor(uri: string, params?: any) {
         Object.setPrototypeOf(this.constructor.prototype, io(uri));
         this.listenerHashMap = {};
     }
@@ -165,7 +165,9 @@ export class Io {
         } else {
             this.url = 'http://' + window.location.hostname + ':8081';
         }
-        this._socket = new SSocket(this.url);
+        this._socket = new SSocket(this.url, {
+
+        });
 
       /*  this._socket.$get('gettt', 'kiska')
             .then(data => {
