@@ -27,12 +27,9 @@ app.use(fileUpload());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(bodyParser.json())
-
-const server = new http.Server(app);
-server.listen(8081);
-ssocketData(server, app);
-
+app.use(bodyParser.json());
+const ioServer = require('socket.io')(8081);
+ssocketData(ioServer, app);
 
 app.get('/borisbolukbb', weather);
 
