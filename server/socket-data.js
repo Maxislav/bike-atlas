@@ -69,7 +69,14 @@ class SocketData {
     constructor(server, app, connection) {
         this.connection = connection;
         const util = new util_1.Util(connection);
-        const ioServer = io(server);
+        const ioServer = io(server, {
+            cors: {
+                origin: "http://maxislav.github.io",
+                methods: ["GET", "POST"],
+                allowedHeaders: ["my-custom-header"],
+                credentials: true
+            }
+        });
         const logger = new gps_logger_1.Logger(app, ioServer, util);
         this.gl520 = new gl_520_1.Gl520(ioServer, util).create();
         const chat = new chat_1.Chat(util);

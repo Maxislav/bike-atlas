@@ -49,7 +49,6 @@ app.use((req, res, next) => {
         return;
     }
     res.header("Access-Control-Allow-Origin", "http://maxislav.github.io");
-    res.header("Access-Control-Allow-Credentials", "true");
     if (req.url.match(/node_modules/)) {
         // console.log('node_modules ->', req.url)
     }
