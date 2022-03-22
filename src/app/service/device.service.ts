@@ -1,14 +1,14 @@
-import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector } from '@angular/core';
-import { Io } from './socket.oi.service';
-import { LocalStorage } from './local-storage.service';
-import { FriendsService } from '../api/friends.service';
-import { Marker } from '../util/marker';
-import { DeviceLogData, MapGl } from '../../types/global';
-import { LogData } from 'src/types/global';
-import { LngLat } from 'src/app/util/lngLat';
-import { DeviceIconComponent } from 'src/app/component/device-icon-component/device-icon-component';
-import { distance } from 'src/app/util/distance';
-import { LogService } from 'src/app/service/log.service';
+import {ApplicationRef, ComponentFactoryResolver, Injectable, Injector} from '@angular/core';
+import {Io} from './socket.oi.service';
+import {LocalStorage} from './local-storage.service';
+import {FriendsService} from '../api/friends.service';
+import {Marker} from '../util/marker';
+import {DeviceLogData, MapGl} from '../../types/global';
+import {LogData} from 'src/types/global';
+import {LngLat} from 'src/app/util/lngLat';
+import {DeviceIconComponent} from 'src/app/component/device-icon-component/device-icon-component';
+import {distance} from 'src/app/util/distance';
+import {LogService} from 'src/app/service/log.service';
 
 //import { Marker } from './marker.service';
 
@@ -63,7 +63,6 @@ export class Device implements DeviceData {
         private injector: Injector,
         private applicationRef: ApplicationRef,
         private componentFactoryResolver: ComponentFactoryResolver
-
     ) {
         this.color = new ColorSpeed();
         this.background = this.color.dead;
@@ -157,9 +156,23 @@ export class Device implements DeviceData {
         } else if (this.color.DEAD_TIME < this.elapseTime) {
             this.background = this.color.dead;
         } else {
-            const c = Math.round(255 * this.elapseTime / this.color.DEAD_TIME).toString(16);
-            this.background = String('#FFFF').concat(c.length < 2 ? '0' + c : c);
+            this.background = this.getColor(this.elapseTime)
         }
+    }
+
+    private getColor(elapseTime: number): string {
+        const colorSpeed = new ColorSpeed();
+        let g = 'FF';
+        let b = '00';
+        const middleTime = colorSpeed.DEAD_TIME / 2;
+        if (elapseTime < middleTime) {
+            g = (Math.round(127 * elapseTime / middleTime) + 127).toString(16)
+            g = g.length < 2 ? `0${g}` : g;
+        } else {
+            b = Math.round(255 * elapseTime / colorSpeed.DEAD_TIME).toString(16);
+            b = b.length < 2 ? `0${b}` : b;
+        }
+        return `#FF${g}${b}`;
     }
 
     remove(): this {
@@ -206,7 +219,6 @@ export class DeviceService {
         private injector: Injector,
         private applicationRef: ApplicationRef,
         private componentFactoryResolver: ComponentFactoryResolver,
-
     ) {
         this.socket = io.socket;
     }
@@ -267,7 +279,7 @@ export class DeviceService {
     }
 
 
-    updateDevices():  Promise<Array<Device>> {
+    updateDevices(): Promise<Array<Device>> {
         this.clearDevices();
         return this.onDevices()
     }
