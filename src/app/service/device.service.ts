@@ -169,7 +169,7 @@ export class Device implements DeviceData {
             g = (Math.round(127 * elapseTime / middleTime) + 127).toString(16)
             g = g.length < 2 ? `0${g}` : g;
         } else {
-            b = Math.round(255 * elapseTime / colorSpeed.DEAD_TIME).toString(16);
+            b = Math.round(255 * elapseTime / middleTime).toString(16);
             b = b.length < 2 ? `0${b}` : b;
         }
         return `#FF${g}${b}`;
