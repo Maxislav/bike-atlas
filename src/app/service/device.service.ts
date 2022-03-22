@@ -165,11 +165,12 @@ export class Device implements DeviceData {
         let g = 'FF';
         let b = '00';
         const middleTime = colorSpeed.DEAD_TIME / 2;
-        if (elapseTime < middleTime) {
-            g = (Math.round(127 * elapseTime / middleTime) + 127).toString(16)
+        const quarter = colorSpeed.DEAD_TIME / 4;
+        if (elapseTime < quarter) {
+            g = (Math.round(127 * elapseTime / quarter) + 127).toString(16)
             g = g.length < 2 ? `0${g}` : g;
         } else {
-            b = Math.round(255 * elapseTime / middleTime).toString(16);
+            b = Math.round(255 * elapseTime / (quarter*3)).toString(16);
             b = b.length < 2 ? `0${b}` : b;
         }
         return `#FF${g}${b}`;
