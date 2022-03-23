@@ -1,0 +1,11 @@
+{
+  "name": "mapbox-gl",
+  "version": "1.0.0",
+  "main": "./mapbox-gl.js",
+  "typings": "./mapbox-gl.d.ts",
+  "type": "module",
+  "license" : {
+    "type" : "MIT"
+  }
+}
+

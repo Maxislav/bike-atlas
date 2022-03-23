@@ -3,14 +3,14 @@
  */
 
 import { Injectable } from '@angular/core';
-import * as R from 'ramda';
+import R from 'ramda';
 import { Util } from './util';
 import { Io } from './socket.oi.service';
 import { MapService } from './map.service';
 import { Point } from './track.var';
 import { distance } from '../util/distance';
 
-import * as dateformat from 'dateformat/lib/dateformat.js';
+import dateformat from 'dateformat/lib/dateformat.js';
 
 import { Resolve } from '@angular/router';
 import { Color } from '../util/get-color';
@@ -18,9 +18,8 @@ import { Color } from '../util/get-color';
 const F = parseFloat;
 const I = parseInt;
 
-import * as mapboxgl from '../../../lib/mapbox-gl/mapbox-gl.js';
+import  mapboxgl from '../../lib/mapbox-gl/mapbox-gl';
 import { Subject } from 'rxjs';
-import { MapGl, Popup } from '../../types/global';
 import { TElement } from '../util/at-element';
 import { autobind } from '../util/autobind';
 import {ToastService} from '../shared-module/toast-module/toast.service';
@@ -68,7 +67,7 @@ class TrackSrcPoints {
     private _popupHash: { [id: number]: EditablePopup } = {};
     public delPointSubject: Subject<number>;
 
-    constructor(private points: Array<Point>, private  map: MapGl, public id: string) {
+    constructor(private points: Array<Point>, private  map: any, public id: string) {
         this.delPointSubject = new Subject<number>();
         this.init();
     }
@@ -147,7 +146,7 @@ class TrackSrcPoints {
         div.innerHTML = content;
         btn.innerHTML = 'Удалить';
         div.appendChild(btn);
-        const popup: Popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
+        const popup:  mapboxgl.Popup = new mapboxgl.Popup({closeOnClick: false, offset: [0, -15], closeButton: false})
             .setLngLat(new mapboxgl.LngLat(point.lng, point.lat))
             .setDOMContent(div)
             .addTo(map);

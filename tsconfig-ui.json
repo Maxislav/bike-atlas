@@ -7,10 +7,11 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": false,
+    "esModuleInterop": true,
     "rootDir": "./",
     "outDir": "dist/",
     "baseUrl": "./",
-    "typeRoots" : ["./src/@types"],
+    "typeRoots" : ["./src/@types", "./src/lib/mapbox-gl/@types"],
     "types": ["node"],
     "paths": {
       "@lib/*": ["./lib/*"]
@@ -22,7 +23,8 @@
     "!./node_modules/**/*.ts"
   ],
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "./lib/mapbox-gl/*"
   ],
   "exclude": [
     "dist",

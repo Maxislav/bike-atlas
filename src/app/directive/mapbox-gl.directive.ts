@@ -1,16 +1,14 @@
 import {AfterViewInit, Injectable, NgZone} from '@angular/core';
-import {Directive, ElementRef, Input} from '@angular/core';
+import {Directive, ElementRef} from '@angular/core';
 import {MapService} from '../service/map.service';
 import {PositionSize} from '../service/position-size.service';
 import {LocalStorage} from '../service/local-storage.service';
-import * as mapboxgl from '@lib/mapbox-gl/mapbox-gl.js';
+import mapboxgl from '../../lib/mapbox-gl/mapbox-gl';
 
-import * as dateFormat from 'dateformat/lib/dateformat.js';
+import dateFormat from 'dateformat/lib/dateformat.js';
 
 import {Resolve} from '@angular/router';
 import {Setting, UserService} from '../service/main.user.service';
-import {MapBoxGl} from '../../types/global';
-import {CMapGl} from './cmap-gl';
 
 const getMin = (date: number): string => {
     let m = new Date(date).getMinutes();
@@ -23,15 +21,14 @@ const getMin = (date: number): string => {
     return `${m}`;
 };
 
-
-class MyMap extends CMapGl {
+export class MyMap extends mapboxgl.Map {
     onLoad: Promise<this>;
 
     // noinspection JSAnnotator
     //on(type: string, listener: (ev: any) => void): this;
     //addControl: (any) => void;
-    constructor(...args) {
-        super(...args);
+    constructor(options) {
+        super(options);
         this.onLoad = new Promise((resoleve) => {
             this.on('load', () => {
                 resoleve(this);
@@ -41,27 +38,16 @@ class MyMap extends CMapGl {
     }
 
     // noinspection JSAnnotator
-    on(type: string, listener: (ev: any) => void) {
+    on(type: any, listener: any) {
         return super.on(type, listener)
     }
 
-    addControl(...args) {
-        return super.addControl(...args)
+    addControl(control, position?) {
+        return super.addControl(control, position)
     }
 
-    addSource(...args) {
-        return super.addSource(...args)
-    }
-
-    addLayer(...args) {
-        return super.addLayer(...args)
-    }
 
 }
-
-declare var L: any;
-declare var gl: any;
-declare var System: any;
 
 @Injectable()
 export class MapResolver implements Resolve<any> {
@@ -95,11 +81,11 @@ export class MapResolver implements Resolve<any> {
 export class MapboxGlDirective implements AfterViewInit {
     private setting: Setting;
 
-    get mapboxgl(): MapBoxGl {
+    get mapboxgl(): any {
         return this._mapboxgl;
     }
 
-    set mapboxgl(value: MapBoxGl) {
+    set mapboxgl(value: any) {
         this._mapboxgl = value;
     }
 
@@ -107,7 +93,7 @@ export class MapboxGlDirective implements AfterViewInit {
     map: MyMap;
     private center: number[];
     private mapService;
-    private _mapboxgl: MapBoxGl;
+    private _mapboxgl: any;
     private styleSource: any;
     private layers: Array<{}> = [];
 
@@ -201,8 +187,8 @@ export class MapboxGlDirective implements AfterViewInit {
             const localStorageCenter = this.ls.mapCenter;
             let el = this.el;
             el.nativeElement.innerHTML = '';
-            const dd: any = mapboxgl
-            dd.accessToken = 'pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA';
+            // const dd: any = MBGL
+            mapboxgl.accessToken = 'pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA';
 
 
             this.map = new MyMap({

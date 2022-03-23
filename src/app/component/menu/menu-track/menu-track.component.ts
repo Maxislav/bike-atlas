@@ -3,7 +3,7 @@ import { MenuService } from '../../../service/menu.service';
 import { Io } from '../../../service/socket.oi.service';
 import { TrackService } from '../../../service/track.service';
 import { Router } from '@angular/router';
-import * as ss from 'socket.io-stream/socket.io-stream.js';
+import ss from 'socket.io-stream/socket.io-stream.js';
 import { MyMarkerService } from '../../../service/my-marker.service';
 import {fromEvent, Observable} from 'rxjs';
 
@@ -101,7 +101,7 @@ export class MenuTrackComponent {
     }
 
     ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this.subscription?.unsubscribe();
     }
 
     onSelect(item, $event) {

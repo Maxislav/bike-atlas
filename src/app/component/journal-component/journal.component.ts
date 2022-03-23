@@ -8,7 +8,7 @@ import { OneTrack } from './one-track.component/one-track.component';
 import { JournalService } from '../../service/journal.service';
 import { Point } from '../../service/track.var';
 import { UserService } from '../../service/main.user.service';
-import * as L from '../../../../lib/leaflet/leaflet-src.js';
+import  L from '../../../../lib/leaflet/leaflet-src.js';
 import {environment} from '../../../environments/environment';
 import { Device, DeviceService } from '../../service/device.service';
 

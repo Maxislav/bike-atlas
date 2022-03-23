@@ -1,10 +1,10 @@
 import { LngLat } from '../util/lngLat';
 import { Device } from 'src/app/service/device.service';
-import * as mapboxgl from '../../../lib/mapbox-gl/mapbox-gl.js';
+import mapboxgl from '../../lib/mapbox-gl/mapbox-gl';
 import { environment } from 'src/environments/environment';
 import {ApplicationRef, ComponentFactoryResolver, ComponentRef, Injector} from '@angular/core';
 import { DeviceIconComponent } from 'src/app/component/device-icon-component/device-icon-component';
-import { BaseStation, LogData, Popup } from 'src/types/global';
+import { BaseStation, LogData } from 'src/types/global';
 
 export class Marker {
     static layerIds: Set<string> = new Set();
@@ -21,7 +21,7 @@ export class Marker {
     speed: number;
     src: string;
     image: string;
-    popupName: Popup;
+    popupName: mapboxgl.Popup;
     batt: number;
 
     private iconMarker: any;
@@ -52,7 +52,6 @@ export class Marker {
         type: 'FeatureCollection',
         features: Array<any>
     };
-
 
     constructor(
         private map,

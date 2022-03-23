@@ -135,13 +135,13 @@ export interface Popup {
 
     remove(): this
 }
-
+/*
 export interface MapBoxGl {
     Popup: Popup,
     Map: MapGl
     Marker: MapMarker;
     LngLat: LngLat
-}
+}*/
 
 
 export interface Device {
@@ -215,14 +215,6 @@ export interface Accuracy {
     remove: () => this;
 }
 
-declare global {
-    interface Window {
-        mapboxgl: {
-            MapGl,
-            accessToken: string
-        }
-    }
-}
 
 /*
 declare const mapboxgl: {

@@ -4,15 +4,14 @@
 import { Injectable, ApplicationRef } from '@angular/core';
 import { SimpleChanges, OnChanges } from '@angular/core';
 import { LocalStorage } from '../service/local-storage.service';
-import { MapBoxGl, MapGl } from '../../types/global';
 import { Deferred } from 'src/app/util/deferred';
+import {MyMap} from '../directive/mapbox-gl.directive';
 
 
 @Injectable()
 export class MapService {
 
-
-    public _map: any;
+    public _map: MyMap;
     public lat: number;
     public lng: number;
     public lngMap: string ;
@@ -21,10 +20,10 @@ export class MapService {
     public foo: Function;
     public pitch: string;
     public bearing: string;
-    private _mapboxgl: MapBoxGl;
-    private onLoadDeferred: Deferred<MapGl>;
+    private _mapboxgl: any;
+    private onLoadDeferred: Deferred<any>;
     socket: any;
-    public onLoad: Promise<MapGl>;
+    public onLoad: Promise<any>;
 
     // public ls: LocalStorage
     //private ref: ApplicationRef
@@ -37,13 +36,13 @@ export class MapService {
 
 
 
-        this.onLoadDeferred = new Deferred<MapGl>();
+        this.onLoadDeferred = new Deferred<any>();
         this.onLoad = this.onLoadDeferred.promise;
 
     }
 
 
-    setMap(map: MapGl) {
+    setMap(map: MyMap) {
         this.map = map;
         //this.trackService.setMap(map);
         map.on('load', () => {
@@ -104,20 +103,20 @@ export class MapService {
 
 
 
-    get mapboxgl(): MapBoxGl {
+    get mapboxgl(): any {
         return this._mapboxgl;
     }
 
-    set mapboxgl(value: MapBoxGl) {
+    set mapboxgl(value: any) {
         this._mapboxgl = value;
     }
 
 
-    get map(): any {
+    get map(): MyMap {
         return this._map;
     }
 
-    set map(value: any) {
+    set map(value: MyMap) {
         this._map = value;
     }
 

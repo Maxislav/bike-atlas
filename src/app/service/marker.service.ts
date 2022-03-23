@@ -5,7 +5,7 @@ import { elapsedStatus } from '../util/elapsed-status';
 import { Point } from './track.var';
 import { TailClass } from './tail.class';
 import { distance } from '../util/distance';
-import * as mapboxgl from '../../../lib/mapbox-gl/mapbox-gl.js';
+import  mapboxgl from '../../lib/mapbox-gl/mapbox-gl';
 import {
     MapGl,
 
@@ -45,8 +45,8 @@ export class Marker {
     static layerIds: Set<string> = new Set();
     private layerId: string;
     private icoContainer: HTMLElement;
-    private popup: Popup;
-    private iconMarker: MapMarker;
+    private popup: mapboxgl.Popup;
+    private iconMarker: mapboxgl.Marker;
     private elapsed: string;
     public status: string = 'white';
     private intervalUpdateMarker: number = 0;
@@ -64,7 +64,7 @@ export class Marker {
 
 
     /** @description creating and update user marker */
-    constructor(devData: any, private user: User, private map: MapGl, private timerService: TimerService) {
+    constructor(devData: any, private user: User, private map: any, private timerService: TimerService) {
 
         console.log(devData.type);
         devData.bs = devData.bs ? devData.bs.filter(p => p.lat && p.lng) : [];
@@ -90,7 +90,7 @@ export class Marker {
 
 
     setIcoImage(srcStr: string): this{
-        const icoContainer = document.createElement('div');
+        const icoContainer: HTMLElement = document.createElement('div');
         icoContainer.classList.add('user-icon');
         const img = this.img = new Image();
 

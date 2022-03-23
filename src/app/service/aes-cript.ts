@@ -1,5 +1,5 @@
 
-import * as aesjs  from "aes-js";
+import aesjs  from "aes-js";
 
 
 /*
