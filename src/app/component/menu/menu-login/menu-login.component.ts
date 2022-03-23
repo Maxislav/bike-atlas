@@ -12,7 +12,6 @@ import {ToastService} from '../../../shared-module/toast-module/toast.service';
 
 @Component({
     selector: 'menu-login',
-    //directives: [RouterLink],
     templateUrl: './menu-login.component.html',
     styleUrls: ['./menu-login.less'],
 })

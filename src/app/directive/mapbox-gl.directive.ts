@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, Injectable, NgZone} from '@angular/core';
+import {AfterViewInit, Injectable, NgZone} from '@angular/core';
 import {Directive, ElementRef, Input} from '@angular/core';
 import {MapService} from '../service/map.service';
 import {PositionSize} from '../service/position-size.service';
@@ -9,7 +9,8 @@ import * as dateFormat from 'dateformat/lib/dateformat.js';
 
 import {Resolve} from '@angular/router';
 import {Setting, UserService} from '../service/main.user.service';
-import {MapBoxGl, MapGl} from '../../types/global';
+import {MapBoxGl} from '../../types/global';
+import {CMapGl} from './cmap-gl';
 
 const getMin = (date: number): string => {
     let m = new Date(date).getMinutes();
@@ -22,8 +23,9 @@ const getMin = (date: number): string => {
     return `${m}`;
 };
 
-class MyMap extends mapboxgl.Map {
-    onLoad: Promise<MyMap>;
+
+class MyMap extends CMapGl {
+    onLoad: Promise<this>;
 
     // noinspection JSAnnotator
     //on(type: string, listener: (ev: any) => void): this;
@@ -101,16 +103,15 @@ export class MapboxGlDirective implements AfterViewInit {
         this._mapboxgl = value;
     }
 
-    el: ElementRef;
     nativeElement: any;
     map: MyMap;
     private center: number[];
     private mapService;
     private _mapboxgl: MapBoxGl;
     private styleSource: any;
-    private layers: Array<{}>;
+    private layers: Array<{}> = [];
 
-    constructor(el: ElementRef,
+    constructor(private el: ElementRef,
                 mapService: MapService,
                 positionSiz: PositionSize,
                 private ls: LocalStorage,
@@ -120,7 +121,6 @@ export class MapboxGlDirective implements AfterViewInit {
 
         this.setting = userService.getSetting() || new Setting();
         this.center = [30.5, 50.5];
-        this.el = el;
         this.mapService = mapService;
         this.mapService.mapboxgl = mapboxgl;
 
@@ -171,7 +171,7 @@ export class MapboxGlDirective implements AfterViewInit {
         };
 
         console.log('setting->', this.setting);
-        this.layers = [];
+        // this.layers = [];
         if (!this.setting.map || this.setting.map == 'ggl') {
             this.layers.push(layers.ggl);
         }
@@ -201,7 +201,8 @@ export class MapboxGlDirective implements AfterViewInit {
             const localStorageCenter = this.ls.mapCenter;
             let el = this.el;
             el.nativeElement.innerHTML = '';
-            mapboxgl.accessToken = 'pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA';
+            const dd: any = mapboxgl
+            dd.accessToken = 'pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA';
 
 
             this.map = new MyMap({

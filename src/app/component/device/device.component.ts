@@ -93,7 +93,7 @@ export class DeviceComponent implements AfterViewInit, OnInit {
         return this.deviceService.currentChildName;
     } ;
 
-    constructor(private location: Location,
+    constructor(
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private userService: UserService,
@@ -113,8 +113,6 @@ export class DeviceComponent implements AfterViewInit, OnInit {
             index: -1
         };
         this.devices = deviceService.getDeviceList();
-
-        // deviceService.updateDevices();
     }
 
     onShowHelp() {

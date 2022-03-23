@@ -86,11 +86,11 @@ export interface MapMarker {
 }
 
 export declare interface MapGl {
-    new(object): this
+    new(...args:  any[]): this
 
     onLoad: Promise<this>
 
-    addControl(any): this
+    addControl(...args: any[]): this
 
     on(string, Function): this
 
@@ -104,13 +104,13 @@ export declare interface MapGl {
 
     getBearing(): number
 
-    addLayer(Object): this;
+    addLayer(...args): this;
 
     removeLayer(id: string): this;
 
     removeSource(id: string): this;
 
-    addSource(string, Object): this
+    addSource(...args): this
 
     getSource(string): any
 
@@ -214,3 +214,18 @@ export interface Accuracy {
     update: (data: any) => this;
     remove: () => this;
 }
+
+declare global {
+    interface Window {
+        mapboxgl: {
+            MapGl,
+            accessToken: string
+        }
+    }
+}
+
+/*
+declare const mapboxgl: {
+    Map: any
+}*/
+//export interface BoxMap = mapboxgl.Map

@@ -78,8 +78,6 @@ export class UserService  {
 
     constructor(
         private io: Io,
-        private toast: ToastService,
-        private router: Router
     ) {
         this.socket = io.socket;
     }
@@ -124,70 +122,11 @@ export class UserService  {
 
 
     clearAll() {
-       /* this.user.devices.forEach(device => {
-            if (device.marker) {
-                device.marker.remove();
-            }
-        });
-        this.friends.forEach(friend => {
-            friend.devices.forEach(device => {
-                if (device.marker) {
-                    device.marker.remove();
-                }
-            });
-        });
-        while (this.friends.length) {
-            this.friends.shift();
-        }
-        this.clearUser();*/
     }
 
     createDeviceOther(device) {
-       /* this._other.devices.push(device);
-        return device;*/
-    }
-
-
-  /*  get other(): User {
-        return this._other;
-    }
-
-    set other(value: User) {
-        this._other = value;
-    }
-
-
-    set friends(friends: Array<User>) {
-        if (!friends) return;
-        this._friends.length = 0;
-        friends.forEach(friend => {
-            this._friends.push(friend);
-        });
-    }
-
-    get friends() {
-        return this._friends;
-    }
-
-    get user(): User {
-        return this._user;
-    }
-
-    set user(value: User) {
-        console.log('set user ->', value);
-        for (let opt in value) {
-            this._user[opt] = value[opt];
-        }
-    }*/
-
-   /* public resolve() {
 
     }
-
-    public reject() {
-
-    }*/
-
 
 }
 

@@ -11,13 +11,13 @@
                         <th class="required">Имя</th>
                         <th class="required">Идентификатор устройства</th>
                         <th>Телефон</th>
-                        <th></th>
+                        <th>Share link</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr *ngFor="let dev of devices ;  let i = index " (click)="preDel($event, i)">
                         <td><img [src]="dev.image || hostPrefix + 'img/speedway_4_logo.jpg' "
-                                 (click)="onLoadImage(dev, i)" class="logo"/>
+                                 (click)="onLoadImage(dev, i)" class="logo" [ngStyle]="{background: dev.background}" />
                             <input type="file" [attr.id]="'input-img-'+i" name="files[]" multiple=""
                                    style="display: none"/>
                         </td>
@@ -39,7 +39,7 @@
                                 <input type="text" id="deviceId" [(ngModel)]="device.device_key" name="deviceId"
                                        placeholder="88888888888" required="required" minlength="12"
                                        #deviceId="ngModel"/>
-                                <div *ngIf="deviceId.invalid &amp;&amp; (deviceId.dirty || deviceId.touched)"
+                                <div *ngIf="deviceId.invalid && (deviceId.dirty || deviceId.touched)"
                                      class="absolute helper">
                                     <div *ngIf="deviceId.errors.minlength">must be at least 12 characters long.</div>
                                 </div>

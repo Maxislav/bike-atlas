@@ -1,14 +1,14 @@
-import { Component , Input} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Mercator} from './service/mercator.service'
 import {MapService} from "./service/map.service";
 import {InfoPositionComponent} from "./component/info-position/info-position-component";
 import {MapboxGlDirective, MapResolver} from "./directive/mapbox-gl.directive";
 import {LogService} from "./service/log.service";
-import { APP_INITIALIZER } from '@angular/core';
-import {Resolve} from "@angular/router";
-import {fadeInAnimation} from  './animation/animation'
-
-//declare const module: any;
+import {APP_INITIALIZER} from '@angular/core';
+import {ActivatedRoute, Resolve} from "@angular/router";
+import {fadeInAnimation} from './animation/animation'
+import {SelfUnsubscribable} from './util/self-unsubscribable';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
     //moduleId: module.id,
@@ -19,15 +19,19 @@ import {fadeInAnimation} from  './animation/animation'
         '<mapbox-gl> map loading...</mapbox-gl>'
     ,
     styleUrls: ['./css/map.component.less'],
-    providers:[],
+    providers: [],
     animations: [fadeInAnimation],
-    host: { '[@fadeInAnimation]': '' }
+    host: {'[@fadeInAnimation]': ''}
 })
-export class MapComponent {
+export class MapComponent extends SelfUnsubscribable {
 
 
-    constructor(mercator: Mercator, mapService: MapService, private ls: LogService){
-
+    constructor(private route: ActivatedRoute) {
+        super()
+        route.queryParams.pipe(takeUntil(this.onDestroy$))
+            .subscribe((params) => {
+                console.log(params)
+            })
     }
 
 

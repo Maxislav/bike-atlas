@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Io } from './socket.oi.service';
 import { LocalStorage } from './local-storage.service';
-import { ActivatedRouteSnapshot, CanActivate, Resolve, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import { FriendsService } from '../api/friends.service';
-import { Setting, UserService } from './main.user.service';
+import { UserService } from './main.user.service';
 import { ChatService } from './chat.service';
-import { Deferred } from '../util/deferred';
-import { MyMarkerService } from '../service/my-marker.service';
+import { MyMarkerService } from './my-marker.service';
 import { autobind } from '../util/autobind';
 import { DeviceService } from './device.service';
 import { LogService } from './log.service';
@@ -14,11 +13,15 @@ import { MapService } from 'src/app/service/map.service';
 import { MapGl } from 'src/types/global';
 import {ToastService} from '../shared-module/toast-module/toast.service';
 import {Observable, Subject} from 'rxjs';
+import {first} from 'rxjs/operators';
 
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class AuthService implements CanActivate {
     socket: any;
+    private unsubscribe$ = new Subject<void>();
     public can: Subject<boolean> = new Subject();
 
     constructor(
@@ -33,14 +36,15 @@ export class AuthService implements CanActivate {
         private  deviceService: DeviceService,
         private logService: LogService,
         private router: Router,
-        private mapService: MapService
+        private mapService: MapService,
+        private route: ActivatedRoute
     ) {
         this.socket = io.socket;
         this.socket.on('connect', this.onConnect);
         this.socket.on('disconnect', this.onDisconnect);
     }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
         return this.can;
     }
 
@@ -70,8 +74,7 @@ export class AuthService implements CanActivate {
         }
     }
 
-    @autobind()
-    onAuth() {
+    onAuth() : Promise<boolean>{
         return this.socket
             .$get('onAuth', {
                 hash: this.ls.userKey
@@ -89,8 +92,6 @@ export class AuthService implements CanActivate {
                     this.userService.clearUser();
                 }
                 return this.mapService.onLoad;
-
-
             })
             .then((map: MapGl) => {
                 return this.deviceService
@@ -118,6 +119,7 @@ export class AuthService implements CanActivate {
 
     @autobind()
     onDisconnect() {
+        // tslint:disable-next-line:no-console
         console.info('disconnect');
         this.toast.show({
             type: 'warning',

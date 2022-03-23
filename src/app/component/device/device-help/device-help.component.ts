@@ -1,7 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { environment } from '../../../../environments/environment';
-import { DeviceService } from '../../../service/device.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {environment} from '../../../../environments/environment';
+import {DeviceService} from '../../../service/device.service';
+import {SelfUnsubscribable} from '../../../util/self-unsubscribable';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
     templateUrl: './device-help.component.html',
@@ -9,17 +11,20 @@ import { DeviceService } from '../../../service/device.service';
         './device-help.component.less'
     ]
 })
-export class DeviceHelpComponent implements OnInit, OnDestroy{
+export class DeviceHelpComponent extends SelfUnsubscribable implements OnInit, OnDestroy {
 
     public deviceName: string;
     public hostPrefix = environment.hostPrefix;
 
-    constructor(private route: ActivatedRoute, private deviceService:  DeviceService){
-        this.route.params.subscribe((data: {device: string}) => {
-            this.deviceName = data.device;
-            deviceService.setCurrentChildName(data.device)
+    constructor(private route: ActivatedRoute, private deviceService: DeviceService) {
+        super()
+        this.route.params
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe((data: { device: string }) => {
+                this.deviceName = data.device;
+                deviceService.setCurrentChildName(data.device)
 
-        })
+            })
 
     }
 
