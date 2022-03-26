@@ -6,6 +6,9 @@ import { SimpleChanges, OnChanges } from '@angular/core';
 import { LocalStorage } from '../service/local-storage.service';
 import { Deferred } from 'src/app/util/deferred';
 import {MyMap} from '../directive/mapbox-gl.directive';
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl';
+import {Observable, Subject} from 'rxjs';
 
 
 @Injectable()
@@ -25,8 +28,6 @@ export class MapService {
     socket: any;
     public onLoad: Promise<any>;
 
-    // public ls: LocalStorage
-    //private ref: ApplicationRef
 
 
     constructor(private ref: ApplicationRef, private ls: LocalStorage) {
@@ -44,7 +45,6 @@ export class MapService {
 
     setMap(map: MyMap) {
         this.map = map;
-        //this.trackService.setMap(map);
         map.on('load', () => {
             this.pitch = map.getPitch().toFixed(0);
             this.bearing = map.getBearing().toFixed(1);
@@ -102,16 +102,6 @@ export class MapService {
     }
 
 
-
-    get mapboxgl(): any {
-        return this._mapboxgl;
-    }
-
-    set mapboxgl(value: any) {
-        this._mapboxgl = value;
-    }
-
-
     get map(): MyMap {
         return this._map;
     }
@@ -123,6 +113,5 @@ export class MapService {
     public events: {
         load: Function[]
     };
-
 
 }

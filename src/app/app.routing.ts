@@ -19,6 +19,7 @@ import { StravaAuthComponent } from './component/strava-component/strava-auth-co
 import { GtgbcComponent } from './component/gtgbc/gtgbc.component';
 import { DeviceHelpComponent } from './component/device/device-help/device-help.component';
 import { OneUserComponent } from 'src/app/component/all-user/one-user/one-user.component';
+import {MapService} from './service/map.service';
 
 const appRouters: Routes = [
     {
@@ -58,7 +59,7 @@ const appRouters: Routes = [
                         path: 'journal',
                         component: JournalComponent,
                         resolve: {
-                            L: LeafletResolver
+                            L: LeafletResolver,
                         },
                     },
                     {

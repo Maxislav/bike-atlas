@@ -108,7 +108,7 @@ export class MapboxGlDirective implements AfterViewInit {
         this.setting = userService.getSetting() || new Setting();
         this.center = [30.5, 50.5];
         this.mapService = mapService;
-        this.mapService.mapboxgl = mapboxgl;
+        // this.mapService.mapboxgl = mapboxgl;
 
         this.styleSource = {
             'google-default': {
