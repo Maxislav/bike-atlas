@@ -3,7 +3,7 @@
   <div class="info">
     <div class="date">{{ trackDate | date: 'dd/MM/yyyy'}}</div>
     <div class="user">
-      <div class="user-icon"><img [src]="image || 'img/no-avatar.gif' "/></div>
+      <div class="user-icon"><img [src]="track.image || 'img/no-avatar.gif' "/></div>
       <div class="name">{{track.name}}</div>
     </div>
     <div (click)="showOnMap()" class="show-on-map">Просмотреть на главной карте</div>

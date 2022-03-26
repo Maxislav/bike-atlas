@@ -1,7 +1,7 @@
 
 import {Component, Input, OnInit, ElementRef, AfterViewInit} from "@angular/core";
 import {LeafletResolver} from "../journal.component";
-import {JournalService} from "../../../service/journal.service";
+import {Track} from "../../../service/journal.service";
 import {LocalStorage} from "../../../service/local-storage.service";
 import {TrackService} from "../../../service/track.service";
 import {UserService} from "../../../service/main.user.service";
@@ -50,7 +50,7 @@ export class OneTrack implements OnInit, AfterViewInit{
             })*/
     }
     index: number;
-    @Input() track: {points:Array<any>, userId: number, name: string};
+    @Input() track: Track;
     constructor(private el:ElementRef,
                 private Leaflet: LeafletResolver,
                 private ls:LocalStorage,

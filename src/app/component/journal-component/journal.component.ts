@@ -65,7 +65,7 @@ export class JournalComponent implements OnInit, OnDestroy {
         this.deviceList = deviceService.getDeviceList();
         console.log('deviceList -> ', this.deviceList);
         this.list = journalService.list;
-        this.selectDate = null;//this.journalService.selectDate;
+        this.selectDate = null;
 
     }
 
@@ -76,7 +76,7 @@ export class JournalComponent implements OnInit, OnDestroy {
                 if (d.error) throw new Error(d.error);
                 this.selectDate = this.dateRoundDay(new Date(d.date));
 
-                this.getTrack(device.device_key);
+                this.getTrack(device);
 
             });
     }
@@ -88,15 +88,15 @@ export class JournalComponent implements OnInit, OnDestroy {
         if (step < 0) {
             this.selectDate = this.stepBackDate(this.selectDate);
         }
-        this.getTrack(this.deviceSelected.device_key);
+        debugger
+        this.getTrack(this.deviceSelected);
     }
 
-    getTrack(device_key) {
-
+    getTrack(device: Device) {
         const from = this.selectDate;
         const to = this.stepForwardDate(this.selectDate);
 
-        this.journalService.getTrack(device_key, from, to)
+        this.journalService.getTrack(device, from, to)
             .then(data => {
                 console.log(data);
             });
