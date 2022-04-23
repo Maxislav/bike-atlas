@@ -56,7 +56,7 @@ class GetListener {
             delete this.hashMap[hash];
             this.delHash(hash);
             deferred.reject('Error by timeout name-> ' + this.name);
-        }, 10000);
+        }, 30000);
 
         this.hashMap[hash] = {
             timeout,
