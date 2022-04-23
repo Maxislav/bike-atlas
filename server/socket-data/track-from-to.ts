@@ -77,9 +77,9 @@ class TrackFromTo extends ProtoData {
                     return this.util.getTrackFromTo(device_key, from, to)
                         .then((rows: Array<LoggerRow>) => {
                             let points = rows
-                            if(points<2000){
+                            /*if(points<2000){
                                 points = TrackFromTo._clearParkingPoints(rows);
-                            }
+                            }*/
 
                             //points = TrackFromTo._clearInvalidPoint(points);
                             res.end({
@@ -149,9 +149,9 @@ class TrackFromTo extends ProtoData {
                     return this.util.getTrackFromTo(device.device_key, data.from, data.to)
                         .then((rows: LoggerRow[]) => {
                             let points = rows
-                            if(rows.length<2000){
+                            /*if(rows.length<2000){
                                 points = TrackFromTo._clearParkingPoints(rows);
-                            }
+                            }*/
 
                             list.push({userId: device.user_id, name: device.name, points: points});
                             return rows;
