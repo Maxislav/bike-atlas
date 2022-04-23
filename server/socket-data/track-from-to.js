@@ -132,7 +132,14 @@ class TrackFromTo extends proto_data_1.ProtoData {
             return Promise.all(devices.map(device => {
                 return this.util.getTrackFromTo(device.device_key, data.from, data.to)
                     .then((rows) => {
-                    const points = TrackFromTo._clearParkingPoints(rows);
+                    let points = rows;
+                    try {
+                        points = TrackFromTo._clearParkingPoints(rows);
+                    }
+                    catch (e) {
+                        points = rows;
+                    }
+                    //const
                     list.push({ userId: device.user_id, name: device.name, points: points });
                     return rows;
                 });

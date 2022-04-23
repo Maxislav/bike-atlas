@@ -144,7 +144,13 @@ class TrackFromTo extends ProtoData {
                 return Promise.all(devices.map(device => {
                     return this.util.getTrackFromTo(device.device_key, data.from, data.to)
                         .then((rows: LoggerRow[]) => {
-                            const points = TrackFromTo._clearParkingPoints(rows);
+                            let points = rows
+                            try {
+                                points = TrackFromTo._clearParkingPoints(rows);
+                            }catch (e){
+                                points = rows
+                            }
+                            //const
 
                             list.push({userId: device.user_id, name: device.name, points: points});
                             return rows;
@@ -265,7 +271,7 @@ class TrackFromTo extends ProtoData {
     }
 
 
-    static _clearParkingPoints(points: Array<LoggerRow>, k?: number) {
+    static _clearParkingPoints(points: Array<LoggerRow>, k?: number): Array<LoggerRow> {
         let i = k || 0;
         const point1 = points[i];
         if (!point1 || k == points.length) {
