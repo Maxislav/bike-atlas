@@ -76,8 +76,12 @@ class TrackFromTo extends ProtoData {
 
                     return this.util.getTrackFromTo(device_key, from, to)
                         .then((rows: Array<LoggerRow>) => {
-                            let points = TrackFromTo._clearParkingPoints(rows);
-                            points = TrackFromTo._clearInvalidPoint(points);
+                            let points = rows
+                            if(points<2000){
+                                points = TrackFromTo._clearParkingPoints(rows);
+                            }
+
+                            //points = TrackFromTo._clearInvalidPoint(points);
                             res.end({
                                 result: 'ok',
                                 list: [{userId: device.user_id, name: device.name, points: points}]
