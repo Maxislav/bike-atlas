@@ -133,13 +133,9 @@ class TrackFromTo extends proto_data_1.ProtoData {
                 return this.util.getTrackFromTo(device.device_key, data.from, data.to)
                     .then((rows) => {
                     let points = rows;
-                    try {
+                    if (rows.length < 2000) {
                         points = TrackFromTo._clearParkingPoints(rows);
                     }
-                    catch (e) {
-                        points = rows;
-                    }
-                    //const
                     list.push({ userId: device.user_id, name: device.name, points: points });
                     return rows;
                 });
