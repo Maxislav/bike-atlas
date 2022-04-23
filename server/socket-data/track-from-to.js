@@ -1,19 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ProtoData = require('./proto-data');
 const R = require('ramda');
 const distance_1 = require("../util/distance");
 const lngLat_1 = require("../util/lngLat");
-/**
- * Class olo
- * @extends Array
- */
-class Points extends Array {
-    constructor(...args) {
-        super(...args);
-    }
-}
-class TrackFromTo extends ProtoData {
+const proto_data_1 = require("./proto-data");
+class TrackFromTo extends proto_data_1.ProtoData {
     constructor(socket, util) {
         super(socket, util);
         //socket.on('trackFromTo', this.trackFromTo.bind(this, 'trackFromTo'));
@@ -140,8 +131,8 @@ class TrackFromTo extends ProtoData {
             const list = [];
             return Promise.all(devices.map(device => {
                 return this.util.getTrackFromTo(device.device_key, data.from, data.to)
-                    .then(rows => {
-                    const points = TrackFromTo._clearParkingPoints(new Points(...rows));
+                    .then((rows) => {
+                    const points = TrackFromTo._clearParkingPoints(rows);
                     list.push({ userId: device.user_id, name: device.name, points: points });
                     return rows;
                 });
@@ -248,11 +239,6 @@ class TrackFromTo extends ProtoData {
         }
         return points;
     }
-    /**
-     * @param {Points} points
-     * @param {number?} k
-     * @private
-     */
     static _clearParkingPoints(points, k) {
         let i = k || 0;
         const point1 = points[i];

@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OnFriend = void 0;
 const autobind_1 = require("../util/autobind");
 const R = require("ramda");
-const ProtoData = require("./proto-data");
-class OnFriend extends ProtoData {
+const proto_data_1 = require("./proto-data");
+class OnFriend extends proto_data_1.ProtoData {
     constructor(socket, util, logger, chat) {
         super(socket, util);
         this.logger = logger;
@@ -95,7 +95,7 @@ class OnFriend extends ProtoData {
             return this.util.getFriends(user_id);
         })
             .then((friends) => {
-            const rows = ProtoData.toCamelCaseArrObj(friends);
+            const rows = proto_data_1.ProtoData.toCamelCaseArrObj(friends);
             res.end({
                 result: 'ok',
                 friends: rows
@@ -116,7 +116,7 @@ class OnFriend extends ProtoData {
             .then(users => {
             res.end({
                 result: 'ok',
-                users: ProtoData.toCamelCaseArrObj(users)
+                users: proto_data_1.ProtoData.toCamelCaseArrObj(users)
             });
         })
             .catch(err => {

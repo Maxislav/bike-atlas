@@ -1,7 +1,7 @@
-import * as ProtoData from './proto-data';
 import { Deferred } from '../deferred';
 import { DeviceRow, LoggerRow, User  } from '../types';
 import { autobind } from '../util/autobind';
+import {ProtoData} from './proto-data';
 export class OnAuth extends ProtoData {
 
 

@@ -10,9 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OnMyMarker = void 0;
-const ProtoData = require("./proto-data");
 const autobind_1 = require("../util/autobind");
-class OnMyMarker extends ProtoData {
+const proto_data_1 = require("./proto-data");
+class OnMyMarker extends proto_data_1.ProtoData {
     constructor(socket, util) {
         super(socket, util);
         this.socket.$get('getMarkerList', this.getMarkerList);

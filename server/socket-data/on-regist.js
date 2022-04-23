@@ -10,9 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OnRegist = void 0;
-const ProtoData = require("./proto-data");
 const autobind_1 = require("../util/autobind");
-class OnRegist extends ProtoData {
+const proto_data_1 = require("./proto-data");
+class OnRegist extends proto_data_1.ProtoData {
     constructor(socket, util, logger) {
         super(socket, util);
         this.socket = socket;

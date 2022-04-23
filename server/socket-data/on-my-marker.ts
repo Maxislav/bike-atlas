@@ -1,7 +1,7 @@
-import * as ProtoData from './proto-data';
 import { SSocket } from '../socket-data';
 import { Util } from '../socket-data/util';
 import { autobind } from '../util/autobind';
+import {ProtoData} from './proto-data';
 
 export class OnMyMarker extends ProtoData {
 

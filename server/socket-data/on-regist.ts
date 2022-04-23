@@ -1,7 +1,7 @@
-import * as ProtoData from './proto-data';
 import {autobind} from '../util/autobind';
 import {Util} from '../socket-data/util';
 import {Logger} from '../gps-logger/gps-logger';
+import {ProtoData} from './proto-data';
 
 
 interface RegistrationFormIs {
@@ -17,7 +17,7 @@ interface PassFormIs {
 }
 
 export class OnRegist extends ProtoData {
-    constructor(private socket, private util: Util, private logger: Logger) {
+    constructor(public socket, public util: Util, private logger: Logger) {
         super(socket, util);
         socket.on('onRegist', this.onRegist);
         this.socket.$get('updatePass', this.updatePass);

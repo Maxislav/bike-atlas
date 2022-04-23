@@ -1,19 +1,10 @@
-import { LoggerRow } from '../types';
+import {LoggerRow} from '../types';
 
-const ProtoData = require('./proto-data');
 const R = require('ramda');
 import {distance} from '../util/distance';
 import {LngLat} from '../util/lngLat';
-/**
- * Class olo
- * @extends Array
- */
-class Points extends Array {
-    constructor(...args) {
-        super(...args);
+import {ProtoData} from './proto-data';
 
-    }
-}
 
 class TrackFromTo extends ProtoData {
     constructor(socket, util) {
@@ -85,7 +76,7 @@ class TrackFromTo extends ProtoData {
 
                     return this.util.getTrackFromTo(device_key, from, to)
                         .then((rows: Array<LoggerRow>) => {
-                            let  points = TrackFromTo._clearParkingPoints(rows);
+                            let points = TrackFromTo._clearParkingPoints(rows);
                             points = TrackFromTo._clearInvalidPoint(points);
                             res.end({
                                 result: 'ok',
@@ -152,8 +143,8 @@ class TrackFromTo extends ProtoData {
                 const list = [];
                 return Promise.all(devices.map(device => {
                     return this.util.getTrackFromTo(device.device_key, data.from, data.to)
-                        .then(rows => {
-                            const points = TrackFromTo._clearParkingPoints(new Points(...rows));
+                        .then((rows: LoggerRow[]) => {
+                            const points = TrackFromTo._clearParkingPoints(rows);
 
                             list.push({userId: device.user_id, name: device.name, points: points});
                             return rows;
@@ -256,14 +247,14 @@ class TrackFromTo extends ProtoData {
 
     static _clearInvalidPoint(points: Array<LoggerRow>): Array<LoggerRow> {
 
-        for (let i = 0 ; i < points.length - 2; i++){
+        for (let i = 0; i < points.length - 2; i++) {
             const p1 = points [i];
-            const p2 = points [i+1];
-            const p3 = points [i+2];
+            const p2 = points [i + 1];
+            const p3 = points [i + 2];
             const dist1 = distance(LngLat.fromObject(p1), LngLat.fromObject(p2));
             const dist2 = distance(LngLat.fromObject(p2), LngLat.fromObject(p3));
-            if(1<dist1 && 1<dist2){
-                points.splice(i+1, 1);
+            if (1 < dist1 && 1 < dist2) {
+                points.splice(i + 1, 1);
                 return TrackFromTo._clearInvalidPoint(points);
             }
         }
@@ -273,11 +264,7 @@ class TrackFromTo extends ProtoData {
 
     }
 
-    /**
-     * @param {Points} points
-     * @param {number?} k
-     * @private
-     */
+
     static _clearParkingPoints(points: Array<LoggerRow>, k?: number) {
         let i = k || 0;
         const point1 = points[i];

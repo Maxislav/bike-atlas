@@ -9,9 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ProtoData = require("./proto-data");
 const autobind_1 = require("../util/autobind");
-class Device extends ProtoData {
+const proto_data_1 = require("./proto-data");
+class Device extends proto_data_1.ProtoData {
     constructor(socket, util, logger) {
         super(socket, util);
         this.socket = socket;

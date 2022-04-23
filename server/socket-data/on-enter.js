@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OnEnter = void 0;
 const hashKeys = [];
-const ProtoData = require("./proto-data");
 const autobind_1 = require("../util/autobind");
+const proto_data_1 = require("./proto-data");
 function getRandom(min, max, int) {
     var rand = min + Math.random() * (max - min);
     if (int) {
@@ -20,7 +20,7 @@ function getRandom(min, max, int) {
     }
     return rand;
 }
-class OnEnter extends ProtoData {
+class OnEnter extends proto_data_1.ProtoData {
     constructor(socket, util, logger, chat) {
         super(socket, util);
         this.logger = logger;

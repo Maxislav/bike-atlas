@@ -1,10 +1,10 @@
 import { DeviceRow, LoggerRow } from '../types';
 
-import * as ProtoData from './proto-data';
 import { autobind } from '../util/autobind';
+import {ProtoData} from './proto-data';
 
 class Device extends ProtoData {
-    constructor(private socket, private util, private logger) {
+    constructor(public socket, public util, public logger) {
         super(socket, util);
 
         this.socket.$get('onDevices', this.onDevices);

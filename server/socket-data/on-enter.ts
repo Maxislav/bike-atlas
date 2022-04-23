@@ -4,8 +4,8 @@
 import {Chat} from '../chat';
 
 const hashKeys = [];
-import * as ProtoData from './proto-data';
 import {autobind} from '../util/autobind';
+import {ProtoData} from './proto-data';
 
 function getRandom(min, max, int) {
     var rand = min + Math.random() * (max - min);
@@ -18,8 +18,8 @@ function getRandom(min, max, int) {
 
 export class OnEnter extends ProtoData {
 
-    private socket;
-    private util;
+    public socket;
+    public util;
     private logger;
     private chat;
 

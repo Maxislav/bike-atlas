@@ -1,11 +1,11 @@
 import { autobind } from '../util/autobind';
 
 import * as R from 'ramda';
-import * as ProtoData from './proto-data';
+import {ProtoData} from './proto-data';
 
 export class OnFriend extends ProtoData {
-    private socket;
-    private util;
+    public socket;
+    public util;
     private logger;
     private chat;
 

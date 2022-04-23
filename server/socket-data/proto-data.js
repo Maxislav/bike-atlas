@@ -1,11 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ProtoData = void 0;
 const util = require('./util');
 const R = require('ramda');
-
-
-
-class ProtoData{
-	/**
-     * 
+class ProtoData {
+    /**
+     *
      * @param socket
      * @param {Util} util
      */
@@ -14,36 +14,34 @@ class ProtoData{
         this.util = util;
     }
     getUserId() {
-        return this.util.getUserIdBySocketId(this.socket.id)
+        return this.util.getUserIdBySocketId(this.socket.id);
     }
-    getFriendsIds(){
+    getFriendsIds() {
         return this.getUserId()
-          .then(userId=>{
-             return this.util.getFriendIds( userId)
-               .then(rows=>{
-                   return R.pluck('friend_id')(rows)
-               })
-          })
-
-    }
-    static toCamelCaseArrObj(arr){
-      return arr.map(item=>{
-        return ProtoData.toCamelCaseObj(item)
-      })
-    }
-  
-    static toCamelCaseObj(obj){
-      const res = {};
-      for (let opt in obj){
-        res[camelCased(opt)] = obj[opt]
-      }
-      function camelCased(myString) {
-        return myString.replace(/_([a-z])/g, function (g) {
-          return g[1].toUpperCase();
+            .then(userId => {
+            return this.util.getFriendIds(userId)
+                .then(rows => {
+                return R.pluck('friend_id')(rows);
+            });
         });
-      }
-      return res;
     }
-
+    static toCamelCaseArrObj(arr) {
+        return arr.map(item => {
+            return ProtoData.toCamelCaseObj(item);
+        });
+    }
+    static toCamelCaseObj(obj) {
+        const res = {};
+        for (let opt in obj) {
+            res[camelCased(opt)] = obj[opt];
+        }
+        function camelCased(myString) {
+            return myString.replace(/_([a-z])/g, function (g) {
+                return g[1].toUpperCase();
+            });
+        }
+        return res;
+    }
 }
-module.exports = ProtoData;
+exports.ProtoData = ProtoData;
+//# sourceMappingURL=proto-data.js.map

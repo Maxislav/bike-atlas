@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OnGtgbc = void 0;
 const base_station_location_1 = require("../tcp/base-station-location");
+const proto_data_1 = require("./proto-data");
 const path = require('path');
 const https = require('https');
-const ProtoData = require('./proto-data');
-class OnGtgbc extends ProtoData {
+class OnGtgbc extends proto_data_1.ProtoData {
     constructor(socket, util) {
         super(socket, util);
         this.socket = socket;

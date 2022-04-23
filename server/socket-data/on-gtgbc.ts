@@ -1,8 +1,8 @@
 import { BaseStationLocation } from '../tcp/base-station-location';
+import {ProtoData} from './proto-data';
 
 const path = require('path');
 const https = require('https');
-const ProtoData = require('./proto-data');
 
 
 interface MobileCell {
@@ -14,7 +14,7 @@ interface MobileCell {
 
 export class OnGtgbc extends ProtoData {
 
-    constructor(private socket, private util) {
+    constructor(public socket, public util) {
         super(socket, util);
         const onGtgbc = this.onGtgbc.bind(this);
         this.socket.$get('onGtgbc', onGtgbc);

@@ -10,10 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OnAuth = void 0;
-const ProtoData = require("./proto-data");
 const deferred_1 = require("../deferred");
 const autobind_1 = require("../util/autobind");
-class OnAuth extends ProtoData {
+const proto_data_1 = require("./proto-data");
+class OnAuth extends proto_data_1.ProtoData {
     constructor(socket, util, chat, logger, gl520) {
         super(socket, util);
         this.chat = chat;
