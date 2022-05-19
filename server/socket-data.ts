@@ -35,6 +35,7 @@ import {Util} from './socket-data/util';
 const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
 import {OnMyMarker} from './socket-data/on-my-marker.js';
+import {MyFireBase} from './firebase/firebase';
 
 let connection, server, app;
 let resolveExport;
@@ -102,6 +103,7 @@ class SocketData {
         const util = new Util(connection);
        // const ioServer = io(8081);
         const logger = new Logger(app, ioServer, util);
+        const myFireBase = new MyFireBase(app, util);
         this.gl520 = new Gl520(ioServer, util).create();
         const chat = new Chat(util);
 

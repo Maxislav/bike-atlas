@@ -26,6 +26,7 @@ const util_1 = require("./socket-data/util");
 const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
 const on_my_marker_js_1 = require("./socket-data/on-my-marker.js");
+const firebase_1 = require("./firebase/firebase");
 let connection, server, app;
 let resolveExport;
 let rejectExport;
@@ -71,6 +72,7 @@ class SocketData {
         const util = new util_1.Util(connection);
         // const ioServer = io(8081);
         const logger = new gps_logger_1.Logger(app, ioServer, util);
+        const myFireBase = new firebase_1.MyFireBase(app, util);
         this.gl520 = new gl_520_1.Gl520(ioServer, util).create();
         const chat = new chat_1.Chat(util);
         ioServer.on('connection', (s) => {

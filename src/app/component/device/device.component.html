@@ -15,7 +15,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let dev of devices ;  let i = index " (click)="preDel($event, i)">
+                    <tr *ngFor="let dev of devices ;  let i = index " (click)="preDel($event, i)" [ngClass]="{selected: btnPreDel.index==i}" >
                         <td><img [src]="dev.image || hostPrefix + 'img/speedway_4_logo.jpg' "
                                  (click)="onLoadImage(dev, i)" class="logo" [ngStyle]="{background: dev.background}" />
                             <input type="file" [attr.id]="'input-img-'+i" name="files[]" multiple=""
@@ -24,6 +24,17 @@
                         <td>{{dev.name}}</td>
                         <td>{{dev.device_key}}</td>
                         <td>{{dev.phone}}</td>
+                        <td >
+                            <div *ngIf="!dev.sharedLink; else sharedRef" class="pointer" (click)="createSharedLink($event, dev)">
+                                create
+                            </div>
+                            <ng-template #sharedRef>
+                                <div>
+                                        {{dev.sharedLink}}
+                                </div>
+                            </ng-template>
+
+                        </td>
                         <td class="predelCell">
                             <div *ngIf="btnPreDel.index==i" (click)="preDel2($event, dev)" class="predel">&times;</div>
                         </td>

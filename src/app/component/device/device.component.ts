@@ -2,18 +2,19 @@ import {
     Component, Pipe, PipeTransform, Directive, ElementRef,
     AfterViewInit, OnInit
 } from '@angular/core';
-import { Location } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Device, DeviceService } from '../../service/device.service';
-import { NavigationHistory } from '../../app.component';
-import { User, UserService } from '../../service/main.user.service';
-import { environment } from '../../../environments/environment';
-import { PopupButton, PopupInstance, PopupService } from 'src/app/modules/popup-module/popup.service';
-import { DeviceDelPopupComponent } from 'src/app/component/device/device-del-popup.component';
-import { autobind } from 'src/app/util/autobind';
-import { LogService } from 'src/app/service/log.service';
-import { PopupItemComponent } from 'src/app/modules/popup-module/popup-item.component';
+import {Location} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Device, DeviceService} from '../../service/device.service';
+import {NavigationHistory} from '../../app.component';
+import {User, UserService} from '../../service/main.user.service';
+import {environment} from '../../../environments/environment';
+import {PopupButton, PopupInstance, PopupService} from 'src/app/modules/popup-module/popup.service';
+import {DeviceDelPopupComponent} from 'src/app/component/device/device-del-popup.component';
+import {autobind} from 'src/app/util/autobind';
+import {LogService} from 'src/app/service/log.service';
+import {PopupItemComponent} from 'src/app/modules/popup-module/popup-item.component';
 import {ToastService} from '../../shared-module/toast-module/toast.service';
+import {hashGenerate} from '../../util/hash';
 
 function getOffset(el) {
     var _x = 0;
@@ -71,7 +72,6 @@ export class IsOwner implements PipeTransform {
 }
 
 
-
 @Component({
     templateUrl: 'device.component.html',
     styleUrls: [
@@ -94,15 +94,15 @@ export class DeviceComponent implements AfterViewInit, OnInit {
     } ;
 
     constructor(
-                private router: Router,
-                private activatedRoute: ActivatedRoute,
-                private userService: UserService,
-                private deviceService: DeviceService,
-                private toast: ToastService,
-                private lh: NavigationHistory,
-                private el: ElementRef,
-                private popupService: PopupService,
-                private logService: LogService
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
+        private userService: UserService,
+        private deviceService: DeviceService,
+        private toast: ToastService,
+        private lh: NavigationHistory,
+        private el: ElementRef,
+        private popupService: PopupService,
+        private logService: LogService
     ) {
 
 
@@ -149,19 +149,7 @@ export class DeviceComponent implements AfterViewInit, OnInit {
                 if (d && d.result == 'ok') {
                     this.reset();
                 }
-
-
             });
-        /*.then(d => {
-            if (d && d.result == 'ok') {
-                this.reset();
-            } else if (d && d.result === false && d.message == 'device exist') {
-                this.toast.show({
-                    type: 'warning',
-                    text: 'Устройство зарегистрированно на другого пользователя'
-                });
-            }
-        });*/
     }
 
 
@@ -201,11 +189,6 @@ export class DeviceComponent implements AfterViewInit, OnInit {
                     }
                 ]
             });
-        /*this.deviceService.onDelDevice(device)
-            .then(d => {
-                console.log(d);
-                this.clearPredel();
-            });*/
     }
 
     @autobind()
@@ -215,13 +198,16 @@ export class DeviceComponent implements AfterViewInit, OnInit {
 
     preDel(e, i) {
         e.stopPropagation();
-
-
         this.btnPreDel.index = i;
     }
 
     clearPredel() {
         this.btnPreDel.index = -1;
+    }
+
+    public createSharedLink(event: Event, device: Device) {
+        event.stopPropagation();
+        device.sharedLink = hashGenerate()
     }
 
     reset() {

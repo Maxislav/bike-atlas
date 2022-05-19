@@ -36,6 +36,7 @@ export interface DeviceData {
     image: string;
     phone: string,
     device_key: string;
+    sharedLink: string;
 }
 
 export class Device implements DeviceData {
@@ -45,17 +46,18 @@ export class Device implements DeviceData {
     name: string = null;
     phone: string = null;
     image: string = null;
+    sharedLink = null;
     lngLat: LngLat;
     speed: number = 0;
     marker: Marker = null;
-    private lngLatStr: string;
-    private color: ColorSpeed;
+    public background: string;
     public date: Date;
     public elapseTime: number;
+
+    private color: ColorSpeed;
     private isMove = false;
-    public background: string;
     private timerId;
-    private dist: number = 0;
+
 
     constructor(
         deviceData: DeviceData,
@@ -67,13 +69,12 @@ export class Device implements DeviceData {
         this.color = new ColorSpeed();
         this.background = this.color.dead;
 
-
         if (deviceData) {
+
             [
                 'id',
                 'user_id',
                 'device_key',
-                'string',
                 'phone',
                 'image',
                 'lng',
@@ -83,10 +84,7 @@ export class Device implements DeviceData {
                 .forEach(key => {
                     this[key] = deviceData[key];
                 });
-            //this.timerStart();
         }
-
-
     }
 
     private timerStart() {
@@ -98,7 +96,6 @@ export class Device implements DeviceData {
     }
 
     setIconEl(iconEl: HTMLElement) {
-
         return this;
     }
 
@@ -189,7 +186,6 @@ export class Device implements DeviceData {
             'id',
             'user_id',
             'device_key',
-            'string',
             'phone',
             'image',
             'lng',
@@ -207,7 +203,9 @@ export class Device implements DeviceData {
 }
 
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class DeviceService {
 
     private readonly devices: Array<Device> = [];

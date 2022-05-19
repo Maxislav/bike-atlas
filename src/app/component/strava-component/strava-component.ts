@@ -3,7 +3,7 @@ import {
     Router, ActivatedRoute, Params, Route, CanActivate, RouterStateSnapshot,
     ActivatedRouteSnapshot
 } from "@angular/router";
-import {hashgeneral} from "../../util/hash";
+import {hashGenerate} from "../../util/hash";
 import {Io} from "../../service/socket.oi.service";
 import {StravaService, StravaD} from "../../service/strava.service";
 import {UserService} from "../../service/main.user.service";
@@ -36,7 +36,7 @@ export class StravaComponent  implements OnChanges {
     private _stravaClientId: number = null;
     private _stravaClientSecret: string = null;
     private stravaHref: String = null;
-    private token: String = hashgeneral();
+    private token: String = hashGenerate();
     private socket: any;
     private code: string;
     private myLocation: string;
