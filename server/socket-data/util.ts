@@ -1083,8 +1083,8 @@ export class Util {
             })
     }
 
-    public saveFireBaseToken(data: {token: string, deviceId: string}){
-        return new Promise((resolve, reject) => {
+    public saveFireBaseToken(data: {token: string, deviceId: string}): Promise<string>{
+        return new Promise<any>((resolve, reject) => {
             const query = 'SELECT * FROM `firebase` WHERE `device_key`=?';
 
             this.connection.query(query, [data.deviceId], (err, rows) => {
@@ -1103,7 +1103,7 @@ export class Util {
                             if(err){
                                 return j(err)
                             }
-                            return r('ok')
+                            r('ok')
                         })
                     })
                 }else {
@@ -1114,9 +1114,9 @@ export class Util {
 
                         this.connection.query(query, [data.deviceId, data.token, new Date()], (err, rows) => {
                             if(err){
-                                return Promise.reject(err)
+                                return j(err)
                             }
-                            return Promise.resolve('ok')
+                            r('ok')
                         })
                     })
                 }

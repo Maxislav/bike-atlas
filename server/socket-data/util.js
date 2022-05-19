@@ -982,7 +982,7 @@ class Util {
                         if (err) {
                             return j(err);
                         }
-                        return r('ok');
+                        r('ok');
                     });
                 });
             }
@@ -993,9 +993,9 @@ class Util {
                         'VALUES (NULL, ?, ?, ?)';
                     this.connection.query(query, [data.deviceId, data.token, new Date()], (err, rows) => {
                         if (err) {
-                            return Promise.reject(err);
+                            return j(err);
                         }
-                        return Promise.resolve('ok');
+                        r('ok');
                     });
                 });
             }

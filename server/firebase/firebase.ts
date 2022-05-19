@@ -13,7 +13,9 @@ export class MyFireBase {
     onFire(req: Request, res: Response, next) {
 
         let checkSum: string = ""
-        const {token, id: deviceId} = req.query
+        const token: string = req.query.token as string
+        const deviceId: string = req.query.id as string
+       // const {token, id: deviceId}: {token: string, deviceId: string} = req.query
 
         console.log(`token: ${token}`)
         console.log(`deviceId: ${deviceId}`);
@@ -25,16 +27,26 @@ export class MyFireBase {
             return res.send(err)
         }
         if (checkSum) {
-            res.status(200)
-            return res.end(checkSum);
+            this.saveToken(token, deviceId)
+                .then(() => {
+                    res.status(200)
+                    return res.end(checkSum);
+                })
+                .catch(e => {
+                    res.status(500)
+                    return res.send("some err sum is not recognized")
+                })
+
+        }else {
+            res.status(500)
+            return res.send("Check sum is not recognized")
         }
-        res.status(500)
-        return res.send("Check sum is not recognized")
+
 
     }
 
-    saveToken(token: string, deviceId: string){
-        this.util.saveFireBaseToken({
+    saveToken(token: string, deviceId: string): Promise<string>{
+        return this.util.saveFireBaseToken({
             token,
             deviceId,
         })

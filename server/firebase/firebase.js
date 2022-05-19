@@ -19,7 +19,9 @@ class MyFireBase {
     }
     onFire(req, res, next) {
         let checkSum = "";
-        const { token, id: deviceId } = req.query;
+        const token = req.query.token;
+        const deviceId = req.query.id;
+        // const {token, id: deviceId}: {token: string, deviceId: string} = req.query
         console.log(`token: ${token}`);
         console.log(`deviceId: ${deviceId}`);
         try {
@@ -31,14 +33,23 @@ class MyFireBase {
             return res.send(err);
         }
         if (checkSum) {
-            res.status(200);
-            return res.end(checkSum);
+            this.saveToken(token, deviceId)
+                .then(() => {
+                res.status(200);
+                return res.end(checkSum);
+            })
+                .catch(e => {
+                res.status(500);
+                return res.send("some err sum is not recognized");
+            });
         }
-        res.status(500);
-        return res.send("Check sum is not recognized");
+        else {
+            res.status(500);
+            return res.send("Check sum is not recognized");
+        }
     }
     saveToken(token, deviceId) {
-        this.util.saveFireBaseToken({
+        return this.util.saveFireBaseToken({
             token,
             deviceId,
         });
