@@ -958,10 +958,21 @@ class Util {
             });
         });
     }
-    registerFireBaseDevice(socket) {
-        return this.getUserIdBySocketId(socket.id)
-            .then((userId) => {
+    getFireBaseToken(deviceKey) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * FROM `firebase` WHERE `device_key`=?';
+            this.connection.query(query, [deviceKey], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows[0]);
+            });
         });
+        /*return this.getUserIdBySocketId(socket.id)
+             .then((userId) => {
+ 
+             })*/
     }
     saveFireBaseToken(data) {
         return new Promise((resolve, reject) => {

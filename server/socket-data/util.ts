@@ -1076,11 +1076,22 @@ export class Util {
 
     }
 
-    public registerFireBaseDevice(socket: SSocket){
-       return this.getUserIdBySocketId(socket.id)
+    public getFireBaseToken(deviceKey: string){
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * FROM `firebase` WHERE `device_key`=?';
+            this.connection.query(query, [deviceKey], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows[0]);
+            })
+        })
+
+       /*return this.getUserIdBySocketId(socket.id)
             .then((userId) => {
 
-            })
+            })*/
     }
 
     public saveFireBaseToken(data: {token: string, deviceId: string}): Promise<string>{

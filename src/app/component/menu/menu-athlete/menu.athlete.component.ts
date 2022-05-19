@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { Device, DeviceService } from '../../../service/device.service';
 import { MapService } from '../../../service/map.service';
 import { UserService } from '../../../service/main.user.service';
+import {autobind} from '../../../util/autobind';
 
 
 @Component({
@@ -19,12 +20,13 @@ export class MenuAthleteComponent {
     constructor(private user: UserService, private mapService: MapService, private deviceService: DeviceService) {
         this.userDevices = deviceService.getDeviceList();
         this.otherDevices = [];
-        this.onCloseMenu = this.onCloseMenu.bind(this, false);
+        // this.onCloseMenu = this.onCloseMenu.bind(this, false);
 
     }
 
-
+    @autobind()
     onCloseMenu() {
+
         this.onCloseMenuAthlete.emit(false);
     }
 

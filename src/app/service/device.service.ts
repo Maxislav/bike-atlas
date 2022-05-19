@@ -1,16 +1,10 @@
 import {ApplicationRef, ComponentFactoryResolver, Injectable, Injector} from '@angular/core';
 import {Io} from './socket.oi.service';
-import {LocalStorage} from './local-storage.service';
-import {FriendsService} from '../api/friends.service';
 import {Marker} from '../util/marker';
-import {DeviceLogData, MapGl} from '../../types/global';
+import {MapGl} from '../../types/global';
 import {LogData} from 'src/types/global';
 import {LngLat} from 'src/app/util/lngLat';
-import {DeviceIconComponent} from 'src/app/component/device-icon-component/device-icon-component';
 import {distance} from 'src/app/util/distance';
-import {LogService} from 'src/app/service/log.service';
-
-//import { Marker } from './marker.service';
 
 
 class ColorSpeed {
@@ -167,7 +161,7 @@ export class Device implements DeviceData {
             g = (Math.round(127 * elapseTime / quarter) + 127).toString(16)
             g = g.length < 2 ? `0${g}` : g;
         } else {
-            b = Math.round(255 * elapseTime / (quarter*3)).toString(16);
+            b = Math.round(255 * elapseTime / (quarter * 3)).toString(16);
             b = b.length < 2 ? `0${b}` : b;
         }
         return `#FF${g}${b}`;
@@ -229,6 +223,12 @@ export class DeviceService {
 
     getDeviceList() {
         return this.devices;
+    }
+
+    onLocationUpdate(d: Device): Promise<any> {
+        return this.socket.$get('update-location', {
+            device_key: d.device_key
+        })
     }
 
     getDeviceByDeviceKey(key: string): Device {

@@ -1,9 +1,21 @@
 <div class="inner-row">
     <div class="inner-cell">
-        <div  class="status" [ngStyle]="{'background': device.background}"><img   [src]="image"/></div>
+        <div  class="status" [ngStyle]="{'background': device.background}"><img  [src]="image" alt=""/></div>
     </div>
     <div class="inner-cell">
-        <div class="name">{{device.name}}</div>
+        <div class="name" (click)="showButton()">
+            <span>
+                {{device.name}}
+            </span>
+            <div
+                    *ngIf="isVisible"
+                    class="location-update"
+                    (mouseover)="onMouseOver()"
+                    (click)="onRequestLocation($event)"
+                    (mouseleave)="onMouseLeave()">
+                Location Update
+            </div>
+        </div>
         <div *ngIf="device.marker" class="passed"> {{elapsed}}</div>
         <div *ngIf="device.marker" class="speed"> {{speed}} km/h</div>
         <ats-batt-level [level]="batt"></ats-batt-level>
