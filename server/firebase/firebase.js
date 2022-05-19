@@ -37,6 +37,12 @@ class MyFireBase {
         res.status(500);
         return res.send("Check sum is not recognized");
     }
+    saveToken(token, deviceId) {
+        this.util.saveFireBaseToken({
+            token,
+            deviceId,
+        });
+    }
 }
 __decorate([
     autobind_1.autobind(),

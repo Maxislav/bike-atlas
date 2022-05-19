@@ -958,6 +958,49 @@ class Util {
             });
         });
     }
+    registerFireBaseDevice(socket) {
+        return this.getUserIdBySocketId(socket.id)
+            .then((userId) => {
+        });
+    }
+    saveFireBaseToken(data) {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * FROM `firebase` WHERE `device_key`=?';
+            this.connection.query(query, [data.deviceId], (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(rows[0]);
+            });
+        })
+            .then((row) => {
+            if (row) {
+                return new Promise((r, j) => {
+                    const query = 'UPDATE `firebase` SET  `token`=?, `date`=?  WHERE id=?';
+                    this.connection.query(query, [data.token, new Date(), row.id], (err, result) => {
+                        if (err) {
+                            return j(err);
+                        }
+                        return r('ok');
+                    });
+                });
+            }
+            else {
+                return new Promise((r, j) => {
+                    const query = 'INSERT INTO `firebase` ' +
+                        '(`id`, `device_key`, `token`, `date`) ' +
+                        'VALUES (NULL, ?, ?, ?)';
+                    this.connection.query(query, [data.deviceId, data.token, new Date()], (err, rows) => {
+                        if (err) {
+                            return Promise.reject(err);
+                        }
+                        return Promise.resolve('ok');
+                    });
+                });
+            }
+        });
+    }
     formatDevice(d) {
         return {
             id: d.device_key,

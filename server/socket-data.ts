@@ -1,10 +1,10 @@
 import {Deferred} from './deferred';
 
 const socketStream = require('socket.io-stream');
-const mysql = require('mysql');
+// const mysql = require('mysql');
 const config = require('./mysql.config.json');
 import './colors';
-
+import * as mysql from 'mysql'
 const io = require('socket.io');
 config.mysql['database'] = 'monitoring';
 //let connection = mysql.createConnection(config.mysql);
@@ -36,8 +36,10 @@ const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
 import {OnMyMarker} from './socket-data/on-my-marker.js';
 import {MyFireBase} from './firebase/firebase';
+import {MyFirebase} from './socket-data/on-firebase';
+import {Connection} from 'mysql';
 
-let connection, server, app;
+let connection: Connection, server, app;
 let resolveExport;
 let rejectExport;
 let promiseExport: Promise<{ server: any, app: any }> = new Promise((resolve, reject) => {
@@ -98,7 +100,7 @@ class SocketData {
     gl520: Gl520;
     updateConnect: Function;
 
-    constructor(ioServer, app, connection) {
+    constructor(ioServer, app, connection: Connection) {
         this.connection = connection;
         const util = new Util(connection);
        // const ioServer = io(8081);
@@ -133,7 +135,7 @@ class SocketData {
             const onImportKml = new OnImportKml(socket, util);
             const onMyMarker = new OnMyMarker(socket, util);
             const onGtgbc = new OnGtgbc(socket, util);
-
+            const myFireBase = new MyFirebase(socket, util)
             socket.on('disconnect', () => {
 
                 this.gl520.onDisconnect(socket.id);

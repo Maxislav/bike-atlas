@@ -32,4 +32,12 @@ export class MyFireBase {
         return res.send("Check sum is not recognized")
 
     }
+
+    saveToken(token: string, deviceId: string){
+        this.util.saveFireBaseToken({
+            token,
+            deviceId,
+        })
+
+    }
 }

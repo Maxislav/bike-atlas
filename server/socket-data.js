@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ssocketData = exports.SSocket = void 0;
 const socketStream = require('socket.io-stream');
-const mysql = require('mysql');
+// const mysql = require('mysql');
 const config = require('./mysql.config.json');
 require("./colors");
+const mysql = require("mysql");
 const io = require('socket.io');
 config.mysql['database'] = 'monitoring';
 //let connection = mysql.createConnection(config.mysql);
@@ -27,6 +28,7 @@ const OnStrava = require('./socket-data/on-strava');
 const OnImportKml = require('./socket-data/on-impork-kml');
 const on_my_marker_js_1 = require("./socket-data/on-my-marker.js");
 const firebase_1 = require("./firebase/firebase");
+const on_firebase_1 = require("./socket-data/on-firebase");
 let connection, server, app;
 let resolveExport;
 let rejectExport;
@@ -97,6 +99,7 @@ class SocketData {
             const onImportKml = new OnImportKml(socket, util);
             const onMyMarker = new on_my_marker_js_1.OnMyMarker(socket, util);
             const onGtgbc = new on_gtgbc_js_1.OnGtgbc(socket, util);
+            const myFireBase = new on_firebase_1.MyFirebase(socket, util);
             socket.on('disconnect', () => {
                 this.gl520.onDisconnect(socket.id);
                 logger.onDisconnect(socket.id);

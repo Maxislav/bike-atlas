@@ -15,6 +15,7 @@ connect()
         console.log(err);
         connection.end()
     });
+
 //ALTER TABLE `logger` CHANGE `date` `date` datetime(2) NOT NULL
 
 function connect() {
@@ -73,10 +74,10 @@ function createTable() {
     const tableHash = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`hash` ' +
             '( `id` INT NOT NULL AUTO_INCREMENT , ' +
-          '`user_id` INT NOT NULL, ' +
-          '`socket_id` VARCHAR(32) NOT NULL, ' +
-          '`key` VARCHAR(32) NULL,' +
-          ' PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+            '`user_id` INT NOT NULL, ' +
+            '`socket_id` VARCHAR(32) NOT NULL, ' +
+            '`key` VARCHAR(32) NULL,' +
+            ' PRIMARY KEY (`id`)) ENGINE = InnoDB;';
 
         connection.query(query, (err) => {
             if (err) {
@@ -203,13 +204,13 @@ function createTable() {
 
     const tableChat = new Promise((res, rej) => {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`chat` ' +
-          '( `id` INT NOT NULL AUTO_INCREMENT , ' +
-          '`from_user_id` INT NOT NULL , ' +
-          '`to_user_id` INT NOT NULL , ' +
-          '`text` TEXT COLLATE utf8_general_ci NULL DEFAULT NULL, ' +
-          '`viewed` BOOLEAN NOT NULL DEFAULT 0, ' +
-          '`date` DATETIME NOT NULL, ' +
-          'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+            '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+            '`from_user_id` INT NOT NULL , ' +
+            '`to_user_id` INT NOT NULL , ' +
+            '`text` TEXT COLLATE utf8_general_ci NULL DEFAULT NULL, ' +
+            '`viewed` BOOLEAN NOT NULL DEFAULT 0, ' +
+            '`date` DATETIME NOT NULL, ' +
+            'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
         connection.query(query, (err) => {
             if (err) {
                 console.log('Error table chat create');
@@ -277,16 +278,31 @@ function createTable() {
         })
     });
 
-
+    const tableFireBase = new Promise((res, rej) => {
+        const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`firebase` ' +
+            '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+            '`device_key` VARCHAR(32) NOT NULL,' +
+            '`token` VARCHAR(512) NOT NULL,' +
+            '`date` DATETIME NOT NULL,' +
+            'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+        connection.query(query, (err) => {
+            if (err) {
+                console.log('Error table firebase create');
+                rej(err);
+                return;
+            }
+            res(connection);
+        })
+    })
 
 
     return Promise.all([
-        tableUser, 
-        tableHash, 
-        tableDevice, 
-        tableLogger, 
-        tableSetting, 
-        tableInvite, 
+        tableUser,
+        tableHash,
+        tableDevice,
+        tableLogger,
+        tableSetting,
+        tableInvite,
         tableFriends,
         tableChat,
         tablePrivateArea,

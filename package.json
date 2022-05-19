@@ -113,5 +113,9 @@
     "os": false,
     "constants": false,
     "stream": false
+  },
+  "devDependencies": {
+    "@types/dateformat": "^5.0.0",
+    "@types/mysql": "^2.15.21"
   }
 }

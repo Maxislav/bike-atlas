@@ -261,6 +261,22 @@ function createTable() {
             res(connection);
         });
     });
+    const tableFireBase = new Promise((res, rej) => {
+        const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`firebase` ' +
+            '( `id` INT NOT NULL AUTO_INCREMENT , ' +
+            '`device_key` VARCHAR(32) NOT NULL,' +
+            '`token` VARCHAR(512) NOT NULL,' +
+            '`date` DATETIME NOT NULL,' +
+            'PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+        connection.query(query, (err) => {
+            if (err) {
+                console.log('Error table firebase create');
+                rej(err);
+                return;
+            }
+            res(connection);
+        });
+    });
     return Promise.all([
         tableUser,
         tableHash,
