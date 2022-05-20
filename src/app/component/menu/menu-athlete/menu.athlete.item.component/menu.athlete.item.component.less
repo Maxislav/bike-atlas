@@ -20,9 +20,13 @@
   align-items: center;
   justify-content: space-between;
   margin: 10px 0;
+  min-width: 240px;
 
   .inner-cell {
     padding: 0 10px;
+    &:nth-child(2){
+      width: 100%;
+    }
   }
 }
 
@@ -58,9 +62,14 @@ img {
 
 .name {
   text-align: right;
-  margin-left: 70px;
+  // margin-left: 70px;
   margin-bottom: 8px;
   position: relative;
+  color: @blue-color;
+  padding: 4px;
+  &:hover{
+    background-color: @blue-color-light;
+  }
 
   .location-update {
     box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
@@ -73,6 +82,7 @@ img {
     white-space: nowrap;
     font-size: 12px;
     font-weight: bold;
+    color: @main-text-color;
 
   }
 }

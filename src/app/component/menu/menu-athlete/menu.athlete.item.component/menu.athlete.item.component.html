@@ -3,7 +3,7 @@
         <div  class="status" [ngStyle]="{'background': device.background}"><img  [src]="image" alt=""/></div>
     </div>
     <div class="inner-cell">
-        <div class="name" (click)="showButton()">
+        <div class="name" (click)="showButton($event)">
             <span>
                 {{device.name}}
             </span>

@@ -52,7 +52,8 @@ export class MenuAthleteItemComponent implements OnInit, OnDestroy {
 
     }
 
-    showButton(){
+    showButton(e: Event){
+        e.stopPropagation()
         this.mouseEnterLive$.next(true)
         this.mouseEnterLive$.next(false)
     }
