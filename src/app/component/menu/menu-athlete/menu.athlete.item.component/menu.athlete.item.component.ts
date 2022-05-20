@@ -64,7 +64,7 @@ export class MenuAthleteItemComponent implements OnInit, OnDestroy {
                 if(d.success){
                     this.toast.show({
                         type: 'success',
-                        text: 'Запрос отправлен'
+                        text: 'Location request has been sent'
                     });
                 }else if(d.error?.message){
                     this.toast.show({
