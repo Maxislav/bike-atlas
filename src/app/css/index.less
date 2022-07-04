@@ -1,6 +1,6 @@
 @import "constant";
-@import "../../environments/environment";
-
+@host-prefix: '../../';
+@host-prefix-prod: 'http://178.62.44.54:8080/';
 body {
   color: @main-text-color;
 }
@@ -14,7 +14,6 @@ body {
   button {
     margin-left: 8px;
   }
-;
 }
 
 .container {
@@ -224,8 +223,6 @@ my-app {
   border: 1px dotted blue;
 }
 
-//@url: "@{host-prefix}img/ico-z.png";
-
 .ico-z {
   width: 40px;
   height: 40px;
@@ -234,7 +231,15 @@ my-app {
   animation: ROTATE 2s infinite;
   opacity: 0.5;
   animation-timing-function: linear;
-
+}
+.ico-z-prod {
+  width: 40px;
+  height: 40px;
+  background: url("@{host-prefix-prod}img/ico-z.png") no-repeat center;
+  background-size: 100%;
+  animation: ROTATE 2s infinite;
+  opacity: 0.5;
+  animation-timing-function: linear;
 }
 
 .prelaoder {
