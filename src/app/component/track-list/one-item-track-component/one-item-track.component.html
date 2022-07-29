@@ -7,13 +7,13 @@
   <div class="date">{{track.date | date: 'dd/MM/yyyy'}}</div>
 </div>
 <div class="action">
-  <div>Дистанция</div><b>{{track.distance}} km</b>
+  <div>{{'DISTANCE' | translate}}</div><b>{{track.distance}} km</b>
 </div>
 <div class="action">
-  <div>Макс скорость</div><b>{{track.maxSpeed}} km/h</b>
+  <div>{{'MAX_SPEED' | translate }}</div><b>{{track.maxSpeed}} km/h</b>
 </div>
 <div class="action">
-  <div>Точек</div><b>{{track.points.length}}</b>
+  <div>{{'POINTS1' | translate}}</div><b>{{track.points.length}}</b>
   <div>
     <div (click)="track.showSrcPoint()" title="Показать исходные точки" class="route-points"></div>
   </div>

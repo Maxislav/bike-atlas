@@ -16,5 +16,8 @@
   "PASS": "Пароль",
   "NOT_LOGGED": " Вы не вошли в систему",
   "MY_MARKER": "Маркеры",
-  "GL520BS": "GL520 Location"
+  "GL520BS": "GL520 Location",
+  "MAX_SPEED": "Максимальная скорость",
+  "DISTANCE": "Дистанция",
+  "POINTS1" : "Точек"
 }

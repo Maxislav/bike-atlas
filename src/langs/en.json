@@ -16,5 +16,8 @@
   "PASS": "Pass",
   "NOT_LOGGED": "You are not logged in",
   "MY_MARKER": "Markers",
-  "GL520BS": "GL520 Location"
+  "GL520BS": "GL520 Location",
+  "MAX_SPEED": "Max speed",
+  "DISTANCE": "Distance",
+  "POINTS1" : "Points"
 }
