@@ -222,7 +222,8 @@ export class Marker {
 
         if (logData.type === 'BS') {
             const center = new LngLat(logData.lng, logData.lat);
-            this.baseStationCreate(center, logData.bs);
+            const bs = logData.bs.filter(bs => !!bs.lng && !!bs.lat)
+            this.baseStationCreate(center, bs);
             this.createAccuracy(center, logData.accuracy/1000);
         }
 
