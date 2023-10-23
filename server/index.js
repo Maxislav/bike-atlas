@@ -64,6 +64,7 @@ app.use((req, res, next) => {
         if (/\.(js|css|html|png|gif)$/.test(req.url)) {
             res.set({
                 'Cache-control': 'public, max-age=2629000;',
+                'Content-Security-Policy': 'upgrade-insecure-requests'
             });
         }
         res.sendFile(dirname + req.url);
