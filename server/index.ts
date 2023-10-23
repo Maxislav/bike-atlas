@@ -89,6 +89,9 @@ app.use((req, res, next) => {
 
     } else {
         console.log('html5', req.url);
+        res.set({
+            'Content-Security-Policy': 'upgrade-insecure-requests'
+        })
         res.sendFile(dirname + '/index.html')
     }
 
