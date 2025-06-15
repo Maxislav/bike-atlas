@@ -355,6 +355,11 @@ export class Util {
      *
      */
     insertLog(data: PointWithSrc) {
+        console.log('->>', data.date.getTime());
+        if(Date.now() < data.date.getTime()+1000){
+            return Promise.reject('Data is later then now')
+        }
+
         return new Promise((resolve, reject) => {
             this.connection.query('INSERT INTO `logger` (`id`, `device_key`, `lng`, `lat`, `alt`, `batt` ,`accuracy`,`base_station`, `speed`, `azimuth`, `date`, `type`, `src`) VALUES (' +
                 'NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
