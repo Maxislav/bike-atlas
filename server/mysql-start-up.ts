@@ -23,7 +23,7 @@ function connect() {
     return new Promise((resolve, reject) => {
         connection.connect(function (err) {
             if (err) {
-                console.log('Error connecting to Db');
+                console.log('Error connecting to Db', err);
                 reject(err);
                 return;
             }
