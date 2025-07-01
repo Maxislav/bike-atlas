@@ -5,7 +5,6 @@ import { MapService } from '../../../service/map.service';
 import { Util } from '../../../service/util';
 import { StravaService } from '../../../service/strava.service';
 import { Router } from '@angular/router';
-import * as R from 'ramda';
 import { MapArea as Area } from '../../../../types/global';
 import { distance } from '../../../util/distance';
 import dateformat from 'dateformat/lib/dateformat.js';
@@ -43,7 +42,7 @@ export class OneItemTrackComponent implements OnInit {
 
     ngOnInit(): void {
         console.log(this.track);
-        const arrSpeed = R.pluck('speed')(this.track.points);
+        const arrSpeed = this.track.points.map((p) => p.speed) // R.pluck('speed')(this.track.points);
         this.maxSpeed = Math.max.apply(null, arrSpeed);
         this.mapService.onLoad.then(map => {
             this.map = map;

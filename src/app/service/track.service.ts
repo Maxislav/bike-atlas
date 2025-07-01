@@ -3,7 +3,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import R from 'ramda';
+// import R from 'ramda';
 import { Util } from './util';
 import { Io } from './socket.oi.service';
 import { MapService } from './map.service';
@@ -560,14 +560,15 @@ export class TrackService implements Resolve<any> {
     }
 
     private formatBeforeSend(points) {
-        return R.map(point => {
+
+        return points.map(point => {
             return {
                 lng: point.lng,
                 lat: point.lat,
                 date: point.date,
                 speed: point.speed
             };
-        }, points);
+        });
 
     }
 
