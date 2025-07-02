@@ -161,7 +161,7 @@ export class Io {
     constructor() {
 
         if (window.location.hostname.match(/github\.io/)) {
-            this.url = 'http://178.62.44.54:8081';
+            this.url = 'http://165.232.46.174:8081';
         } else {
             this.url = 'http://' + window.location.hostname + ':8081';
         }
