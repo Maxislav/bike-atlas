@@ -115,7 +115,7 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve();
+                resolve(void 0);
             });
         });
     }
@@ -526,7 +526,7 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve();
+                resolve(void 0);
             });
         });
     }
@@ -564,7 +564,7 @@ export class Util {
                     reject(err);
                     return;
                 }
-                resolve();
+                resolve(void 0);
             });
         });
     }

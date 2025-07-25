@@ -31,7 +31,7 @@ const writeToFile = (str) => {
                 console.log('Err write to file ->'.red, err);
                 return reject(err);
             }
-            resolve();
+            resolve(void 0);
         });
     });
 };
@@ -192,7 +192,7 @@ export class Gl520 {
             if (this._server) {
                 this._server.close(() => {
                     this._server = null;
-                    resolve();
+                    resolve(void 0);
                 });
             }
         });

@@ -128,6 +128,22 @@ class SocketData {
 }
 const connectionConnect = () => {
     connection = mysql.createConnection(config.mysql);
+    setInterval(() => {
+        try {
+            connection.ping((err) => {
+                if (err) {
+                    connection.end(() => {
+                        connectionConnect();
+                    });
+                    return;
+                }
+            });
+        }
+        catch (e) {
+            connectionConnect();
+            console.log('mysql ping err->> ', e);
+        }
+    }, 30000);
     connection.on('error', (err) => {
         console.log(err);
         if (err.code == 'PROTOCOL_CONNECTION_LOST') {
@@ -143,6 +159,14 @@ const connectionConnect = () => {
         }
         console.log('connected connect ->');
     });
+    // setTimeout(() => {
+    //     try {
+    //         connection.ping()
+    //         console.log('ping ->>  ok', )
+    //     }catch (e){
+    //         console.log('err ->> ', e)
+    //     }
+    // }, 0)
     connection.connect((err) => {
         if (err) {
             return console.error(err);
