@@ -128,10 +128,11 @@ class SocketData {
 }
 const connectionConnect = () => {
     connection = mysql.createConnection(config.mysql);
-    setInterval(() => {
+    const invl = setInterval(() => {
         try {
             connection.ping((err) => {
                 if (err) {
+                    clearInterval(invl);
                     connection.end(() => {
                         connectionConnect();
                     });
