@@ -94,7 +94,7 @@ function createTable() {
             '`name` VARCHAR(32) NOT NULL, ' +
             '`phone` VARCHAR(32) NULL,  ' +
             '`image` TEXT NULL DEFAULT NULL, ' +
-            ', PRIMARY KEY (`id`)) ENGINE = InnoDB;';
+            ' PRIMARY KEY (`id`)) ENGINE = InnoDB;';
         connection.query(query, (err) => {
             if (err) {
                 console.log('Error  tableDevice create');
