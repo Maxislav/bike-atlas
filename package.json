@@ -5,7 +5,7 @@
     "start-ui": "ng serve --open",
     "start-ui-hmr": "ng serve --configuration hmr --deploy-url= --base-href=. --open",
     "dev": "concurrently \"npm run start-ui\" \"npm run server-dev\" ",
-    "build:brod": "ng build --prod",
+    "build:prod": "ng build --prod",
     "start": "concurrently   \"npm run server-dev\" \"npm run tsc-be:w\"  \"npm run start-ui\" ",
     "server": "tsc --project tsconfig-be.json && node server/index.js",
     "server-dev": "concurrently \"npm run tsc-be:w\" \"npm run node-dev\" ",
@@ -35,7 +35,6 @@
     "@types/express": "4.17.18",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "^12.19.14",
     "@types/ramda": "0.27.37",
     "@types/socket.io-client": "^1.4.35",
     "acorn": "^7.1.0",
@@ -118,6 +117,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1102.18",
     "@types/dateformat": "^5.0.0",
-    "@types/mysql": "^2.15.21"
+    "@types/mysql": "^2.15.21",
+    "@types/node": "^12.20.55"
   }
 }
