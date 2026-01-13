@@ -92,7 +92,7 @@ function createTable() {
         const query = 'CREATE TABLE  IF NOT EXISTS `monitoring`.`device` ' +
             '( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT NOT NULL , `device_key` VARCHAR(32) NOT NULL , ' +
             '`name` VARCHAR(32) NOT NULL, ' +
-            '`phone` VARCHAR(32) NULL  ' +
+            '`phone` VARCHAR(32) NULL,  ' +
             '`image` TEXT NULL DEFAULT NULL, ' +
             ', PRIMARY KEY (`id`)) ENGINE = InnoDB;';
         connection.query(query, (err) => {
