@@ -8,7 +8,7 @@
 ***
 
 ## Required
-MySql, Node
+MySql, Node (v12)
 
 ## Install
 ```
