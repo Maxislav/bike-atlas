@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Robot = void 0;
 const fs = require("fs");
 const xml2js_1 = require("xml2js");
 class Robot {

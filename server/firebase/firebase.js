@@ -9,8 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MyFireBase = void 0;
+var _a, _b;
 const autobind_1 = require("../util/autobind");
+const express_serve_static_core_1 = require("express-serve-static-core");
 class MyFireBase {
     constructor(app, util) {
         this.util = util;
@@ -58,7 +59,7 @@ class MyFireBase {
 __decorate([
     autobind_1.autobind(),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, Object]),
+    __metadata("design:paramtypes", [typeof (_a = typeof express_serve_static_core_1.Request !== "undefined" && express_serve_static_core_1.Request) === "function" ? _a : Object, typeof (_b = typeof express_serve_static_core_1.Response !== "undefined" && express_serve_static_core_1.Response) === "function" ? _b : Object, Object]),
     __metadata("design:returntype", void 0)
 ], MyFireBase.prototype, "onFire", null);
 exports.MyFireBase = MyFireBase;

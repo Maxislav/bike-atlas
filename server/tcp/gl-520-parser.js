@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Gl520Parser = void 0;
 const deferred_1 = require("./deferred");
 const base_station_location_1 = require("./base-station-location");
 const deep_copy_1 = require("../util/deep-copy");
@@ -99,7 +98,7 @@ class Gl520Parser {
                     return Promise.all(arr.map(mobileCell => {
                         return this.baseStationLocation.getLatLng(mobileCell);
                     })).then((bsPointList) => {
-                        return Object.assign(Object.assign(Object.assign({}, respData), c), { date: date, device_key: deviceId, id: deviceId, speed: 0, alt: 0, type: 'BS', bs: bsPointList.map(station => {
+                        return Object.assign({}, respData, c, { date: date, device_key: deviceId, id: deviceId, speed: 0, alt: 0, type: 'BS', bs: bsPointList.map(station => {
                                 return Object.assign({}, station);
                             }) });
                     });
@@ -124,7 +123,7 @@ class Gl520Parser {
             const cells = cList.filter(c => {
                 return c.mnc === countryNetworkCode.mnc && c.mcc === countryNetworkCode.mcc;
             });
-            arrCell.push(Object.assign(Object.assign({}, countryNetworkCode), { cells: cells.map(c => {
+            arrCell.push(Object.assign({}, countryNetworkCode, { cells: cells.map(c => {
                     return {
                         lac: c.lac,
                         cid: c.cellId,

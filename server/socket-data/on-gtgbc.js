@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OnGtgbc = void 0;
 const base_station_location_1 = require("../tcp/base-station-location");
 const proto_data_1 = require("./proto-data");
 const path = require('path');

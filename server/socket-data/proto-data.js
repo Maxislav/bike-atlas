@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProtoData = void 0;
 const util = require('./util');
 const R = require('ramda');
 class ProtoData {

@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LngLat = void 0;
 class LngLat extends Array {
     constructor(lng, lat) {
         super();

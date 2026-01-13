@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BaseStationLocation = void 0;
 const https = require("https");
 class ReqData {
     constructor(mcc, mnc) {
