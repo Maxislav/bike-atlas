@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.autobind = void 0;
 function autobind() {
     return (target, key, descriptor) => {
         let fn = descriptor.value;

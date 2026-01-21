@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isInPrivate = exports.distance = void 0;
 const lngLat_1 = require("./lngLat");
 function distance(lngLat1, lngLat2) {
     const arrTrackFull = [{

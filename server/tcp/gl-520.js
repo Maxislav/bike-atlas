@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Gl520 = void 0;
 const gl_520_parser_1 = require("./gl-520-parser");
 const net = require("net");
 const fs = require("fs");

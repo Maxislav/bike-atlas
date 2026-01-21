@@ -32,7 +32,6 @@
     "@ngrx/component-store": "^10.1.2",
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
-    "@types/express": "4.17.18",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/ramda": "0.27.37",
@@ -117,7 +116,13 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1102.18",
     "@types/dateformat": "^5.0.0",
+    "@types/express": "^4.17.13",
+    "@types/express-serve-static-core": "^4.17.28",
     "@types/mysql": "^2.15.21",
-    "@types/node": "^12.20.55"
+    "@types/node": "^12.20.55",
+    "@types/serve-static": "^1.13.10"
+  },
+  "overrides": {
+    "@types/express-serve-static-core": "4.17.28"
   }
 }

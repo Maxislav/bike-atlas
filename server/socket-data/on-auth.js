@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.OnAuth = void 0;
 const deferred_1 = require("../deferred");
 const autobind_1 = require("../util/autobind");
 const proto_data_1 = require("./proto-data");
@@ -46,7 +47,7 @@ class OnAuth extends proto_data_1.ProtoData {
             return this.util.getMyMarker(_user.user_id)
                 .then(list => {
                 _markers = list.map(m => {
-                    return Object.assign({}, m, { shared: !!m.shared });
+                    return Object.assign(Object.assign({}, m), { shared: !!m.shared });
                 });
                 return d;
             });

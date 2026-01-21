@@ -9,6 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.OnMyMarker = void 0;
 const autobind_1 = require("../util/autobind");
 const proto_data_1 = require("./proto-data");
 class OnMyMarker extends proto_data_1.ProtoData {
@@ -34,7 +35,7 @@ class OnMyMarker extends proto_data_1.ProtoData {
             return this.util.saveMyMarker(user_id, data);
         })
             .then((res) => {
-            this.socket.emit(eName, Object.assign({}, data, { id: res.insertId }));
+            this.socket.emit(eName, Object.assign(Object.assign({}, data), { id: res.insertId }));
         })
             .catch(err => {
             console.log('Err save marker', err);
