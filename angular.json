@@ -8,11 +8,7 @@
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "ats",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "less"
-        }
-      },
+
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -36,7 +32,17 @@
               "src/lib/mapbox-gl/mapbox-gl.css",
               "src/lib/leaflet/leaflet.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "aot": false,
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization":  {
+              "scripts": false,
+              "styles": false
+            },
+            "namedChunks": true
           },
           "configurations": {
             "hmr": {
@@ -56,14 +62,14 @@
               ],
               "optimization": true,
               "outputHashing": "bundles",
-              "sourceMap": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",

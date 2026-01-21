@@ -17,7 +17,7 @@ import {
     '(ngModelChange)="onChange()"' +
         '(focusout)="focusOut()"'+
     '/>',
-    styleUrls: ['./my-input-popup-component.less']
+   // styleUrls: ['./my-input-popup-component.less']
 })
 export class MyInputPopupComponent implements OnInit, AfterViewInit{
 

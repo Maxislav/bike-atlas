@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import { PopupInterface, PopupService } from 'src/app/modules/popup-module/popup.service';
 import { popupMaskInAnimation } from 'src/app/modules/popup-module/popup-animation';
 
@@ -9,6 +9,7 @@ import { popupMaskInAnimation } from 'src/app/modules/popup-module/popup-animati
     styleUrls: [
         './popup-container.component.less'
     ],
+    encapsulation: ViewEncapsulation.None,
     animations: [popupMaskInAnimation]
 })
 export class PopupContainerComponent implements OnInit {

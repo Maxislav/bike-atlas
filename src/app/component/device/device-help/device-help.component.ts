@@ -7,9 +7,9 @@ import {takeUntil} from 'rxjs/operators';
 
 @Component({
     templateUrl: './device-help.component.html',
-    styleUrls: [
-        './device-help.component.less'
-    ]
+    styles: [`
+    help-container { color: red; }
+  `]
 })
 export class DeviceHelpComponent extends SelfUnsubscribable implements OnInit, OnDestroy {
 

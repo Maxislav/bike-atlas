@@ -75,6 +75,7 @@ import {FriendsService} from 'src/app/api/friends.service';
 import {RegistrationService} from "./api/registration.service";
 import {TranslateModule} from '@ngx-translate/core';
 import { BattLevelComponent } from './component/menu/menu-athlete/menu.athlete.item.component/batt-level/batt-level.component';
+import {AppTestComponent} from "./test.component";
 
 
 @Component({
@@ -84,8 +85,20 @@ import { BattLevelComponent } from './component/menu/menu-athlete/menu.athlete.i
 })
 export class JJ {
 
-}
 
+
+}
+@NgModule({
+    declarations: [
+        AppTestComponent
+    ],
+    bootstrap: [
+        AppTestComponent
+    ]
+})
+export class TestModule {
+
+}
 /*
 
 export function createTranslateLoader(http: Http) {

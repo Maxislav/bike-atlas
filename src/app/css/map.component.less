@@ -14,13 +14,13 @@
 
 }
 
-:host /deep/ .mapboxgl-popup-content {
+:host ::ng-deep .mapboxgl-popup-content {
   padding: 5px;
   font: 12px/12px  Geneva, Arial, Helvetica, sans-serif;
   font-size: 14px;
 }
 
-:host /deep/ .user-icon {
+:host ::ng-deep .user-icon {
   border-radius: 50%;
   background: white;
   &[status=yellow] {
@@ -40,7 +40,7 @@
     border-radius: 50%;
   }
 }
-:host /deep/ .track-icon{
+:host ::ng-deep .track-icon{
   width: 20px;
   height: 20px;
   &>div{
@@ -50,7 +50,7 @@
     background-size: 20px 80px;
   }
 }
-:host /deep/ .info-point{
+:host ::ng-deep .info-point{
   &>div{
     margin: 5px 0;
     &.time{
@@ -64,6 +64,6 @@
     outline: none;
   }
 }
-:host /deep/ .mapboxgl-popup-content{
+:host ::ng-deep .mapboxgl-popup-content{
   background: rgba(255,255,255,0.8);
 }

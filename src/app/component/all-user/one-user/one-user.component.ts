@@ -8,7 +8,7 @@ import { User } from 'src/app/service/main.user.service';
 @Component({
     selector: 'app-one-user',
     templateUrl: './one-user.component.html',
-    styleUrls: ['./one-user.component.css']
+   // styleUrls: ['./one-user.component.css']
 })
 export class OneUserComponent implements OnInit {
 
