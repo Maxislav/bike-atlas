@@ -58,7 +58,7 @@ import {MyInputPopupComponent} from './component/my-marker-list-component/my-inp
 import {SharedModule} from './shared-module/shared.module';
 import {GtgbcComponent} from './component/gtgbc/gtgbc.component';
 import {GtgbcService} from './api/gtgbc.service';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {IsOwner} from './component/device/device.component';
@@ -138,27 +138,7 @@ export class PipeTranslateCompiler implements TranslateCompiler {
 */
 
 
-@NgModule({
-    imports: [
-        PopupModule,
-        BrowserModule,
-        FormsModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        MyRouterModule,
-        BrowserAnimationsModule,
-        /*TranslateModule.forRoot(
-            {
-                compiler: {
-                    provide: TranslateCompiler,
-                    useClass: PipeTranslateCompiler,
-                    deps: [Injector]
-                },
-            }
-        ),*/
-        SharedModule,
-        TranslateModule
-    ],
+@NgModule({ 
     /**
      * Компоненты
      */
@@ -204,8 +184,25 @@ export class PipeTranslateCompiler implements TranslateCompiler {
         OneUserComponent,
         BattLevelComponent
     ],
-    /** Сервисы */
-    providers: [
+    bootstrap: [
+        AppComponent
+    ], imports: [PopupModule,
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MyRouterModule,
+        BrowserAnimationsModule,
+        /*TranslateModule.forRoot(
+            {
+                compiler: {
+                    provide: TranslateCompiler,
+                    useClass: PipeTranslateCompiler,
+                    deps: [Injector]
+                },
+            }
+        ),*/
+        SharedModule,
+        TranslateModule], providers: [
         RegistrationService,
         HttpClient,
         ProfileService,
@@ -233,12 +230,9 @@ export class PipeTranslateCompiler implements TranslateCompiler {
         NavigationHistory,
         MenuService,
         MyMarkerService,
-        GtgbcService
-    ],
-    bootstrap: [
-        AppComponent
-    ]
-})
+        GtgbcService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule {
     constructor() {
 
