@@ -55,9 +55,9 @@ class OnMyMarker extends proto_data_1.ProtoData {
         });
     }
 }
+exports.OnMyMarker = OnMyMarker;
 __decorate([
     (0, autobind_1.autobind)()
 ], OnMyMarker.prototype, "getMarkerList", null);
-exports.OnMyMarker = OnMyMarker;
 //module.exports = OnMyMarker;
 //# sourceMappingURL=on-my-marker.js.map

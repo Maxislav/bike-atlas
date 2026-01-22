@@ -168,8 +168,8 @@ class OnAuth extends proto_data_1.ProtoData {
         return resArr;
     }
 }
+exports.OnAuth = OnAuth;
 __decorate([
     (0, autobind_1.autobind)()
 ], OnAuth.prototype, "onAuth", null);
-exports.OnAuth = OnAuth;
 //# sourceMappingURL=on-auth.js.map

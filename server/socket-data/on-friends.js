@@ -285,6 +285,7 @@ class OnFriend extends proto_data_1.ProtoData {
             });*/
     }
 }
+exports.OnFriend = OnFriend;
 __decorate([
     (0, autobind_1.autobind)()
 ], OnFriend.prototype, "onCancelInvite", null);
@@ -306,5 +307,4 @@ __decorate([
 __decorate([
     (0, autobind_1.autobind)()
 ], OnFriend.prototype, "onInvite", null);
-exports.OnFriend = OnFriend;
 //# sourceMappingURL=on-friends.js.map

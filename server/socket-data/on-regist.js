@@ -102,6 +102,7 @@ class OnRegist extends proto_data_1.ProtoData {
     updatePassSql() {
     }
 }
+exports.OnRegist = OnRegist;
 __decorate([
     (0, autobind_1.autobind)()
 ], OnRegist.prototype, "onRegister", null);
@@ -111,5 +112,4 @@ __decorate([
 __decorate([
     (0, autobind_1.autobind)()
 ], OnRegist.prototype, "updatePass", null);
-exports.OnRegist = OnRegist;
 //# sourceMappingURL=on-regist.js.map

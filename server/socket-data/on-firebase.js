@@ -72,8 +72,8 @@ class MyFirebase {
         });
     }
 }
+exports.MyFirebase = MyFirebase;
 __decorate([
     (0, autobind_1.autobind)()
 ], MyFirebase.prototype, "onFireBaseRegister", null);
-exports.MyFirebase = MyFirebase;
 //# sourceMappingURL=on-firebase.js.map

@@ -1021,7 +1021,7 @@ class Util {
             id: d.device_key,
             alt: d.alt,
             azimuth: d.azimuth,
-            date: d.date.toISOString(),
+            date: d.date.toISOString(), //dateFormat(d.date, 'yyyy-mm-dd HH:MM:ss.L'),
             lat: d.lat,
             lng: d.lng,
             speed: d.speed,

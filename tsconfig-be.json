@@ -7,7 +7,10 @@
     "removeComments": false,
     "rootDir": "./server",
     "outDir": "server/",
-    "typeRoots" : ["./typings"],
+    "typeRoots" : [
+      "./node_modules/@types",
+      "./typings"
+    ],
     "skipLibCheck": true,
     "types": [
       "node"

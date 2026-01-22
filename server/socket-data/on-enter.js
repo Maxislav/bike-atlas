@@ -134,8 +134,8 @@ class OnEnter extends proto_data_1.ProtoData {
         });
     }
 }
+exports.OnEnter = OnEnter;
 __decorate([
     (0, autobind_1.autobind)()
 ], OnEnter.prototype, "onEnter", null);
-exports.OnEnter = OnEnter;
 //# sourceMappingURL=on-enter.js.map
