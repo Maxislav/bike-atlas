@@ -17,7 +17,7 @@
             "index": "src/index.html",
             "main": "src/app/init.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.app.json",
+            "tsConfig": "tsconfig-ui.json",
             "baseHref": "/bike-atlas/",
             "deployUrl": "http://206.189.114.217:8080/",
             "assets": [
@@ -78,6 +78,7 @@
             "proxyConfig": "proxy.conf.js",
             "baseHref": "/",
             "deployUrl" : ""
+
           },
           "configurations": {
             "production": {
@@ -126,7 +127,6 @@
       }
     }
   },
-  "defaultProject": "example",
   "cli": {
     "analytics": "29099972-295a-4c48-ab93-04016830cdcd"
   }
