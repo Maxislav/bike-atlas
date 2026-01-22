@@ -56,7 +56,7 @@ class OnMyMarker extends proto_data_1.ProtoData {
     }
 }
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], OnMyMarker.prototype, "getMarkerList", null);
 exports.OnMyMarker = OnMyMarker;
 //module.exports = OnMyMarker;

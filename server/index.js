@@ -17,7 +17,7 @@ const PORT = 8080;
 const dirname = path.join(__dirname, '../', 'dist');
 const app = express();
 const ioServer = require('socket.io')(8081);
-socket_data_1.ssocketData(ioServer, app);
+(0, socket_data_1.ssocketData)(ioServer, app);
 app.use(fileUpload());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -18,8 +18,6 @@
             "main": "src/app/init.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig-ui.json",
-            "baseHref": "/bike-atlas/",
-            "deployUrl": "http://206.189.114.217:8080/",
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -75,9 +73,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "example:build",
-            "proxyConfig": "proxy.conf.js",
-            "baseHref": "/",
-            "deployUrl" : ""
+            "proxyConfig": "proxy.conf.js"
 
           },
           "configurations": {
@@ -110,17 +106,6 @@
             "assets": [
               "src/favicon.ico",
               "src/assets"
-            ]
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "tsconfig-ui.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
             ]
           }
         }

@@ -236,8 +236,8 @@ class TrackFromTo extends proto_data_1.ProtoData {
             const p1 = points[i];
             const p2 = points[i + 1];
             const p3 = points[i + 2];
-            const dist1 = distance_1.distance(lngLat_1.LngLat.fromObject(p1), lngLat_1.LngLat.fromObject(p2));
-            const dist2 = distance_1.distance(lngLat_1.LngLat.fromObject(p2), lngLat_1.LngLat.fromObject(p3));
+            const dist1 = (0, distance_1.distance)(lngLat_1.LngLat.fromObject(p1), lngLat_1.LngLat.fromObject(p2));
+            const dist2 = (0, distance_1.distance)(lngLat_1.LngLat.fromObject(p2), lngLat_1.LngLat.fromObject(p3));
             if (1 < dist1 && 1 < dist2) {
                 points.splice(i + 1, 1);
                 return TrackFromTo._clearInvalidPoint(points);
@@ -260,7 +260,7 @@ class TrackFromTo extends proto_data_1.ProtoData {
             let i2 = i;
             while (i2 < points.length - 1) {
                 const point2 = points[i2 + 1];
-                if (distance_1.distance(new lngLat_1.LngLat(point1.lng, point1.lat), lngLat_1.LngLat.fromArray([point2.lng, point2.lat])) < 0.05) {
+                if ((0, distance_1.distance)(new lngLat_1.LngLat(point1.lng, point1.lat), lngLat_1.LngLat.fromArray([point2.lng, point2.lat])) < 0.05) {
                     if (!arrForSum.length)
                         arrForSum.push(point1);
                     arrForSum.push(point2);

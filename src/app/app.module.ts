@@ -147,7 +147,6 @@ export class PipeTranslateCompiler implements TranslateCompiler {
         ReactiveFormsModule,
         MyRouterModule,
         BrowserAnimationsModule,
-
         /*TranslateModule.forRoot(
             {
                 compiler: {
@@ -165,7 +164,6 @@ export class PipeTranslateCompiler implements TranslateCompiler {
      */
     declarations: [
         JJ,
-
         MyPopupDelMyMarker,
         DeviceHelpComponent,
         IsOwner,
@@ -206,7 +204,6 @@ export class PipeTranslateCompiler implements TranslateCompiler {
         OneUserComponent,
         BattLevelComponent
     ],
-
     /** Сервисы */
     providers: [
         RegistrationService,
@@ -237,13 +234,6 @@ export class PipeTranslateCompiler implements TranslateCompiler {
         MenuService,
         MyMarkerService,
         GtgbcService
-
-    ],
-    entryComponents: [
-        MyInputPopupComponent,
-        DeviceIconComponent,
-        DeviceDelPopupComponent,
-        MyPopupDelMyMarker
     ],
     bootstrap: [
         AppComponent

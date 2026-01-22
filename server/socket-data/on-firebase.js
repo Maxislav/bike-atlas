@@ -73,7 +73,7 @@ class MyFirebase {
     }
 }
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], MyFirebase.prototype, "onFireBaseRegister", null);
 exports.MyFirebase = MyFirebase;
 //# sourceMappingURL=on-firebase.js.map

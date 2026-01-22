@@ -103,13 +103,13 @@ class OnRegist extends proto_data_1.ProtoData {
     }
 }
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], OnRegist.prototype, "onRegister", null);
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], OnRegist.prototype, "onRegist", null);
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], OnRegist.prototype, "updatePass", null);
 exports.OnRegist = OnRegist;
 //# sourceMappingURL=on-regist.js.map

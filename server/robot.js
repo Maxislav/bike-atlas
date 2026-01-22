@@ -64,7 +64,7 @@ class Robot {
         return new Promise((resolve, reject) => {
             const positions = [];
             fs.readFile(__dirname + '/history-2016-12-06.gpx', (err, data) => {
-                xml2js_1.parseString(data, { trim: true }, (err, result) => {
+                (0, xml2js_1.parseString)(data, { trim: true }, (err, result) => {
                     const track = result.gpx.trk[0].trkseg[0].trkpt;
                     track.forEach((item, i) => {
                         const position = {

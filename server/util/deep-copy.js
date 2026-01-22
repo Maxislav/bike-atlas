@@ -6,7 +6,7 @@ const deepCopy = (oldObj) => {
     if (oldObj && typeof oldObj === "object") {
         newObj = Object.prototype.toString.call(oldObj) === "[object Array]" ? [] : {};
         for (var i in oldObj) {
-            newObj[i] = exports.deepCopy(oldObj[i]);
+            newObj[i] = (0, exports.deepCopy)(oldObj[i]);
         }
     }
     return newObj;

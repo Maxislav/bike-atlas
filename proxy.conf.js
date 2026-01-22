@@ -1,6 +1,6 @@
 const PROXY_CONFIG = {
 
-  "/langsц": {
+  "/langs": {
     "target": "http://127.0.0.1:8081",
     "secure": false
   },

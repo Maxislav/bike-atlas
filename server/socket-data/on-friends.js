@@ -286,25 +286,25 @@ class OnFriend extends proto_data_1.ProtoData {
     }
 }
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], OnFriend.prototype, "onCancelInvite", null);
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], OnFriend.prototype, "getFriends", null);
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], OnFriend.prototype, "getAllUsers", null);
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], OnFriend.prototype, "requestUserById", null);
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], OnFriend.prototype, "getRequests", null);
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], OnFriend.prototype, "getInvites", null);
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], OnFriend.prototype, "onInvite", null);
 exports.OnFriend = OnFriend;
 //# sourceMappingURL=on-friends.js.map

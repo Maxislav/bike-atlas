@@ -167,16 +167,16 @@ class Device extends proto_data_1.ProtoData {
     }
 }
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], Device.prototype, "onDevices", null);
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], Device.prototype, "emitLastPosition", null);
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], Device.prototype, "onAddDevice", null);
 __decorate([
-    autobind_1.autobind()
+    (0, autobind_1.autobind)()
 ], Device.prototype, "onDelDevice", null);
 module.exports = Device;
 //# sourceMappingURL=device.js.map

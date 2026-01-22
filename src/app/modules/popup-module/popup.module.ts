@@ -14,10 +14,6 @@ import { FormsModule } from '@angular/forms';
     providers: [
         PopupService,
         PopupInitialState
-    ],
-    entryComponents: [
-        PopupContainerComponent,
-        PopupItemComponent
     ]
 })
 export class PopupModule {

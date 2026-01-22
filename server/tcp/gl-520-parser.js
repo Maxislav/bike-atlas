@@ -118,7 +118,7 @@ class Gl520Parser {
         }
     }
     cellGroup(cellList, arrCell = []) {
-        const cList = deep_copy_1.deepCopy(cellList);
+        const cList = (0, deep_copy_1.deepCopy)(cellList);
         if (cList.length) {
             const countryNetworkCode = { mcc: cList[0].mcc, mnc: cList[0].mnc };
             const cells = cList.filter(c => {
