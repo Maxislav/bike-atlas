@@ -3,7 +3,7 @@ export const environment = {
     //TODO set to prod
     //hostPrefix: 'http://178.62.44.54:8080/',
     //hostPrefix: 'http://165.232.46.174:8080/',
-    hostPrefix: 'http://206.189.114.217:8080/',
+    hostPrefix: 'http://206.189.114.217:8080',
     hmr: false
     //hostPrefix: ''
 };

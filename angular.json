@@ -14,7 +14,8 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": {
-              "base": "dist"
+              "base": "dist",
+              "browser": ""
             },
             "index": "src/index.html",
             "polyfills": [
@@ -60,8 +61,10 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "baseHref": "/bike-atlas/",
+              "deployUrl": "http://206.189.114.217:8080/",
               "optimization": true,
-              "outputHashing": "bundles",
+              "outputHashing": "none",
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true
