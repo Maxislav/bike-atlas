@@ -16,8 +16,6 @@ import {
     PopupInterface,
     PopupService
 } from 'src/app/modules/popup-module/popup.service';
-import { printLine } from 'tslint/lib/verify/lines';
-import { fadeInAnimation } from 'src/app/animation/animation';
 import { popupItemAnimation } from 'src/app/modules/popup-module/popup-animation';
 
 @Component({
