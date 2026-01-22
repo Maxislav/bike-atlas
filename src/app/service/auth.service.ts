@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Io } from './socket.oi.service';
 import { LocalStorage } from './local-storage.service';
-import {ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { FriendsService } from '../api/friends.service';
 import { UserService } from './main.user.service';
 import { ChatService } from './chat.service';
@@ -19,7 +19,7 @@ import {first} from 'rxjs/operators';
 @Injectable({
     providedIn: 'root'
 })
-export class AuthService implements CanActivate {
+export class AuthService  {
     socket: any;
     private unsubscribe$ = new Subject<void>();
     public can: Subject<boolean> = new Subject();

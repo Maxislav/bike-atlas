@@ -5,7 +5,7 @@ import {InfoPositionComponent} from "./component/info-position/info-position-com
 import {MapboxGlDirective, MapResolver} from "./directive/mapbox-gl.directive";
 import {LogService} from "./service/log.service";
 import {APP_INITIALIZER} from '@angular/core';
-import {ActivatedRoute, Resolve} from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import {fadeInAnimation} from './animation/animation'
 import {SelfUnsubscribable} from './util/self-unsubscribable';
 import {takeUntil} from 'rxjs/operators';

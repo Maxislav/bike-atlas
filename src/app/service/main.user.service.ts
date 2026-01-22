@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Io } from './socket.oi.service';
 import { Router } from '@angular/router';
 import {ToastService} from '../shared-module/toast-module/toast.service';

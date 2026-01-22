@@ -7,7 +7,7 @@ import mapboxgl from '../../lib/mapbox-gl/mapbox-gl';
 
 import dateFormat from 'dateformat/lib/dateformat.js';
 
-import {Resolve} from '@angular/router';
+
 import {Setting, UserService} from '../service/main.user.service';
 
 const getMin = (date: number): string => {
@@ -50,7 +50,7 @@ export class MyMap extends mapboxgl.Map {
 }
 
 @Injectable()
-export class MapResolver implements Resolve<any> {
+export class MapResolver  {
     public _resolver: Function;
     private _resPromise: Promise<any>;
 

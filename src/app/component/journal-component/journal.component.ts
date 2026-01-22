@@ -3,7 +3,7 @@
  */
 import { Component, Injectable, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { Resolve, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { OneTrack } from './one-track.component/one-track.component';
 import { JournalService } from '../../service/journal.service';
 import { Point } from '../../service/track.var';
@@ -15,7 +15,7 @@ import { Device, DeviceService } from '../../service/device.service';
 declare var System: any;
 
 @Injectable()
-export class LeafletResolver implements Resolve<any> {
+export class LeafletResolver  {
     L: any;
 
     resolve(): Promise<any> {

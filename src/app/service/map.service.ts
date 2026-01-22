@@ -6,7 +6,7 @@ import { SimpleChanges, OnChanges } from '@angular/core';
 import { LocalStorage } from '../service/local-storage.service';
 import { Deferred } from 'src/app/util/deferred';
 import {MyMap} from '../directive/mapbox-gl.directive';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import * as mapboxgl from '../../lib/mapbox-gl/mapbox-gl';
 import {Observable, Subject} from 'rxjs';
 

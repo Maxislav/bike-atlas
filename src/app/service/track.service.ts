@@ -12,7 +12,7 @@ import { distance } from '../util/distance';
 
 import dateformat from 'dateformat/lib/dateformat.js';
 
-import { Resolve } from '@angular/router';
+
 import { Color } from '../util/get-color';
 
 const F = parseFloat;
@@ -335,7 +335,7 @@ export class Track {
 
 
 @Injectable()
-export class TrackService implements Resolve<any> {
+export class TrackService  {
     resolve() {
         return undefined;
     }

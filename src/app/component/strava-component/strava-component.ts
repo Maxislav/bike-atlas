@@ -1,8 +1,5 @@
 import {Component, Input, OnChanges, OnInit} from "@angular/core";
-import {
-    Router, ActivatedRoute, Params, Route, CanActivate, RouterStateSnapshot,
-    ActivatedRouteSnapshot
-} from "@angular/router";
+import { Router, ActivatedRoute, Params, Route, RouterStateSnapshot, ActivatedRouteSnapshot } from "@angular/router";
 import {hashGenerate} from "../../util/hash";
 import {Io} from "../../service/socket.oi.service";
 import {StravaService, StravaD} from "../../service/strava.service";
