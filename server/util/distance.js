@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isInPrivate = exports.distance = void 0;
+exports.distance = distance;
+exports.isInPrivate = isInPrivate;
 const lngLat_1 = require("./lngLat");
 function distance(lngLat1, lngLat2) {
     const arrTrackFull = [{
@@ -42,7 +43,6 @@ function distance(lngLat1, lngLat2) {
     dist_sum = parseFloat(dist_sum.toFixed(3));
     return dist_sum;
 }
-exports.distance = distance;
 function isInPrivate(areas, data) {
     for (let i = 0; i < areas.length; i++) {
         const area = areas[i];
@@ -54,5 +54,4 @@ function isInPrivate(areas, data) {
     }
     return false;
 }
-exports.isInPrivate = isInPrivate;
 //# sourceMappingURL=distance.js.map

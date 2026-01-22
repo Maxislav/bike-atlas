@@ -10,7 +10,8 @@ import { popupMaskInAnimation } from 'src/app/modules/popup-module/popup-animati
         './popup-container.component.less'
     ],
     encapsulation: ViewEncapsulation.None,
-    animations: [popupMaskInAnimation]
+    animations: [popupMaskInAnimation],
+    standalone: false
 })
 export class PopupContainerComponent implements OnInit {
     isShowMask = false;

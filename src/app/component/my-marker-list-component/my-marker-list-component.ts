@@ -18,7 +18,8 @@ import { MyMarker } from '../../../types/global';
 @Component({
     selector: 'marker-list-component',
     templateUrl: './my-marker-list-component.html',
-    styleUrls: ['./my-marker-list-component.less']
+    styleUrls: ['./my-marker-list-component.less'],
+    standalone: false
 })
 export class MyMarkerListComponent implements OnDestroy {
     active: boolean = false;

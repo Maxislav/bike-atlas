@@ -30,8 +30,8 @@ interface MyNode extends Node {
     selector: 'chat-room',
     //template: '{{userId}}<textarea [(ngModel)]="myActiveMess"></textarea>'
     templateUrl: './chat-room.component.html',
-    styleUrls: ['./chat-room.component.less']
-
+    styleUrls: ['./chat-room.component.less'],
+    standalone: false
 })
 export class ChatRoomComponent implements OnInit, AfterViewInit {
 

@@ -81,7 +81,7 @@ import {AppTestComponent} from "./test.component";
 @Component({
     //noinspection TypeScriptUnresolvedVariable
     template: '<div></div>',
-    //providers: [OneTrack]
+    standalone: false
 })
 export class JJ {
 

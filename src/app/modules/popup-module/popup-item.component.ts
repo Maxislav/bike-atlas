@@ -24,7 +24,8 @@ import { popupItemAnimation } from 'src/app/modules/popup-module/popup-animation
     styleUrls: [
         './popup-item.component.less'
     ],
-    animations: [popupItemAnimation]
+    animations: [popupItemAnimation],
+    standalone: false
 })
 export class PopupItemComponent implements OnInit, OnDestroy {
     myInjector: Injector;

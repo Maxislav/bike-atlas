@@ -15,6 +15,7 @@ import {ToastService} from '../../shared-module/toast-module/toast.service';
 @Component({
     templateUrl: './registration.component.html',
     styleUrls: ['./registration.component.less'],
+    standalone: false
 })
 export class RegistrationComponent implements OnInit {
 

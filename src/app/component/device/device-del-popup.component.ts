@@ -7,8 +7,8 @@ import { PopupInitialState } from 'src/app/modules/popup-module/popup.service';
     template: '<div>Delete device: {{name}}</div>',
     styleUrls: [
         './device-del-popup.component.less'
-    ]
-
+    ],
+    standalone: false
 })
 export class DeviceDelPopupComponent implements OnInit{
     name: string;

@@ -10,6 +10,7 @@ import {UserService} from "../../../service/main.user.service";
     selector: 'one-track',
     templateUrl: './one-track.component.html',
     styleUrls: ['./one-track.component.less'],
+    standalone: false
 })
 export class OneTrack implements OnInit, AfterViewInit{
     L: any;

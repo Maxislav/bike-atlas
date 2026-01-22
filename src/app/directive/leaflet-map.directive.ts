@@ -21,6 +21,7 @@ class MyEl extends HTMLElement{
 
 @Directive({
     selector: 'leaflet-map',
+    standalone: false
 })
 export class LeafletMapDirective implements AfterViewInit {
     el:ElementRef;

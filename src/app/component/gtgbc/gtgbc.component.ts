@@ -16,7 +16,8 @@ enum MessageType {
 @Component({
     templateUrl: './gtgbc.component.html',
     styleUrls: ['./gtgbc.component.less'],
-    animations: [ngIfAnimation]
+    animations: [ngIfAnimation],
+    standalone: false
 })
 export class GtgbcComponent implements OnInit, OnDestroy {
     public gtgbc: string = null;

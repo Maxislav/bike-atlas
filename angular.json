@@ -11,12 +11,15 @@
 
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist",
+            "outputPath": {
+              "base": "dist"
+            },
             "index": "src/index.html",
-            "main": "src/app/init.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
             "tsConfig": "tsconfig-ui.json",
             "assets": [
               "src/favicon.ico",
@@ -32,15 +35,14 @@
             ],
             "scripts": [],
             "aot": false,
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization":  {
               "scripts": false,
               "styles": false
             },
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "src/app/init.ts"
           },
           "configurations": {
             "hmr": {
@@ -62,9 +64,7 @@
               "outputHashing": "bundles",
               "namedChunks": false,
               "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "extractLicenses": true
             }
           },
           "defaultConfiguration": ""

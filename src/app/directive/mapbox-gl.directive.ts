@@ -76,7 +76,8 @@ export class MapResolver  {
     selector: 'mapbox-gl',
     host: {
         'map': 'map'
-    }
+    },
+    standalone: false
 })
 export class MapboxGlDirective implements AfterViewInit {
     private setting: Setting;

@@ -7,10 +7,11 @@ import {MapService} from "../../service/map.service";
 import {Mercator} from "../../service/mercator.service";
 
 @Component({
-    selector:'info-position',
+    selector: 'info-position',
     //template:'<div>lat: {{mapService.lat}}</div>' + '<div>Pixel: {{pixelY}}</div>',
-    templateUrl:'./info-position-component.html',
-    styleUrls:['./info-position.less']
+    templateUrl: './info-position-component.html',
+    styleUrls: ['./info-position.less'],
+    standalone: false
 })
 export class InfoPositionComponent{
     private mercator: Mercator;

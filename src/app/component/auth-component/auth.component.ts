@@ -9,12 +9,13 @@ import {MenuComponent} from "../menu/menu.component";
 import {AuthService} from "../../service/auth.service";
 
 @Component({
-    templateUrl:'auth.component.html',
+    templateUrl: 'auth.component.html',
     //providers: [Mercator, MapService, InfoPositionComponent, PositionSize, MenuComponent],
     providers: [Mercator, InfoPositionComponent, PositionSize, MenuComponent],
     styleUrls: [
         'auth.component.less',
-    ]
+    ],
+    standalone: false
 })
 
 export class AuthComponent{

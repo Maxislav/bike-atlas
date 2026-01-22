@@ -7,9 +7,10 @@ export interface MenuItem {
 }
 
 @Component({
-    selector:'menu-list-component',
+    selector: 'menu-list-component',
     templateUrl: './menu-list-component.html',
-    styleUrls: [ './menu-list-component.less']
+    styleUrls: ['./menu-list-component.less'],
+    standalone: false
 })
 export class MenuListComponent {
 

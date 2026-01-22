@@ -11,8 +11,8 @@ import { Router } from '@angular/router';
     //selector: 'router-outlet',
     //templateUrl: 'src/app/template/my-app.html'
     //template: '<div>My dashboard</div>'
-    template: '<div></div>'
-    
+    template: '<div></div>',
+    standalone: false
 })
 export class DashboardComponent {
 

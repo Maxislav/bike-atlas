@@ -30,6 +30,7 @@ function getOffset(el) {
 
 @Directive({
     selector: 'help-container',
+    standalone: false
 })
 export class HelpContainer implements AfterViewInit {
     private top = 0;
@@ -57,7 +58,8 @@ export class HelpContainer implements AfterViewInit {
 
 @Pipe({
     name: 'isOwner',
-    pure: false
+    pure: false,
+    standalone: false
 })
 export class IsOwner implements PipeTransform {
     constructor(private userService: UserService) {
@@ -76,7 +78,8 @@ export class IsOwner implements PipeTransform {
     templateUrl: 'device.component.html',
     styleUrls: [
         'device.component.less',
-    ]
+    ],
+    standalone: false
 })
 export class DeviceComponent implements AfterViewInit, OnInit {
 

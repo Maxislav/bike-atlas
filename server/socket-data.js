@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ssocketData = exports.SSocket = void 0;
+exports.SSocket = void 0;
+exports.ssocketData = ssocketData;
 const socketStream = require('socket.io-stream');
 // const mysql = require('mysql');
 const config = require('./mysql.config.json');
@@ -190,5 +191,4 @@ connectionConnect();
 function ssocketData(server, app) {
     resolveExport({ server, app });
 }
-exports.ssocketData = ssocketData;
 //# sourceMappingURL=socket-data.js.map

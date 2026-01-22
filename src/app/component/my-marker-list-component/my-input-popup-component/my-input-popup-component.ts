@@ -14,10 +14,10 @@ import {
 @Component({
     selector: 'my-input-popup-component',
     template: '<input class="input" type="text" [(ngModel)]="title" ' +
-    '(ngModelChange)="onChange()"' +
-        '(focusout)="focusOut()"'+
-    '/>',
-   // styleUrls: ['./my-input-popup-component.less']
+        '(ngModelChange)="onChange()"' +
+        '(focusout)="focusOut()"' +
+        '/>',
+    standalone: false
 })
 export class MyInputPopupComponent implements OnInit, AfterViewInit{
 

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 @Component({
     templateUrl: './all-user.component.html',
     styleUrls: ['./all-user.component.less'],
+    standalone: false
 })
 
 export class AllUserComponent {

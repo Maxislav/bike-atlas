@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.autobind = void 0;
+exports.autobind = autobind;
 function autobind() {
     return (target, key, descriptor) => {
         let fn = descriptor.value;
@@ -28,5 +28,4 @@ function autobind() {
         };
     };
 }
-exports.autobind = autobind;
 //# sourceMappingURL=autobind.js.map

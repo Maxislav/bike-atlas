@@ -12,16 +12,15 @@ import {takeUntil} from 'rxjs/operators';
 
 @Component({
     //moduleId: module.id,
-    template:
-        '<info-position>' +
+    template: '<info-position>' +
         '</info-position>' +
         '<router-outlet></router-outlet>' +
-        '<mapbox-gl> map loading...</mapbox-gl>'
-    ,
+        '<mapbox-gl> map loading...</mapbox-gl>',
     styleUrls: ['./css/map.component.less'],
     providers: [],
     animations: [fadeInAnimation],
-    host: {'[@fadeInAnimation]': ''}
+    host: { '[@fadeInAnimation]': '' },
+    standalone: false
 })
 export class MapComponent extends SelfUnsubscribable {
 

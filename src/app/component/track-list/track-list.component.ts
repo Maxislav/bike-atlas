@@ -5,7 +5,8 @@ import { Track } from '../../service/track.service';
 @Component({
     selector: 'track-list',
     templateUrl: "./track-list.html",
-    styleUrls: ['./track-list.less']
+    styleUrls: ['./track-list.less'],
+    standalone: false
 })
 export class TrackList {
 

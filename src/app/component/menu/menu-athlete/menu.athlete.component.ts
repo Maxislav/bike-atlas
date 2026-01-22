@@ -9,6 +9,7 @@ import {autobind} from '../../../util/autobind';
     selector: 'menu-athlete',
     templateUrl: './menu.athlete.component.html',
     styleUrls: ['./menu.athlete.component.less'],
+    standalone: false
 })
 export class MenuAthleteComponent {
     public userDevices: Array<Device>;

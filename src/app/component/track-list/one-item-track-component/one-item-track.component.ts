@@ -15,7 +15,8 @@ import {ToastService} from '../../../shared-module/toast-module/toast.service';
 @Component({
     selector: 'one-item-track-component',
     templateUrl: './one-item-track.component.html',
-    styleUrls: ['./one-item-track.component.less']
+    styleUrls: ['./one-item-track.component.less'],
+    standalone: false
 })
 export class OneItemTrackComponent implements OnInit {
 

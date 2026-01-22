@@ -5,8 +5,8 @@ import {Subject} from 'rxjs';
 @Component({
     selector: 'device-icon-component',
     template: '<div class="ico-container" ><img [ngStyle]="{\'background\': background}" [src]="src"/></div>',
-    styleUrls: ['./device-icon-component.less']
-
+    styleUrls: ['./device-icon-component.less'],
+    standalone: false
 })
 export class DeviceIconComponent implements OnInit, OnDestroy {
     private readonly TIME_LIMIT = 10 * 60 * 1000;

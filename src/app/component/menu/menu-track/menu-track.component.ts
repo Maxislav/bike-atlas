@@ -65,7 +65,7 @@ declare const module: any;
     selector: 'menu-track',
     templateUrl: './menu-track.html',
     styleUrls: ['./menu-track.less'],
-    // providers: [MenuService]
+    standalone: false
 })
 export class MenuTrackComponent {
     menu = MENU;

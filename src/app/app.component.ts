@@ -27,7 +27,7 @@ export class NavigationHistory {
     styleUrls: [
         'css/app.component.less',
     ],
-
+    standalone: false
 })
 export class AppComponent implements OnInit{
     title = 'Tour of Heroes';

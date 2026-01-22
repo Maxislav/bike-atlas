@@ -8,7 +8,8 @@ import {distance} from "../../util/distance";
 @Component({
     //noinspection TypeScriptUnresolvedVariable
     templateUrl: './private-area.html',
-    styleUrls: ['./private-area.less']
+    styleUrls: ['./private-area.less'],
+    standalone: false
 })
 export class PrivateArea{
 

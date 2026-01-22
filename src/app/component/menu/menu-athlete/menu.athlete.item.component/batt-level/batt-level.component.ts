@@ -6,7 +6,8 @@ import {map} from 'rxjs/operators';
     selector: 'ats-batt-level',
     templateUrl: './batt-level.component.html',
     styleUrls: ['./batt-level.component.less'],
-    providers: [BattLevelStore]
+    providers: [BattLevelStore],
+    standalone: false
 })
 export class BattLevelComponent implements OnInit {
     @Input() set level(val) {

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.gtgbc = void 0;
+exports.gtgbc = gtgbc;
 const path = require("path");
 const https = require("https");
 function gtgbc(req, res) {
@@ -19,6 +19,5 @@ function gtgbc(req, res) {
         console.error(e);
     });
 }
-exports.gtgbc = gtgbc;
 ;
 //# sourceMappingURL=index.js.map

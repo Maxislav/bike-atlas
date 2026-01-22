@@ -23,6 +23,7 @@ interface MyNode extends Node {
 @Component({
     templateUrl: './profile.component.html',
     styleUrls: ['./profile.component.less'],
+    standalone: false
 })
 export class ProfileComponent implements OnInit, AfterViewInit {
 

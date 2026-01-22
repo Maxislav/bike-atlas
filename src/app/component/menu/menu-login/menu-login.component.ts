@@ -14,6 +14,7 @@ import {ToastService} from '../../../shared-module/toast-module/toast.service';
     selector: 'menu-login',
     templateUrl: './menu-login.component.html',
     styleUrls: ['./menu-login.less'],
+    standalone: false
 })
 export class MenuLoginComponent {
     private name: string;

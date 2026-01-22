@@ -11,6 +11,7 @@ import {ToastService} from '../../shared-module/toast-module/toast.service';
 
 @Directive({
     selector: 'users-container',
+    standalone: false
 })
 export class UsersContainer{
     constructor(el: ElementRef){
@@ -30,6 +31,7 @@ export class UsersContainer{
     //noinspection TypeScriptUnresolvedVariable
     templateUrl: './friends-component.html',
     styleUrls: ['./friends-component.less'],
+    standalone: false
 })
 export class FriendsComponent{
     public allUsers: Array<User>;

@@ -7,7 +7,8 @@ import {StravaService} from "../../service/strava.service";
 
 @Component({
     templateUrl: "./strava-auth-component.html",
-    styleUrls: ['./strava-component.less']
+    styleUrls: ['./strava-component.less'],
+    standalone: false
 })
 export class StravaAuthComponent implements OnInit{
     private socket: any;

@@ -10,6 +10,7 @@ import {ToastService} from '../../../../shared-module/toast-module/toast.service
     selector: 'menu-athlete-item',
     templateUrl: './menu.athlete.item.component.html',
     styleUrls: ['./menu.athlete.item.component.less'],
+    standalone: false
 })
 export class MenuAthleteItemComponent implements OnInit, OnDestroy {
     subscription: Subscription;

@@ -39,7 +39,7 @@ declare const module: any;
     //noinspection TypeScriptUnresolvedVariable
     templateUrl: './journal.component.html',
     styleUrls: ['./journal.component.less'],
-    //providers: [OneTrack]
+    standalone: false
 })
 
 export class JournalComponent implements OnInit, OnDestroy {

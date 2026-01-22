@@ -6,7 +6,8 @@ import {Message, ToastService} from '../../toast.service';
     selector: 'toast-component',
     templateUrl: './toast.component.html',
     styleUrls: ['./toast.component.less'],
-    animations: [forToastAnimation]
+    animations: [forToastAnimation],
+    standalone: false
 })
 export class ToastComponent {
     public messages: Array<Message>;

@@ -4,7 +4,8 @@ import {Room} from "./chat-room/chat-room.component";
 @Component({
     selector: 'chat-component',
     templateUrl: './chat.component.html',
-    styleUrls: ['./chat.component.less']
+    styleUrls: ['./chat.component.less'],
+    standalone: false
 })
 export class ChatComponent{
     rooms: Array<Room>;

@@ -23,6 +23,7 @@ interface Athlete{
 @Component({
     templateUrl: "./strava-component.html",
     styleUrls: ['./strava-component.less'],
+    standalone: false
 })
 export class StravaComponent  implements OnChanges {
     

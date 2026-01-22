@@ -28,7 +28,8 @@ declare const System: any;
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.less'],
     providers: [MenuTrackComponent, MenuService],
-    animations: [ngIfAnimation]
+    animations: [ngIfAnimation],
+    standalone: false
 })
 export class MenuComponent{
 
