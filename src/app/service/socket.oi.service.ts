@@ -1,16 +1,7 @@
-import { Injectable } from '@angular/core';
-import io from 'socket.io-client';
-import { Aes } from './aes-cript';
-import { Deferred } from '../util/deferred';
-
-interface Socket {
-    emit: Function;
-    $emit: Function;
-    $encrypt: Function;
-    $decrypt: Function;
-    on: Function;
-    off: Function;
-}
+import {Injectable} from '@angular/core';
+import {Aes} from './aes-cript';
+import {Deferred} from '../util/deferred';
+import {io, Socket} from 'socket.io-client';
 
 
 class Listener {
@@ -34,7 +25,7 @@ class GetListener {
     private static hashKeys: Array<string> = [];
     private readonly hashMap: { [hash: string]: { timeout: number, deferred: Deferred<any> } };
 
-    constructor(public name, private sSocket: SSocket) {
+    constructor(public name: string, private sSocket: SSocket) {
         const response = this.response.bind(this);
         this.hashMap = {};
         sSocket.on(name, response);
@@ -101,18 +92,27 @@ class GetListener {
 
 
 export class SSocket {
-    emit: Function;
-    $decrypt: Function;
-    on: (name: string, callback: Function) => {};
-    off: Function;
+    private rawSocket: Socket;
 
-    listenerHashMap: { [name: string]: Listener };
+    private readonly listenerHashMap: { [name: string]: Listener };
 
-    getListenerHashMap: { [name: string]: GetListener } = {};
+    private readonly getListenerHashMap: { [name: string]: GetListener } = {};
 
     constructor(uri: string, params?: any) {
-        Object.setPrototypeOf(this.constructor.prototype, io(uri));
+        this.rawSocket = io(uri, params);
         this.listenerHashMap = {};
+    }
+
+    emit(name: string, data: any, callback?: Function): Socket {
+        return this.rawSocket.emit(name, data, callback);
+    }
+
+    on(name: string, callback: (...args: any[]) => void): Socket {
+        return this.rawSocket.on(name, callback);
+    }
+
+    off(name: string, callback?: (...args: any[]) => void): Socket {
+        return this.rawSocket.off(name, callback);
     }
 
     $get<T>(name: string, data: any): Promise<T> {
@@ -165,26 +165,10 @@ export class Io {
         } else {
             this.url = 'http://' + window.location.hostname + ':8081';
         }
-        this._socket = new SSocket(this.url, {
-
-        });
-
-      /*  this._socket.$get('gettt', 'kiska')
-            .then(data => {
-                console.log(data)
-
-                return this._socket.$get('gettt', 'kiska2')
-            })
-            .then(data => {
-                console.log(data)
-            })*/
-
-
+        this._socket = new SSocket(this.url, {});
     }
 
     public get socket(): SSocket {
         return this._socket;
     }
-
-
 }

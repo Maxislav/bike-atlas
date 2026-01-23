@@ -21,8 +21,8 @@ const dirname = path.join(__dirname, '../', 'dist');
 const app = express();
 
 //const SocketIO = require('socket.io');
-import * as  Server  from 'socket.io';
-const ioServer = new Server(8081);
+import  { Server }  from 'socket.io';
+const ioServer = new Server(8081, { cors: { origin: "*" } });
 ssocketData(ioServer, app);
 app.use(fileUpload());
 

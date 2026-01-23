@@ -14,8 +14,8 @@ const PORT = 8080;
 const dirname = path.join(__dirname, '../', 'dist');
 const app = express();
 //const SocketIO = require('socket.io');
-const Server = require("socket.io");
-const ioServer = new Server(8081);
+const socket_io_1 = require("socket.io");
+const ioServer = new socket_io_1.Server(8081, { cors: { origin: "*" } });
 (0, socket_data_1.ssocketData)(ioServer, app);
 app.use(fileUpload());
 // parse application/x-www-form-urlencoded
