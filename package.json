@@ -16,19 +16,18 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@angular-devkit/build-angular": "^19.2.19",
-    "@angular/animations": "^19.2.18",
-    "@angular/cli": "^19.2.19",
-    "@angular/common": "^19.2.18",
-    "@angular/compiler": "^19.2.18",
-    "@angular/compiler-cli": "^19.2.18",
-    "@angular/core": "^19.2.18",
+    "@angular/animations": "^20.3.16",
+    "@angular/cli": "^20.3.15",
+    "@angular/common": "^20.3.16",
+    "@angular/compiler": "^20.3.16",
+    "@angular/compiler-cli": "^20.3.16",
+    "@angular/core": "^20.3.16",
     "@angular/fire": "^19.2.0",
-    "@angular/forms": "^19.2.18",
-    "@angular/language-service": "^19.2.18",
-    "@angular/platform-browser": "^19.2.18",
-    "@angular/platform-browser-dynamic": "^19.2.18",
-    "@angular/router": "^19.2.18",
+    "@angular/forms": "^20.3.16",
+    "@angular/language-service": "^20.3.16",
+    "@angular/platform-browser": "^20.3.16",
+    "@angular/platform-browser-dynamic": "^20.3.16",
+    "@angular/router": "^20.3.16",
     "@ngrx/component-store": "^17.2.0",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
@@ -91,11 +90,13 @@
     "stream": false
   },
   "devDependencies": {
+    "@angular/build": "^20.3.15",
     "@types/dateformat": "^5.0.0",
     "@types/express": "^4.17.13",
     "@types/express-serve-static-core": "^4.17.28",
     "@types/mysql": "^2.15.21",
     "@types/node": "^18.19.130",
-    "@types/serve-static": "^1.13.10"
+    "@types/serve-static": "^1.13.10",
+    "less": "^4.2.0"
   }
 }
