@@ -11,5 +11,5 @@ src/**/*.js
 maptoken.json
 user-pass.json
 
-
+/dist-server
 /node_modules

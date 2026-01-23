@@ -10,20 +10,18 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const tileProxy = require('./tile-proxy');
 const socket_data_1 = require("./socket-data");
-const weather = require("./weather");
-const { sendFile } = require('./send-file');
-const gtgbc_1 = require("./gtgbc");
 const PORT = 8080;
 const dirname = path.join(__dirname, '../', 'dist');
 const app = express();
-const ioServer = require('socket.io')(8081);
+//const SocketIO = require('socket.io');
+const Server = require("socket.io");
+const ioServer = new Server(8081);
 (0, socket_data_1.ssocketData)(ioServer, app);
 app.use(fileUpload());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.get('/borisbolukbb', weather);
-app.get('/gtgbc*', gtgbc_1.gtgbc);
+//app.get('/gtgbc*', gtgbc);
 /**
  * tiler proxy
  */

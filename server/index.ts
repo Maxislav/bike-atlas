@@ -11,18 +11,18 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const tileProxy = require('./tile-proxy');
 import { ssocketData } from './socket-data';
-import * as weather from './weather';
 
-const { sendFile } = require('./send-file');
 import { gtgbc } from './gtgbc';
-import * as http from 'http';
 
 const PORT = 8080;
 
 const dirname = path.join(__dirname, '../', 'dist');
 
 const app = express();
-const ioServer = require('socket.io')(8081);
+
+//const SocketIO = require('socket.io');
+import * as  Server  from 'socket.io';
+const ioServer = new Server(8081);
 ssocketData(ioServer, app);
 app.use(fileUpload());
 
@@ -32,9 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
-app.get('/borisbolukbb', weather);
-
-app.get('/gtgbc*', gtgbc);
+//app.get('/gtgbc*', gtgbc);
 
 /**
  * tiler proxy
