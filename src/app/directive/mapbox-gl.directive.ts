@@ -189,7 +189,7 @@ export class MapboxGlDirective implements AfterViewInit {
             let el = this.el;
             el.nativeElement.innerHTML = '';
             // const dd: any = MBGL
-            mapboxgl.accessToken = 'pk.eyJ1IjoibWF4aXNsYXYiLCJhIjoiY2lxbmlsNW9xMDAzNmh4bms4MGQ1enpvbiJ9.SvLPN0ZMYdq1FFMn7djryA';
+            mapboxgl.accessToken = 'pk.eyJ1IjoibWF4aW1tbSIsImEiOiJjbXB3bDVjcnMwMXJpMnJyMmpqamVpMWQ0In0.dJ_KVXS-oFKSPRrKDwWMIA';
 
 
             this.map = new MyMap({
