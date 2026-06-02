@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/component/chat-component/chat-room/chat-room.component.less"],
+  "sourcesContent": ["@import \"../../../css/constant\";\n:host{\n  background: rgba(255,255,255, 0.8);\n  display: block;\n  width: 100%;\n  min-width: 300px;\n  max-width: 300px;\n\n  padding: 15px;\n  position: relative;\n\n\n}\n.title{\n  margin-bottom: 5px;\n}\ntextarea{\n  width: 100%;\n  height: 80px;\n}\n.buttons-container{\n  display: flex;\n  justify-content: flex-end;\n  &>div{\n    cursor: pointer;\n  }\n}\n.scroll{\n  width: 100%;\n  max-height: 200px;\n  overflow-y: auto;\n}\n.message{\n  margin-bottom: 5px;\n  &>.date{\n    color: gray;\n    font-size: 10px;\n  }\n  &.my{\n    margin-left: 15px;\n  }\n  &.my>.text{\n    color: @blue-color;\n  }\n  &.opponent>.text{\n    color: @green-color\n  }\n}\n.close{\n  position: absolute;\n  right: 0;\n  top: 0;\n  color: darkred;\n  cursor: pointer;\n  padding: 15px;\n  font-size: 20px;\n  font: 30px/15px bold;\n}"],
+  "mappings": "AACA,MACE,WAAA,MACA,QAAA,MACA,MAAA,KACA,UAAA,MACA,UAAA,MALF,QAOE,KACA,SAAA,SAIF,CAAA,MACE,cAAA,IAEF,SACE,MAAA,KACA,OAAA,KAEF,CAAA,kBACE,QAAA,KACA,gBAAA,SACA,CAHF,iBAGG,CAAA,IACC,OAAA,QAGJ,CAAA,OACE,MAAA,KACA,WAAA,MACA,WAAA,KAEF,CAAA,QACE,cAAA,IACA,CAFF,OAEG,CAAA,CAAA,KACC,MAAA,KACA,UAAA,KAEF,CANF,OAMG,CAAA,GACC,YAAA,KAEF,CATF,OASG,CAHA,EAGG,CAAA,CAAA,KACF,MAAA,QAEF,CAZF,OAYG,CAAA,QAAS,CAAA,CAHN,KAIF,MAAA,QAGJ,CAAA,MACE,SAAA,SACA,MAAA,EACA,IAAA,EACA,MAAA,QACA,OAAA,QApDF,QAqDE,KACA,UAAA,KACA,KAAA,IAAA,CAAA,KAAA",
+  "names": []
+}

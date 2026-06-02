@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/shared-module/toast-module/components/toast/toast.component.less"],
+  "sourcesContent": ["@import \"../../../../css/constant\";\n:host{\n  position: absolute;\n  width: 300px;\n  right: 0;\n  top:0;\n  z-index: 10;\n  display: block;\n  height: initial;\n}\ndiv{\n  margin: 10px;\n  padding: 10px 15px;\n  background: white;\n  box-shadow: @box-shadow;\n  text-shadow: 0 0 2px white;\n  &.danger, &.error{\n    background:fadeout( @danger-background, 30%);\n    color: white;\n    text-shadow: 0 0 2px black;\n  }\n  &.warning{\n    background: fadeout( @warning-background, 30%);;\n  }\n  &.success{\n    background:fadeout( @success-background, 30%);\n  }\n}\n\n@keyframes MyAnimation {\n  0% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n\n.my-animation {\n  animation: MyAnimation 0.3s;\n}\n"],
+  "mappings": "AACA,MACE,SAAA,SACA,MAAA,MACA,MAAA,EACA,IAAA,EACA,QAAA,GACA,QAAA,MACA,OAAA,QAEF,IATA,OAUE,KAVF,QAWE,KAAA,KACA,WAAA,KACA,WAAA,IAAA,IAAA,IAAA,MACA,YAAA,EAAA,EAAA,IAAA,MACA,GAAC,CAAA,OAAS,GAAC,CAAA,MACT,WAAA,UACA,MAAA,KACA,YAAA,EAAA,EAAA,IAAA,MAEF,GAAC,CAAA,QACC,WAAA,UAEF,GAAC,CAAA,QACC,WAAA,UAIJ,WAAA,YACE,GACE,QAAA,EAEF,GACE,QAAA,GAIJ,CAAA,aACE,UAAA,YAAA",
+  "names": []
+}

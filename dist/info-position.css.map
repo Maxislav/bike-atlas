@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/component/info-position/info-position.less"],
+  "sourcesContent": [":host{\n  min-width: 300px;\n  position: absolute;\n  z-index: 2;\n  bottom:0;\n  left:0;\n  display: block;\n  background: white;\n  background: linear-gradient(to right, rgba(255,255,255,0.8) 0%,rgba(255,255,255,0.7) 70%,rgba(255,255,255,0) 100%);\n}\ntable{\n  width: 100%;\n}\ntable tr td{\n  padding: 4px;\n  font-size: 14px;\n}"],
+  "mappings": "AAAA,MACE,UAAA,MACA,SAAA,SACA,QAAA,EACA,OAAA,EACA,KAAA,EACA,QAAA,MACA,WAAA,KACA,WAAY,gBAAA,GAAA,KAAA,CAAA,KAAA,CAAA,UAAA,GAAA,CAAA,OAEd,MACE,MAAA,KAEF,MAAM,GAAG,GAbT,QAcE,IACA,UAAA",
+  "names": []
+}

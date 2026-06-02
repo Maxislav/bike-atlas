@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/component/track-list/track-list.less"],
+  "sourcesContent": ["@import \"../../css/constant\";\n:host{\n  position: absolute;\n  bottom: 0;\n  background: rgba(255,255,255,0.8);\n  z-index: 2;\n  padding: 15px;\n  min-width: 200px;\n}\n@media screen and (max-width: 650px){\n  :host{\n    min-width: 100%;\n  }\n}"],
+  "mappings": "AACA,MACE,SAAA,SACA,OAAA,EACA,WAAA,MACA,QAAA,EAJF,QAKE,KACA,UAAA,MAEF,OAAA,OAAA,IAAA,CAAoC,SAAA,EAAA,OAClC,MACE,UAAA",
+  "names": []
+}

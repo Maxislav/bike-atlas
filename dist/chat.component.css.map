@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/component/chat-component/chat.component.less"],
+  "sourcesContent": [":host{\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  z-index: 2;\n}\n.room{\n  &:not(:last-child){\n    margin-bottom: 15px;\n  }\n}"],
+  "mappings": "AAAA,MACE,SAAA,SACA,MAAA,EACA,OAAA,EACA,QAAA,EAGA,CAAA,IAAC,KAAI,aACH,cAAA",
+  "names": []
+}

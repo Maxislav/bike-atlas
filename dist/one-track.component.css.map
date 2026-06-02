@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/component/journal-component/one-track.component/one-track.component.less"],
+  "sourcesContent": ["@import \"../../../css/constant\";\n:host{\n  display: block;\n  margin-bottom: 15px;\n}\n.content{\n  display: flex;\n  justify-content: space-between;\n}\n.info>div{\n  margin-bottom:  15px;\n\n}\n.info{\n  padding: 0 15px;\n}\n\n.date{\n  color: @blue-color;\n  display: flex;\n\n}\n.user{\n  display: flex;\n  align-items: center;\n  .name{\n    margin-left: 10px;\n  }\n}\n.show-on-map{\n  cursor: pointer;\n}\n.map{\n  width: 300px;\n  height: 150px;\n  background: @main-background-color;\n}"],
+  "mappings": "AACA,MACE,QAAA,MACA,cAAA,KAEF,CAAA,QACE,QAAA,KACA,gBAAA,cAEF,CAAA,IAAK,CAAA,IACH,cAAA,KAGF,CAJA,KARA,QAaE,EAAA,KAGF,CAAA,KACE,MAAA,QACA,QAAA,KAGF,CAAA,KACE,QAAA,KACA,YAAA,OAFF,CAAA,KAGE,CAAA,KACE,YAAA,KAGJ,CAAA,YACE,OAAA,QAEF,CAAA,IACE,MAAA,MACA,OAAA,MACA,WAAA",
+  "names": []
+}
