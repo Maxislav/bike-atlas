@@ -114,7 +114,10 @@ class Gl520Parser {
             });
         }
         else {
-            this.deferred.resolve(null);
+            this.deferred.reject({
+                result: 'error',
+                points: []
+            });
         }
     }
     cellGroup(cellList, arrCell = []) {

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/component/menu/menu-athlete/menu.athlete.item.component/batt-level/batt-level.component.less"],
+  "sourcesContent": [":host {\n    font-size: 12px;\n    text-align: right;\n}\n.image-square{\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    width: 20px;\n    height: 12px;\n    border: 1px solid gray;\n    .contact{\n        margin-left: -4px;\n        width: 3px;\n        height: 6px;\n        border: 1px solid gray;\n    }\n    .level{\n        height: 100%;\n        width: 20%;\n        background: red;\n    }\n}\n\n.level-container{\n    display: flex;\n    align-items: center;\n    justify-content: flex-end;\n    margin: 0 -5px;\n    &>*{\n        padding: 2px 5px;\n    }\n}\n"],
+  "mappings": "AAAA,MACI,UAAA,KACA,WAAA,MAEJ,CAAA,aACI,QAAA,KACA,gBAAA,cACA,YAAA,OACA,MAAA,KACA,OAAA,KACA,OAAA,IAAA,MAAA,KANJ,CAAA,aAOI,CAAA,QACI,YAAA,KACA,MAAA,IACA,OAAA,IACA,OAAA,IAAA,MAAA,KAXR,CAAA,aAaI,CAAA,MACI,OAAA,KACA,MAAA,IACA,WAAA,IAIR,CAAA,gBACI,QAAA,KACA,YAAA,OACA,gBAAA,SA3BJ,OA4BI,EAAA,KACA,CALJ,eAKK,CAAA,EA7BL,QA8BQ,IAAA",
+  "names": []
+}

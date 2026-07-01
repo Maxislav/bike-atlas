@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/component/device-icon-component/device-icon-component.less"],
+  "sourcesContent": ["\n:host{\n    border-radius: 50%;\n    background: white;\n    &[status=yellow] {\n\tbackground: yellow;\n    }\n    &[status=green] {\n\tbackground: #2ff63a;\n    }\n    &[status=arrow] {\n\tbackground: #3690f6;\n    }\n\n}\nimg {\n    display: block;\n    width: 40px;\n    height: 40px;\n    padding: 3px;\n    border-radius: 50%;\n    transition: background-color 2s ease-in;\n}\n\n"],
+  "mappings": "AACA,oBACI,IACA,WAAA,KACA,KAAC,CAAA,eACJ,WAAA,KAEG,KAAC,CAAA,cACJ,WAAA,QAEG,KAAC,CAAA,cACJ,WAAA,QAID,IACI,QAAA,MACA,MAAA,KACA,OAAA,KAjBJ,QAkBI,IAlBJ,cAmBI,IACA,WAAA,iBAAA,GAAA",
+  "names": []
+}

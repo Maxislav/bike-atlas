@@ -99,20 +99,20 @@ export class Gl520 {
 
     create() {
 
-        this._server = net.createServer((c) => {
+        this._server = net.createServer((socketNet) => {
             console.log('connect', dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss'));
-            streams.push(c);
+            streams.push(socketNet);
             dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss');
             writeToFile(dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss').concat('\r\n', 'connect', '\r\n'));
-            c.on('end', () => {
+            socketNet.on('end', () => {
                 console.log('client disconnected');
                 writeToFile(dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss').concat('\r\n', 'disconnected', '\r\n'));
-                const index = streams.indexOf(c);
+                const index = streams.indexOf(socketNet);
                 if (-1 < index) {
                     streams.splice(index, 1);
                 }
             });
-            c.on('data', (onStreamData) => {
+            socketNet.on('data', (onStreamData) => {
                 let str = '';
                 const gl520Parser = new Gl520Parser();
                 try {
@@ -171,12 +171,13 @@ export class Gl520 {
                         })
                         .catch(err => {
                             console.error('err parse gl520 -> ', err);
+                            socketNet.end();
                         });
 
                 }
                 console.log(str);
             });
-            c.on('error', (err) => {
+            socketNet.on('error', (err) => {
                 console.error(err);
             });
         });

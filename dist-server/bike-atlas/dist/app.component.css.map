@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/css/app.component.less"],
+  "sourcesContent": [":host {\n  display: block;\n  position: relative;\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  height: 100%;\n}\na{\n  margin: 10px;\n}"],
+  "mappings": "AAAA,MACE,QAAA,MACA,SAAA,SAFF,OAGE,EAHF,QAIE,EACA,MAAA,KACA,OAAA,KAEF,EARA,OASE",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["angular:styles/component:css;19a268a3ca33d08a58691f7bb56b5f0b05d6e850b0d4d689dbf1b253400168e2;C:/Projects/bike-atlas/src/app/component/device/device-help/device-help.component.ts"],
+  "sourcesContent": ["\n    help-container { color: red; }\n  "],
+  "mappings": "AACI,eAAiB,MAAO,GAAK",
+  "names": []
+}

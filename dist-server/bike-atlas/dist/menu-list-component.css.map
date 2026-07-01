@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/shared-module/menu-list-component/menu-list-component.less"],
+  "sourcesContent": [":host{\n  display: block;\n  width: 16px;\n  height: 16px;\n  background: url(\"../../../img/menu.png\") no-repeat center;\n  background-size: 100%;\n  opacity: 0.7;\n  border-radius: 50%;\n  &:hover{\n    opacity: 1;\n  }\n\n  &>*{\n    width: 100%;\n    height: 100%;\n    cursor: pointer;\n  }\n}\n.list-menu{\n  position: relative;\n}\n\nul{\n  position: absolute;\n  left: 100%;\n  top: 100%;\n  padding: 10px;\n  background: white;\n  li{\n    list-style: none;\n    margin: 0;\n  }\n}"],
+  "mappings": "AAAA,MACE,QAAA,MACA,MAAA,KACA,OAAA,KACA,WAAA,kDAAgB,UAAA,OAChB,gBAAA,KACA,QAAA,GANF,cAOE,IACA,KAAC,OACC,QAAA,EAGF,KAAC,CAAA,EACC,MAAA,KACA,OAAA,KACA,OAAA,QAGJ,CAAA,UACE,SAAA,SAGF,GACE,SAAA,SACA,KAAA,KACA,IAAA,KAzBF,QA0BE,KACA,WAAA,KALF,GAME,GACE,WAAA,KA7BJ,OA8BI",
+  "names": []
+}

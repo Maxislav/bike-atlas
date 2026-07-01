@@ -356,7 +356,7 @@ export class Util {
      */
     insertLog(data: PointWithSrc) {
         console.log('->>', data.date.getTime());
-        if(Date.now() < data.date.getTime()+1000){
+        if(Date.now()+5000 < data.date.getTime()){
             return Promise.reject('Data is later then now')
         }
 

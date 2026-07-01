@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/component/my-marker-list-component/my-marker-list-component.less"],
+  "sourcesContent": ["@import \"../../css/constant\";\n:host {\n  display: block;\n  position: absolute;\n  z-index: 2;\n  top: 40px;\n  left: 0;\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.7) 70%, rgba(255, 255, 255, 0) 100%);\n  padding: 15px;\n  min-width: 200px;\n}\n\n.close {\n  position: absolute;\n  right: 0;\n  top: 0;\n  color: darkred;\n  cursor: pointer;\n  padding: 15px;\n  font-size: 20px;\n  font: 30px/15px bold;\n}\n.marker-row{\n  justify-content: space-between;\n}\n.marker-cell{\n  width: 100%;\n  border-bottom: 1px solid @main-border-color;\n}\n.row:last-child{\n  margin-bottom: 0;\n}"],
+  "mappings": "AACA,MACE,QAAA,MACA,SAAA,SACA,QAAA,EACA,IAAA,KACA,KAAA,EACA,WAAY,gBAAA,GAAA,KAAA,CAAA,KAAA,CAAA,UAAA,GAAA,CAAA,OANd,QAOE,KACA,UAAA,MAGF,CAAA,MACE,SAAA,SACA,MAAA,EACA,IAAA,EACA,MAAA,QACA,OAAA,QAhBF,QAiBE,KACA,UAAA,KACA,KAAA,IAAA,CAAA,KAAA,KAEF,CAAA,WACE,gBAAA,cAEF,CAAA,YACE,MAAA,KACA,cAAA,IAAA,MAAA,QAEF,CAAA,GAAI,YACF,cAAA",
+  "names": []
+}

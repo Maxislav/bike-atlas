@@ -13,7 +13,7 @@ import { deepCopy } from '../util/deep-copy';
 
 
 interface Response {
-    result?: 'ok'
+    result?: 'ok' | 'error';
     points: Array<Point>,
     error?: Error
 }
@@ -161,7 +161,10 @@ export class Gl520Parser {
 
         }
         else {
-            this.deferred.resolve(null);
+            this.deferred.reject({
+                result: 'error',
+                points: []
+            });
         }
 
     }
