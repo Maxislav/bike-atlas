@@ -84,8 +84,8 @@ class SocketData {
                 const reqData = req.data;
                 res.end(reqData);
             });
-            logger.sockets = ioServer.sockets.connected;
-            chat.sockets = ioServer.sockets.connected;
+            logger.sockets = ioServer.sockets.sockets;
+            chat.sockets = ioServer.sockets.sockets;
             this.gl520.setSocketsConnected(ioServer.sockets.connected);
             const onEnter = new on_enter_1.OnEnter(socket, util, logger, chat);
             const onAuth = new on_auth_1.OnAuth(socket, util, chat, logger, this.gl520);

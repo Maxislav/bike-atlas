@@ -38,7 +38,7 @@ export class Logger {
 
     util: Util;
     robot: Robot;
-    _sockets: { [socket_id: number]: SSocket };
+    _sockets: any;
     devices: { [device_key: string]: Array<number> };
 
     /** @namespace this.connection */
@@ -112,7 +112,12 @@ export class Logger {
             this.devices[device_id].forEach(socket_id => {
                 if (data) {
                     emitedSockets.push(socket_id);
-                    this.sockets[socket_id] && this.sockets[socket_id].emit('log', data);
+                    // this.sockets[socket_id] && this.sockets[socket_id].emit('log', data);
+                    const socket = this.sockets.get(socket_id);
+                    if(socket){
+                        socket.emit('log', data);
+                    }
+                   // this.sockets[socket_id] && this.sockets[socket_id].emit('log', data);
                 }
             });
         }

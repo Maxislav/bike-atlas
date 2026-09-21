@@ -119,8 +119,8 @@ class SocketData {
             });
 
 
-            logger.sockets = ioServer.sockets.connected;
-            chat.sockets = ioServer.sockets.connected;
+            logger.sockets = ioServer.sockets.sockets;
+            chat.sockets = ioServer.sockets.sockets;
             this.gl520.setSocketsConnected(ioServer.sockets.connected);
             const onEnter = new OnEnter(socket, util, logger, chat);
             const onAuth = new OnAuth(socket, util, chat, logger, this.gl520);

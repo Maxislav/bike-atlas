@@ -116456,7 +116456,12 @@ class Logger {
             this.devices[device_id].forEach(socket_id => {
                 if (data) {
                     emitedSockets.push(socket_id);
-                    this.sockets[socket_id] && this.sockets[socket_id].emit('log', data);
+                    // this.sockets[socket_id] && this.sockets[socket_id].emit('log', data);
+                    const socket = this.sockets.get(socket_id);
+                    if (socket) {
+                        socket.emit('log', data);
+                    }
+                    // this.sockets[socket_id] && this.sockets[socket_id].emit('log', data);
                 }
             });
         }
@@ -116994,8 +116999,8 @@ class SocketData {
                 const reqData = req.data;
                 res.end(reqData);
             });
-            logger.sockets = ioServer.sockets.connected;
-            chat.sockets = ioServer.sockets.connected;
+            logger.sockets = ioServer.sockets.sockets;
+            chat.sockets = ioServer.sockets.sockets;
             this.gl520.setSocketsConnected(ioServer.sockets.connected);
             const onEnter = new on_enter_1.OnEnter(socket, util, logger, chat);
             const onAuth = new on_auth_1.OnAuth(socket, util, chat, logger, this.gl520);
@@ -119667,7 +119672,7 @@ class Util {
      */
     insertLog(data) {
         console.log('->>', data.date.getTime());
-        if (Date.now() < data.date.getTime() + 1000) {
+        if (Date.now() + 5000 < data.date.getTime()) {
             return Promise.reject('Data is later then now');
         }
         return new Promise((resolve, reject) => {
@@ -120701,7 +120706,10 @@ class Gl520Parser {
             });
         }
         else {
-            this.deferred.resolve(null);
+            this.deferred.reject({
+                result: 'error',
+                points: []
+            });
         }
     }
     cellGroup(cellList, arrCell = []) {
@@ -120898,20 +120906,20 @@ class Gl520 {
         this.devices[device_key].push(socket_id);
     }
     create() {
-        this._server = net.createServer((c) => {
+        this._server = net.createServer((socketNet) => {
             console.log('connect', dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss'));
-            streams.push(c);
+            streams.push(socketNet);
             dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss');
             writeToFile(dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss').concat('\r\n', 'connect', '\r\n'));
-            c.on('end', () => {
+            socketNet.on('end', () => {
                 console.log('client disconnected');
                 writeToFile(dateformat(new Date(), 'yyyy-mm-dd HH:MM:ss').concat('\r\n', 'disconnected', '\r\n'));
-                const index = streams.indexOf(c);
+                const index = streams.indexOf(socketNet);
                 if (-1 < index) {
                     streams.splice(index, 1);
                 }
             });
-            c.on('data', (onStreamData) => {
+            socketNet.on('data', (onStreamData) => {
                 let str = '';
                 const gl520Parser = new gl_520_parser_1.Gl520Parser();
                 try {
@@ -120967,11 +120975,12 @@ class Gl520 {
                     })
                         .catch(err => {
                         console.error('err parse gl520 -> ', err);
+                        socketNet.end();
                     });
                 }
                 console.log(str);
             });
-            c.on('error', (err) => {
+            socketNet.on('error', (err) => {
                 console.error(err);
             });
         });
